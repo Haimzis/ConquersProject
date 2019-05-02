@@ -76,7 +76,6 @@ public class Army implements Serializable {
                 deadUnit = (Unit) unit.next();
                 if ("Dead".equals(deadUnit.getType())) {
                     unit.remove();
-                    break;
                 }
             }
         }

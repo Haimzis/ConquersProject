@@ -54,16 +54,19 @@ public class Unit implements Serializable {
         return ((double)this.purchase / (double)this.maxFirePower)*(this.getMaxFirePower() - this.getCurrentFirePower());
     }
     public void reduceCompetence() {
-        if(this.currentFirePower >= competenceReduction)
+        if(this.currentFirePower > competenceReduction)
             this.currentFirePower -= competenceReduction;
-        else //The unit should die next turn!
+        else
             this.type = "Dead";
     }
-    public void reduceCompetenceByPercent(double lossPercentage) {
-        if(this.currentFirePower >= competenceReduction)
-            this.currentFirePower = (int)((currentFirePower* lossPercentage)+0.5);
-        else //The unit should die next turn!
+    public void reduceCompetenceByPercent(double remainPercentage) {
+        if((int)((currentFirePower* remainPercentage)+0.5) > competenceReduction)
+            this.currentFirePower = (int)((currentFirePower* remainPercentage)+0.5);
+        else
             this.type = "Dead";
+    }
+    public void killUnit() {
+        reduceCompetenceByPercent(0);
     }
     public void rehabilitateUnit() {currentFirePower = maxFirePower;}
 }
