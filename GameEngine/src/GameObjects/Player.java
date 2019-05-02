@@ -22,7 +22,8 @@ public class Player implements Serializable {
         this.funds = player.getFunds();
         this.TerritoriesID = new ArrayList<>();
         if (!player.getTerritoriesID().isEmpty())
-            player.getTerritoriesID().forEach(territoryID -> this.TerritoriesID.add(new Integer(territoryID)));
+            //player.getTerritoriesID().forEach(territoryID -> this.TerritoriesID.add(new Integer(territoryID)));
+            this.TerritoriesID.addAll(player.getTerritoriesID()); //TODO: I need to check that the undo works well with it
     }
 
     //**************************//

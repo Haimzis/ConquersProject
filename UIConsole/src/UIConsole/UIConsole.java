@@ -243,7 +243,7 @@ public class UIConsole {
             System.out.println("Conquering failed , army is not above threshold.");
     }
     //Choose Attack Type and call the right battle function
-    private boolean attackConqueredTerritory(){
+    private int attackConqueredTerritory(){
         int selection;
         Scanner sc = new Scanner(System.in);
         while(true) {
@@ -272,8 +272,8 @@ public class UIConsole {
         printAndBuySelectedUnit();
         int defendingArmyAmountOfUnits = targetTerritory.getConquerArmyForce().getUnits().size();
 
-        boolean attackerWon = attackConqueredTerritory();
-        if(attackerWon) {
+        int attackerWon = attackConqueredTerritory();
+        if(attackerWon == 1) {
             System.out.println("VICTORY!"
                     + "\n"
                     + "You have conquered territory number: " + targetTerritory.getID());
@@ -282,8 +282,12 @@ public class UIConsole {
             }
             else printArmyOnTerritory(targetTerritory);
         }
-        else
+        else if(attackerWon == 0) {
             System.out.println("DEFEAT!");
+        }
+        else {
+            System.out.println("DRAW!");
+        }
         System.out.println("The defending territory had "
                 + defendingArmyAmountOfUnits
                 + " Units!"

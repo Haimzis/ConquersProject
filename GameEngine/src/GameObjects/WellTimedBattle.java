@@ -41,19 +41,18 @@ public class WellTimedBattle extends Battle {
             unitsTypesCounterOfAttackingArmy[unitsRank] -= unitsTypesCounterOfCurrentConquerArmy[unitsRank];
             unitsTypesCounterOfCurrentConquerArmy[unitsRank] -= temp;
             if(unitsTypesCounterOfAttackingArmy[unitsRank] > unitsTypesCounterOfCurrentConquerArmy[unitsRank]){//Attacker wins
-                isAttackSucceed = true;
+                attackResult = 1;
                 battleTerritory.getConquer().getTerritoriesID().remove(new Integer(battleTerritory.getID())); //Removes Defeated Conquer Army
                 battleTerritory.setConquerArmyForce(attackingArmy);
                 return;
             }
             else if(unitsTypesCounterOfAttackingArmy[unitsRank] < unitsTypesCounterOfCurrentConquerArmy[unitsRank]){//Attacker loss
-                isAttackSucceed = false;
+                attackResult = 0;
                 return;
             }
         }
-        //DRAW = attacker wins
-        isAttackSucceed = true;
+        //DRAW
         battleTerritory.getConquer().getTerritoriesID().remove(new Integer(battleTerritory.getID())); //Removes Defeated Conquer Army
-        battleTerritory.setConquerArmyForce(attackingArmy);
+        attackResult=2;
     }
 }
