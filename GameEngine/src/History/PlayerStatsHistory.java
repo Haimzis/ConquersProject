@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class PlayerStatsHistory implements Serializable {
-    List<Player> playerStats;
+    private List<Player> playerStats;
     public PlayerStatsHistory(GameDescriptor gameDescriptor) {
         this.playerStats = new LinkedList<>();
         gameDescriptor.getPlayersList().forEach(player -> this.playerStats.add(new Player(player)));

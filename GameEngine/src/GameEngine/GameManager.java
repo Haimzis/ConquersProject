@@ -106,7 +106,7 @@ public class GameManager implements Serializable {
         return mapsHistoryByOrder;
     }
     //retrieve players list into queue of turns
-    public void loadPlayersIntoQueueOfTurns() {
+    private void loadPlayersIntoQueueOfTurns() {
         if(gameDescriptor.getPlayersList() != null) {
             playersTurns.addAll(gameDescriptor.getPlayersList());
         }
@@ -122,15 +122,15 @@ public class GameManager implements Serializable {
     private void harvestProduction(Player player) {
         player.incrementFunds(calculatePotentialProduction(player));
     }
-    public int calculatePotentialProduction(Player player) {
+    private int calculatePotentialProduction(Player player) {
         return Optional.ofNullable(getTerritories(player))
                 .orElse(Collections.emptyList())
                 .stream()
                 .mapToInt(Territory::getProfit).sum();
     }
     //reduce competence of current player units and clean off the dead units
-    public void updateTerritoriesHold(Player player) {
-        getTerritories(player).stream()
+    private void updateTerritoriesHold(Player player) {
+        getTerritories(player)
                 .forEach(Territory::reduceCompetence);
 
         getTerritories(player).stream()
@@ -165,7 +165,7 @@ public class GameManager implements Serializable {
                 selectedTerritoryByPlayer));
     }
     //Returns True: if attacking player wins, Else :False. anyway its update stats of the GameObjects.Territory after battle.
-    public boolean attackConqueredTerritory(Battle battle) {
+    private boolean attackConqueredTerritory(Battle battle) {
         boolean succeed;
         battle.startBattle();
         succeed = battle.getResult();
@@ -255,8 +255,7 @@ public class GameManager implements Serializable {
         return territory.getRehabilitationArmyPriceInTerritory();
     }
     //checks if undo is valid
-    public boolean isUndoPossible()
-    {
+    public boolean isUndoPossible() {
         return (roundsHistory.size() > 1);
     }
     //Returns True: if target territory is 1 block away from his territories.Else false

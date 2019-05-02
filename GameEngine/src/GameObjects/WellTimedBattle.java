@@ -24,11 +24,11 @@ public class WellTimedBattle extends Battle {
             attackingArmy.getUnits().stream()
                     .filter(unit ->currentRank + 1 == unit.getRank())
                     .limit(unitsTypesCounterOfCurrentConquerArmy[currentRank])
-                    .forEach(unit->unit.reduceCompetenceByPercent(0));
+                    .forEach(Unit::killUnit);
             currentConquerArmy.getUnits().stream()
                     .filter(unit ->currentRank + 1 == unit.getRank())
                     .limit(unitsTypesCounterOfAttackingArmy[currentRank])
-                    .forEach(unit->unit.reduceCompetenceByPercent(0));
+                    .forEach(Unit::killUnit);
         }
         currentConquerArmy.buryDeadUnits();
         currentConquerArmy.updateArmyStats();

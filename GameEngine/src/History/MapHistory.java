@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 public class MapHistory implements Serializable {
-    Map<Integer,Territory> mapHistory;
+    private Map<Integer,Territory> mapHistory;
     public MapHistory(GameDescriptor gameDescriptor) {
         this.mapHistory = new HashMap<>();
         gameDescriptor.getTerritoryMap().forEach((integer, territory) -> this.mapHistory.put(integer,new Territory(territory)));

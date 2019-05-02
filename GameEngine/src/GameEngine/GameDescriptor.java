@@ -81,7 +81,7 @@ public class GameDescriptor implements Serializable {
     // Here we create a list of all the units available to purchase in-game , when the game engine
     //loads the game it shall create the list , and here we can access all the information on each unit
     // by its type.
-    public Map<String , Unit> loadUnitsDescription(Generated.GameDescriptor descriptor) {
+    private Map<String , Unit> loadUnitsDescription(Generated.GameDescriptor descriptor) {
         Map<String , Unit> unitsMap = new HashMap<>();
         List<Generated.Unit> units = descriptor.getGame().getArmy().getUnit();
         for(Generated.Unit unit : units) {
@@ -116,7 +116,7 @@ public class GameDescriptor implements Serializable {
         return playersList;
     }
     //Build the territory map from the defined XML document.
-    public Map<Integer,Territory> buildTerritoryMap(Generated.GameDescriptor descriptor) {
+    private Map<Integer,Territory> buildTerritoryMap(Generated.GameDescriptor descriptor) {
         List<Generated.Teritory> territoryList = loadTerritories(descriptor);
         Map<Integer, Territory> territoriesMap = new HashMap<>();
         if(territoryList != null) {
@@ -153,7 +153,7 @@ public class GameDescriptor implements Serializable {
         return descriptor.getGame().getTerritories().getTeritory();
     }
     //Load game stats
-    public void getGameStats(Generated.GameDescriptor descriptor) {
+    private void getGameStats(Generated.GameDescriptor descriptor) {
         this.initialFunds = descriptor.getGame().getInitialFunds().intValue();
         this.totalCycles = descriptor.getGame().getTotalCycles().intValue();
         this.columns = descriptor.getGame().getBoard().getColumns().intValue();

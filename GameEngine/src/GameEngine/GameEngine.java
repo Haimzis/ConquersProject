@@ -38,8 +38,7 @@ public class GameEngine {
         this.descriptor = gameDescriptor;
     }
     private Path getPath(String xmlPath) {
-        Path path = Paths.get(xmlPath);
-        return path;
+        return Paths.get(xmlPath);
     }
     public void newGame() {
         gameManager = new GameManager(descriptor);
