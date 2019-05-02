@@ -32,7 +32,7 @@ public class Army implements Serializable {
     public int getTotalPower() {
         return totalPower;
     }
-    public int getPotentialTotalPower() {
+    private int getPotentialTotalPower() {
         return potentialTotalPower;
     }
 
@@ -80,13 +80,13 @@ public class Army implements Serializable {
             }
         }
     }
-    public void calculateTotalPower() {
+    private void calculateTotalPower() {
         this.totalPower=
                 Optional.ofNullable(units).orElse(Collections.emptyList()).parallelStream()
                         .mapToInt(Unit::getCurrentFirePower)
                         .sum();
     }
-    public void calculatePotentialTotalPower() {
+    private void calculatePotentialTotalPower() {
         this.potentialTotalPower=
                 Optional.ofNullable(units).orElse(Collections.emptyList()).parallelStream()
                         .mapToInt(Unit::getMaxFirePower)

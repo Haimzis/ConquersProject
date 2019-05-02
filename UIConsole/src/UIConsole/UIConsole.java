@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class UIConsole {
-    private String lastKnownXmlPath;
+    private String lastKnownXmlPath; //TODO : Ran - use it
     private boolean gameStarted , gameHasBeenPlayed;
     private static final String SOLDIER = "Soldier";
     private GameEngine engine;
@@ -370,7 +370,7 @@ public class UIConsole {
     }
     private void printHistory() {
         printMapLegend();
-        GameEngine.gameManager.getMapsHistoryByOrder().stream()
+        GameEngine.gameManager.getMapsHistoryByOrder()
                 .forEach(this::drawMap);
     }
     //Show the stats of current round.
