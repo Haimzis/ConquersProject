@@ -82,16 +82,16 @@ public class Army implements Serializable {
         }
     }
     public void calculateTotalPower() {
-       this.totalPower=
-               Optional.ofNullable(units).orElse(Collections.emptyList()).parallelStream()
-                    .mapToInt(Unit::getCurrentFirePower)
-                    .sum();
+        this.totalPower=
+                Optional.ofNullable(units).orElse(Collections.emptyList()).parallelStream()
+                        .mapToInt(Unit::getCurrentFirePower)
+                        .sum();
     }
     public void calculatePotentialTotalPower() {
         this.potentialTotalPower=
                 Optional.ofNullable(units).orElse(Collections.emptyList()).parallelStream()
-                .mapToInt(Unit::getMaxFirePower)
-                .sum();
+                        .mapToInt(Unit::getMaxFirePower)
+                        .sum();
     }
     public int calculateRehabilitationPrice() {
         double cost=0;
