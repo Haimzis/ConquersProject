@@ -30,20 +30,30 @@ public class WellTimedBattle extends Battle {
                     .limit(unitsTypesCounterOfAttackingArmy[currentRank])
                     .forEach(unit->unit.reduceCompetenceByPercent(0));
         }
+        currentConquerArmy.buryDeadUnits();
+        currentConquerArmy.updateArmyStats();
+        attackingArmy.buryDeadUnits();
+        attackingArmy.updateArmyStats();
+
         //Update result
         for(int unitsRank = StrongestRank -1 ; unitsRank >= 0; unitsRank-- ){
             int temp = unitsTypesCounterOfAttackingArmy[unitsRank];
             unitsTypesCounterOfAttackingArmy[unitsRank] -= unitsTypesCounterOfCurrentConquerArmy[unitsRank];
             unitsTypesCounterOfCurrentConquerArmy[unitsRank] -= temp;
-            if(unitsTypesCounterOfAttackingArmy[unitsRank] > unitsTypesCounterOfCurrentConquerArmy[unitsRank]){
+            if(unitsTypesCounterOfAttackingArmy[unitsRank] > unitsTypesCounterOfCurrentConquerArmy[unitsRank]){//Attacker wins
                 isAttackSucceed = true;
+                battleTerritory.getConquer().getTerritoriesID().remove(new Integer(battleTerritory.getID())); //Removes Defeated Conquer Army
+                battleTerritory.setConquerArmyForce(attackingArmy);
                 return;
             }
-            else if(unitsTypesCounterOfAttackingArmy[unitsRank] < unitsTypesCounterOfCurrentConquerArmy[unitsRank]){
+            else if(unitsTypesCounterOfAttackingArmy[unitsRank] < unitsTypesCounterOfCurrentConquerArmy[unitsRank]){//Attacker loss
                 isAttackSucceed = false;
                 return;
             }
         }
+        //DRAW = attacker wins
         isAttackSucceed = true;
+        battleTerritory.getConquer().getTerritoriesID().remove(new Integer(battleTerritory.getID())); //Removes Defeated Conquer Army
+        battleTerritory.setConquerArmyForce(attackingArmy);
     }
 }

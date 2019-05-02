@@ -151,22 +151,32 @@ public class GameManager implements Serializable {
     //**************************//
     /* War and Conquest Control*/
     //**************************//
-
+    public boolean attackConqueredTerritoryByWellTimedBattle(){
+        return attackConqueredTerritory(new WellTimedBattle(
+                selectedTerritoryByPlayer.getConquerArmyForce(),
+                selectedArmyForce,
+                selectedTerritoryByPlayer,
+                gameDescriptor.getUnitMap().size()));
+    }
+    public boolean attackConqueredTerritoryByCalculatedRiskBattle(){
+        return attackConqueredTerritory(new CalculatedRiskBattle(
+                selectedTerritoryByPlayer.getConquerArmyForce(),
+                selectedArmyForce,
+                selectedTerritoryByPlayer));
+    }
     //Returns True: if attacking player wins, Else :False. anyway its update stats of the GameObjects.Territory after battle.
-    public boolean attackConqueredTerritory() {
+    public boolean attackConqueredTerritory(Battle battle) {
         boolean succeed;
-        Battle.preparedToBattle(selectedTerritoryByPlayer.getConquerArmyForce(),selectedArmyForce,selectedTerritoryByPlayer);
-        succeed = Battle.isAttackSucceed();
+        battle.startBattle();
+        succeed = battle.getResult();
         if(succeed) {
-            Battle.updateArmiesAfterAttackerVictory();
             selectedTerritoryByPlayer.setConquer(currentPlayerTurn);
             currentPlayerTurn.addTerritory(selectedTerritoryByPlayer);
         }
         else {//(!succeed)
-            Battle.updateArmiesAfterAttackerDefeat();
             selectedArmyForce = null;
         }
-        if(Battle.isWinnerArmyNotStrongEnoughToHoldTerritory())
+        if(battle.isWinnerArmyNotStrongEnoughToHoldTerritory())
             selectedTerritoryByPlayer.xChangeFundsForUnitsAndHold();
         return succeed;
     }

@@ -166,7 +166,7 @@ public class UIConsole {
     //The main function who works on the current selected territory.
     private void actOnTerritory() {
         if(!GameEngine.gameManager.getCurrentPlayerTerritories().isEmpty()) {
-            int choice , territoryID;
+            int territoryID;
             Scanner scanner = new Scanner(System.in);
             System.out.println("Select a territory to act on: ");
             territoryID = scanner.nextInt();
@@ -242,11 +242,37 @@ public class UIConsole {
         else
             System.out.println("Conquering failed , army is not above threshold.");
     }
+    //Choose Attack Type and call the right battle function
+    private boolean attackConqueredTerritory(){
+        int selection;
+        Scanner sc = new Scanner(System.in);
+        while(true) {
+            System.out.println("Please select one of the following:");
+            System.out.println("1.CalculatedRisk Attack"
+                    + "\n"
+                    + "2.WellTimed Attack");
+            try {
+                selection = sc.nextInt();
+                switch (selection) {
+                    case 1:
+                        return GameEngine.gameManager.attackConqueredTerritoryByCalculatedRiskBattle();
+                    case 2:
+                        return GameEngine.gameManager.attackConqueredTerritoryByWellTimedBattle();
+                }
+            }
+            catch(InputMismatchException e){
+                    System.out.println("Enter one of the options listed");
+                    sc.next();
+            }
+        }
+    }
+    //manage the battle and update its results
     private void attackConqueredTerritoryResult(Territory targetTerritory) {
         System.out.println("You have selected to attack territory number " + targetTerritory.getID());
         printAndBuySelectedUnit();
         int defendingArmyAmountOfUnits = targetTerritory.getConquerArmyForce().getUnits().size();
-        boolean attackerWon = GameEngine.gameManager.attackConqueredTerritory();
+
+        boolean attackerWon = attackConqueredTerritory();
         if(attackerWon) {
             System.out.println("VICTORY!"
                     + "\n"
