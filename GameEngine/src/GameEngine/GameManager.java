@@ -151,34 +151,39 @@ public class GameManager implements Serializable {
     //**************************//
     /* War and Conquest Control*/
     //**************************//
-    public boolean attackConqueredTerritoryByWellTimedBattle(){
+    //Returns 0 = AttackerLoss : 1 = AttackerWins : 2 = DRAW
+    public int attackConqueredTerritoryByWellTimedBattle(){
         return attackConqueredTerritory(new WellTimedBattle(
                 selectedTerritoryByPlayer.getConquerArmyForce(),
                 selectedArmyForce,
                 selectedTerritoryByPlayer,
                 gameDescriptor.getUnitMap().size()));
     }
-    public boolean attackConqueredTerritoryByCalculatedRiskBattle(){
+    //Returns 0 = AttackerLoss : 1 = AttackerWins : 2 = DRAW
+    public int attackConqueredTerritoryByCalculatedRiskBattle(){
         return attackConqueredTerritory(new CalculatedRiskBattle(
                 selectedTerritoryByPlayer.getConquerArmyForce(),
                 selectedArmyForce,
                 selectedTerritoryByPlayer));
     }
-    //Returns True: if attacking player wins, Else :False. anyway its update stats of the GameObjects.Territory after battle.
-    private boolean attackConqueredTerritory(Battle battle) {
-        boolean succeed;
+    //Returns AttackerLoss - 0 : AttackerWins - 1 : DRAW - 2
+    private int attackConqueredTerritory(Battle battle) {
+        int result;
         battle.startBattle();
-        succeed = battle.getResult();
-        if(succeed) {
+        result = battle.getResult();
+        if(result == 1) { // AttackerWins
             selectedTerritoryByPlayer.setConquer(currentPlayerTurn);
             currentPlayerTurn.addTerritory(selectedTerritoryByPlayer);
         }
-        else {//(!succeed)
+        else if(result == 0){ // AttackerLoss
             selectedArmyForce = null;
+        }
+        else{ // DRAW
+            return result;
         }
         if(battle.isWinnerArmyNotStrongEnoughToHoldTerritory())
             selectedTerritoryByPlayer.xChangeFundsForUnitsAndHold();
-        return succeed;
+        return result;
     }
     //Returns True: if attacking player conquered the territory, Else: False. anyway its update stats of GameObjects.Territory.
     public boolean conquerNeutralTerritory() {
