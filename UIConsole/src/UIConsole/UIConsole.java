@@ -22,7 +22,7 @@ public class UIConsole {
     }
 
     //**************//
-    /*  Main Menu  */
+    /*  Main MenuTable  */
     //*************//
     public void showMainMenu() {
         gameStarted = false;
@@ -512,7 +512,7 @@ public class UIConsole {
         chooseTerritoryIfNone();
     }
     //******************//
-    /*     Map Func    */
+    /*     MapTable Func    */
     //*****************//
     private void drawMap() {
         printMapLegend();
@@ -534,7 +534,7 @@ public class UIConsole {
         map.print();
     }
     private void printMapLegend() {
-        System.out.println("Map legend");
+        System.out.println("MapTable legend");
         System.out.println(engine.getDescriptor().getPlayersList().get(0).getPlayer_name()
                 + ": "
                 + "X"

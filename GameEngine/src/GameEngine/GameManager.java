@@ -196,7 +196,7 @@ public class GameManager implements Serializable {
     }
 
     //**************************//
-    /*      Get Information     */
+    /*      Get InformationTable     */
     //**************************//
 
     public int getFundsBeforeProduction() {
