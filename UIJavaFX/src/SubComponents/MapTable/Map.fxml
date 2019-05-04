@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="SubComponents.MapTable.MapController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="122.0" prefWidth="140.0" style="-fx-background-color: green;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.MapTable.MapController">
+   <children>
+      <CheckBox layoutX="27.0" layoutY="41.0" mnemonicParsing="false" text="CheckBox" />
+      <CheckBox layoutX="14.0" layoutY="75.0" mnemonicParsing="false" text="CheckBox" />
+      <CheckBox layoutX="32.0" layoutY="14.0" mnemonicParsing="false" text="CheckBox" />
+   </children>
 </AnchorPane>
