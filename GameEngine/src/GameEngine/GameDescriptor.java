@@ -2,49 +2,44 @@ package GameEngine;
 import GameObjects.Player;
 import GameObjects.Territory;
 import GameObjects.Unit;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.*;
+import java.io.File;
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.*;
 
 public class GameDescriptor implements Serializable {
+    private String lastKnownGoodString;
     private int initialFunds , totalCycles , columns , rows;
     private int defaultThreshold , defaultProfit;
     private Map<Integer,Territory> territoryMap;
     private Map<String , Unit> unitMap;
     private List<Player> playersList;
-    private String gameType; //relevant for the second project
-    private String lastKnownGoodString;
+    private String gameType; //relevant for the third project
 
     public GameDescriptor(Path xmlPath) {
         Generated.GameDescriptor descriptor = null;
         try {
             descriptor = deserializeFrom(xmlPath);
         } catch (JAXBException ignored) { }
-
         if(descriptor == null) // GD was not created
             throw new IllegalArgumentException();
+
         lastKnownGoodString = xmlPath.toString();
         getGameStats(descriptor);
+        this.playersList =  loadPlayers(descriptor);
         this.territoryMap = buildTerritoryMap(descriptor);
-        if(checkRowsAndColumns() && validateTerritories(descriptor)){ //Checking the XML input (Board and territory ID's)
-            this.unitMap = loadUnitsDescription(descriptor);
-            //this.playersList =  //For dynamic players
-            this.playersList = addPlayers();
-        }
-        else { //XML is not valid after further inspection
+        this.unitMap = loadUnitsDescription(descriptor);
+        if(!(checkRowsAndColumns() && validateTerritories(descriptor) && validatePlayers() && validateUnitsFromXml(descriptor))) //Checking the XML
             throw new IllegalArgumentException();
-        }
     }
 
     //*********************//
     /*  Getters & Setters  */
     //*********************//
-    public String getLastKnownGoodString() {
-        return lastKnownGoodString;
-    }
     public int getTotalCycles() {
         return totalCycles;
     }
@@ -67,20 +62,9 @@ public class GameDescriptor implements Serializable {
     }
 
 
-    private boolean checkRowsAndColumns() {
-        return (columns >= 3 && columns <= 30) && (rows <= 30 && rows >= 2);
-    }
-    private List<Player> addPlayers() {
-        List<Player> players = new ArrayList<>();
-        Player playerOne = new Player(1 , "Ran", initialFunds);
-        Player playerTwo = new Player(2 , "Haim", initialFunds);
-        players.add(playerOne);
-        players.add(playerTwo);
-        return players;
-    }
-    // Here we create a list of all the units available to purchase in-game , when the game engine
-    //loads the game it shall create the list , and here we can access all the information on each unit
-    // by its type.
+    //*********************//
+    /*     XML Loaders    */
+    //*********************//
     private Map<String , Unit> loadUnitsDescription(Generated.GameDescriptor descriptor) {
         Map<String , Unit> unitsMap = new HashMap<>();
         List<Generated.Unit> units = descriptor.getGame().getArmy().getUnit();
@@ -99,8 +83,8 @@ public class GameDescriptor implements Serializable {
         }
         return unitsMap;
     }
-    //Will be used for further projects
-    public List<Player> loadPlayers(Generated.GameDescriptor descriptor) {
+
+    private List<Player> loadPlayers(Generated.GameDescriptor descriptor) {
         List<Player> playersList = new ArrayList<>();
         List<Generated.Player> players = descriptor.getPlayers().getPlayer();
         for(Generated.Player player : players) {
@@ -115,20 +99,21 @@ public class GameDescriptor implements Serializable {
         }
         return playersList;
     }
-    //Build the territory map from the defined XML document.
+
+
     private Map<Integer,Territory> buildTerritoryMap(Generated.GameDescriptor descriptor) {
         List<Generated.Teritory> territoryList = loadTerritories(descriptor);
         Map<Integer, Territory> territoriesMap = new HashMap<>();
         if(territoryList != null) {
             for(int i = 1; i <= columns * rows ; i++) {
-               for(int j = 0 ; j < territoryList.size() ; j++) {
-                   if(territoryList.get(j).getId().intValue() == i) {
-                       createTerritoryToMap(j , territoriesMap , i , territoryList);
-                       break;
-                   }
-                   else
-                       createTerritoryToMapFromDefault(territoriesMap, i);
-               }
+                for(int j = 0 ; j < territoryList.size() ; j++) {
+                    if(territoryList.get(j).getId().intValue() == i) {
+                        createTerritoryToMap(j , territoriesMap , i , territoryList);
+                        break;
+                    }
+                    else
+                        createTerritoryToMapFromDefault(territoriesMap, i);
+                }
             }
         }
         return territoriesMap;
@@ -152,7 +137,7 @@ public class GameDescriptor implements Serializable {
     private List<Generated.Teritory> loadTerritories(Generated.GameDescriptor descriptor) {
         return descriptor.getGame().getTerritories().getTeritory();
     }
-    //Load game stats
+
     private void getGameStats(Generated.GameDescriptor descriptor) {
         this.initialFunds = descriptor.getGame().getInitialFunds().intValue();
         this.totalCycles = descriptor.getGame().getTotalCycles().intValue();
@@ -172,11 +157,15 @@ public class GameDescriptor implements Serializable {
         Unmarshaller u = jc.createUnmarshaller();
         return (Generated.GameDescriptor) u.unmarshal(file);
     }
-    //Valid territories from XML
+
+
+    //*********************//
+    /*     Validators     */
+    //*********************//
     private boolean validateTerritories(Generated.GameDescriptor descriptor) {
         for(int i = 0; i < descriptor.getGame().getTerritories().getTeritory().size() - 1 ; i++) { //Checking double ID
             if(descriptor.getGame().getTerritories().getTeritory().get(i).getId().equals(descriptor.getGame().getTerritories().getTeritory().get(i + 1).getId()))  {
-                System.out.println("Double ID in xml detected , please try again.");
+                System.out.println("Double ID in xml detected , please try again."); // CHANGE TO ERROR EXCEPTION
                 return false; // an territory exists with the same ID
             }
         }
@@ -184,14 +173,48 @@ public class GameDescriptor implements Serializable {
     }
     private boolean validateTerritoryDefaults(Generated.GameDescriptor descriptor) {
         if(descriptor.getGame().getTerritories().getDefaultProfit() == null && descriptor.getGame().getTerritories().getTeritory().size() != territoryMap.size()) {
-            System.out.println("No default profit detected in territories while not all territories has been declared in xml , please try again");
+            System.out.println("No default profit detected in territories while not all territories has been declared in xml , please try again"); // CHANGE TO ERROR EXCEPTION
             return  false;
         }
         if(descriptor.getGame().getTerritories().getDefaultArmyThreshold() == null && descriptor.getGame().getTerritories().getTeritory().size() != territoryMap.size()) {
-            System.out.println("No default army threshold detected in territories while not all territories has been declared in xml , please try again");
+            System.out.println("No default army threshold detected in territories while not all territories has been declared in xml , please try again"); // CHANGE TO ERROR EXCEPTION
             return  false;
         }
         return true;
     }
 
+    private boolean validateUnitsFromXml(Generated.GameDescriptor descriptor) {
+        for(int i = 0 ; i < descriptor.getGame().getArmy().getUnit().size() - 1; i++) {
+            if(descriptor.getGame().getArmy().getUnit().get(i).getType().equals(descriptor.getGame().getArmy().getUnit().get(i+1).getType()))
+                return false;
+            if(descriptor.getGame().getArmy().getUnit().get(i).getRank() == descriptor.getGame().getArmy().getUnit().get(i+1).getRank())
+                return false;
+        }
+        return validateRanksFromXml(descriptor);
+    }
+
+    //TODO: wait for aviad's reply.
+    private boolean validateRanksFromXml(Generated.GameDescriptor descriptor) {
+        return true;
+    }
+
+    private boolean validatePlayers() {
+        if(playersList.size() < 2 || playersList.size() > 4)
+            return false;
+        for(int i = 0 ; i < playersList.size() - 1 ; i++) {
+            if(playersList.get(i).getID() == playersList.get(i+1).getID())
+                return false;
+        }
+        return true;
+    }
+
+    private boolean checkRowsAndColumns() {
+        return (columns >= 3 && columns <= 30) && (rows <= 30 && rows >= 2);
+    }
+
+    //TODO: Gets the last known good xml path , crashes if player moves the last know xml from it's former location.
+    // Find a better way to implement.
+    public String getLastKnownGoodString() {
+        return lastKnownGoodString;
+    }
 }
