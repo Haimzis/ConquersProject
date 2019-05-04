@@ -18,7 +18,7 @@ public class GameDescriptor implements Serializable {
     private Map<Integer,Territory> territoryMap;
     private Map<String , Unit> unitMap;
     private List<Player> playersList;
-    private String gameType; //relevant for the third project
+    //private String gameType; //relevant for the third project
 
     public GameDescriptor(Path xmlPath) {
         Generated.GameDescriptor descriptor = null;
@@ -27,14 +27,13 @@ public class GameDescriptor implements Serializable {
         } catch (JAXBException ignored) { }
         if(descriptor == null) // GD was not created
             throw new IllegalArgumentException();
-
+        if(!(checkRowsAndColumns(descriptor) && validateTerritories(descriptor) && validatePlayers(descriptor) && validateUnitsFromXml(descriptor))) //Checking the XML
+            throw new IllegalArgumentException();
         lastKnownGoodString = xmlPath.toString();
         getGameStats(descriptor);
         this.playersList =  loadPlayers(descriptor);
         this.territoryMap = buildTerritoryMap(descriptor);
         this.unitMap = loadUnitsDescription(descriptor);
-        if(!(checkRowsAndColumns() && validateTerritories(descriptor) && validatePlayers() && validateUnitsFromXml(descriptor))) //Checking the XML
-            throw new IllegalArgumentException();
     }
 
     //*********************//
@@ -143,7 +142,7 @@ public class GameDescriptor implements Serializable {
         this.totalCycles = descriptor.getGame().getTotalCycles().intValue();
         this.columns = descriptor.getGame().getBoard().getColumns().intValue();
         this.rows = descriptor.getGame().getBoard().getRows().intValue();
-        this.gameType = descriptor.getGameType();
+        //this.gameType = descriptor.getGameType();
         if(descriptor.getGame().getTerritories().getDefaultArmyThreshold() != null) {
             this.defaultProfit = descriptor.getGame().getTerritories().getDefaultProfit().intValue();
         }
@@ -184,32 +183,41 @@ public class GameDescriptor implements Serializable {
     }
 
     private boolean validateUnitsFromXml(Generated.GameDescriptor descriptor) {
-        for(int i = 0 ; i < descriptor.getGame().getArmy().getUnit().size() - 1; i++) {
-            if(descriptor.getGame().getArmy().getUnit().get(i).getType().equals(descriptor.getGame().getArmy().getUnit().get(i+1).getType()))
-                return false;
-            if(descriptor.getGame().getArmy().getUnit().get(i).getRank() == descriptor.getGame().getArmy().getUnit().get(i+1).getRank())
+
+        //Check for duplicate types or ranks , EXAMPLE: If the type of the set is 2 and the size of the unit list is 3 there are duplicate types.
+        Set<String> unitsTypeSet = new HashSet<>();
+        Set<Byte> unitsRankSet = new HashSet<>();
+        for(int i = 0 ; i < descriptor.getGame().getArmy().getUnit().size() ; i++) {
+            unitsTypeSet.add(descriptor.getGame().getArmy().getUnit().get(i).getType());
+            unitsRankSet.add(descriptor.getGame().getArmy().getUnit().get(i).getRank());
+        }
+
+        //Checking if ranks are incremented well in XML.
+        List<Byte> sortedRanks = new ArrayList<>(unitsRankSet);
+        Collections.sort(sortedRanks);
+        for(int i = 0 ; i < sortedRanks.size() - 1 ; i++) {
+            if(sortedRanks.get(i) != sortedRanks.get(i+1)+1)
                 return false;
         }
-        return validateRanksFromXml(descriptor);
+        return unitsTypeSet.size() == descriptor.getGame().getArmy().getUnit().size()
+                && unitsRankSet.size() == descriptor.getGame().getArmy().getUnit().size();
     }
 
-    //TODO: wait for aviad's reply.
-    private boolean validateRanksFromXml(Generated.GameDescriptor descriptor) {
-        return true;
-    }
 
-    private boolean validatePlayers() {
-        if(playersList.size() < 2 || playersList.size() > 4)
+
+    private boolean validatePlayers(Generated.GameDescriptor descriptor) {
+        Set<Integer> playerIdsSet = new HashSet<>();
+        if(descriptor.getPlayers().getPlayer().size() < 2 || descriptor.getPlayers().getPlayer().size() > 4)
             return false;
-        for(int i = 0 ; i < playersList.size() - 1 ; i++) {
-            if(playersList.get(i).getID() == playersList.get(i+1).getID())
-                return false;
+        for(int i = 0; i < descriptor.getPlayers().getPlayer().size(); i++) {
+            playerIdsSet.add(descriptor.getPlayers().getPlayer().get(i).getId().intValue());
         }
-        return true;
+        return playerIdsSet.size() == descriptor.getPlayers().getPlayer().size();
     }
 
-    private boolean checkRowsAndColumns() {
-        return (columns >= 3 && columns <= 30) && (rows <= 30 && rows >= 2);
+    private boolean checkRowsAndColumns(Generated.GameDescriptor descriptor) {
+        return (descriptor.getGame().getBoard().getColumns().intValue() >= 3 && descriptor.getGame().getBoard().getColumns().intValue() <= 30)
+                && (descriptor.getGame().getBoard().getRows().intValue() <= 30 && descriptor.getGame().getBoard().getRows().intValue() >= 2);
     }
 
     //TODO: Gets the last known good xml path , crashes if player moves the last know xml from it's former location.
