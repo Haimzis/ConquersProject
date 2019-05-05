@@ -26,6 +26,11 @@ public class PopupController {
 
     @FXML
     private void rehabilitateArmyBtnListener(ActionEvent event) {
+        rehabilitateArmyBtn.setText("I've been pressed!");
+    }
 
+    @FXML
+    private void setAddUnitsToArmyBtnListener(ActionEvent event) {
+        addUnitsToArmyBtn.setText("I've been pressed!");
     }
 }

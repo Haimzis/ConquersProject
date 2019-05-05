@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -24,8 +26,21 @@
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="wellTimedAttackSelected" layoutX="31.0" layoutY="24.0" mnemonicParsing="false" onAction="#wellTimedAttackListener" prefHeight="25.0" prefWidth="138.0" text="Well Timed Attack" />
-                        <Button fx:id="calculatedRiskAttack" layoutX="34.0" layoutY="82.0" mnemonicParsing="false" onAction="#calculatedRiskAttackListener" text="Calculated Risk Attack" />
+                        <Button fx:id="wellTimedAttackSelected" layoutX="48.0" layoutY="25.0" mnemonicParsing="false" onAction="#wellTimedAttackListener" prefHeight="25.0" prefWidth="125.0" text="Well Timed Attack" />
+                        <Button fx:id="calculatedRiskAttack" layoutX="47.0" layoutY="74.0" mnemonicParsing="false" onAction="#calculatedRiskAttackListener" prefHeight="25.0" prefWidth="125.0" text="Calculated Risk Attack">
+                           <font>
+                              <Font size="11.0" />
+                           </font></Button>
+                        <ImageView fitHeight="24.0" fitWidth="51.0" layoutX="13.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../Resources/clock.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="26.0" fitWidth="46.0" layoutX="12.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../Resources/bitcoin.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </AnchorPane>
               </items>
