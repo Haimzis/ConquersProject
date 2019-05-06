@@ -3,4 +3,4 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="125" prefWidth="900" style="-fx-background-color: red;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Header.HeaderController" />
+<AnchorPane fx:id="HeaderComponent" prefHeight="125" prefWidth="900" style="-fx-background-color: red;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="SubComponents.Header.HeaderController" />
