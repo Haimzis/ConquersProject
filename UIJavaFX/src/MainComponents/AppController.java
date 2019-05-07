@@ -34,15 +34,16 @@ public class AppController {
     @FXML
     public void initialize() {
         if (HeaderComponentController != null && InformationComponentController != null
-        && MapComponentController != null && MenuComponentController != null) {
+        && MapComponentController != null && MenuComponentController != null
+                && BuyUnitsComponentController != null) {
             HeaderComponentController.setMainController(this);
             InformationComponentController.setMainController(this);
             MapComponentController.setMainController(this);
             MenuComponentController.setMainController(this);
             BuyUnitsComponentController.setMainController(this);
         }
-        gameEngine.loadXML("C:\\Users\\Haim Zisman\\Desktop\\ex1-small.xml");
-        //createMap();
+        gameEngine.loadXML("C:\\Users\\Ran Tzur\\Desktop\\Projects\\קבצי בדיקה\\EX 1\\ex1-small.xml");
+        createMap();
     }
 
     public void setBuyUnitsComponentController(BuyUnitsPopupController buyUnitsComponentController) {

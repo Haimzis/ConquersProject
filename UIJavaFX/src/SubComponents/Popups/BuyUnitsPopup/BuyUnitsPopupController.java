@@ -20,5 +20,4 @@ public class BuyUnitsPopupController {
             unitChoices.getItems().add(unitToShowItem);
         }
     }
-
 }
