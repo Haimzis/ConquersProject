@@ -38,7 +38,9 @@ public class AppController {
             MapComponentController.setMainController(this);
             MenuComponentController.setMainController(this);
         }
-        gameEngine.loadXML("C:\\Users\\Haim Zisman\\Desktop\\ex1-small.xml");
+        gameEngine.loadXML("C:/Users/Haim Zisman/Desktop/Check files/ex1-medium.xml");
+        //initialize CSS path
+        MapComponent.getStylesheets().add(getClass().getResource("/SubComponents/MapTable/Map.css").toExternalForm());
         createMap();
     }
 

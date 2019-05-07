@@ -4,7 +4,6 @@ import DataContainersTypes.Board;
 import GameObjects.Territory;
 import MainComponents.AppController;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -23,7 +22,8 @@ public class MapController {
     private AppController mainController;
     private Map<Integer, Button> territoriesButtons= new HashMap<>();
     private Board map;
-
+    private final int MIN_WIDTH_SIZE= 146;
+    private final int MIN_HEIGHT_SIZE = 98;
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
@@ -33,13 +33,20 @@ public class MapController {
         this.map = newMap;
     }
     public void createMap(){
-        for (int i = 0; i < map.getRows(); i++) {
-            RowConstraints row = new RowConstraints(98);
+
+        int columns=map.getColumns(),rows=map.getRows();
+        double heightSize = GridComponent.getPrefHeight() / rows,widthSize= GridComponent.getPrefWidth() / columns;
+        if(heightSize < MIN_HEIGHT_SIZE)
+            heightSize = MIN_HEIGHT_SIZE;
+        if(widthSize < MIN_WIDTH_SIZE)
+            widthSize = MIN_WIDTH_SIZE;
+        for (int i = 0; i < rows; i++) {
+            RowConstraints row = new RowConstraints(heightSize);
             row.setVgrow(Priority.valueOf("SOMETIMES"));
             GridComponent.getRowConstraints().add(row);
         }
-        for (int i = 0; i < map.getColumns(); i++) {
-            ColumnConstraints column = new ColumnConstraints(146);
+        for (int i = 0; i < columns; i++) {
+            ColumnConstraints column = new ColumnConstraints(widthSize);
             column.setHgrow(Priority.valueOf("SOMETIMES"));
             GridComponent.getColumnConstraints().add(column);
         }
@@ -49,15 +56,15 @@ public class MapController {
         for(int i=0; i<map.getRows();i++){
             for(int j=0; j<map.getColumns();j++){
                 Territory territory =map.getTerritoryMap().get(counter) ;
-                Button btnTerritory = new Button("btn");
+                Button btnTerritory = new Button();
                 btnTerritory.setId("btn_Territory_" + counter);
                 btnTerritory.setText(
                         "ID: "+territory.getID()+
                         "\nThreshHold: "+ territory.getArmyThreshold()+
                         "\nProduction: "+ territory.getProfit());
                 btnTerritory.getStyleClass().add("btn_Territory");
-                btnTerritory.setPrefSize(146,98);
-                btnTerritory.setMinSize(146,98);
+                btnTerritory.setPrefSize(widthSize,heightSize);
+                btnTerritory.setMinSize(widthSize,heightSize);
                 territoriesButtons.put(counter,btnTerritory);
                 GridComponent.add(btnTerritory,j,i);
                 counter++;
