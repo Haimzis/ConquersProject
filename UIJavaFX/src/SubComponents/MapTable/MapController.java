@@ -4,6 +4,7 @@ import DataContainersTypes.Board;
 import GameObjects.Territory;
 import MainComponents.AppController;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -32,7 +33,6 @@ public class MapController {
         this.map = newMap;
     }
     public void createMap(){
-        
         for (int i = 0; i < map.getRows(); i++) {
             RowConstraints row = new RowConstraints(100);
             row.setVgrow(Priority.valueOf("SOMETIMES"));
@@ -52,11 +52,12 @@ public class MapController {
                 Button btnTerritory = new Button("btn");
                 btnTerritory.setId("btn_Territory_" + counter);
                 btnTerritory.setText(
-                        "ID:"+territory.getID()+
-                        "&#10;ThreshHold: "+ territory.getArmyThreshold()+
-                        "&#10;Production: "+ territory.getProfit());
+                        "ID: "+territory.getID()+
+                        "\nThreshHold: "+ territory.getArmyThreshold()+
+                        "\nProduction: "+ territory.getProfit());
                 btnTerritory.getStyleClass().add("btn_Territory");
                 btnTerritory.setPrefSize(146,98);
+                btnTerritory.setMinSize(146,98);
                 territoriesButtons.put(counter,btnTerritory);
                 GridComponent.add(btnTerritory,j,i);
                 counter++;
