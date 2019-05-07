@@ -20,7 +20,7 @@ public class AppController {
     @FXML private MapController MapComponentController;
     @FXML private AnchorPane MenuComponent;
     @FXML private MenuController MenuComponentController;
-    @FXML private BuyUnitsPopupController BuyUnitsComponentController;
+    private BuyUnitsPopupController BuyUnitsComponentController;
     private GameEngine gameEngine;
 
     public GameEngine getGameEngine() {
@@ -33,18 +33,20 @@ public class AppController {
 
     @FXML
     public void initialize() {
+        BuyUnitsComponentController = new BuyUnitsPopupController();
+        BuyUnitsComponentController.setMainController(this);
         if (HeaderComponentController != null && InformationComponentController != null
-        && MapComponentController != null && MenuComponentController != null
-                && BuyUnitsComponentController != null) {
+        && MapComponentController != null && MenuComponentController != null) {
             HeaderComponentController.setMainController(this);
             InformationComponentController.setMainController(this);
             MapComponentController.setMainController(this);
             MenuComponentController.setMainController(this);
-            BuyUnitsComponentController.setMainController(this);
         }
-        gameEngine.loadXML("C:\\Users\\Ran Tzur\\Desktop\\Projects\\קבצי בדיקה\\EX 1\\ex1-small.xml");
+        gameEngine.loadXML("C:\\Users\\Ran Tzur\\Desktop\\Projects\\קבצי בדיקה\\EX 2\\ex2-small.xml");
         createMap();
+        //BuyUnitsComponentController.show();
     }
+
 
     public void setBuyUnitsComponentController(BuyUnitsPopupController buyUnitsComponentController) {
         this.BuyUnitsComponentController = buyUnitsComponentController;
