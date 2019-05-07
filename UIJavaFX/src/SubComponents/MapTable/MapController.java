@@ -32,18 +32,7 @@ public class MapController {
         this.map = newMap;
     }
     public void createMap(){
-        //initialize scroll pane
-        //this.MapComponent = new ScrollPane();
-        //MapComponent.setMaxSize(500,400);
-        //MapComponent.setPrefSize(500,400);
-        //MapComponent.setId("MapComponent");
-
-        //initialize grid pane
-        //this.GridComponent = new GridPane();
-        //GridComponent.setMaxSize(497,397);
-        //GridComponent.setPrefSize(497,397);
-        //MapComponent.setContent(GridComponent);
-
+        
         for (int i = 0; i < map.getRows(); i++) {
             RowConstraints row = new RowConstraints(100);
             row.setVgrow(Priority.valueOf("SOMETIMES"));
