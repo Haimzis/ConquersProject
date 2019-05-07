@@ -34,12 +34,12 @@ public class MapController {
     }
     public void createMap(){
         for (int i = 0; i < map.getRows(); i++) {
-            RowConstraints row = new RowConstraints(100);
+            RowConstraints row = new RowConstraints(98);
             row.setVgrow(Priority.valueOf("SOMETIMES"));
             GridComponent.getRowConstraints().add(row);
         }
         for (int i = 0; i < map.getColumns(); i++) {
-            ColumnConstraints column = new ColumnConstraints(30);
+            ColumnConstraints column = new ColumnConstraints(146);
             column.setHgrow(Priority.valueOf("SOMETIMES"));
             GridComponent.getColumnConstraints().add(column);
         }
