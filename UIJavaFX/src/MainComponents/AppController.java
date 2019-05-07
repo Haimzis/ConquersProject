@@ -1,5 +1,7 @@
 package MainComponents;
 
+import DataContainersTypes.Board;
+import GameEngine.GameEngine;
 import SubComponents.Header.HeaderController;
 import SubComponents.InformationTable.InformationController;
 import SubComponents.MapTable.MapController;
@@ -9,39 +11,59 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 
 public class AppController {
-    @FXML private AnchorPane headerComponent;
-    @FXML private HeaderController headerComponentController;
-    @FXML private AnchorPane informationComponent;
-    @FXML private InformationController informationComponentController;
-    @FXML private ScrollPane mapComponent;
-    @FXML private MapController mapComponentController;
-    @FXML private AnchorPane menuComponent;
-    @FXML private MenuController menuComponentController;
+    @FXML private AnchorPane HeaderComponent;
+    @FXML private HeaderController HeaderComponentController;
+    @FXML private AnchorPane InformationComponent;
+    @FXML private InformationController InformationComponentController;
+    @FXML private ScrollPane MapComponent;
+    @FXML private MapController MapComponentController;
+    @FXML private AnchorPane MenuComponent;
+    @FXML private MenuController MenuComponentController;
+    private GameEngine gameEngine;
+
+    public GameEngine getGameEngine() {
+        return gameEngine;
+    }
+
+    public AppController() {
+        this.gameEngine = new GameEngine();
+    }
 
     @FXML
-    public void initialize( ) {
-        if (headerComponentController != null && informationComponentController != null
-        && mapComponentController != null && menuComponentController != null) {
-            headerComponentController.setMainController(this);
-            informationComponentController.setMainController(this);
-            mapComponentController.setMainController(this);
-            menuComponentController.setMainController(this);
+    public void initialize() {
+        if (HeaderComponentController != null && InformationComponentController != null
+        && MapComponentController != null && MenuComponentController != null) {
+            HeaderComponentController.setMainController(this);
+            InformationComponentController.setMainController(this);
+            MapComponentController.setMainController(this);
+            MenuComponentController.setMainController(this);
         }
+        gameEngine.loadXML("C:\\Users\\Haim Zisman\\Desktop\\ex1-small.xml");
+        createMap();
     }
 
     public void setHeaderComponentController(HeaderController headerComponentController) {
-        this.headerComponentController = headerComponentController;
+        this.HeaderComponentController = headerComponentController;
     }
 
     public void setInformationComponentController(InformationController informationComponentController) {
-        this.informationComponentController = informationComponentController;
+        this.InformationComponentController = informationComponentController;
     }
 
     public void setMapComponentController(MapController mapComponentController) {
-        this.mapComponentController = mapComponentController;
+        this.MapComponentController = mapComponentController;
     }
 
     public void setMenuComponentController(MenuController menuComponentController) {
-        this.menuComponentController = menuComponentController;
+        this.MenuComponentController = menuComponentController;
+    }
+    public void createMap(){
+        MapComponentController.setMap(
+                new Board(
+                        gameEngine.getDescriptor().getColumns(),
+                        gameEngine.getDescriptor().getRows(),
+                        gameEngine.getDescriptor().getTerritoryMap()
+                ));
+        MapComponentController.createMap();
     }
 }
