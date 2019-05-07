@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -19,7 +20,7 @@ public class MapController {
     @FXML private ScrollPane MapComponent;
     @FXML private GridPane GridComponent;
     private AppController mainController;
-    private Map<Integer, Button> territoriesButtons;
+    private Map<Integer, Button> territoriesButtons= new HashMap<>();
     private Board map;
 
 
@@ -63,13 +64,13 @@ public class MapController {
                 btnTerritory.setId("btn_Territory_" + counter);
                 btnTerritory.setText(
                         "ID:"+territory.getID()+
-                        "&#10;ThreshHold: "+territory.getArmyThreshold()+
+                        "&#10;ThreshHold: "+ territory.getArmyThreshold()+
                         "&#10;Production: "+ territory.getProfit());
                 btnTerritory.getStyleClass().add("btn_Territory");
                 btnTerritory.setPrefSize(146,98);
                 territoriesButtons.put(counter,btnTerritory);
-                GridComponent.getChildren().add(btnTerritory);
                 GridComponent.add(btnTerritory,j,i);
+                counter++;
             }
         }
     }
