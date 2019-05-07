@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -19,7 +20,7 @@ public class MapController {
     @FXML private ScrollPane MapComponent;
     @FXML private GridPane GridComponent;
     private AppController mainController;
-    private Map<Integer, Button> territoriesButtons;
+    private Map<Integer, Button> territoriesButtons= new HashMap<>();
     private Board map;
 
 
@@ -31,18 +32,7 @@ public class MapController {
         this.map = newMap;
     }
     public void createMap(){
-        //initialize scroll pane
-        //this.MapComponent = new ScrollPane();
-        //MapComponent.setMaxSize(500,400);
-        //MapComponent.setPrefSize(500,400);
-        //MapComponent.setId("MapComponent");
-
-        //initialize grid pane
-        //this.GridComponent = new GridPane();
-        //GridComponent.setMaxSize(497,397);
-        //GridComponent.setPrefSize(497,397);
-        //MapComponent.setContent(GridComponent);
-
+        
         for (int i = 0; i < map.getRows(); i++) {
             RowConstraints row = new RowConstraints(100);
             row.setVgrow(Priority.valueOf("SOMETIMES"));
@@ -63,13 +53,13 @@ public class MapController {
                 btnTerritory.setId("btn_Territory_" + counter);
                 btnTerritory.setText(
                         "ID:"+territory.getID()+
-                        "&#10;ThreshHold: "+territory.getArmyThreshold()+
+                        "&#10;ThreshHold: "+ territory.getArmyThreshold()+
                         "&#10;Production: "+ territory.getProfit());
                 btnTerritory.getStyleClass().add("btn_Territory");
                 btnTerritory.setPrefSize(146,98);
                 territoriesButtons.put(counter,btnTerritory);
-                GridComponent.getChildren().add(btnTerritory);
                 GridComponent.add(btnTerritory,j,i);
+                counter++;
             }
         }
     }
