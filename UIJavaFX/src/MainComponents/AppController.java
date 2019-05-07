@@ -6,6 +6,7 @@ import SubComponents.Header.HeaderController;
 import SubComponents.InformationTable.InformationController;
 import SubComponents.MapTable.MapController;
 import SubComponents.MenuTable.MenuController;
+import SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
@@ -19,6 +20,7 @@ public class AppController {
     @FXML private MapController MapComponentController;
     @FXML private AnchorPane MenuComponent;
     @FXML private MenuController MenuComponentController;
+    @FXML private BuyUnitsPopupController BuyUnitsComponentController;
     private GameEngine gameEngine;
 
     public GameEngine getGameEngine() {
@@ -37,23 +39,24 @@ public class AppController {
             InformationComponentController.setMainController(this);
             MapComponentController.setMainController(this);
             MenuComponentController.setMainController(this);
+            BuyUnitsComponentController.setMainController(this);
         }
         gameEngine.loadXML("C:\\Users\\Haim Zisman\\Desktop\\ex1-small.xml");
-        createMap();
+        //createMap();
     }
 
+    public void setBuyUnitsComponentController(BuyUnitsPopupController buyUnitsComponentController) {
+        this.BuyUnitsComponentController = buyUnitsComponentController;
+    }
     public void setHeaderComponentController(HeaderController headerComponentController) {
         this.HeaderComponentController = headerComponentController;
     }
-
     public void setInformationComponentController(InformationController informationComponentController) {
         this.InformationComponentController = informationComponentController;
     }
-
     public void setMapComponentController(MapController mapComponentController) {
         this.MapComponentController = mapComponentController;
     }
-
     public void setMenuComponentController(MenuController menuComponentController) {
         this.MenuComponentController = menuComponentController;
     }
