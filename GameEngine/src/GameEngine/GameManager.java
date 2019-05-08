@@ -18,6 +18,7 @@ public class GameManager implements Serializable {
     private Army   selectedArmyForce=null;
     private Queue<Player> playersTurns;
     private Territory selectedTerritoryByPlayer=null;
+    private Stack<RoundHistory> replayStack = new Stack<>();  //Bonus #2
 
     public GameManager(GameDescriptor gameDes) {
         ID = ++gamesIDCounter;
@@ -71,6 +72,34 @@ public class GameManager implements Serializable {
     public void rehabilitateAllArmy() {
         getCurrentPlayerTerritories().parallelStream()
             .forEach(Territory::rehabilitateConquerArmy);
+    }
+    //Bonus #2
+    public void selectedPlayerRetirement(){
+        List<Integer> mapsToClear = currentPlayerTurn.getTerritoriesID();
+        roundsHistory.forEach(roundHistory -> {
+            mapsToClear.forEach(TerritoryID-> roundHistory.getMapHistory().get(TerritoryID).eliminateThisWeakArmy());
+            roundHistory.getPlayerStatsHistory().remove(currentPlayerTurn);
+        });
+        mapsToClear.forEach(TerritoryID->gameDescriptor.getTerritoryMap().get(TerritoryID).eliminateThisWeakArmy());
+        gameDescriptor.getPlayersList().remove(currentPlayerTurn);
+    }
+    //Bonus #2
+    public void prevReplay(){
+        if(!roundsHistory.isEmpty())
+            replayStack.push(roundsHistory.pop());
+
+    }
+    //Bonus #2
+    public void nextReplay(){
+        if(!replayStack.isEmpty())
+            roundsHistory.push(replayStack.pop());
+    }
+    //Bonus #2
+    public RoundHistory peekHistory(){
+        if(!replayStack.isEmpty()) {
+            return replayStack.peek();
+        }
+        return null;
     }
 
     //**************************//
@@ -196,7 +225,7 @@ public class GameManager implements Serializable {
     }
 
     //**************************//
-    /*      Get InformationTable     */
+    /*   Get InformationTable   */
     //**************************//
 
     public int getFundsBeforeProduction() {
