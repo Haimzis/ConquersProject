@@ -21,9 +21,9 @@ public class UIConsole {
         this.engine = new GameEngine();
     }
 
-    //**************//
+    //*******************//
     /*  Main MenuTable  */
-    //*************//
+    //*******************//
     public void showMainMenu() {
         gameStarted = false;
         int selection;
