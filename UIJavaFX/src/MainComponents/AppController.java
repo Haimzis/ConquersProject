@@ -9,6 +9,7 @@ import SubComponents.MenuTable.MenuController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class AppController {
     @FXML private AnchorPane HeaderComponent;
@@ -20,13 +21,10 @@ public class AppController {
     @FXML private AnchorPane MenuComponent;
     @FXML private MenuController MenuComponentController;
     private GameEngine gameEngine;
+    private Stage primaryStage;
 
-    public GameEngine getGameEngine() {
-        return gameEngine;
-    }
-
-    public AppController() {
-        this.gameEngine = new GameEngine();
+    public void setGameEngine(GameEngine gameEngine) {
+        this.gameEngine = gameEngine;
     }
 
     @FXML
@@ -38,10 +36,8 @@ public class AppController {
             MapComponentController.setMainController(this);
             MenuComponentController.setMainController(this);
         }
-        gameEngine.loadXML("C:/Users/Haim Zisman/Desktop/Check files/ex1-small.xml");
         //initialize CSS path
         MapComponent.getStylesheets().add(getClass().getResource("/SubComponents/MapTable/Map.css").toExternalForm());
-        createMap();
     }
 
     public void setHeaderComponentController(HeaderController headerComponentController) {

@@ -12,15 +12,15 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane fx:id="WelcomeScreenComponent" alignment="CENTER" columnHalignment="CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WelcomeScreen.WelcomeScreenController">
+<FlowPane fx:id="WelcomeScreenComponent" alignment="CENTER" columnHalignment="CENTER" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WelcomeScreen.WelcomeScreenController">
    <children>
       <GridPane prefHeight="414.0" prefWidth="384.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="140.20001792907715" minWidth="10.0" prefWidth="31.0000244140625" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="140.20001792907715" minWidth="10.0" prefWidth="84.5999755859375" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="312.2000141143799" minWidth="10.0" prefWidth="160.80002441406248" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.5999755859375" minWidth="10.0" prefWidth="67.99997558593748" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.5999755859375" minWidth="10.0" prefWidth="41.000024414062466" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.5999755859375" minWidth="10.0" prefWidth="76.79998779296875" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.5999755859375" minWidth="10.0" prefWidth="32.80001220703127" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints maxHeight="148.8" minHeight="10.0" prefHeight="21.80001335144044" vgrow="SOMETIMES" />
@@ -61,7 +61,7 @@
             <Button id="btn_loadgame" fx:id="btn_loadGame" mnemonicParsing="false" onAction="#setBtn_loadGameAction" prefHeight="78.0" prefWidth="250.0" stylesheets="@WelcomeScreen.css" text="Load Game" GridPane.columnIndex="2" GridPane.rowIndex="6" />
             <TextField id="tbx_path" fx:id="tbx_path" stylesheets="@WelcomeScreen.css" text="Choose File...." GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
             <Button id="btn_choosepath" fx:id="btn_choosePath" mnemonicParsing="false" onAction="#btn_choosePathAction" prefHeight="26.0" prefWidth="29.0" stylesheets="@WelcomeScreen.css" text="..." GridPane.columnIndex="4" GridPane.rowIndex="3" />
-            <Label id="lbl_message" fx:id="lbl_message" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" prefHeight="48.0" prefWidth="162.0" stylesheets="@WelcomeScreen.css" text="Label" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Label id="lbl_message" fx:id="lbl_message" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" opacity="0.0" prefHeight="44.0" prefWidth="345.0" stylesheets="@WelcomeScreen.css" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
