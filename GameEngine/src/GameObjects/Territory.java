@@ -16,8 +16,7 @@ public class Territory implements Serializable {
         this.conquerArmyForce= null;
         this.conquer = null;
     }
-    public Territory(Territory territory)
-    {
+    public Territory(Territory territory) {
         this.ID= territory.getID();
         this.armyThreshold= territory.getArmyThreshold();
         this.profit = territory.getProfit();
