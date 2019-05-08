@@ -24,12 +24,6 @@ public class BuyUnitsPopupController  {
     private boolean isUnitSelected=false;
 
     public void setMainController(AppController mainController) { this.mainController = mainController; }
-    private void setListenerForPressOnMenuItem() {
-        List<MenuItem> unitsAvailableToBuy = unitChoices.getItems();
-        for(MenuItem unit : unitsAvailableToBuy) {
-
-        }
-    }
     public void buildUnitDropdownList() {
         for(String key : mainController.getGameEngine().getDescriptor().getUnitMap().keySet()) {
             MenuItem unitToShowItem = new MenuItem(key);
