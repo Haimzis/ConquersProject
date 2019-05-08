@@ -6,10 +6,15 @@ import SubComponents.Header.HeaderController;
 import SubComponents.InformationTable.InformationController;
 import SubComponents.MapTable.MapController;
 import SubComponents.MenuTable.MenuController;
+import SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class AppController {
     @FXML private AnchorPane HeaderComponent;
@@ -20,13 +25,13 @@ public class AppController {
     @FXML private MapController MapComponentController;
     @FXML private AnchorPane MenuComponent;
     @FXML private MenuController MenuComponentController;
+    private BuyUnitsPopupController BuyUnitsComponentController;
+    private GameEngine gameEngine;
+    private Stage primaryStage;
 
     public GameEngine getGameEngine() {
         return gameEngine;
     }
-
-    private GameEngine gameEngine;
-    private Stage primaryStage;
 
     public void setGameEngine(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
@@ -43,6 +48,8 @@ public class AppController {
         }
         //initialize CSS path
         MapComponent.getStylesheets().add(getClass().getResource("/SubComponents/MapTable/Map.css").toExternalForm());
+        initPopups();
+        showBuyUnitsPopup();
     }
 
     public void setHeaderComponentController(HeaderController headerComponentController) {
@@ -68,5 +75,23 @@ public class AppController {
                         gameEngine.getDescriptor().getTerritoryMap()
                 ));
         MapComponentController.createMap();
+    }
+    private void initPopups() {
+        BuyUnitsComponentController = new BuyUnitsPopupController();
+        BuyUnitsComponentController.setMainController(this);
+    }
+    public void showBuyUnitsPopup() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/BuyUnitsPopup/buyUnitsPopupFXML.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 242, 223);
+            Stage stage = new Stage();
+            stage.setTitle("New Window");
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
