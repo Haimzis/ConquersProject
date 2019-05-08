@@ -27,12 +27,14 @@ public class AppController {
     @FXML private MenuController MenuComponentController;
     private BuyUnitsPopupController BuyUnitsComponentController;
     private GameEngine gameEngine;
-    private Stage primaryStage;
 
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+    private Stage primaryStage;
     public GameEngine getGameEngine() {
         return gameEngine;
     }
-
     public void setGameEngine(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
     }
@@ -48,8 +50,6 @@ public class AppController {
         }
         //initialize CSS path
         MapComponent.getStylesheets().add(getClass().getResource("/SubComponents/MapTable/Map.css").toExternalForm());
-        initPopups();
-        showBuyUnitsPopup();
     }
 
     public void setHeaderComponentController(HeaderController headerComponentController) {
@@ -76,22 +76,16 @@ public class AppController {
                 ));
         MapComponentController.createMap();
     }
-    private void initPopups() {
-        BuyUnitsComponentController = new BuyUnitsPopupController();
-        BuyUnitsComponentController.setMainController(this);
+
+    public void startGame() {
+        gameEngine.newGame();
     }
-    public void showBuyUnitsPopup() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/BuyUnitsPopup/buyUnitsPopupFXML.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 242, 223);
-            Stage stage = new Stage();
-            stage.setTitle("New Window");
-            stage.setScene(scene);
-            stage.show();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+
+    public void startRound() {
+        GameEngine.gameManager.startOfRoundUpdates();
+    }
+
+    public void nextPlayer() {
+        GameEngine.gameManager.nextPlayerInTurn();
     }
 }
