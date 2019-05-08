@@ -20,6 +20,11 @@ public class AppController {
     @FXML private MapController MapComponentController;
     @FXML private AnchorPane MenuComponent;
     @FXML private MenuController MenuComponentController;
+
+    public GameEngine getGameEngine() {
+        return gameEngine;
+    }
+
     private GameEngine gameEngine;
     private Stage primaryStage;
 
