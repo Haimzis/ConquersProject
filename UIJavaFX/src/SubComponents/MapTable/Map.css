@@ -1,5 +1,7 @@
-.button {
+.btn_Territory {
     -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-font-family: "System";
+    -fx-background-size: cover, auto;
+    /*-fx-background-image:url("/Resources/img_Territory.jpg") ;*/
 }

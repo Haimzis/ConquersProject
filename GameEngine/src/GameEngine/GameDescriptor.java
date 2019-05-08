@@ -86,10 +86,10 @@ public class GameDescriptor implements Serializable {
     private List<Player> loadPlayers(Generated.GameDescriptor descriptor) {
         List<Player> playersList = new ArrayList<>();
         if(descriptor.getPlayers() == null) {
-                Player playerOne = new Player(1 , "Ran", initialFunds);
-                Player playerTwo = new Player(2 , "Haim", initialFunds);
-                playersList.add(playerOne);
-                playersList.add(playerTwo);
+            Player playerOne = new Player(1 , "Ran", initialFunds);
+            Player playerTwo = new Player(2 , "Haim", initialFunds);
+            playersList.add(playerOne);
+            playersList.add(playerTwo);
         } else {
             List<Generated.Player> players = descriptor.getPlayers().getPlayer();
             for(Generated.Player player : players) {

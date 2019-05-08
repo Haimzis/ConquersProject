@@ -20,7 +20,7 @@ public class GameEngine {
     public void setDescriptor(GameDescriptor descriptor) {
         this.descriptor = descriptor;
     }
-    public void loadXML(String XMLPath) {
+    public Boolean loadXML(String XMLPath) {
         GameDescriptor gameDescriptor = null;
         ERROR validate = validateXML(XMLPath);
         switch (validate) {
@@ -36,6 +36,7 @@ public class GameEngine {
         if(gameDescriptor != null) // Means everything is loaded and in place to begin the game
             flag = 1; //GD has been loaded successfully
         this.descriptor = gameDescriptor;
+        return flag == 1;
     }
     private Path getPath(String xmlPath) {
         return Paths.get(xmlPath);

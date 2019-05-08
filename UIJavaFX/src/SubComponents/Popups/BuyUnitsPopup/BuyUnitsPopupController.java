@@ -17,7 +17,10 @@ public class BuyUnitsPopupController  {
 
     public void setMainController(AppController mainController) { this.mainController = mainController; }
 
-
+    @FXML
+    public void initialize(){
+        buildUnitDropdownList();
+    }
     private void setListenerForPressOnMenuItem() {
         List<MenuItem> unitsAvailableToBuy = unitChoices.getItems();
         for(MenuItem unit : unitsAvailableToBuy) {
@@ -25,8 +28,9 @@ public class BuyUnitsPopupController  {
         }
     }
 
+
     private void  buildUnitDropdownList() {
-        for(String key : mainController.getGameEngine().getDescriptor().getUnitMap().keySet()) {
+        for (String key : mainController.getGameEngine().getDescriptor().getUnitMap().keySet()) {
             MenuItem unitToShowItem = new MenuItem(key);
             unitChoices.getItems().add(unitToShowItem);
         }

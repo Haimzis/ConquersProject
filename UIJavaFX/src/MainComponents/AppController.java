@@ -9,14 +9,12 @@ import SubComponents.MenuTable.MenuController;
 import SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class AppController {
     @FXML private AnchorPane HeaderComponent;
@@ -29,13 +27,14 @@ public class AppController {
     @FXML private MenuController MenuComponentController;
     private BuyUnitsPopupController BuyUnitsComponentController;
     private GameEngine gameEngine;
+    private Stage primaryStage;
 
     public GameEngine getGameEngine() {
         return gameEngine;
     }
 
-    public AppController() {
-        this.gameEngine = new GameEngine();
+    public void setGameEngine(GameEngine gameEngine) {
+        this.gameEngine = gameEngine;
     }
 
     @FXML
@@ -45,31 +44,26 @@ public class AppController {
             HeaderComponentController.setMainController(this);
             InformationComponentController.setMainController(this);
             MapComponentController.setMainController(this);
+            MenuComponentController.setMainController(this);
         }
-        gameEngine.loadXML("C:\\Users\\Ran Tzur\\Desktop\\Projects\\קבצי בדיקה\\EX 2\\ex2-small.xml");
+        //initialize CSS path
+        MapComponent.getStylesheets().add(getClass().getResource("/SubComponents/MapTable/Map.css").toExternalForm());
         initPopups();
-        createMap();
         showBuyUnitsPopup();
     }
 
-    private void initPopups() {
-        BuyUnitsComponentController = new BuyUnitsPopupController();
-        BuyUnitsComponentController.setMainController(this);
-    }
-
-
-    public void setBuyUnitsComponentController(BuyUnitsPopupController buyUnitsComponentController) {
-        this.BuyUnitsComponentController = buyUnitsComponentController;
-    }
     public void setHeaderComponentController(HeaderController headerComponentController) {
         this.HeaderComponentController = headerComponentController;
     }
+
     public void setInformationComponentController(InformationController informationComponentController) {
         this.InformationComponentController = informationComponentController;
     }
+
     public void setMapComponentController(MapController mapComponentController) {
         this.MapComponentController = mapComponentController;
     }
+
     public void setMenuComponentController(MenuController menuComponentController) {
         this.MenuComponentController = menuComponentController;
     }
@@ -82,7 +76,10 @@ public class AppController {
                 ));
         MapComponentController.createMap();
     }
-
+    private void initPopups() {
+        BuyUnitsComponentController = new BuyUnitsPopupController();
+        BuyUnitsComponentController.setMainController(this);
+    }
     public void showBuyUnitsPopup() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
