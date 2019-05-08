@@ -25,13 +25,17 @@ public class AppController {
     @FXML private MapController MapComponentController;
     @FXML private AnchorPane MenuComponent;
     @FXML private MenuController MenuComponentController;
-    private BuyUnitsPopupController BuyUnitsComponentController;
     private GameEngine gameEngine;
 
     public Stage getPrimaryStage() {
         return primaryStage;
     }
     private Stage primaryStage;
+
+    public MenuController getMenuComponentController() {
+        return MenuComponentController;
+    }
+
     public GameEngine getGameEngine() {
         return gameEngine;
     }

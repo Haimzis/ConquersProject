@@ -24,7 +24,7 @@ public class MenuController {
     public void buttonBuyUnitsAction(){
         showBuyUnitsPopup();
     }
-    private void showBuyUnitsPopup() {
+    public void showBuyUnitsPopup() {
         try {
             //Load FXML
             FXMLLoader fxmlLoader = new FXMLLoader();
