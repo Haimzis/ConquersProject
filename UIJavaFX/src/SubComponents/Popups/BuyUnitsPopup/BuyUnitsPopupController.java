@@ -1,16 +1,12 @@
 package SubComponents.Popups.BuyUnitsPopup;
 
 import MainComponents.AppController;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 public class BuyUnitsPopupController  {
