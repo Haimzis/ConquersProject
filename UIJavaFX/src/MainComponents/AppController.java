@@ -8,8 +8,15 @@ import SubComponents.MapTable.MapController;
 import SubComponents.MenuTable.MenuController;
 import SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.net.URL;
 
 public class AppController {
     @FXML private AnchorPane HeaderComponent;
@@ -33,18 +40,21 @@ public class AppController {
 
     @FXML
     public void initialize() {
-        BuyUnitsComponentController = new BuyUnitsPopupController();
-        BuyUnitsComponentController.setMainController(this);
         if (HeaderComponentController != null && InformationComponentController != null
         && MapComponentController != null && MenuComponentController != null) {
             HeaderComponentController.setMainController(this);
             InformationComponentController.setMainController(this);
             MapComponentController.setMainController(this);
-            MenuComponentController.setMainController(this);
         }
         gameEngine.loadXML("C:\\Users\\Ran Tzur\\Desktop\\Projects\\קבצי בדיקה\\EX 2\\ex2-small.xml");
+        initPopups();
         createMap();
-        //BuyUnitsComponentController.show();
+        showBuyUnitsPopup();
+    }
+
+    private void initPopups() {
+        BuyUnitsComponentController = new BuyUnitsPopupController();
+        BuyUnitsComponentController.setMainController(this);
     }
 
 
@@ -71,5 +81,20 @@ public class AppController {
                         gameEngine.getDescriptor().getTerritoryMap()
                 ));
         MapComponentController.createMap();
+    }
+
+    public void showBuyUnitsPopup() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/BuyUnitsPopup/buyUnitsPopupFXML.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 242, 223);
+            Stage stage = new Stage();
+            stage.setTitle("New Window");
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -168,6 +168,7 @@ public class GameDescriptor implements Serializable {
     //*********************//
     /*     Validators     */
     //*********************//
+    //TODO: Not good , only checks if adjacent territories in list have the same ID.
     private boolean validateTerritories(Generated.GameDescriptor descriptor) {
         for(int i = 0; i < descriptor.getGame().getTerritories().getTeritory().size() - 1 ; i++) { //Checking double ID
             if(descriptor.getGame().getTerritories().getTeritory().get(i).getId().equals(descriptor.getGame().getTerritories().getTeritory().get(i + 1).getId()))  {
@@ -203,7 +204,7 @@ public class GameDescriptor implements Serializable {
         List<Byte> sortedRanks = new ArrayList<>(unitsRankSet);
         Collections.sort(sortedRanks);
         for(int i = 0 ; i < sortedRanks.size() - 1 ; i++) {
-            if(sortedRanks.get(i) != sortedRanks.get(i+1)+1)
+            if(sortedRanks.get(i).intValue()+1 != (sortedRanks.get(i+1).intValue()))
                 return false;
         }
         return unitsTypeSet.size() == descriptor.getGame().getArmy().getUnit().size()
