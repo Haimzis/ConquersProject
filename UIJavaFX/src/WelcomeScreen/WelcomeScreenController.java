@@ -2,7 +2,6 @@ package WelcomeScreen;
 
 import GameEngine.GameEngine;
 import MainComponents.AppController;
-import Resources.ResourceConstants;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -12,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -105,12 +103,16 @@ public class WelcomeScreenController {
             primaryStage.setHeight(600);
             primaryStage.setWidth(900);
             primaryStage.setScene(scene);
+
             //wire up game engine to appController and create map
             AppController appController = fxmlLoader.getController();
             appController.setGameEngine(gameEngine);
             appController.createMap();
-
+            appController.startGame();
+            appController.startRound();
+            appController.nextPlayer();
             primaryStage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
