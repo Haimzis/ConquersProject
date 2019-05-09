@@ -6,9 +6,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
+
 import java.io.IOException;
 
 public class MenuController {
@@ -20,11 +21,7 @@ public class MenuController {
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
     }
-    @FXML
-    public void buttonBuyUnitsAction(){
-        showBuyUnitsPopup();
-    }
-    public void showBuyUnitsPopup() {
+    public void showBuyUnitsPopup(int whoCalled) {
         try {
             //Load FXML
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -38,7 +35,7 @@ public class MenuController {
             //Wire up the controller and initialize game engine
             BuyUnitsPopupController buyUnitsComponentController= fxmlLoader.getController();
             buyUnitsComponentController.setMainController(mainController);
-            buyUnitsComponentController.buildUnitDropdownList();
+            buyUnitsComponentController.buildUnitDropdownList(whoCalled);
             stage.show();
         }
         catch (IOException e) {

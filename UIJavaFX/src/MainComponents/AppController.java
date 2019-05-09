@@ -6,9 +6,10 @@ import SubComponents.Header.HeaderController;
 import SubComponents.InformationTable.InformationController;
 import SubComponents.MapTable.MapController;
 import SubComponents.MenuTable.MenuController;
-import SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController;
+import SubComponents.Popups.OwnTerrainPopup.OwnTerrainController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
@@ -91,5 +92,30 @@ public class AppController {
 
     public void nextPlayer() {
         GameEngine.gameManager.nextPlayerInTurn();
+    }
+
+    public void showOwnTerritoryPopup() {
+        try {
+            //Load FXML
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/OwnTerrainPopup/OwnTerrainPopUpFXML.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root, 242, 223);
+            Stage stage = new Stage();
+            stage.setTitle("Own Territory");
+            stage.setScene(scene);
+
+            //Wire up the controller and initialize game engine
+            OwnTerrainController ownTerrainController = fxmlLoader.getController();
+            ownTerrainController.setMainController(this);
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showAttackPopup() {
+
     }
 }

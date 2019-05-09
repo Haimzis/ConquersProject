@@ -3,8 +3,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="MenuComponent" prefHeight="475" prefWidth="150" style="-fx-background-color: yellow;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.MenuTable.MenuController">
+<AnchorPane fx:id="MenuComponent" prefHeight="475" prefWidth="150" style="-fx-background-color: yellow;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.MenuTable.MenuController">
    <children>
-      <Button id="btn_buyUnits" fx:id="btn_BuyUnits" layoutX="28.0" layoutY="120.0" mnemonicParsing="false" onAction="#buttonBuyUnitsAction" prefHeight="23.0" prefWidth="79.0" text="buy units" />
+      <Button id="btn_buyUnits" fx:id="btn_BuyUnits" layoutX="28.0" layoutY="120.0" mnemonicParsing="false"  prefHeight="23.0" prefWidth="79.0" text="buy units" />
+      <Button layoutX="24.0" layoutY="166.0" mnemonicParsing="false"  text="Own territory" />
    </children>
 </AnchorPane>

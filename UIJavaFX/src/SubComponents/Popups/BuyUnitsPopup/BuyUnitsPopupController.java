@@ -14,9 +14,11 @@ public class BuyUnitsPopupController  {
     @FXML private Label errorLabel;
     private AppController mainController;
     private boolean isUnitSelected=false;
+    private int whoInitThisPopup;
 
     public void setMainController(AppController mainController) { this.mainController = mainController; }
-    public void buildUnitDropdownList() {
+    public void buildUnitDropdownList(int whoCalled) {
+        this.whoInitThisPopup = whoCalled;
         for(String key : mainController.getGameEngine().getDescriptor().getUnitMap().keySet()) {
             MenuItem unitToShowItem = new MenuItem(key);
             unitToShowItem.setOnAction(event -> {
@@ -37,29 +39,43 @@ public class BuyUnitsPopupController  {
                         GameEngine.gameManager.buyUnits(
                                 mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()),
                                 amount);
+                        showLabel("Success!");
+                        workAccordingToWhoCalled();
                     }
                     else {
                         //do some exception : amount is not not enough
-                        showError("Not enough funds");
+                        showLabel("Not enough funds");
                     }
                 }
                 else {
                     //do some exception : amount is negative
-                    showError("Invalid amount , please enter positive number.");
+                    showLabel("Invalid amount , please enter positive number.");
                 }
             }
             else{
                 //do some exception : amount isn't number
-                showError("Please enter an valid number");
+                showLabel("Please enter an valid number");
             }
         }
         else{
             //do some exception : unit isn't selected
-            showError("Please select a unit to purchase");
+            showLabel("Please select a unit to purchase");
         }
     }
 
-    private void showError(String s) {
+    private void workAccordingToWhoCalled() {
+        switch(whoInitThisPopup) {
+            case 1: //enforce
+                GameEngine.gameManager.transformSelectedArmyForceToSelectedTerritory();
+                showLabel("Enforced Territory");
+                break;
+            case 2:
+                break;
+
+        }
+    }
+
+    private void showLabel(String s) {
         errorLabel.setText(s);
         errorLabel.setVisible(true);
     }

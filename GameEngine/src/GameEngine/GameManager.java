@@ -41,6 +41,7 @@ public class GameManager implements Serializable {
     public void setSelectedTerritoryForTurn(Territory selectedTerritory) {
         selectedTerritoryByPlayer = selectedTerritory;
     }
+    public Territory getSelectedTerritoryByPlayer() { return selectedTerritoryByPlayer; }
     //retrieve amount of required units, create them in selectedArmyForce,and decrement the price from player
     public void buyUnits(Unit unit, int amount) {
         int unitPrice;
