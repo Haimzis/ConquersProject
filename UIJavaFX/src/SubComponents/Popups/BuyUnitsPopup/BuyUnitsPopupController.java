@@ -14,11 +14,9 @@ public class BuyUnitsPopupController  {
     @FXML private Label errorLabel;
     private AppController mainController;
     private boolean isUnitSelected=false;
-    private int whoInitThisPopup;
 
     public void setMainController(AppController mainController) { this.mainController = mainController; }
-    public void buildUnitDropdownList(int whoCalled) {
-        this.whoInitThisPopup = whoCalled;
+    public void buildUnitDropdownList() {
         for(String key : mainController.getGameEngine().getDescriptor().getUnitMap().keySet()) {
             MenuItem unitToShowItem = new MenuItem(key);
             unitToShowItem.setOnAction(event -> {
@@ -40,7 +38,6 @@ public class BuyUnitsPopupController  {
                                 mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()),
                                 amount);
                         showLabel("Success!");
-                        workAccordingToWhoCalled();
                     }
                     else {
                         //do some exception : amount is not not enough
@@ -60,18 +57,6 @@ public class BuyUnitsPopupController  {
         else{
             //do some exception : unit isn't selected
             showLabel("Please select a unit to purchase");
-        }
-    }
-
-    private void workAccordingToWhoCalled() {
-        switch(whoInitThisPopup) {
-            case 1: //enforce
-                GameEngine.gameManager.transformSelectedArmyForceToSelectedTerritory();
-                showLabel("Enforced Territory");
-                break;
-            case 2:
-                break;
-
         }
     }
 

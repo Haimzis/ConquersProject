@@ -74,36 +74,6 @@ public class MapController {
     }
 
     private void onTerritoryPressListener(Territory territory) {
-        GameEngine.gameManager.setSelectedTerritoryForTurn(territory);
-        if(!GameEngine.gameManager.getCurrentPlayerTerritories().isEmpty()) {
-            if(GameEngine.gameManager.isTerritoryBelongsCurrentPlayer()) {
-                //Own territory popup.
-                mainController.showOwnTerritoryPopup();
-            }
-            else if(GameEngine.gameManager.isConquered()) {
-                if(GameEngine.gameManager.isTargetTerritoryValid()) {
-                    mainController.showAttackPopup();
-                }
-                else { //Not valid conquered
-
-                }
-            }
-            else { //neutral territory
-                if(GameEngine.gameManager.isTargetTerritoryValid()) {
-                    if(GameEngine.gameManager.conquerNeutralTerritory()) { //Success
-
-                    }
-                    else { //Failed to get neutral territory
-
-                    }
-                }
-                else { // Not valid neutral
-
-                }
-            }
-        }
-        else { //Player has  no territories
-            mainController.showOwnTerritoryPopup(); // Just for testing
-        }
+       mainController.actOnTerritory(territory);
     }
 }

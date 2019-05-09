@@ -15,13 +15,14 @@ import java.util.List;
 public class InformationController {
     private static int tabCount = 0;
     public AnchorPane InformationComponent;
+    private AppController mainController;
+    @FXML private Label currentRound;
+    @FXML private Label totalRounds;
 
     @FXML
     private TabPane tabPane;
 
-    public void setMainController(AppController mainController) {
-
-    }
+    public void setMainController(AppController mainController) { this.mainController = mainController; }
 
 
    /* public void addTab(String playerName) {

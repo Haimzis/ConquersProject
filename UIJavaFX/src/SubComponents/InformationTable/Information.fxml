@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -11,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="InformationComponent" prefHeight="586.0" prefWidth="236.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.InformationTable.InformationController">
+<AnchorPane fx:id="InformationComponent" prefHeight="586.0" prefWidth="236.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.InformationTable.InformationController">
    <children>
       <GridPane prefHeight="600" prefWidth="250" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -80,8 +79,8 @@
                   <Font size="15.0" />
                </font>
             </Text>
-            <TextField GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <TextField prefHeight="26.0" prefWidth="29.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Label fx:id="currentRound" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Label fx:id="totalRounds" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>

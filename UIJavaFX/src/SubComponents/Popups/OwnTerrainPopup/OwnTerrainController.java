@@ -33,7 +33,7 @@ public class OwnTerrainController {
 
     @FXML
     public void enforceArmyOnTerritory() {
-        mainController.getMenuComponentController().showBuyUnitsPopup(1);
+        mainController.showBuyUnitsPopup();
         closePopup();
 
     }
