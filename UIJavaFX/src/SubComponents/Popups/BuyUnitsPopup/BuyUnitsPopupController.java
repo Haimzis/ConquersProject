@@ -2,20 +2,23 @@ package SubComponents.Popups.BuyUnitsPopup;
 
 import GameEngine.GameEngine;
 import MainComponents.AppController;
+import SubComponents.Popups.ActionPopupController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 
-public class BuyUnitsPopupController  {
+public class BuyUnitsPopupController {
     @FXML private MenuButton unitChoices;
     @FXML private TextField amountToBuy;
     @FXML private Label errorLabel;
     private AppController mainController;
     private boolean isUnitSelected=false;
+    private ActionPopupController parentPopupController;
 
     public void setMainController(AppController mainController) { this.mainController = mainController; }
+
     public void buildUnitDropdownList() {
         for(String key : mainController.getGameEngine().getDescriptor().getUnitMap().keySet()) {
             MenuItem unitToShowItem = new MenuItem(key);
@@ -64,4 +67,5 @@ public class BuyUnitsPopupController  {
         errorLabel.setText(s);
         errorLabel.setVisible(true);
     }
+
 }

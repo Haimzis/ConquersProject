@@ -1,7 +1,10 @@
 package SubComponents.Popups.AttackPopup;
 
-import javafx.fxml.FXML;
+import SubComponents.Popups.ActionPopupController;
 
-public class AttackPopupController {
+public class AttackPopupController implements ActionPopupController {
+    @Override
+    public void startAction() {
 
+    }
 }
