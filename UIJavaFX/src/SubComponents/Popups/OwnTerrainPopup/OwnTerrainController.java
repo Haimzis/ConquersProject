@@ -34,7 +34,7 @@ public class OwnTerrainController implements ActionPopupController {
 
     @FXML
     public void enforceArmyOnTerritory() {
-        mainController.showBuyUnitsPopup();
+        mainController.showBuyUnitsPopup(this);
         closePopup();
 
     }

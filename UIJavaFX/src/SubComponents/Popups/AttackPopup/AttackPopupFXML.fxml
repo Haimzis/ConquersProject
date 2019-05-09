@@ -26,8 +26,8 @@
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="wellTimedAttackSelected" layoutX="48.0" layoutY="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Well Timed Attack" />
-                        <Button fx:id="calculatedRiskAttack" layoutX="47.0" layoutY="74.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Calculated Risk Attack">
+                        <Button fx:id="wellTimed_btn" layoutX="48.0" layoutY="25.0" mnemonicParsing="false" onAction="#wellTimedAttackListener" prefHeight="25.0" prefWidth="125.0" text="Well Timed Attack" />
+                        <Button fx:id="calculatedRisk_btn" layoutX="47.0" layoutY="74.0" mnemonicParsing="false" onAction="#calculatedRiskAttackListener" prefHeight="25.0" prefWidth="125.0" text="Calculated Risk Attack">
                            <font>
                               <Font size="11.0" />
                            </font></Button>

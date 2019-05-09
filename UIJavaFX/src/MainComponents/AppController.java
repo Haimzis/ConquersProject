@@ -7,6 +7,8 @@ import SubComponents.Header.HeaderController;
 import SubComponents.InformationTable.InformationController;
 import SubComponents.MapTable.MapController;
 import SubComponents.MenuTable.MenuController;
+import SubComponents.Popups.ActionPopupController;
+import SubComponents.Popups.AttackPopup.AttackPopupController;
 import SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController;
 import SubComponents.Popups.OwnTerrainPopup.OwnTerrainController;
 import javafx.fxml.FXML;
@@ -119,10 +121,33 @@ public class AppController {
     }
 
     public void showAttackPopup() {
+        if(GameEngine.gameManager.isConquered()) {
+            try {
+                //Load FXML
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/AttackPopup/AttackPopupFXML.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root, 242, 223);
+                Stage stage = new Stage();
+                stage.setTitle("Attack");
+                stage.setScene(scene);
 
+                //Wire up the controller and initialize game engine
+                AttackPopupController attackPopupController = fxmlLoader.getController();
+                attackPopupController.setMainController(this);
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else { //Player has no territory and attacks neutral territory.
+            showBuyUnitsPopup(new AttackPopupController());
+        }
     }
 
-    public void showBuyUnitsPopup() {
+
+    public void showBuyUnitsPopup(ActionPopupController parent) {
         try {
             //Load FXML
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -136,6 +161,7 @@ public class AppController {
             //Wire up the controller and initialize game engine
             BuyUnitsPopupController buyUnitsComponentController= fxmlLoader.getController();
             buyUnitsComponentController.setMainController(this);
+            buyUnitsComponentController.setParentController(parent);
             buyUnitsComponentController.buildUnitDropdownList();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();

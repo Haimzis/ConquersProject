@@ -4,19 +4,20 @@ import GameEngine.GameEngine;
 import MainComponents.AppController;
 import SubComponents.Popups.ActionPopupController;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 public class BuyUnitsPopupController {
     @FXML private MenuButton unitChoices;
     @FXML private TextField amountToBuy;
     @FXML private Label errorLabel;
+    @FXML private Button donebtn;
+
     private AppController mainController;
     private boolean isUnitSelected=false;
     private ActionPopupController parentPopupController;
 
+    public void setParentController(ActionPopupController parent) {this.parentPopupController = parent; }
     public void setMainController(AppController mainController) { this.mainController = mainController; }
 
     public void buildUnitDropdownList() {
@@ -29,10 +30,13 @@ public class BuyUnitsPopupController {
             unitChoices.getItems().add(unitToShowItem);
         }
     }
+
     @FXML
     public void btnDoneStartAction(){
-
+        parentPopupController.startAction();
+        closePopup();
     }
+
     @FXML
     public void purchaseBtnAction(){
         if(isUnitSelected) {
@@ -70,6 +74,11 @@ public class BuyUnitsPopupController {
     private void showLabel(String s) {
         errorLabel.setText(s);
         errorLabel.setVisible(true);
+    }
+
+    private void closePopup() {
+        Stage stage = (Stage) donebtn.getScene().getWindow();
+        stage.close();
     }
 
 }
