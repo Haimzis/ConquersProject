@@ -30,6 +30,10 @@ public class BuyUnitsPopupController {
         }
     }
     @FXML
+    public void btnDoneStartAction(){
+
+    }
+    @FXML
     public void purchaseBtnAction(){
         if(isUnitSelected) {
             if(amountToBuy.getText().matches("-?\\d+(\\.\\d+)?")){//checks if str is number
