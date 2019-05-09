@@ -74,6 +74,20 @@ public class MapController {
     }
 
     private void onTerritoryPressListener(Territory territory) {
-       mainController.actOnTerritory(territory);
+        GameEngine.gameManager.setSelectedTerritoryForTurn(territory);
+        if(!GameEngine.gameManager.getCurrentPlayerTerritories().isEmpty()) {
+            if (GameEngine.gameManager.isTerritoryBelongsCurrentPlayer()) {
+                mainController.showOwnTerritoryPopup();
+            }
+            else {
+                if(GameEngine.gameManager.isTargetTerritoryValid()) {
+                    mainController.showAttackPopup();
+                }
+                else { //Not valid territory
+
+                }
+            }
+        }
+        mainController.showAttackPopup();
     }
 }

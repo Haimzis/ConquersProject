@@ -18,7 +18,7 @@ public class BuyUnitsPopupController {
     private ActionPopupController parentPopupController;
 
     public void setMainController(AppController mainController) { this.mainController = mainController; }
-    
+
     public void buildUnitDropdownList() {
         for(String key : mainController.getGameEngine().getDescriptor().getUnitMap().keySet()) {
             MenuItem unitToShowItem = new MenuItem(key);
