@@ -5,8 +5,6 @@ import MainComponents.AppController;
 import SubComponents.Popups.ActionPopupController;
 import javafx.fxml.FXML;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class AttackPopupController implements ActionPopupController {
     private AppController mainController;
@@ -26,7 +24,7 @@ public class AttackPopupController implements ActionPopupController {
     }
 
     private void startNeutralAttack() {
-        if(GameEngine.gameManager.conquerNeutralTerritory()) { // Got the territor
+        if(GameEngine.gameManager.conquerNeutralTerritory()) { // Got the territory
 
         }
         else { // Failed to get territory ( Army is not big enough)
@@ -78,6 +76,4 @@ public class AttackPopupController implements ActionPopupController {
         mainController.showBuyUnitsPopup(this);
         typeOfAttack = 2;
     }
-
-
 }

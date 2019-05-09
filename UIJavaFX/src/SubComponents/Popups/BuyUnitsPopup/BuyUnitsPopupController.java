@@ -11,7 +11,7 @@ public class BuyUnitsPopupController {
     @FXML private MenuButton unitChoices;
     @FXML private TextField amountToBuy;
     @FXML private Label errorLabel;
-    @FXML private Button donebtn;
+    @FXML private Button doneBtn;
 
     private AppController mainController;
     private boolean isUnitSelected=false;
@@ -77,7 +77,7 @@ public class BuyUnitsPopupController {
     }
 
     private void closePopup() {
-        Stage stage = (Stage) donebtn.getScene().getWindow();
+        Stage stage = (Stage) doneBtn.getScene().getWindow();
         stage.close();
     }
 

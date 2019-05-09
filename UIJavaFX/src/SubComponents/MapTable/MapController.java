@@ -88,6 +88,8 @@ public class MapController {
                 }
             }
         }
-        mainController.showAttackPopup();
+        else { //No territories.
+            mainController.showAttackPopup();
+        }
     }
 }

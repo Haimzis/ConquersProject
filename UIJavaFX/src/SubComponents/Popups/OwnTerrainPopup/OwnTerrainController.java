@@ -51,7 +51,7 @@ public class OwnTerrainController implements ActionPopupController {
     }
 
     @Override
-    public void startAction() {
-
+    public void startAction() { //Enforce and print it's been enforced.
+        GameEngine.gameManager.transformSelectedArmyForceToSelectedTerritory();
     }
 }
