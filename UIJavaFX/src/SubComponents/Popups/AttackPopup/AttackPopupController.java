@@ -1,4 +1,10 @@
 package SubComponents.Popups.AttackPopup;
 
-public class AttackPopupController {
+import SubComponents.Popups.ActionPopupController;
+
+public class AttackPopupController implements ActionPopupController {
+    @Override
+    public void startAction() {
+
+    }
 }

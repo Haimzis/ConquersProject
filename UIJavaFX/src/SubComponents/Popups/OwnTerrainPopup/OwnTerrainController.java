@@ -2,6 +2,7 @@ package SubComponents.Popups.OwnTerrainPopup;
 
 import GameEngine.GameEngine;
 import MainComponents.AppController;
+import SubComponents.Popups.ActionPopupController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.util.function.Supplier;
 
-public class OwnTerrainController {
+public class OwnTerrainController implements ActionPopupController {
     private AppController mainController;
     @FXML private Label infoLabel;
     @FXML private Button enforceArmyBtn;
@@ -49,4 +50,8 @@ public class OwnTerrainController {
         infoLabel.setTextFill(color);
     }
 
+    @Override
+    public void startAction() {
+
+    }
 }
