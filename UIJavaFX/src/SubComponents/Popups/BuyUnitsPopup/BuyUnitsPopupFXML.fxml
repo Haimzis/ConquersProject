@@ -15,12 +15,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController">
+<HBox alignment="CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController">
 <SplitPane dividerPositions="0.42916666666666664" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="242.0" prefWidth="223.0">
 <items>
     <AnchorPane prefHeight="76.0" prefWidth="200.0">
         <children>
-            <HBox alignment="CENTER" prefHeight="76.0" prefWidth="221.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="222.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <children>
                     <Label text="Purchase units">
                         <font>
@@ -40,36 +40,45 @@
         <children>
             <GridPane alignment="CENTER" prefHeight="134.0" prefWidth="200.0">
                 <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="57.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="153.0" minWidth="10.0" prefWidth="143.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="49.99998779296875" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.19998779296876" minWidth="10.0" prefWidth="67.59996337890627" />
+                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.19998779296876" minWidth="0.0" prefWidth="11.799963378906256" />
+                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.19998779296876" minWidth="10.0" prefWidth="69.40003662109376" />
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="35.39998779296875" minHeight="10.0" prefHeight="35.39998779296875" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="28.4" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="29.599981689453116" minHeight="1.200014495849615" prefHeight="8.399999999999999" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="54.400000000000006" minHeight="10.0" prefHeight="37.79998779296875" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="54.400000000000006" minHeight="10.0" prefHeight="30.600012207031256" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <TextField fx:id="amountToBuy" prefHeight="33.0" prefWidth="153.0" promptText="Amount" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                     <MenuButton fx:id="unitChoices" mnemonicParsing="false" prefHeight="25.0" prefWidth="141.0" text="Select Units" GridPane.columnIndex="1">
+                    <TextField fx:id="amountToBuy" prefHeight="34.0" prefWidth="157.0" promptText="Amount" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                     <MenuButton fx:id="unitChoices" mnemonicParsing="false" prefHeight="26.0" prefWidth="152.0" text="Select Units" GridPane.columnIndex="1" GridPane.columnSpan="3">
                        <items>
 
                        </items>
                      </MenuButton>
-                    <ImageView fitHeight="37.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fitHeight="37.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@../../../Resources/tank.png" />
                         </image>
                     </ImageView>
-                    <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                    <ImageView fitHeight="32.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                         <image>
                             <Image url="@../../../Resources/money-bag.png" />
                         </image>
                     </ImageView>
-                    <Button mnemonicParsing="false" onAction="#purchaseBtnAction" prefHeight="25.0" prefWidth="80.0" text="Purchase" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <Button fx:id="btnParchase" mnemonicParsing="false" onAction="#purchaseBtnAction" prefHeight="60.0" prefWidth="80.0" text="Purchase" GridPane.columnIndex="1" GridPane.rowIndex="3">
                         <font>
                             <Font name="Book Antiqua" size="12.0" />
                         </font>
                     </Button>
+                     <Button fx:id="btnDone" layoutX="67.0" layoutY="79.0" mnemonicParsing="false" onAction="#btnDoneStartAction" prefHeight="60.0" prefWidth="80.0" text="Done" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                        <font>
+                           <Font name="Book Antiqua" size="12.0" />
+                        </font>
+                     </Button>
                 </children>
                 <padding>
                     <Insets left="5.0" />
