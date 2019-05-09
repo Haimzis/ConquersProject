@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 
-<AnchorPane fx:id="HeaderComponent" prefHeight="125" prefWidth="900" style="-fx-background-color: red;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="SubComponents.Header.HeaderController" />
+<AnchorPane fx:id="HeaderComponent" prefHeight="125" prefWidth="900" style="-fx-background-image: url(&quot;https://i.redd.it/a0yosi3cmra11.png&quot;); -fx-background-size: 900px 125px;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Header.HeaderController">
+   <children>
+      <Label layoutX="37.0" layoutY="63.0" text="Ran is Gayyyy" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="34.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

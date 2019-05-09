@@ -29,7 +29,6 @@ public class MapController {
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
     }
-
     public void setMap(Board newMap){
         this.map = newMap;
     }
