@@ -1,8 +1,8 @@
 package GameObjects;
-
+import java.io.Serializable;
 import java.util.Random;
 
-public class CalculatedRiskBattle extends Battle{
+public class CalculatedRiskBattle extends Battle implements Serializable{
 
     public CalculatedRiskBattle(Army newConquerArmy, Army newAttackingArmy, Territory newBattleTerritory){
         super(newConquerArmy,newAttackingArmy,newBattleTerritory);

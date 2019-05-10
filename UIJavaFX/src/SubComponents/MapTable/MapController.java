@@ -5,6 +5,7 @@ import GameEngine.GameEngine;
 import GameObjects.Territory;
 import MainComponents.AppController;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -42,12 +43,12 @@ public class MapController {
             widthSize = MIN_WIDTH_SIZE;
         for (int i = 0; i < rows; i++) {
             RowConstraints row = new RowConstraints(heightSize);
-            row.setVgrow(Priority.valueOf("SOMETIMES"));
+            row.setVgrow(Priority.valueOf("ALWAYS"));
             GridComponent.getRowConstraints().add(row);
         }
         for (int i = 0; i < columns; i++) {
             ColumnConstraints column = new ColumnConstraints(widthSize);
-            column.setHgrow(Priority.valueOf("SOMETIMES"));
+            column.setHgrow(Priority.valueOf("ALWAYS"));
             GridComponent.getColumnConstraints().add(column);
         }
 

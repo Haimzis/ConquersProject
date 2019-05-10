@@ -29,6 +29,7 @@ public class InformationController {
     @FXML private TabPane playersInformationTabPane;
     @FXML private TableView<Unit> unitsTableView;
 
+
     public void loadInformation() {
         List<Player> playersList  =mainController.getGameEngine().getDescriptor().getPlayersList();
         Map<Integer, Territory> territoryMap = mainController.getGameEngine().getDescriptor().getTerritoryMap();
@@ -45,30 +46,44 @@ public class InformationController {
     private void loadUnitsToTableView() {
         final ObservableList<Unit> data =
                 FXCollections.observableArrayList(mainController.getGameEngine().getDescriptor().getUnitMap().values());
-        unitsTableView.setEditable(true);
+        unitsTableView.setEditable(false);
         unitsTableView.setItems(data);
+        //nameCol
         TableColumn<Unit,String> nameCol = new TableColumn<>("Name");
+        nameCol.setMinWidth(70);
+        //rankCol
         TableColumn<Unit,String> rankCol = new TableColumn<>("Rank");
+        rankCol.setMinWidth(70);
+        //priceCol
         TableColumn<Unit,Integer> priceCol = new TableColumn<>("Price");
+        priceCol.setMinWidth(70);
+        //firePowerCol
         TableColumn<Unit,Integer> firePowerCol = new TableColumn<>("Fire Power");
+        firePowerCol.setMinWidth(100);
+        //competenceReductionCol
         TableColumn<Unit,Integer> competenceReductionCol = new TableColumn<>("Competence Reduction");
+        competenceReductionCol.setMinWidth(200);
+        //worthCol
         TableColumn<Unit,Integer> worthCol = new TableColumn<>("Worth");
-        TableColumn<Unit,Integer> appearanceCol = new TableColumn<>("Appearance");
+        worthCol.setMinWidth(70);
+        //appearanceCol
+        TableColumn<Unit,Integer> appearanceCol = new TableColumn<>();
+        appearanceCol.setMinWidth(100);
 
         nameCol.setCellValueFactory(
-                new PropertyValueFactory<>("Name")
+                new PropertyValueFactory<>("Type")
         );
         rankCol.setCellValueFactory(
                 new PropertyValueFactory<>("Rank")
         );
         priceCol.setCellValueFactory(
-                new PropertyValueFactory<>("Price")
+                new PropertyValueFactory<>("Purchase")
         );
         firePowerCol.setCellValueFactory(
-                new PropertyValueFactory<>("Fire Power")
+                new PropertyValueFactory<>("MaxFirePower")
         );
         competenceReductionCol.setCellValueFactory(
-                new PropertyValueFactory<>("Competence Reduction")
+                new PropertyValueFactory<>("CompetenceReduction")
         );
         worthCol.setCellValueFactory(
                 new PropertyValueFactory<>("Worth")
@@ -76,6 +91,7 @@ public class InformationController {
         appearanceCol.setCellValueFactory(
                 new PropertyValueFactory<>("Appearance")
         );
+        //TODO: need to update Appearance column, Problem: Units does not knows the gameManager
         unitsTableView.setItems(data);
         //noinspection unchecked
         unitsTableView.getColumns().addAll(nameCol, rankCol, priceCol,firePowerCol,competenceReductionCol,worthCol,appearanceCol);
