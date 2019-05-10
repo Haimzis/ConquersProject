@@ -34,6 +34,7 @@ public class BuyUnitsPopupController {
     @FXML
     public void btnDoneStartAction(){
         parentPopupController.startAction();
+        mainController.updateInformation();
         closePopup();
     }
 
@@ -80,5 +81,4 @@ public class BuyUnitsPopupController {
         Stage stage = (Stage) doneBtn.getScene().getWindow();
         stage.close();
     }
-
 }

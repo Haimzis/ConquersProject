@@ -67,7 +67,9 @@ public class AppController {
         this.MapComponentController = mapComponentController;
     }
 
-
+    public void updateInformation(){
+        InformationComponentController.updatePlayersData();
+    }
     public void createMap(){
         MapComponentController.setMap(
                 new Board(

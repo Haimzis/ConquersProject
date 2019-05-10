@@ -228,7 +228,16 @@ public class GameManager implements Serializable {
     //**************************//
     /*   Get InformationTable   */
     //**************************//
-
+    public List<Territory> getTerritoryListByPlayer(Player player){
+        List<Territory> territories = new ArrayList<>(player.getTerritoriesID().size());
+        player.getTerritoriesID().forEach(territoryID -> {
+            territories.add(getTerritoryByID(territoryID));
+        });
+        return territories;
+    }
+    public Territory getTerritoryByID(Integer territoryID){
+        return gameDescriptor.getTerritoryMap().get(territoryID);
+    }
     public int getFundsBeforeProduction() {
         return roundsHistory.peek().getPlayerStatsHistory().get(currentPlayerTurn.getID()-1).getFunds();
     }

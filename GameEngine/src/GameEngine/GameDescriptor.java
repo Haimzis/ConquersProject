@@ -17,7 +17,6 @@ public class GameDescriptor implements Serializable {
     private int defaultThreshold , defaultProfit;
     private Map<Integer,Territory> territoryMap;
     private Map<String , Unit> unitMap;
-    private int [] appearance;
     private List<Player> playersList;
     //private String gameType; //relevant for the third project
 
@@ -60,7 +59,9 @@ public class GameDescriptor implements Serializable {
     public void setPlayersList(List<Player> playersList) {
         this.playersList = playersList;
     }
-
+    public Territory getTerritoryByID(Integer territoryID){
+        return territoryMap.get(territoryID);
+    }
 
     //*********************//
     /*     XML Loaders    */
