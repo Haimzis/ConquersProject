@@ -113,6 +113,7 @@ public class AppController {
             //Wire up the controller and initialize game engine
             OwnTerrainController ownTerrainController = fxmlLoader.getController();
             ownTerrainController.setMainController(this);
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
         }
         catch (IOException e) {
@@ -141,7 +142,7 @@ public class AppController {
                 e.printStackTrace();
             }
         }
-        else { //Player has no territory and attacks neutral territory.
+        else { //Player attacks neutral territory.
             showBuyUnitsPopup(new AttackPopupController());
         }
     }
