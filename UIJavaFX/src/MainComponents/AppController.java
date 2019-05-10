@@ -2,11 +2,9 @@ package MainComponents;
 
 import DataContainersTypes.Board;
 import GameEngine.GameEngine;
-import GameObjects.Territory;
 import SubComponents.Header.HeaderController;
 import SubComponents.InformationTable.InformationController;
 import SubComponents.MapTable.MapController;
-import SubComponents.MenuTable.MenuController;
 import SubComponents.Popups.ActionPopupController;
 import SubComponents.Popups.AttackPopup.AttackPopupController;
 import SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController;
@@ -29,8 +27,6 @@ public class AppController {
     @FXML private InformationController InformationComponentController;
     @FXML private ScrollPane MapComponent;
     @FXML private MapController MapComponentController;
-    @FXML private AnchorPane MenuComponent;
-    @FXML private MenuController MenuComponentController;
     private GameEngine gameEngine;
 
     public Stage getPrimaryStage() {
@@ -38,9 +34,7 @@ public class AppController {
     }
     private Stage primaryStage;
 
-    public MenuController getMenuComponentController() {
-        return MenuComponentController;
-    }
+
 
     public GameEngine getGameEngine() {
         return gameEngine;
@@ -52,11 +46,10 @@ public class AppController {
     @FXML
     public void initialize() {
         if (HeaderComponentController != null && InformationComponentController != null
-        && MapComponentController != null && MenuComponentController != null) {
+        && MapComponentController != null) {
             HeaderComponentController.setMainController(this);
             InformationComponentController.setMainController(this);
             MapComponentController.setMainController(this);
-            MenuComponentController.setMainController(this);
         }
         //initialize CSS path
         MapComponent.getStylesheets().add(getClass().getResource("/SubComponents/MapTable/Map.css").toExternalForm());
@@ -74,9 +67,7 @@ public class AppController {
         this.MapComponentController = mapComponentController;
     }
 
-    public void setMenuComponentController(MenuController menuComponentController) {
-        this.MenuComponentController = menuComponentController;
-    }
+
     public void createMap(){
         MapComponentController.setMap(
                 new Board(
@@ -170,5 +161,9 @@ public class AppController {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void loadInformation() {
+        InformationComponentController.loadInformation();
     }
 }

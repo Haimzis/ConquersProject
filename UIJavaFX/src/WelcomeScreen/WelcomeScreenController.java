@@ -108,6 +108,7 @@ public class WelcomeScreenController {
             AppController appController = fxmlLoader.getController();
             appController.setGameEngine(gameEngine);
             appController.createMap();
+            appController.loadInformation();
             appController.startGame();
             appController.startRound();
             appController.nextPlayer();

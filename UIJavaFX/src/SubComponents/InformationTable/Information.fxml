@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -10,77 +12,58 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="InformationComponent" prefHeight="586.0" prefWidth="236.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.InformationTable.InformationController">
+<AnchorPane fx:id="InformationComponent" minWidth="-Infinity" prefHeight="586.0" prefWidth="284.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.InformationTable.InformationController">
    <children>
-      <GridPane prefHeight="600" prefWidth="250" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <GridPane prefHeight="600.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
             <ColumnConstraints hgrow="NEVER" maxWidth="87.39996337890625" minWidth="-Infinity" prefWidth="42.19996337890625" />
             <ColumnConstraints hgrow="NEVER" maxWidth="131.4" minWidth="-Infinity" prefWidth="71.00003662109376" />
           <ColumnConstraints hgrow="NEVER" maxWidth="48.40001220703127" minWidth="-Infinity" prefWidth="45.99998779296877" />
-            <ColumnConstraints hgrow="NEVER" maxWidth="131.4" minWidth="-Infinity" prefWidth="26.39995117187499" />
-            <ColumnConstraints hgrow="NEVER" maxWidth="131.4" minWidth="-Infinity" prefWidth="13.600048828125011" />
-          <ColumnConstraints hgrow="NEVER" maxWidth="71.79998779296875" minWidth="-Infinity" prefWidth="26.399987792968744" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="131.4" minWidth="-Infinity" prefWidth="16.800024414062506" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="131.4" minWidth="-Infinity" prefWidth="16.0" />
+          <ColumnConstraints hgrow="NEVER" maxWidth="71.79998779296875" minWidth="-Infinity" prefWidth="34.400000000000006" />
             <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="5.5999755859375" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="20.000003051757812" minHeight="10.0" prefHeight="20.000003051757812" vgrow="ALWAYS" />
-            <RowConstraints maxHeight="30.399996948242194" minHeight="-Infinity" prefHeight="26.399996948242194" vgrow="NEVER" />
-            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.79999999999999" vgrow="NEVER" />
+            <RowConstraints maxHeight="20.000006103515624" minHeight="10.0" prefHeight="20.000006103515624" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="34.4" minHeight="-Infinity" prefHeight="14.399993896484375" vgrow="NEVER" />
+            <RowConstraints maxHeight="39.19999694824219" minHeight="-Infinity" prefHeight="39.19999694824219" vgrow="NEVER" />
           <RowConstraints maxHeight="289.0000061035156" minHeight="0.0" prefHeight="12.20001220703125" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="463.6" minHeight="10.0" prefHeight="288.1999877929687" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.79997558593749" vgrow="NEVER" />
+          <RowConstraints maxHeight="463.6" minHeight="10.0" prefHeight="283.99998168945314" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="35.19999999999999" minHeight="-Infinity" prefHeight="28.000018310546864" vgrow="NEVER" />
           <RowConstraints maxHeight="247.59997558593744" minHeight="10.0" prefHeight="211.20001220703125" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="4.4000244140625" prefHeight="17.599987792968705" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="4.4000244140625" prefHeight="17.599987792968705" vgrow="NEVER" />
         </rowConstraints>
          <children>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="7" GridPane.rowIndex="3" GridPane.rowSpan="2">
-              <tabs>
-                <Tab text="Player1">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
-                <Tab text="Player2">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
-                  <Tab text="Player3">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-              </tabs>
-            </TabPane>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="49.0" prefWidth="166.0" text="Players Information" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-            <TabPane layoutX="10.0" layoutY="96.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="7" GridPane.rowIndex="6">
-               <tabs>
-                  <Tab text="Soldier">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-                  <Tab text="Tank">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="109.0" prefWidth="236.0" />
-                     </content>
-                  </Tab>
-                  <Tab text="Bomb">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-               </tabs>
-            </TabPane>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="49.0" prefWidth="166.0" text="Units Information" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+            <TabPane fx:id="playersInformationTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="7" GridPane.rowIndex="3" GridPane.rowSpan="2" />
+            <Label fx:id="playersInformationLable" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="162.0" text="Players Information" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+            <Label fx:id="unitsInformationLable" alignment="CENTER" contentDisplay="CENTER" prefHeight="49.0" prefWidth="166.0" text="Units Information" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="126.0" text="Round Number:" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-            <Text strokeWidth="0.0" text="/" textAlignment="CENTER" wrappingWidth="11.875855445861816" GridPane.columnIndex="4" GridPane.rowIndex="1">
+            <Text strokeWidth="0.0" text="/" textAlignment="CENTER" wrappingWidth="8.63433837890625" GridPane.columnIndex="4" GridPane.rowIndex="1">
                <font>
-                  <Font size="15.0" />
+                  <Font size="16.0" />
                </font>
             </Text>
-            <Label fx:id="currentRound" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Label fx:id="totalRounds" text="Label" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Label fx:id="currentRound" prefHeight="48.0" prefWidth="39.0" text="1" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Label fx:id="totalRounds" prefHeight="54.0" prefWidth="54.0" text="3" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <ScrollPane GridPane.columnSpan="7" GridPane.rowIndex="6">
+               <content>
+                  <TableView fx:id="unitsTableView">
+                    <columns>
+                      <TableColumn fx:id="nameCol" minWidth="-1.0" prefWidth="50.0" text="Name" />
+                      <TableColumn fx:id="rankCol" minWidth="-1.0" prefWidth="50.0" text="Rank" />
+                        <TableColumn fx:id="priceCol" minWidth="-1.0" prefWidth="50.0" text="Price" />
+                        <TableColumn fx:id="firePowerCol" minWidth="-1.0" text="Fire Power" />
+                        <TableColumn fx:id="competenceReductionCol" minWidth="-1.0" prefWidth="150.0" text="Competence Reduction" />
+                        <TableColumn fx:id="worthCol" minWidth="-1.0" prefWidth="50.0" text="Worth" />
+                        <TableColumn fx:id="appearanceCol" minWidth="-1.0" prefWidth="75.0" text="Appearance" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </content>
+            </ScrollPane>
          </children>
       </GridPane>
    </children>
