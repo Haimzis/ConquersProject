@@ -35,6 +35,9 @@ public class AppController {
     private Stage primaryStage;
 
 
+    public HeaderController getHeaderComponentController() {
+        return HeaderComponentController;
+    }
 
     public GameEngine getGameEngine() {
         return gameEngine;
@@ -88,6 +91,7 @@ public class AppController {
 
     public void nextPlayer() {
         GameEngine.gameManager.nextPlayerInTurn();
+        HeaderComponentController.setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
     }
 
     public void showOwnTerritoryPopup() {
@@ -113,8 +117,8 @@ public class AppController {
     }
 
     public void showAttackPopup() {
-        if(GameEngine.gameManager.isConquered()) {
-            try {
+        try {
+            if (GameEngine.gameManager.isConquered()) {
                 //Load FXML
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/AttackPopup/AttackPopupFXML.fxml"));
@@ -129,12 +133,13 @@ public class AppController {
                 attackPopupController.setMainController(this);
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } else { // Neutral territory
+                AttackPopupController attackPopupController = new AttackPopupController();
+                attackPopupController.setMainController(this);
+                showBuyUnitsPopup(attackPopupController);
             }
-        }
-        else { //Player attacks neutral territory.
-            showBuyUnitsPopup(new AttackPopupController());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

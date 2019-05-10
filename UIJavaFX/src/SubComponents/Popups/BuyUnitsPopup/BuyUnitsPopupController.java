@@ -49,6 +49,7 @@ public class BuyUnitsPopupController {
                                 mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()),
                                 amount);
                         showLabel("Success!");
+                        doneBtn.setDisable(false);
                     }
                     else {
                         //do some exception : amount is not not enough
