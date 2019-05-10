@@ -1,6 +1,8 @@
 package GameObjects;
 
-public class WellTimedBattle extends Battle {
+import java.io.Serializable;
+
+public class WellTimedBattle extends Battle implements Serializable {
     private int StrongestRank;
     public WellTimedBattle(Army newConquerArmy, Army newAttackingArmy, Territory newBattleTerritory,int StrongestRank){
         super(newConquerArmy,newAttackingArmy,newBattleTerritory);

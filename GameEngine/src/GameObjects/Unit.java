@@ -46,12 +46,12 @@ public class Unit implements Serializable {
     public int getCompetenceReduction() {
         return competenceReduction;
     }
-
+    public double getWorth(){return (double)this.purchase / (double)this.maxFirePower;}
     //**************************//
     /*          Methods         */
     //**************************//
     public double calculateRehabilitationPrice() {
-        return ((double)this.purchase / (double)this.maxFirePower)*(this.getMaxFirePower() - this.getCurrentFirePower());
+        return (getWorth())*(this.getMaxFirePower() - this.getCurrentFirePower());
     }
     public void reduceCompetence() {
         if(this.currentFirePower > competenceReduction)
