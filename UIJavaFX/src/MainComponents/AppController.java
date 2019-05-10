@@ -9,6 +9,7 @@ import SubComponents.Popups.ActionPopupController;
 import SubComponents.Popups.AttackPopup.AttackPopupController;
 import SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController;
 import SubComponents.Popups.OwnTerrainPopup.OwnTerrainController;
+import SubComponents.Popups.ResultPopup.ResultPopupController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class AppController {
+    public enum Result {WIN , LOSE , DRAW}
     @FXML private AnchorPane HeaderComponent;
     @FXML private HeaderController HeaderComponentController;
     @FXML private AnchorPane InformationComponent;
@@ -166,6 +168,29 @@ public class AppController {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void showResultsPopup(Result result) {
+        try {
+            //Load FXML
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/ResultPopup/ResultPopupFXML.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root, 250, 586);
+            Stage stage = new Stage();
+            stage.setTitle(result.toString());
+            stage.setScene(scene);
+
+            //Wire up the controller and initialize game engine
+            ResultPopupController resultPopupController = fxmlLoader.getController();
+            resultPopupController.setMainController(this);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            resultPopupController.setResult(result);
+            stage.show();
+        }  catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void loadInformation() {

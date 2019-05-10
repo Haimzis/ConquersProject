@@ -8,14 +8,16 @@ import javafx.fxml.FXML;
 
 public class AttackPopupController implements ActionPopupController {
     private AppController mainController;
-    private int typeOfAttack = 0;
+    private String typeOfAttack = null;
+    private static final String WELL_TIMED = "Well Timed Attack";
+    private static final String CALCULATED_RISK = "Calculated Risk Attack";
 
     @Override
     public void startAction() {
-        if(typeOfAttack == 1) {
+        if(typeOfAttack == WELL_TIMED) {
             startWellTimedAttack();
         }
-        else if(typeOfAttack == 2) {
+        else if(typeOfAttack == CALCULATED_RISK) {
             startCalculatedRiskAttack();
         }
         else {
@@ -33,6 +35,7 @@ public class AttackPopupController implements ActionPopupController {
     }
 
     private void startCalculatedRiskAttack() {
+        String infoToSend = createText();
         int attackerWon =  GameEngine.gameManager.attackConqueredTerritoryByCalculatedRiskBattle();
         if(attackerWon == 1) { //Win
             if(GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquerArmyForce() == null) { //Check if there are enough to hold territory
@@ -45,6 +48,14 @@ public class AttackPopupController implements ActionPopupController {
         else { // Draw
 
         }
+
+    }
+
+    private String createText() {
+        int defendingArmySize = GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquerArmyForce().getUnits().size();
+        String defendingUnitsResult = "Defending army had: " + defendingArmySize + "\n";
+        return null;
+
 
     }
 
@@ -68,12 +79,12 @@ public class AttackPopupController implements ActionPopupController {
     @FXML
     public void wellTimedAttackListener() {
         mainController.showBuyUnitsPopup(this);
-        typeOfAttack = 1;
+        typeOfAttack = WELL_TIMED;
     }
 
     @FXML
     public void calculatedRiskAttackListener() {
         mainController.showBuyUnitsPopup(this);
-        typeOfAttack = 2;
+        typeOfAttack = CALCULATED_RISK;
     }
 }
