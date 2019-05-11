@@ -1,5 +1,7 @@
 package SubComponents.Header;
 
+import GameEngine.GameEngine;
+import GameObjects.Player;
 import MainComponents.AppController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -25,4 +27,30 @@ public class HeaderController {
         currentPlayerInTurnLabel.setText(currentPlayerName);
     }
 
+    //TODO: This needs to move to an round manager.
+    @FXML
+    public void endTurnOnPressListener() {
+        if(!GameEngine.gameManager.isCycleOver()) {
+            appController.nextPlayer();
+        }
+         else {
+             //Show message and animation of ending round.
+            GameEngine.gameManager.endOfRoundUpdates();
+            checkWinnerIfAny();
+            appController.startRound();
+        }
+        setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
+    }
+
+    private void checkWinnerIfAny() {
+        if(GameEngine.gameManager.isGameOver()) { //Need to disable the map and re enable other buttons.
+            Player winner = GameEngine.gameManager.getWinnerPlayer();
+            if(winner == null) { //Show draw message
+
+            }
+            else { //Need to show the winner.
+
+            }
+        }
+    }
 }

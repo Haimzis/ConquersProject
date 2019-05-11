@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<fx:root type="ScrollPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Popups.AttackPopup.AttackPopupController">
+<ScrollPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Popups.AttackPopup.AttackPopupController">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0">
          <children>
@@ -26,7 +26,7 @@
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="wellTimed_btn" layoutX="48.0" layoutY="25.0" mnemonicParsing="false" onAction="#wellTimedAttackListener" prefHeight="25.0" prefWidth="125.0" text="Well Timed Attack" />
+                        <Button fx:id="btnWellTimed" layoutX="48.0" layoutY="25.0" mnemonicParsing="false" onAction="#wellTimedAttackListener" prefHeight="25.0" prefWidth="125.0" text="Well Timed Attack" />
                         <Button fx:id="calculatedRisk_btn" layoutX="47.0" layoutY="74.0" mnemonicParsing="false" onAction="#calculatedRiskAttackListener" prefHeight="25.0" prefWidth="125.0" text="Calculated Risk Attack">
                            <font>
                               <Font size="11.0" />
@@ -47,4 +47,4 @@
             </SplitPane>
          </children></AnchorPane>
   </content>
-</fx:root>
+</ScrollPane>
