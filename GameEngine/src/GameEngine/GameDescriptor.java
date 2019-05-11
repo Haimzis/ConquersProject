@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GameDescriptor implements Serializable {
     private String lastKnownGoodString;
@@ -59,6 +61,7 @@ public class GameDescriptor implements Serializable {
     public void setPlayersList(List<Player> playersList) {
         this.playersList = playersList;
     }
+
     public Territory getTerritoryByID(Integer territoryID){
         return territoryMap.get(territoryID);
     }

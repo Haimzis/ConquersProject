@@ -2,30 +2,22 @@ package SubComponents.InformationTable;
 
 import GameEngine.GameEngine;
 import GameObjects.Player;
-import GameObjects.Territory;
 import GameObjects.Unit;
 import MainComponents.AppController;
 import Resources.ResourceConstants;
+import SubComponents.InformationTable.InnerTabPaneTable.InnerTabPaneRootController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static Resources.ResourceConstants.APP_FXML_INCLUDE_RESOURCE;
+import java.util.*;
 
 
 public class InformationController {
@@ -36,39 +28,48 @@ public class InformationController {
     @FXML private TabPane playersInformationTabPane;
     @FXML private TableView<Unit> unitsTableView;
     private Map<Player,Tab> playersTabs= new HashMap<>();
-    private Map<Player,InnerTabPaneRootController> playersInnerTabPaneRootControllers= new HashMap<>();
+    private Map<Player, InnerTabPaneRootController> playersInnerTabPaneRootControllers= new HashMap<>();
+    private Stack<String> colors = new Stack<>();
 
-
+    private void initializeColors(){
+        colors.push("Green");colors.push("Red");
+        colors.push("Blue");colors.push("Yellow");
+    }
     public void loadInformation() {
-        List<Player> playersList  =mainController.getGameEngine().getDescriptor().getPlayersList();
-        Map<Integer, Territory> territoryMap = mainController.getGameEngine().getDescriptor().getTerritoryMap();
-        Map<String , Unit> unitMap  = mainController.getGameEngine().getDescriptor().getUnitMap();
+        List<Player> playersList  = mainController.getGameEngine().getDescriptor().getPlayersList();
+        initializeColors();
+        initializeTotalCycles();
 
-        playersList.forEach(player ->{
+        for (Player player : playersList) { //load each Player Information
             Tab playerTab = addTabToPlayers(player.getPlayer_name());
-            playersTabs.put(player,playerTab);
+            playersTabs.put(player, playerTab);
             //load inner TabPane Construct into tabs
             FXMLLoader innerTabPaneRootLoader = new FXMLLoader();
             URL url = getClass().getResource(ResourceConstants.INNER_PANETAB_FXML_INCLUDE_RESOURCE);
             innerTabPaneRootLoader.setLocation(url);
-            Parent innerTabPaneRoot=null;
+            Parent innerTabPaneRoot = null;
             try {
                 innerTabPaneRoot = innerTabPaneRootLoader.load(url.openStream());
                 InnerTabPaneRootController innerTabPaneRootController = innerTabPaneRootLoader.getController();
+                player.setColor(colors.pop());
                 innerTabPaneRootController.setCurrentPlayer(player);
                 innerTabPaneRootController.createDataStructure();
                 innerTabPaneRootController.loadPlayerData();
-                playersInnerTabPaneRootControllers.put(player,innerTabPaneRootController);
+                playersInnerTabPaneRootControllers.put(player, innerTabPaneRootController);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             playerTab.setContent(innerTabPaneRoot);
-
-            //TODO: i should build another tabpane for territories,army etc...
-        });
+        }
         loadUnitsToTableView();
     }
+
+    private void initializeTotalCycles() {
+        totalRounds.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getTotalCycles()));
+    }
+
     public void updatePlayersData(){
+        currentRound.setText(Integer.toString(GameEngine.gameManager.roundNumber));
         playersInnerTabPaneRootControllers.forEach((player,innerTabPaneRootController) -> {
             innerTabPaneRootController.loadPlayerData();
         });

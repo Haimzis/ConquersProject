@@ -1,9 +1,8 @@
-package SubComponents.InformationTable;
+package SubComponents.InformationTable.InnerTabPaneTable;
 
 import GameEngine.GameEngine;
 import GameObjects.Player;
 import GameObjects.Territory;
-import GameObjects.Unit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,8 +15,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class InnerTabPaneRootController {
@@ -29,6 +33,7 @@ public class InnerTabPaneRootController {
     @FXML private ListView<String> unitsListView;
     @FXML private TableView<Territory> territoriesTableView;
     private Player currentPlayer;
+
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
@@ -77,7 +82,7 @@ public class InnerTabPaneRootController {
         this.PlayerID.setText(Integer.toString(currentPlayer.getID()));
         this.PlayerName.setText(currentPlayer.getPlayer_name());
         this.PlayerTurings.setText(Integer.toString(currentPlayer.getFunds()));
-        this.PlayerColor.setStyle("-fx-background-color: Green");
+        this.PlayerColor.setStyle("-fx-background-color: "+ currentPlayer.getColor());
         if(GameEngine.gameManager!=null){
             final ObservableList<Territory> data =
                     FXCollections.observableArrayList(GameEngine.gameManager.getTerritoryListByPlayer(currentPlayer));
