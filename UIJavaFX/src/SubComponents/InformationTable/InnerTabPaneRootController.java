@@ -16,7 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,6 @@ public class InnerTabPaneRootController {
     @FXML private ListView<String> unitsListView;
     @FXML private TableView<Territory> territoriesTableView;
     private Player currentPlayer;
-
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
@@ -65,7 +63,7 @@ public class InnerTabPaneRootController {
         //noinspection unchecked
         territoriesTableView.getColumns().addAll(IDCol, profitCol, armyThresholdCol);
     }
-    public void loadConquerUnitsOnSelectedTerritory(Territory territory){
+    void loadConquerUnitsOnSelectedTerritory(Territory territory){
         ObservableList<String> items =FXCollections.observableArrayList(createListOfUnitsStrings(territory));
         unitsListView.setItems(items);
     }
@@ -83,12 +81,7 @@ public class InnerTabPaneRootController {
         if(GameEngine.gameManager!=null){
             final ObservableList<Territory> data =
                     FXCollections.observableArrayList(GameEngine.gameManager.getTerritoryListByPlayer(currentPlayer));
-
-            //TODO: need to update Appearance column, Problem: Units does not knows the gameManager
             territoriesTableView.setItems(data);
-            //noinspection unchecked
-
         }
     }
-
 }
