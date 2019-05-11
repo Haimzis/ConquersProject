@@ -89,7 +89,7 @@ public class AttackPopupController implements ActionPopupController {
                 + "\n"
                 + "Defending army had: "
                 + defendingArmySize
-                + "units"
+                + " units"
                 + "\n"
                 + "The defending territory units were: "
                 + "\n";
