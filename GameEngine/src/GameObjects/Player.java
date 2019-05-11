@@ -1,5 +1,4 @@
 package GameObjects;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +8,16 @@ public class Player implements Serializable {
     private String player_name;
     private int funds;
     private List<Integer> TerritoriesID;
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    private String color="";
 
     public Player(int id, String player_name, int funds) {
         ID = id;
@@ -75,8 +84,7 @@ public class Player implements Serializable {
     {
         this.funds -= fundsAmount;
     }
-    public void addTerritory(Territory territory)
-    {
+    public void addTerritory(Territory territory) {
             TerritoriesID.add(territory.getID());
     }
 }
