@@ -19,14 +19,14 @@
           <ColumnConstraints hgrow="NEVER" maxWidth="48.40001220703127" minWidth="-Infinity" prefWidth="45.99998779296877" />
             <ColumnConstraints hgrow="NEVER" maxWidth="131.4" minWidth="-Infinity" prefWidth="16.800024414062506" />
             <ColumnConstraints hgrow="NEVER" maxWidth="131.4" minWidth="-Infinity" prefWidth="16.0" />
-          <ColumnConstraints hgrow="NEVER" maxWidth="71.79998779296875" minWidth="-Infinity" prefWidth="34.400000000000006" />
-            <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="5.5999755859375" />
+          <ColumnConstraints hgrow="NEVER" maxWidth="71.79998779296875" minWidth="-Infinity" prefWidth="19.200000000000017" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="55.60000000000002" minWidth="-Infinity" prefWidth="55.60000000000002" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints maxHeight="20.000006103515624" minHeight="10.0" prefHeight="20.000006103515624" vgrow="ALWAYS" />
             <RowConstraints maxHeight="20.000006103515624" minHeight="10.0" prefHeight="20.000006103515624" vgrow="ALWAYS" />
-            <RowConstraints maxHeight="34.4" minHeight="-Infinity" prefHeight="14.399993896484375" vgrow="NEVER" />
-          <RowConstraints maxHeight="39.19999694824219" minHeight="-Infinity" prefHeight="39.19999694824219" vgrow="NEVER" />
+            <RowConstraints maxHeight="45.59999694824219" minHeight="-Infinity" prefHeight="30.400000000000002" vgrow="NEVER" />
+          <RowConstraints maxHeight="39.19999694824219" minHeight="-Infinity" prefHeight="23.200000000000003" vgrow="NEVER" />
           <RowConstraints maxHeight="289.0000061035156" minHeight="0.0" prefHeight="12.20001220703125" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="463.6" minHeight="10.0" prefHeight="283.99998168945314" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="35.19999999999999" minHeight="-Infinity" prefHeight="28.000018310546864" vgrow="NEVER" />

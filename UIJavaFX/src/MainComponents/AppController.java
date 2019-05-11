@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class AppController {
-    public enum Result {WIN , LOSE , DRAW}
     @FXML private AnchorPane HeaderComponent;
     @FXML private HeaderController HeaderComponentController;
     @FXML private AnchorPane InformationComponent;
@@ -72,7 +71,9 @@ public class AppController {
         this.MapComponentController = mapComponentController;
     }
 
-
+    public void updateInformation(){
+        InformationComponentController.updatePlayersData();
+    }
     public void createMap(){
         MapComponentController.setMap(
                 new Board(
@@ -170,7 +171,7 @@ public class AppController {
         }
     }
 
-    public void showResultsPopup(Result result) {
+    public void showResultsPopup(AttackPopupController.Result result , String info) {
         try {
             //Load FXML
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -184,8 +185,8 @@ public class AppController {
             //Wire up the controller and initialize game engine
             ResultPopupController resultPopupController = fxmlLoader.getController();
             resultPopupController.setMainController(this);
+            resultPopupController.populateInfoBasedOnResult(info , result);
             stage.initModality(Modality.APPLICATION_MODAL);
-            resultPopupController.setResult(result);
             stage.show();
         }  catch (IOException e) {
             e.printStackTrace();

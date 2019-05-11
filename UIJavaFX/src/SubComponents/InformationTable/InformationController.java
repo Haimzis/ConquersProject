@@ -5,20 +5,27 @@ import GameObjects.Player;
 import GameObjects.Territory;
 import GameObjects.Unit;
 import MainComponents.AppController;
+import Resources.ResourceConstants;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static Resources.ResourceConstants.APP_FXML_INCLUDE_RESOURCE;
 
 
 public class InformationController {
@@ -28,6 +35,8 @@ public class InformationController {
     @FXML private Label totalRounds;
     @FXML private TabPane playersInformationTabPane;
     @FXML private TableView<Unit> unitsTableView;
+    private Map<Player,Tab> playersTabs= new HashMap<>();
+    private Map<Player,InnerTabPaneRootController> playersInnerTabPaneRootControllers= new HashMap<>();
 
 
     public void loadInformation() {
@@ -36,13 +45,34 @@ public class InformationController {
         Map<String , Unit> unitMap  = mainController.getGameEngine().getDescriptor().getUnitMap();
 
         playersList.forEach(player ->{
-            addTabToPlayers(player.getPlayer_name());
-            //more complicated.
+            Tab playerTab = addTabToPlayers(player.getPlayer_name());
+            playersTabs.put(player,playerTab);
+            //load inner TabPane Construct into tabs
+            FXMLLoader innerTabPaneRootLoader = new FXMLLoader();
+            URL url = getClass().getResource(ResourceConstants.INNER_PANETAB_FXML_INCLUDE_RESOURCE);
+            innerTabPaneRootLoader.setLocation(url);
+            Parent innerTabPaneRoot=null;
+            try {
+                innerTabPaneRoot = innerTabPaneRootLoader.load(url.openStream());
+                InnerTabPaneRootController innerTabPaneRootController = innerTabPaneRootLoader.getController();
+                innerTabPaneRootController.setCurrentPlayer(player);
+                innerTabPaneRootController.createDataStructure();
+                innerTabPaneRootController.loadPlayerData();
+                playersInnerTabPaneRootControllers.put(player,innerTabPaneRootController);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            playerTab.setContent(innerTabPaneRoot);
+
             //TODO: i should build another tabpane for territories,army etc...
         });
         loadUnitsToTableView();
     }
-
+    public void updatePlayersData(){
+        playersInnerTabPaneRootControllers.forEach((player,innerTabPaneRootController) -> {
+            innerTabPaneRootController.loadPlayerData();
+        });
+    }
     private void loadUnitsToTableView() {
         final ObservableList<Unit> data =
                 FXCollections.observableArrayList(mainController.getGameEngine().getDescriptor().getUnitMap().values());
@@ -97,9 +127,10 @@ public class InformationController {
         unitsTableView.getColumns().addAll(nameCol, rankCol, priceCol,firePowerCol,competenceReductionCol,worthCol,appearanceCol);
     }
 
-    private void addTabToPlayers(String playerName) {
+    private Tab addTabToPlayers(String playerName) {
         Tab tab = new Tab(playerName);
         playersInformationTabPane.getTabs().add(tab);
+        return tab;
     }
     private void deleteTabFromPlayers(String playerName) {
         removeTab(playerName, playersInformationTabPane);
