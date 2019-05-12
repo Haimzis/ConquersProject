@@ -112,6 +112,7 @@ public class AppController {
             OwnTerrainController ownTerrainController = fxmlLoader.getController();
             ownTerrainController.setMainController(this);
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
             stage.show();
         }
         catch (IOException e) {
@@ -135,6 +136,7 @@ public class AppController {
                 AttackPopupController attackPopupController = fxmlLoader.getController();
                 attackPopupController.setMainController(this);
                 stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setResizable(false);
                 stage.show();
             } else { // Neutral territory
                 AttackPopupController attackPopupController = new AttackPopupController();
@@ -164,6 +166,7 @@ public class AppController {
             buyUnitsComponentController.setParentController(parent);
             buyUnitsComponentController.buildUnitDropdownList();
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
             stage.show();
         }
         catch (IOException e) {
@@ -187,6 +190,7 @@ public class AppController {
             resultPopupController.setMainController(this);
             resultPopupController.populateInfoBasedOnResult(info , result);
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
             stage.show();
         }  catch (IOException e) {
             e.printStackTrace();

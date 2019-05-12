@@ -19,6 +19,7 @@ public class AttackPopupController implements ActionPopupController {
     private static final String CALCULATED_RISK = "Calculated Risk Attack";
     public enum Result {WIN , LOSE , DRAW, WINCOULDNOTHOLD}
     private Result resultOfBattle;
+    private String infoOfBattle;
     @FXML private Button btnWellTimed;
 
 
@@ -35,7 +36,7 @@ public class AttackPopupController implements ActionPopupController {
         else {
             startNeutralAttack();
         }
-        mainController.showResultsPopup(resultOfBattle , createText());
+        mainController.showResultsPopup(resultOfBattle , infoOfBattle);
     }
 
     private void startNeutralAttack() {
@@ -47,10 +48,12 @@ public class AttackPopupController implements ActionPopupController {
             mainController.getHeaderComponentController().writeIntoTextArea("Failed to conquer territory number  " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID() +"\n");
             resultOfBattle = Result.LOSE;
         }
+        infoOfBattle = createText();
     }
 
     private void startCalculatedRiskAttack() {
         mainController.getHeaderComponentController().writeIntoTextArea("A battle has started upon territory number: " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID()+ "\n");
+        infoOfBattle = createText();
         int attackerWon =  GameEngine.gameManager.attackConqueredTerritoryByCalculatedRiskBattle();
         if(attackerWon == 1) { //Win
             checkIfWinnerCanHold();
@@ -75,7 +78,7 @@ public class AttackPopupController implements ActionPopupController {
     }
 
     private String createText() {
-        if(typeOfAttack == null) { //Neutral
+        if(typeOfAttack == null) { //Enemy
             switch (resultOfBattle) {
                 case WIN:
                     return "You have conquered neutral territory : " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID();
@@ -94,14 +97,16 @@ public class AttackPopupController implements ActionPopupController {
                 + "The defending territory units were: "
                 + "\n";
         List<String> unitNamesOnTerritoryList = new ArrayList<>();
-        for(Unit unit : GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquerArmyForce().getUnits()) {
+        for (Unit unit : GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquerArmyForce().getUnits()) {
             unitNamesOnTerritoryList.add(unit.getType());
         }
-        String defendingUnitsString = String.join(" " , unitNamesOnTerritoryList);
+        String defendingUnitsString = String.join(" ", unitNamesOnTerritoryList);
         return defendingUnitsResult.concat(defendingUnitsString);
+
     }
 
     private void startWellTimedAttack() {
+        infoOfBattle = createText();
         mainController.getHeaderComponentController().writeIntoTextArea("A battle has started upon territory number: " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID() + "\n");
         int attackerWon =  GameEngine.gameManager.attackConqueredTerritoryByWellTimedBattle();
         if(attackerWon == 1) { //Win

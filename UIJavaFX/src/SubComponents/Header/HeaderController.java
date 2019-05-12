@@ -35,6 +35,7 @@ public class HeaderController {
         }
          else {
              //Show message and animation of ending round.
+            writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + "has ended");
             GameEngine.gameManager.endOfRoundUpdates();
             checkWinnerIfAny();
             appController.startRound();

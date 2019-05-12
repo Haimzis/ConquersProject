@@ -2,7 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,9 +12,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="mainAnchor" prefHeight="586.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Popups.ResultPopup.ResultPopupController">
+<AnchorPane fx:id="mainAnchor" prefHeight="586.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Popups.ResultPopup.ResultPopupController">
    <children>
       <GridPane layoutY="149.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -41,6 +40,11 @@
                               <Image url="@../../../Resources/graveyard.png" />
                            </image>
                         </ImageView>
+                        <ImageView fx:id="drawIcon" fitHeight="150.0" fitWidth="200.0" layoutX="35.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../../../Resources/battle.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </StackPane>
                </children>
@@ -60,19 +64,16 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ScrollPane GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="4">
-                     <content>
-                        <TextFlow fx:id="resultsTextArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
-                     </content>
-                     <GridPane.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </GridPane.margin>
-                  </ScrollPane>
                   <Label fx:id="resultsLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" GridPane.columnSpan="3">
                      <font>
                         <Font size="34.0" />
                      </font>
                   </Label>
+                  <TextArea fx:id="resultsTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="5">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                     </GridPane.margin>
+                  </TextArea>
                </children>
             </GridPane>
          </children>
