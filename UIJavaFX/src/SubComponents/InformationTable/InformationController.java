@@ -130,6 +130,9 @@ public class InformationController {
 
     private Tab addTabToPlayers(String playerName) {
         Tab tab = new Tab(playerName);
+        tab.setOnSelectionChanged(event -> {
+            //TODO: write if - that disable the option to see territories of another player.
+        });
         playersInformationTabPane.getTabs().add(tab);
         return tab;
     }
