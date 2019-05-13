@@ -83,7 +83,7 @@
                   </GridPane>
                </children>
             </StackPane>
-            <Button fx:id="btnSave" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSaveBtnPressListener" text="Save game" GridPane.rowIndex="5" />
+            <Button fx:id="btnSave" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSaveBtnPressListener" text="Save game" GridPane.rowIndex="5" />
             <MenuButton fx:id="btnstyles" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Styles" GridPane.columnIndex="3" GridPane.rowIndex="5">
               <items>
                 <MenuItem mnemonicParsing="false" text="Action 1" />

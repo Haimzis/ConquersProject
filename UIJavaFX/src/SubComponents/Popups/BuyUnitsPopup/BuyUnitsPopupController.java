@@ -3,6 +3,7 @@ package SubComponents.Popups.BuyUnitsPopup;
 import GameEngine.GameEngine;
 import MainComponents.AppController;
 import SubComponents.Popups.ActionPopupController;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
@@ -61,6 +62,7 @@ public class BuyUnitsPopupController {
         IntegerProperty total = new SimpleIntegerProperty();
 
 
+
         total.bind(price.multiply(quantity));
         sumLbl.textProperty().bind(total.asString());
     }
@@ -90,10 +92,11 @@ public class BuyUnitsPopupController {
     public void purchaseBtnAction(){
         if(isUnitSelected) {
             if(amountToBuy.getText().matches("-?\\d+(\\.\\d+)?")){//checks if str is number
-                int amount;
+                int amount , cost;
                 amount = Integer.parseInt(amountToBuy.getText());
+                cost = Integer.parseInt(costLbl.getText());
                 if(amount >0){
-                    if(GameEngine.gameManager.getCurrentPlayerFunds() >= amount) {
+                    if(GameEngine.gameManager.getCurrentPlayerFunds() >= amount*cost) {
                         GameEngine.gameManager.buyUnits(
                                 mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()),
                                 amount);

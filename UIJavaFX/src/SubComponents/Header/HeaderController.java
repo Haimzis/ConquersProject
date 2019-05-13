@@ -2,17 +2,19 @@ package SubComponents.Header;
 
 import GameEngine.GameEngine;
 import GameObjects.Player;
+import Generated.Game;
 import MainComponents.AppController;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.stage.FileChooser;
-
-import java.io.File;
-import java.nio.file.Paths;
 
 
 public class HeaderController {
@@ -23,6 +25,12 @@ public class HeaderController {
     @FXML private  TextFlow headerInfoArea;
     @FXML private Label currentPlayerInTurnLabel;
     @FXML private Button btnManageRound;
+    @FXML private Button btnSave;
+    @FXML private Button btnUndo;
+    @FXML private MenuButton btnStyles;
+    @FXML private ToggleButton btnAnimationToggle;
+    @FXML private ToggleButton btnReplay;
+    @FXML private Button btnExit;
 
     public void setMainController(AppController mainController) { this.appController = mainController; }
 
@@ -41,19 +49,28 @@ public class HeaderController {
         if(btnManageRound.getText().equals(END_TURN)) {
             if(!GameEngine.gameManager.isCycleOver()) {
                 appController.nextPlayer();
+                //setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
             }
             else {
                 //Show message and animation of ending round.
-                writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + "has ended");
+                writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has ended");
                 GameEngine.gameManager.endOfRoundUpdates();
+                currentPlayerInTurnLabel.setText("None");
                 checkWinnerIfAny();
                 btnManageRound.setText(START_ROUND);
             }
-            setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
         }
         else { //Start Round
             appController.startRound();
             btnManageRound.setText(END_TURN);
+        }
+    }
+
+    @FXML
+    private void onUndopressListener() {
+        if(GameEngine.gameManager.isUndoPossible()) {
+            writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has been undone");
+            GameEngine.gameManager.roundUndo();
         }
     }
 
@@ -73,5 +90,10 @@ public class HeaderController {
 
             }
         }
+    }
+
+    public void bindLabel() {
+        StringProperty playerName = new SimpleStringProperty();
+        currentPlayerInTurnLabel.textProperty().bind(playerName);
     }
 }
