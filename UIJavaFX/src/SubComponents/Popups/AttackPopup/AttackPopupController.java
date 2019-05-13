@@ -37,6 +37,7 @@ public class AttackPopupController implements ActionPopupController {
             startNeutralAttack();
         }
         mainController.showResultsPopup(resultOfBattle , infoOfBattle);
+        mainController.updateInformation();
     }
 
     private void startNeutralAttack() {
