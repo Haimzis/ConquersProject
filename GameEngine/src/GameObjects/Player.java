@@ -10,6 +10,7 @@ public class Player implements Serializable {
     private String player_name;
     private int funds;
     private List<Integer> TerritoriesID;
+    private String color="";
 
     public void setColor(String color) {
         this.color = color;
@@ -19,7 +20,6 @@ public class Player implements Serializable {
         return color;
     }
 
-    private String color="";
 
     public Player(int id, String player_name, int funds) {
         ID = id;

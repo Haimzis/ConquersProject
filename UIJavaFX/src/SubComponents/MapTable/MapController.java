@@ -42,12 +42,14 @@ public class MapController {
         if(widthSize < MIN_WIDTH_SIZE)
             widthSize = MIN_WIDTH_SIZE;
         for (int i = 0; i < rows; i++) {
-            RowConstraints row = new RowConstraints(heightSize);
+            RowConstraints row = new RowConstraints();
+            row.setFillHeight(true);
             row.setVgrow(Priority.valueOf("ALWAYS"));
             GridComponent.getRowConstraints().add(row);
         }
         for (int i = 0; i < columns; i++) {
-            ColumnConstraints column = new ColumnConstraints(widthSize);
+            ColumnConstraints column = new ColumnConstraints();
+            column.setFillWidth(true);
             column.setHgrow(Priority.valueOf("ALWAYS"));
             GridComponent.getColumnConstraints().add(column);
         }
@@ -56,7 +58,7 @@ public class MapController {
         int counter= 1;
         for(int i=0; i<map.getRows();i++){
             for(int j=0; j<map.getColumns();j++){
-                Territory territory =map.getTerritoryMap().get(counter) ;
+                Territory territory =map.getTerritoryMap().get(counter);
                 Button btnTerritory = new Button();
                 btnTerritory.setId("btn_Territory_" + counter);
                 btnTerritory.setText(
@@ -64,8 +66,8 @@ public class MapController {
                         "\nThreshHold: "+ territory.getArmyThreshold()+
                         "\nProduction: "+ territory.getProfit());
                 btnTerritory.getStyleClass().add("btn_Territory");
-                btnTerritory.setPrefSize(widthSize,heightSize);
                 btnTerritory.setMinSize(widthSize,heightSize);
+                btnTerritory.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                 territoriesButtons.put(counter,btnTerritory);
                 GridComponent.add(btnTerritory,j,i);
                 btnTerritory.setOnAction(event -> onTerritoryPressListener(territory));
