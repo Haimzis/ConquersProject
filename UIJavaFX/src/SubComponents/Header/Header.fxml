@@ -75,7 +75,7 @@
                                     <Insets right="20.0" />
                                  </HBox.margin>
                               </Label>
-                              <Button fx:id="btnEndTurn" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#endTurnOnPressListener" prefHeight="80.0" prefWidth="51.0" text="End Turn" wrapText="true" />
+                              <Button fx:id="btnManageRound" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#roundManagerBtnListener" prefHeight="80.0" prefWidth="51.0" text="End Turn" wrapText="true" />
                            </children>
                         </HBox>
                         <Label text="Announcments" underline="true" GridPane.columnIndex="2" />
@@ -83,7 +83,7 @@
                   </GridPane>
                </children>
             </StackPane>
-            <Button fx:id="btnSave" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Save game" GridPane.rowIndex="5" />
+            <Button fx:id="btnSave" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSaveBtnPressListener" text="Save game" GridPane.rowIndex="5" />
             <MenuButton fx:id="btnstyles" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Styles" GridPane.columnIndex="3" GridPane.rowIndex="5">
               <items>
                 <MenuItem mnemonicParsing="false" text="Action 1" />
@@ -92,10 +92,10 @@
               </items>
             </MenuButton>
             <Button fx:id="btnRetire" layoutX="139.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Retire" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-            <Button fx:id="btnUndo" layoutX="268.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Undo" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Button fx:id="btnUndo" disable="true" layoutX="268.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Undo" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Button fx:id="btnExit" layoutX="526.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Exit to Menu screen" GridPane.columnIndex="6" GridPane.rowIndex="5" />
             <ToggleButton fx:id="btnAnimationToggle" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Animation On" GridPane.columnIndex="4" GridPane.rowIndex="5" />
-            <ToggleButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Replay" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+            <ToggleButton disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Replay" GridPane.columnIndex="5" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </children>

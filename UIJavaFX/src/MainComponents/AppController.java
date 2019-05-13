@@ -35,6 +35,9 @@ public class AppController {
     }
     private Stage primaryStage;
 
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
 
     public HeaderController getHeaderComponentController() {
         return HeaderComponentController;
@@ -90,6 +93,7 @@ public class AppController {
 
     public void startRound() {
         GameEngine.gameManager.startOfRoundUpdates();
+        nextPlayer();
     }
 
     public void nextPlayer() {

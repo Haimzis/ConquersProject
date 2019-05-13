@@ -112,6 +112,7 @@ public class WelcomeScreenController {
             appController.startGame();
             appController.startRound();
             appController.nextPlayer();
+            appController.setPrimaryStage(primaryStage);
             primaryStage.show();
 
         } catch (IOException e) {
