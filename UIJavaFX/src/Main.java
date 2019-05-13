@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import javax.annotation.Resource;
 import java.net.URL;
@@ -31,6 +32,7 @@ public class Main extends Application {
         welcomeScreenController.setPrimaryStage(primaryStage);
 
         //set stage
+        primaryStage.initStyle(StageStyle.DECORATED);
         primaryStage.setTitle("Conquers Motha Fucka! (Ran is Gay)");
         Scene scene = new Scene(root, 450, 500);
         primaryStage.setScene(scene);

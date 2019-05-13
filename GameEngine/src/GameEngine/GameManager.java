@@ -361,4 +361,12 @@ public class GameManager implements Serializable {
         return currentPlayerTurn;
     }
 
+    public Player getPlayerByName(String playerName) {
+        for(Player player: getGameDescriptor().getPlayersList()){
+            if(player.getPlayerName().equals(playerName)){
+                return player;
+            }
+        }
+        return null;
+    }
 }

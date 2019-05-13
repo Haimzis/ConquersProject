@@ -30,11 +30,14 @@ public class AppController {
     @FXML private MapController MapComponentController;
     private GameEngine gameEngine;
 
+
+    private Stage primaryStage;
+    public InformationController getInformationComponentController() {
+        return InformationComponentController;
+    }
     public Stage getPrimaryStage() {
         return primaryStage;
     }
-    private Stage primaryStage;
-
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
@@ -98,7 +101,7 @@ public class AppController {
 
     public void nextPlayer() {
         GameEngine.gameManager.nextPlayerInTurn();
-        HeaderComponentController.setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
+        HeaderComponentController.setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName());
     }
 
     public MapController getMapComponentController() {

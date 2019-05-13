@@ -17,7 +17,7 @@ public class HeaderController {
     private static final String END_TURN = "End Turn";
     private static final String START_ROUND = "Start Round";
     public AnchorPane HeaderComponent;
-    private AppController appController;
+    private AppController mainController;
     @FXML private  TextFlow headerInfoArea;
     @FXML private Label currentPlayerInTurnLabel;
     @FXML private Button btnManageRound;
@@ -38,7 +38,7 @@ public class HeaderController {
     public void hideErrorLabel() {
         errorLbl.setVisible(false);
     }
-    public void setMainController(AppController mainController) { this.appController = mainController; }
+    public void setMainController(AppController mainController) { this.mainController = mainController; }
 
     public  void writeIntoTextArea(String text) {
         Text textToAdd = new Text(text);
@@ -54,8 +54,8 @@ public class HeaderController {
     public void roundManagerBtnListener() {
         if(btnManageRound.getText().equals(END_TURN)) {
             if(!GameEngine.gameManager.isCycleOver()) {
-                appController.nextPlayer();
-                setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
+                mainController.nextPlayer();
+                setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName());
             }
             else {
                 //Show message and animation of ending round.
@@ -68,7 +68,7 @@ public class HeaderController {
             }
         }
         else { //Start Round
-            appController.startRound();
+            mainController.startRound();
             setButtonsDisabled(true);
             btnManageRound.setText(END_TURN);
         }
@@ -80,6 +80,8 @@ public class HeaderController {
             writeIntoTextArea("Round " + (GameEngine.gameManager.roundNumber - 1) + " has been undone." + "\n");
             GameEngine.gameManager.roundUndo();
             updateRoundInfo();
+            mainController.getInformationComponentController().undoUpdate();
+
         }
         else {
             btnUndo.setDisable(true);

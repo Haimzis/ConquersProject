@@ -15,13 +15,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class InnerTabPaneRootController {
@@ -80,7 +76,7 @@ public class InnerTabPaneRootController {
     }
     public void loadPlayerData(){
         this.PlayerID.setText(Integer.toString(currentPlayer.getID()));
-        this.PlayerName.setText(currentPlayer.getPlayer_name());
+        this.PlayerName.setText(currentPlayer.getPlayerName());
         this.PlayerTurings.setText(Integer.toString(currentPlayer.getFunds()));
         this.PlayerColor.setStyle("-fx-background-color: "+ currentPlayer.getColor());
         if(GameEngine.gameManager!=null){

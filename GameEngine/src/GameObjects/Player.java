@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Player implements Serializable {
     private int ID;
-    private String player_name;
+    private String playerName;
     private int funds;
     private List<Integer> TerritoriesID;
     private String color="";
@@ -21,15 +21,15 @@ public class Player implements Serializable {
     }
 
 
-    public Player(int id, String player_name, int funds) {
+    public Player(int id, String playerName, int funds) {
         ID = id;
-        this.player_name = player_name;
+        this.playerName = playerName;
         this.funds = funds;
         TerritoriesID = new ArrayList<>();
     }
     public Player(Player player) {
         ID = player.getID();
-        this.player_name =player.getPlayer_name();
+        this.playerName =player.getPlayerName();
         this.funds = player.getFunds();
         this.TerritoriesID = new ArrayList<>();
         if (!player.getTerritoriesID().isEmpty())
@@ -60,8 +60,8 @@ public class Player implements Serializable {
     public int getID() {
         return ID;
     }
-    public String getPlayer_name() {
-        return player_name;
+    public String getPlayerName() {
+        return playerName;
     }
     public int getFunds() {
         return funds;

@@ -144,7 +144,7 @@ public class UIConsole {
     //******************//
     //Players select a territory if they have none(only have to select if it's the first round).
     private void chooseTerritoryIfNone() {
-        System.out.println(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name()
+        System.out.println(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName()
                 + ", You have no territories!"
                 + "\n");
         drawMap();
@@ -359,7 +359,7 @@ public class UIConsole {
         } else {
             System.out.println("The game has finished , concluding winners...");
             sleepAbit(1);
-            System.out.println("The winning player is: " + winner.getPlayer_name());
+            System.out.println("The winning player is: " + winner.getPlayerName());
             System.out.println("Ending game..." + "\n");
             sleepAbit(1);
         }
@@ -396,7 +396,7 @@ public class UIConsole {
         System.out.println("The players who are currently playing are: " + "\n");
         engine.getDescriptor().getPlayersList().parallelStream()
                 .forEach(player -> System.out.println("Player name: "
-                        + player.getPlayer_name()
+                        + player.getPlayerName()
                         + "\n" + "Player ID: "
                         + player.getID() + "\n"
                         + "Current amount of territories: "
@@ -416,7 +416,7 @@ public class UIConsole {
     }
     //Print the stats of current player territories.
     private void showCurrentPlayerTerritoriesStats() {
-        System.out.println(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name() + " holds: " + GameEngine.gameManager.getCurrentPlayerTerritoriesAmount() + " territories.");
+        System.out.println(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName() + " holds: " + GameEngine.gameManager.getCurrentPlayerTerritoriesAmount() + " territories.");
         GameEngine.gameManager.getCurrentPlayerTerritories().forEach(territory ->
                 System.out.println("Territory ID: " + territory.getID()
                         + " Total power: "
@@ -446,7 +446,7 @@ public class UIConsole {
     //Start turn of player in turn.
     private void startTurn() {
         System.out.println("Round number: " + GameEngine.gameManager.roundNumber);
-        System.out.println("Current player: " +GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
+        System.out.println("Current player: " +GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName());
         printFundsBeforeProduction();
         printFunds();
         showCurrentPlayerStats();
@@ -535,11 +535,11 @@ public class UIConsole {
     }
     private void printMapLegend() {
         System.out.println("MapTable legend");
-        System.out.println(engine.getDescriptor().getPlayersList().get(0).getPlayer_name()
+        System.out.println(engine.getDescriptor().getPlayersList().get(0).getPlayerName()
                 + ": "
                 + "X"
                 + ", "
-                + engine.getDescriptor().getPlayersList().get(1).getPlayer_name()
+                + engine.getDescriptor().getPlayersList().get(1).getPlayerName()
                 + ": "
                 + "O");
         System.out.println("----------------------------");
