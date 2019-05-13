@@ -48,7 +48,7 @@ public class AttackPopupController implements ActionPopupController {
 
         }
         else { // Failed to get territory ( Army is not big enough)
-            mainController.getHeaderComponentController().writeIntoTextArea("Failed to conquer territory number  " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID() +"\n");
+            mainController.getHeaderComponentController().writeIntoTextArea("Failed to conquer territory number " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID() +"\n");
             resultOfBattle = Result.LOSE;
         }
         infoOfBattle = createText();

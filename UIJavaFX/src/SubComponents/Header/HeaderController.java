@@ -87,7 +87,7 @@ public class HeaderController {
     }
 
     private void updateRoundInfo() {
-        setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
+
     }
 
     @FXML

@@ -104,6 +104,8 @@ public class MapController {
     }
 
     public void colorTerritory() {
-        currentlySelectedButton.setStyle("-fx-background-color: " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquer().getColor());
+        if(GameEngine.gameManager.getSelectedTerritoryByPlayer().isConquered()) {
+            currentlySelectedButton.setStyle("-fx-background-color: " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquer().getColor());
+        }
     }
 }
