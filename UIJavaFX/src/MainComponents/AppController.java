@@ -94,12 +94,15 @@ public class AppController {
     public void startRound() {
         GameEngine.gameManager.startOfRoundUpdates();
         nextPlayer();
-        HeaderComponentController.bindLabel();
     }
 
     public void nextPlayer() {
         GameEngine.gameManager.nextPlayerInTurn();
-       // HeaderComponentController.setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
+        HeaderComponentController.setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
+    }
+
+    public MapController getMapComponentController() {
+        return MapComponentController;
     }
 
     public void showOwnTerritoryPopup() {

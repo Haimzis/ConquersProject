@@ -5,7 +5,6 @@ import GameEngine.GameEngine;
 import GameObjects.Territory;
 import MainComponents.AppController;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -26,6 +25,7 @@ public class MapController {
     private Board map;
     private final int MIN_WIDTH_SIZE= 146;
     private final int MIN_HEIGHT_SIZE = 98;
+    private Button currentlySelectedButton;
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
@@ -70,7 +70,12 @@ public class MapController {
                 btnTerritory.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                 territoriesButtons.put(counter,btnTerritory);
                 GridComponent.add(btnTerritory,j,i);
-                btnTerritory.setOnAction(event -> onTerritoryPressListener(territory));
+                btnTerritory.setOnAction(event -> {
+                    Object node = event.getSource();
+                    Button mapButton = (Button)node;
+                    currentlySelectedButton = mapButton;
+                    onTerritoryPressListener(territory);
+                });
                 counter++;
             }
         }
@@ -85,14 +90,20 @@ public class MapController {
             else {
                 if(GameEngine.gameManager.isTargetTerritoryValid()) {
                     mainController.showAttackPopup();
+                    mainController.getHeaderComponentController().hideErrorLabel();
                 }
                 else { //Not valid territory
-
+                    mainController.getHeaderComponentController().setErrorOfNotValidTerritory();
                 }
             }
         }
         else { //No territories.
             mainController.showAttackPopup();
+            mainController.getHeaderComponentController().hideErrorLabel();
         }
+    }
+
+    public void colorTerritory() {
+        currentlySelectedButton.setStyle("-fx-background-color: " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquer().getColor());
     }
 }

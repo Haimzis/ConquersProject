@@ -2,11 +2,7 @@ package SubComponents.Header;
 
 import GameEngine.GameEngine;
 import GameObjects.Player;
-import Generated.Game;
 import MainComponents.AppController;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,7 +27,17 @@ public class HeaderController {
     @FXML private ToggleButton btnAnimationToggle;
     @FXML private ToggleButton btnReplay;
     @FXML private Button btnExit;
+    @FXML private Label errorLbl;
 
+
+    public void setErrorOfNotValidTerritory() {
+        errorLbl.setText("This is not a valid territory!");
+        errorLbl.setVisible(true);
+    }
+
+    public void hideErrorLabel() {
+        errorLbl.setVisible(false);
+    }
     public void setMainController(AppController mainController) { this.appController = mainController; }
 
     public  void writeIntoTextArea(String text) {
@@ -49,29 +55,39 @@ public class HeaderController {
         if(btnManageRound.getText().equals(END_TURN)) {
             if(!GameEngine.gameManager.isCycleOver()) {
                 appController.nextPlayer();
-                //setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
+                setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
             }
             else {
                 //Show message and animation of ending round.
-                writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has ended");
+                writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has ended" + "\n");
                 GameEngine.gameManager.endOfRoundUpdates();
                 currentPlayerInTurnLabel.setText("None");
                 checkWinnerIfAny();
+                setButtonsDisabled(false);
                 btnManageRound.setText(START_ROUND);
             }
         }
         else { //Start Round
             appController.startRound();
+            setButtonsDisabled(true);
             btnManageRound.setText(END_TURN);
         }
     }
 
     @FXML
-    private void onUndopressListener() {
+    private void onUndoPressListener() {
         if(GameEngine.gameManager.isUndoPossible()) {
-            writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has been undone");
+            writeIntoTextArea("Round " + (GameEngine.gameManager.roundNumber - 1) + " has been undone." + "\n");
             GameEngine.gameManager.roundUndo();
+            updateRoundInfo();
         }
+        else {
+            btnUndo.setDisable(true);
+        }
+    }
+
+    private void updateRoundInfo() {
+        setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayer_name());
     }
 
     @FXML
@@ -80,8 +96,9 @@ public class HeaderController {
         //GameEngine.saveGame(Paths.get(absolutePath), GameEngine.gameManager);
     }
 
+    //TODO: Need to disable the game after the winner is shown.
     private void checkWinnerIfAny() {
-        if(GameEngine.gameManager.isGameOver()) { //Need to disable the map and re enable other buttons.
+        if(GameEngine.gameManager.isGameOver()) {
             Player winner = GameEngine.gameManager.getWinnerPlayer();
             if(winner == null) { //Show draw message
 
@@ -89,11 +106,12 @@ public class HeaderController {
             else { //Need to show the winner.
 
             }
+            btnManageRound.setDisable(true);
         }
     }
 
-    public void bindLabel() {
-        StringProperty playerName = new SimpleStringProperty();
-        currentPlayerInTurnLabel.textProperty().bind(playerName);
+    private void setButtonsDisabled(Boolean set) {
+        btnSave.setDisable(set);
+        btnUndo.setDisable(set);
     }
 }

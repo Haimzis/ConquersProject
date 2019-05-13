@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="HeaderComponent" prefHeight="125.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Header.HeaderController">
+<AnchorPane fx:id="HeaderComponent" prefHeight="125.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Header.HeaderController">
    <children>
       <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -79,6 +79,7 @@
                            </children>
                         </HBox>
                         <Label text="Announcments" underline="true" GridPane.columnIndex="2" />
+                        <Label fx:id="errorLbl" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                      </children>
                   </GridPane>
                </children>
@@ -92,10 +93,10 @@
               </items>
             </MenuButton>
             <Button fx:id="btnRetire" layoutX="139.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Retire" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-            <Button fx:id="btnUndo" disable="true" layoutX="268.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Undo" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Button fx:id="btnUndo" disable="true" layoutX="268.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onUndoPressListener" text="Undo" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Button fx:id="btnExit" layoutX="526.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Exit to Menu screen" GridPane.columnIndex="6" GridPane.rowIndex="5" />
             <ToggleButton fx:id="btnAnimationToggle" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Animation On" GridPane.columnIndex="4" GridPane.rowIndex="5" />
-            <ToggleButton disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Replay" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+            <ToggleButton fx:id="btnReplay" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Replay" GridPane.columnIndex="5" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </children>

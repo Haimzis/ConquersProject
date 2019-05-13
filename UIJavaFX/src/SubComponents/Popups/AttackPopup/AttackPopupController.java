@@ -36,6 +36,7 @@ public class AttackPopupController implements ActionPopupController {
         else {
             startNeutralAttack();
         }
+        mainController.getMapComponentController().colorTerritory();
         mainController.showResultsPopup(resultOfBattle , infoOfBattle);
         mainController.updateInformation();
     }
@@ -44,6 +45,7 @@ public class AttackPopupController implements ActionPopupController {
         if(GameEngine.gameManager.conquerNeutralTerritory()) { // Got the territory
             mainController.getHeaderComponentController().writeIntoTextArea("Territory " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID() + " has been conquered!" + "\n");
             resultOfBattle = Result.WIN;
+
         }
         else { // Failed to get territory ( Army is not big enough)
             mainController.getHeaderComponentController().writeIntoTextArea("Failed to conquer territory number  " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID() +"\n");
