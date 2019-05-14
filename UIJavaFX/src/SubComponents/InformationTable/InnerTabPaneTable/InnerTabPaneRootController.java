@@ -15,7 +15,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class InnerTabPaneRootController {
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
-    public void createDataStructure(){
+    public void loadTerritoriesToTableView(){
         territoriesTableView.setEditable(false);
         //nameCol
         TableColumn<Territory,Integer> IDCol = new TableColumn<>("ID");
@@ -64,6 +63,7 @@ public class InnerTabPaneRootController {
         //noinspection unchecked
         territoriesTableView.getColumns().addAll(IDCol, profitCol, armyThresholdCol);
     }
+
     void loadConquerUnitsOnSelectedTerritory(Territory territory){
         ObservableList<String> items =FXCollections.observableArrayList(createListOfUnitsStrings(territory));
         unitsListView.setItems(items);
