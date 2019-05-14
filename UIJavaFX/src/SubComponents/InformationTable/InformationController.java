@@ -21,8 +21,8 @@ import java.util.*;
 
 
 public class InformationController {
-    public AnchorPane InformationComponent;
     private AppController mainController;
+    @FXML public AnchorPane InformationComponent;
     @FXML private Label currentRound;
     @FXML private Label totalRounds;
     @FXML private TabPane playersInformationTabPane;
@@ -41,16 +41,18 @@ public class InformationController {
     private void setColor(Player player){
 
     }
-    private void initializeColors(){
+    private void loadColors(){
         colors.push("Green");colors.push("Red");
         colors.push("Blue");colors.push("Yellow");
     }
     public void loadInformation() {
-        List<Player> playersList  = mainController.getGameEngine().getDescriptor().getPlayersList();
-        initializeColors();
-        initializeTotalCycles();
-
-        for (Player player : playersList) { //load each Player Information
+        loadColors();
+        loadTotalCycles();
+        loadPlayersTabs();
+        loadUnitsToTableView();
+    }
+    private void loadPlayersTabs(){
+        for (Player player : mainController.getGameEngine().getDescriptor().getPlayersList()) { //load each Player Information
             Tab playerTab = addTabToPlayers(player.getPlayerName());
             playersTabs.put(player.getPlayerName(), playerTab);
             //load inner TabPane Construct into tabs
@@ -63,7 +65,7 @@ public class InformationController {
                 InnerTabPaneRootController innerTabPaneRootController = innerTabPaneRootLoader.getController();
                 player.setColor(colors.pop());
                 innerTabPaneRootController.setCurrentPlayer(player);
-                innerTabPaneRootController.createDataStructure();
+                innerTabPaneRootController.loadTerritoriesToTableView();
                 innerTabPaneRootController.loadPlayerData();
                 playersInnerTabPaneRootControllers.put(player.getPlayerName(), innerTabPaneRootController);
             } catch (IOException e) {
@@ -71,13 +73,11 @@ public class InformationController {
             }
             playerTab.setContent(innerTabPaneRoot);
         }
-        loadUnitsToTableView();
     }
-
-    private void initializeTotalCycles() {
+    private void loadTotalCycles() {
         totalRounds.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getTotalCycles()));
     }
-    public void currentRoundUpdate(){
+    private void currentRoundUpdate(){
         currentRound.setText(Integer.toString(GameEngine.gameManager.roundNumber));
     }
     public void updatePlayersData(){
@@ -151,7 +151,6 @@ public class InformationController {
     private void deleteTabFromPlayers(String playerName) {
         removeTab(playerName, playersInformationTabPane);
     }
-
     private void removeTab(String playerName, TabPane playersInformationTabPane) {
         for (int i = 0; i < playersInformationTabPane.getTabs().size(); i++) {
             String tabTitle = playersInformationTabPane.getTabs().get(i).getText();
@@ -161,8 +160,5 @@ public class InformationController {
             }
         }
     }
-
     public void setMainController(AppController mainController) { this.mainController = mainController; }
-
-
 }
