@@ -76,13 +76,13 @@ public class GameEngine {
         if(!fileExist) return null;
         else return loadFilePath;
     }
-    public static void saveGame(Path path, GameManager manager) {
+    public static boolean saveGame(Path path, GameManager manager) {
         File file = new File(path.toString());
         try(ObjectOutputStream write= new ObjectOutputStream (new FileOutputStream(file))) {
             write.writeObject(manager);
-            System.out.println("Game saved successfully");
+            return true;
         } catch(IOException nse) {
-            System.out.println("Could not save game , please try again.");
+            return false;
         }
     }
     public boolean loadGame(Path path) {

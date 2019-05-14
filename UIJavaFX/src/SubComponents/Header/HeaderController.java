@@ -11,6 +11,12 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.nio.file.Paths;
 
 
 public class HeaderController {
@@ -54,6 +60,7 @@ public class HeaderController {
     public void roundManagerBtnListener() {
         if(btnManageRound.getText().equals(END_TURN)) {
             if(!GameEngine.gameManager.isCycleOver()) {
+                hideErrorLabel();
                 mainController.nextPlayer();
                 setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName());
             }
@@ -65,10 +72,12 @@ public class HeaderController {
                 checkWinnerIfAny();
                 setButtonsDisabled(false);
                 btnManageRound.setText(START_ROUND);
+                mainController.getMapComponentController().disableMap(true);
             }
         }
         else { //Start Round
             mainController.startRound();
+            mainController.getMapComponentController().disableMap(false);
             setButtonsDisabled(true);
             btnManageRound.setText(END_TURN);
         }
@@ -79,7 +88,6 @@ public class HeaderController {
         if(GameEngine.gameManager.isUndoPossible()) {
             writeIntoTextArea("Round " + (GameEngine.gameManager.roundNumber - 1) + " has been undone." + "\n");
             GameEngine.gameManager.roundUndo();
-            updateRoundInfo();
             mainController.getInformationComponentController().undoUpdate();
 
         }
@@ -88,14 +96,22 @@ public class HeaderController {
         }
     }
 
-    private void updateRoundInfo() {
-
-    }
 
     @FXML
     public void onSaveBtnPressListener() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Save Game");
+        File selectedFile = null;
+        while(selectedFile== null) {
+            selectedFile = chooser.showSaveDialog(null);
+        }
 
-        //GameEngine.saveGame(Paths.get(absolutePath), GameEngine.gameManager);
+        if(GameEngine.saveGame(Paths.get(selectedFile.getAbsolutePath()), GameEngine.gameManager)) {
+            errorLbl.setText("Game saved successfully");
+        }
+        else {
+            errorLbl.setText("Failed to save game");
+        }
     }
 
     //TODO: Need to disable the game after the winner is shown.

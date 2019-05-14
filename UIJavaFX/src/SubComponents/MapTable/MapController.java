@@ -108,4 +108,8 @@ public class MapController {
             currentlySelectedButton.setStyle("-fx-background-color: " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquer().getColor());
         }
     }
+
+    public void  disableMap(Boolean value) {
+        GridComponent.setDisable(value);
+    }
 }
