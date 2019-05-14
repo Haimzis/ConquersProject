@@ -77,7 +77,7 @@ public class InformationController {
     private void loadTotalCycles() {
         totalRounds.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getTotalCycles()));
     }
-    public void currentRoundUpdate(){
+    private void currentRoundUpdate(){
         currentRound.setText(Integer.toString(GameEngine.gameManager.roundNumber));
     }
     public void updatePlayersData(){
@@ -151,7 +151,6 @@ public class InformationController {
     private void deleteTabFromPlayers(String playerName) {
         removeTab(playerName, playersInformationTabPane);
     }
-
     private void removeTab(String playerName, TabPane playersInformationTabPane) {
         for (int i = 0; i < playersInformationTabPane.getTabs().size(); i++) {
             String tabTitle = playersInformationTabPane.getTabs().get(i).getText();
@@ -161,8 +160,5 @@ public class InformationController {
             }
         }
     }
-
     public void setMainController(AppController mainController) { this.mainController = mainController; }
-
-
 }
