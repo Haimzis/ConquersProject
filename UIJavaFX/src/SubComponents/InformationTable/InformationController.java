@@ -6,6 +6,7 @@ import GameObjects.Unit;
 import MainComponents.AppController;
 import Resources.ResourceConstants;
 import SubComponents.InformationTable.InnerTabPaneTable.InnerTabPaneRootController;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -38,9 +39,7 @@ public class InformationController {
         });
         currentRoundUpdate();
     }
-    private void setColor(Player player){
 
-    }
     private void loadColors(){
         colors.push("Green");colors.push("Red");
         colors.push("Blue");colors.push("Yellow");
@@ -50,6 +49,7 @@ public class InformationController {
         loadTotalCycles();
         loadPlayersTabs();
         loadUnitsToTableView();
+  //Dont Work//currentRound.textProperty().bind(new SimpleIntegerProperty(GameEngine.gameManager.roundNumber).asString());
     }
     private void loadPlayersTabs(){
         for (Player player : mainController.getGameEngine().getDescriptor().getPlayersList()) { //load each Player Information

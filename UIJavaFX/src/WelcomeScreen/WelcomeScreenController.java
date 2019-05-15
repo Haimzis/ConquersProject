@@ -29,6 +29,7 @@ public class WelcomeScreenController {
 @FXML private TextField tbx_path;
 @FXML private Button btn_choosePath;
 @FXML private Label lbl_message;
+@FXML private Button buttonStartGame;
     private Stage primaryStage;
     private SimpleBooleanProperty isFileSelected;
     private SimpleStringProperty selectedFileProperty;
@@ -72,27 +73,23 @@ public class WelcomeScreenController {
             if (!loadSucceed) {
                 lbl_message.setText("could not load XML file!");
                 lbl_message.setStyle("-fx-opacity: 1;");
-            } else {
-                startGame();
             }
         }
     }
     @FXML
-    public void setBtn_loadGameAction(){
-        if(!isFileSelected.getValue()) {
+    public void setBtn_loadGameAction() {
+        if (!isFileSelected.getValue()) {
             lbl_message.setText("Yoo Matha fucka, choose file!");
             lbl_message.setStyle("-fx-opacity: 1;");
-        }
-        else {
+        } else {
             loadSucceed = gameEngine.loadGame(gameEngine.getLoadFilePath(tbx_path.getText()));
             if (!loadSucceed) {
                 lbl_message.setText("could not load saved game file!");
                 lbl_message.setStyle("-fx-opacity: 1;");
-            } else {
-                startGame();
             }
         }
     }
+    @FXML
     private void startGame(){
         FXMLLoader fxmlLoader = new FXMLLoader();
         URL url = getClass().getResource(APP_FXML_INCLUDE_RESOURCE);
@@ -105,13 +102,13 @@ public class WelcomeScreenController {
             primaryStage.setWidth(900);
             primaryStage.setScene(scene);
 
-            //wire up game engine to appController and create map
+            //wire up gameEngine to appController and create map
             AppController appController = fxmlLoader.getController();
             appController.setGameEngine(gameEngine);
+            appController.startGame();
             appController.createMap();
             appController.loadInformation();
-            appController.startGame();
-            appController.startRound();
+            //appController.startRound();
             appController.setPrimaryStage(primaryStage);
             primaryStage.show();
 

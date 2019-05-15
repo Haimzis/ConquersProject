@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane fx:id="WelcomeScreenComponent" alignment="CENTER" columnHalignment="CENTER" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WelcomeScreen.WelcomeScreenController">
+<FlowPane fx:id="WelcomeScreenComponent" alignment="CENTER" columnHalignment="CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WelcomeScreen.WelcomeScreenController">
    <children>
       <GridPane prefHeight="414.0" prefWidth="384.0">
          <columnConstraints>
@@ -53,6 +53,7 @@
                               <Font size="35.0" />
                            </font>
                         </Label>
+                        <Button fx:id="buttonStartGame" mnemonicParsing="false" onAction="#startGame" prefHeight="26.0" prefWidth="216.0" text="Start Game" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                </children>
