@@ -11,9 +11,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -22,6 +20,7 @@ import java.nio.file.Paths;
 public class HeaderController {
     private static final String END_TURN = "End Turn";
     private static final String START_ROUND = "Start Round";
+    public static final String NEW_GAME = "New Game";
     public AnchorPane HeaderComponent;
     private AppController mainController;
     @FXML private  TextFlow headerInfoArea;
@@ -69,17 +68,24 @@ public class HeaderController {
                 writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has ended" + "\n");
                 GameEngine.gameManager.endOfRoundUpdates();
                 currentPlayerInTurnLabel.setText("None");
-                checkWinnerIfAny();
                 setButtonsDisabled(false);
                 btnManageRound.setText(START_ROUND);
                 mainController.getMapComponentController().disableMap(true);
+                checkWinnerIfAny();
             }
         }
-        else { //Start Round
+        else if(btnManageRound.getText().equals(START_ROUND)) {
             mainController.startRound();
             mainController.getMapComponentController().disableMap(false);
             setButtonsDisabled(true);
             btnManageRound.setText(END_TURN);
+        }
+        else { //New game with same XML.
+            mainController.getMapComponentController().disableMap(false);
+            mainController.createMap();
+            mainController.loadInformation();
+            mainController.startGame();
+            mainController.startRound();
         }
     }
 
@@ -89,6 +95,7 @@ public class HeaderController {
             writeIntoTextArea("Round " + (GameEngine.gameManager.roundNumber - 1) + " has been undone." + "\n");
             GameEngine.gameManager.roundUndo();
             mainController.getInformationComponentController().undoUpdate();
+            mainController.createMap();
 
         }
         else {
@@ -119,12 +126,15 @@ public class HeaderController {
         if(GameEngine.gameManager.isGameOver()) {
             Player winner = GameEngine.gameManager.getWinnerPlayer();
             if(winner == null) { //Show draw message
-
+                currentPlayerInTurnLabel.setText("Draw!");
             }
             else { //Need to show the winner.
-
+                currentPlayerInTurnLabel.setText(winner.getPlayerName());
             }
             btnManageRound.setDisable(true);
+            setButtonsDisabled(true);
+            mainController.getMapComponentController().disableMap(true);
+            btnManageRound.setText(NEW_GAME);
         }
     }
 

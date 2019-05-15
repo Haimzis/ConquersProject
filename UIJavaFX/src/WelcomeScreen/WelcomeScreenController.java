@@ -86,9 +86,10 @@ public class WelcomeScreenController {
         else {
             loadSucceed = gameEngine.loadGame(gameEngine.getLoadFilePath(tbx_path.getText()));
             if (!loadSucceed) {
-                lbl_message.setText("could not load saved game file!");
+                lbl_message.setText("Could not load saved game file!");
                 lbl_message.setStyle("-fx-opacity: 1;");
             } else {
+                gameEngine.setDescriptor(GameEngine.gameManager.getGameDescriptor());
                 startGame();
             }
         }
@@ -110,7 +111,9 @@ public class WelcomeScreenController {
             appController.setGameEngine(gameEngine);
             appController.createMap();
             appController.loadInformation();
-            appController.startGame();
+            if(!loadSucceed) { //Check if its a loaded game
+                appController.startGame();
+            }
             appController.startRound();
             appController.setPrimaryStage(primaryStage);
             primaryStage.show();

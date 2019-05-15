@@ -1,5 +1,8 @@
 package GameEngine;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,6 +14,8 @@ import static java.nio.file.Files.exists;
 public class GameEngine {
     private GameDescriptor descriptor;
     public static GameManager gameManager;
+
+
     public enum ERROR {XML_ERROR , PASS}
     public static int flag = 0; //Final check flag if everything loaded.
 
@@ -91,10 +96,8 @@ public class GameEngine {
                              new FileInputStream(path.toString()))) {
             gameManager = (GameManager) in.readObject();
             flag = 1;
-            System.out.println("Game loaded successfully");
             return true;
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Could not load the game , please try again.");
             return false;
         }
     }

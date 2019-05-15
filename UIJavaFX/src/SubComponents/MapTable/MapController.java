@@ -34,7 +34,6 @@ public class MapController {
         this.map = newMap;
     }
     public void createMap(){
-
         int columns=map.getColumns(),rows=map.getRows();
         double heightSize = GridComponent.getPrefHeight() / rows,widthSize= GridComponent.getPrefWidth() / columns;
         if(heightSize < MIN_HEIGHT_SIZE)
@@ -72,10 +71,12 @@ public class MapController {
                 GridComponent.add(btnTerritory,j,i);
                 btnTerritory.setOnAction(event -> {
                     Object node = event.getSource();
-                    Button mapButton = (Button)node;
-                    currentlySelectedButton = mapButton;
+                    currentlySelectedButton = (Button)node;
                     onTerritoryPressListener(territory);
                 });
+                if(territory.isConquered()) { //Color map if its conquered.(For load game functionality).
+                    btnTerritory.setStyle("-fx-background-color: " + territory.getConquer().getColor());
+                }
                 counter++;
             }
         }
