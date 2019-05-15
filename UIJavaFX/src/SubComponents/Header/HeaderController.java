@@ -120,6 +120,7 @@ public class HeaderController {
 
             }
         }
+        //TODO: bag - after start game if we conquered territory it's still in the table view in the new game.
         else {// This bitch clicked on 'new game' button
             mainController.getMapComponentController().clearMap();
             mainController.getMapComponentController().disableMap(false);
