@@ -11,9 +11,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -22,6 +20,7 @@ import java.nio.file.Paths;
 public class HeaderController {
     private static final String END_TURN = "End Turn";
     private static final String START_ROUND = "Start Round";
+    public static final String NEW_GAME = "New Game";
     public AnchorPane HeaderComponent;
     private AppController mainController;
     @FXML private  TextFlow headerInfoArea;
@@ -55,11 +54,11 @@ public class HeaderController {
         currentPlayerInTurnLabel.setText(currentPlayerName);
     }
 
-    //TODO: This needs to move to an round manager.
+/*    //TODO: This needs to move to an round manager. Haim: (No it isn't) - Ran fuckU
     @FXML
     public void roundManagerBtnListener() {
         if(btnManageRound.getText().equals(END_TURN)) {
-            if(!GameEngine.gameManager.isCycleOver()) {
+            if(!GameEngine.gameManager.isCycleOver() && GameEngine.gameManager.) {
                 hideErrorLabel();
                 mainController.nextPlayer();
                 setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName());
@@ -69,17 +68,65 @@ public class HeaderController {
                 writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has ended" + "\n");
                 GameEngine.gameManager.endOfRoundUpdates();
                 currentPlayerInTurnLabel.setText("None");
-                checkWinnerIfAny();
                 setButtonsDisabled(false);
                 btnManageRound.setText(START_ROUND);
                 mainController.getMapComponentController().disableMap(true);
+                checkWinnerIfAny();
             }
         }
-        else { //Start Round
+        else if(btnManageRound.getText().equals(START_ROUND)) {
             mainController.startRound();
             mainController.getMapComponentController().disableMap(false);
             setButtonsDisabled(true);
             btnManageRound.setText(END_TURN);
+        }
+        else { //New game with same XML.
+            mainController.getMapComponentController().clearMap();
+            mainController.getMapComponentController().disableMap(false);
+            mainController.startGame();
+            mainController.createMap();
+            mainController.loadInformation();
+            mainController.startRound();
+        }
+    }*/
+
+    @FXML
+    public void roundManagerBtnListener() { //getting inside only when some sucker clicks the button
+        if(!btnManageRound.getText().equals(NEW_GAME)) {
+            if (!GameEngine.gameManager.roundStarted()) {//you're the first bitch
+                writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has started" + "\n");
+                btnManageRound.setText(END_TURN);
+                mainController.startRound();
+                setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName());
+                mainController.getMapComponentController().disableMap(false);
+                setButtonsDisabled(true);
+
+            } else { // round started already
+
+                if (GameEngine.gameManager.isCycleOver()) {//you're the last bitch, end your turn and call endOfRoundUpdate
+                    writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has ended" + "\n");
+                    btnManageRound.setText(START_ROUND);
+                    mainController.endOfRoundUpdates();
+                    mainController.getMapComponentController().disableMap(true);
+                    setCurrentPlayerInTurnLbl("None");
+                    setButtonsDisabled(false);
+                    if (mainController.isGameOver())
+                        checkWinnerIfAny();
+
+                } else { //normal - move next player..
+                    mainController.startRound();
+                    setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName());
+                }
+
+            }
+        }
+        else {// This bitch clicked on 'new game' button
+            mainController.getMapComponentController().clearMap();
+            mainController.getMapComponentController().disableMap(false);
+            mainController.startGame();
+            mainController.createMap();
+            mainController.loadInformation();
+            mainController.startRound();
         }
     }
 
@@ -89,13 +136,16 @@ public class HeaderController {
             writeIntoTextArea("Round " + (GameEngine.gameManager.roundNumber - 1) + " has been undone." + "\n");
             GameEngine.gameManager.roundUndo();
             mainController.getInformationComponentController().undoUpdate();
-
+            mainController.getMapComponentController().clearMap();
+            mainController.createMap();
+            if(!GameEngine.gameManager.isUndoPossible()) {
+                btnUndo.setDisable(true);
+            }
         }
         else {
             btnUndo.setDisable(true);
         }
     }
-
 
     @FXML
     public void onSaveBtnPressListener() {
@@ -114,17 +164,19 @@ public class HeaderController {
         }
     }
 
-    //TODO: Need to disable the game after the winner is shown.
+    //TODO: Need to disable the game after the winner is shown. Ran dont forget to do that
     private void checkWinnerIfAny() {
         if(GameEngine.gameManager.isGameOver()) {
             Player winner = GameEngine.gameManager.getWinnerPlayer();
             if(winner == null) { //Show draw message
-
+                currentPlayerInTurnLabel.setText("Draw!");
             }
             else { //Need to show the winner.
-
+                currentPlayerInTurnLabel.setText(winner.getPlayerName());
             }
-            btnManageRound.setDisable(true);
+            setButtonsDisabled(true);
+            mainController.getMapComponentController().disableMap(true);
+            btnManageRound.setText(NEW_GAME);
         }
     }
 

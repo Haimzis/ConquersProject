@@ -29,9 +29,17 @@ public class InnerTabPaneRootController {
     @FXML private TableView<Territory> territoriesTableView;
     private Player currentPlayer;
 
+    public String getCurrentPlayerColor() {
+        return currentPlayerColor;
+    }
+
+    private String currentPlayerColor;
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+    public void setCurrentPlayerColor(String color){
+        this.currentPlayerColor=color;
     }
     public void loadTerritoriesToTableView(){
         territoriesTableView.setEditable(false);
@@ -64,11 +72,12 @@ public class InnerTabPaneRootController {
         territoriesTableView.getColumns().addAll(IDCol, profitCol, armyThresholdCol);
     }
 
-    void loadConquerUnitsOnSelectedTerritory(Territory territory){
+    private void loadConquerUnitsOnSelectedTerritory(Territory territory){
         ObservableList<String> items =FXCollections.observableArrayList(createListOfUnitsStrings(territory));
         unitsListView.setItems(items);
     }
-    public List<String> createListOfUnitsStrings(Territory territory){
+    //TODO: there is a bag right here, i will fix it.(Ran fuckU)
+    private List<String> createListOfUnitsStrings(Territory territory){
         List<String> newList =new ArrayList<>(territory.getConquerArmyForce().getUnits().size());
         territory.getConquerArmyForce().getUnits().forEach(
                 unit ->newList.add(unit.getType() +"/ Current Power: "+ unit.getCurrentFirePower()));
@@ -78,7 +87,7 @@ public class InnerTabPaneRootController {
         this.PlayerID.setText(Integer.toString(currentPlayer.getID()));
         this.PlayerName.setText(currentPlayer.getPlayerName());
         this.PlayerTurings.setText(Integer.toString(currentPlayer.getFunds()));
-        this.PlayerColor.setStyle("-fx-background-color: "+ currentPlayer.getColor());
+        this.PlayerColor.setStyle("-fx-background-color: "+ currentPlayerColor);
         if(GameEngine.gameManager!=null){
             final ObservableList<Territory> data =
                     FXCollections.observableArrayList(GameEngine.gameManager.getTerritoryListByPlayer(currentPlayer));

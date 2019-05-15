@@ -34,7 +34,6 @@ public class MapController {
         this.map = newMap;
     }
     public void createMap(){
-
         int columns=map.getColumns(),rows=map.getRows();
         double heightSize = GridComponent.getPrefHeight() / rows,widthSize= GridComponent.getPrefWidth() / columns;
         if(heightSize < MIN_HEIGHT_SIZE)
@@ -72,10 +71,12 @@ public class MapController {
                 GridComponent.add(btnTerritory,j,i);
                 btnTerritory.setOnAction(event -> {
                     Object node = event.getSource();
-                    Button mapButton = (Button)node;
-                    currentlySelectedButton = mapButton;
+                    currentlySelectedButton = (Button)node;
                     onTerritoryPressListener(territory);
                 });
+                if(territory.isConquered()) { //Color map if its conquered.(For load game functionality).
+                    btnTerritory.setStyle("-fx-background-color: " + mainController.getColorByPlayerName(territory.getConquer().getPlayerName()));
+                }
                 counter++;
             }
         }
@@ -104,12 +105,19 @@ public class MapController {
     }
 
     public void colorTerritory() {
-        if(GameEngine.gameManager.getSelectedTerritoryByPlayer().isConquered()) {
-            currentlySelectedButton.setStyle("-fx-background-color: " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquer().getColor());
+        Territory territory = GameEngine.gameManager.getSelectedTerritoryByPlayer();
+        if(territory.isConquered()) {
+            currentlySelectedButton.setStyle("-fx-background-color: " + mainController.getColorByPlayerName(territory.getConquer().getPlayerName()));
         }
     }
 
     public void  disableMap(Boolean value) {
         GridComponent.setDisable(value);
+    }
+
+    public void clearMap() {
+        GridComponent.getChildren().clear();
+        GridComponent.getRowConstraints().clear();
+        GridComponent.getColumnConstraints().clear();
     }
 }

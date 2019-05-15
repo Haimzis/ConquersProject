@@ -10,16 +10,6 @@ public class Player implements Serializable {
     private String playerName;
     private int funds;
     private List<Integer> TerritoriesID;
-    private String color="";
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
 
     public Player(int id, String playerName, int funds) {
         ID = id;
@@ -35,20 +25,6 @@ public class Player implements Serializable {
         if (!player.getTerritoriesID().isEmpty())
             //player.getTerritoriesID().forEach(territoryID -> this.TerritoriesID.add(new Integer(territoryID)));
             this.TerritoriesID.addAll(player.getTerritoriesID()); //TODO: I need to check that the undo works well with it
-    }
-
-    private StringProperty playerNameProperty;
-
-    public String getPlayerNameProperty() {
-        return playerNameProperty.get();
-    }
-
-    public void setPlayerNameProperty(String playerNameProperty) {
-        this.playerNameProperty.set(playerNameProperty);
-    }
-
-    public StringProperty playerNamePropertyProperty() {
-        return playerNameProperty;
     }
 
     //**************************//

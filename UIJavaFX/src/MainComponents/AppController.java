@@ -64,7 +64,10 @@ public class AppController {
         //initialize CSS path
         MapComponent.getStylesheets().add(getClass().getResource("/SubComponents/MapTable/Map.css").toExternalForm());
     }
+    public String getColorByPlayerName(String playerName){
+        return InformationComponentController.getColorByPlayerName(playerName);
 
+    }
     public void setHeaderComponentController(HeaderController headerComponentController) {
         this.HeaderComponentController = headerComponentController;
     }
@@ -103,7 +106,10 @@ public class AppController {
         GameEngine.gameManager.nextPlayerInTurn();
         HeaderComponentController.setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName());
     }
-
+    public void endOfRoundUpdates(){
+        GameEngine.gameManager.endOfRoundUpdates();
+        InformationComponentController.incCurrentRoundProperty();
+    }
     public MapController getMapComponentController() {
         return MapComponentController;
     }
@@ -211,5 +217,9 @@ public class AppController {
 
     public void loadInformation() {
         InformationComponentController.loadInformation();
+    }
+
+    public boolean isGameOver() {
+        return GameEngine.gameManager.isGameOver();
     }
 }

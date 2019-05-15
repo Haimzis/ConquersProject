@@ -5,7 +5,7 @@
 
 <ScrollPane fx:id="MapComponent" fitToHeight="true" fitToWidth="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.MapTable.MapController">
    <content>
-      <GridPane fx:id="GridComponent" gridLinesVisible="true">
+      <GridPane fx:id="GridComponent">
       </GridPane>
    </content>
 </ScrollPane>

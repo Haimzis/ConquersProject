@@ -29,12 +29,12 @@ public class WelcomeScreenController {
 @FXML private TextField tbx_path;
 @FXML private Button btn_choosePath;
 @FXML private Label lbl_message;
-@FXML private Button buttonStartGame;
     private Stage primaryStage;
     private SimpleBooleanProperty isFileSelected;
     private SimpleStringProperty selectedFileProperty;
     private GameEngine gameEngine;
     private Boolean loadSucceed;
+    private boolean gameLoaded;
 
     public WelcomeScreenController(){
         gameEngine = new GameEngine();
@@ -77,44 +77,49 @@ public class WelcomeScreenController {
         }
     }
     @FXML
-    public void setBtn_loadGameAction() {
-        if (!isFileSelected.getValue()) {
+    public void setBtn_loadGameAction(){
+        if(!isFileSelected.getValue()) {
             lbl_message.setText("Yoo Matha fucka, choose file!");
             lbl_message.setStyle("-fx-opacity: 1;");
-        } else {
-            loadSucceed = gameEngine.loadGame(gameEngine.getLoadFilePath(tbx_path.getText()));
-            if (!loadSucceed) {
-                lbl_message.setText("could not load saved game file!");
+        }
+        else {
+            gameLoaded = gameEngine.loadGame(gameEngine.getLoadFilePath(tbx_path.getText()));
+            if (!gameLoaded) {
+                lbl_message.setText("Could not load saved game file!");
                 lbl_message.setStyle("-fx-opacity: 1;");
             }
         }
     }
     @FXML
     private void startGame(){
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource(APP_FXML_INCLUDE_RESOURCE);
-        fxmlLoader.setLocation(url);
         try {
+            //Load FXML of Root(on stage)
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            URL url = getClass().getResource(APP_FXML_INCLUDE_RESOURCE);
+            fxmlLoader.setLocation(url);
             Parent root1 = fxmlLoader.load(url.openStream());
+            //create Scene
             Scene scene = new Scene(root1, 500, 550);
             //set new size of this stage
             primaryStage.setHeight(600);
             primaryStage.setWidth(900);
             primaryStage.setScene(scene);
-
-            //wire up gameEngine to appController and create map
+            //wire up game engine to appController
             AppController appController = fxmlLoader.getController();
+            appController.setPrimaryStage(primaryStage);
             appController.setGameEngine(gameEngine);
-            appController.startGame();
+            //start game
+            if(!gameLoaded) { //Check if its a loaded game
+                appController.startGame();
+            }
+            //first load of xml into UI
             appController.createMap();
             appController.loadInformation();
             //appController.startRound();
-            appController.setPrimaryStage(primaryStage);
-            primaryStage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+        primaryStage.show(); // show game
     }
 
 }

@@ -6,6 +6,9 @@ import GameObjects.Unit;
 import MainComponents.AppController;
 import Resources.ResourceConstants;
 import SubComponents.InformationTable.InnerTabPaneTable.InnerTabPaneRootController;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringExpression;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,16 +33,28 @@ public class InformationController {
     @FXML private TableView<Unit> unitsTableView;
     private Map<String,Tab> playersTabs= new HashMap<>();
     private Map<String, InnerTabPaneRootController> playersInnerTabPaneRootControllers= new HashMap<>();
-    private Stack<String> colors = new Stack<>();
+    private static Stack<String> colors = new Stack<>();
+    private IntegerProperty currentRoundProperty;
+
+
+    public String getColorByPlayerName(String playerName){
+        return playersInnerTabPaneRootControllers.get(playerName).getCurrentPlayerColor();
+    }
 
     public void undoUpdate(){
         playersInnerTabPaneRootControllers.forEach((player,playerInnerTabPaneRootControllers)-> {
             playerInnerTabPaneRootControllers.setCurrentPlayer(GameEngine.gameManager.getPlayerByName(player));
             playerInnerTabPaneRootControllers.loadPlayerData();
         });
-        currentRoundUpdate();
+        decCurrentRoundProperty();
     }
 
+    public void incCurrentRoundProperty(){
+        currentRoundProperty.setValue(currentRoundProperty.getValue() + 1);
+    }
+    public void decCurrentRoundProperty(){
+        currentRoundProperty.setValue(currentRoundProperty.getValue() - 1);
+    }
     private void loadColors(){
         colors.push("Green");colors.push("Red");
         colors.push("Blue");colors.push("Yellow");
@@ -47,10 +62,17 @@ public class InformationController {
     public void loadInformation() {
         loadColors();
         loadTotalCycles();
+        loadBinding();
         loadPlayersTabs();
         loadUnitsToTableView();
-  //Dont Work//currentRound.textProperty().bind(new SimpleIntegerProperty(GameEngine.gameManager.roundNumber).asString());
     }
+
+    private void loadBinding() {
+        currentRoundProperty = new SimpleIntegerProperty(GameEngine.gameManager.roundNumber);
+        StringExpression currentRoundSE = Bindings.concat(currentRoundProperty);
+        currentRound.textProperty().bind(currentRoundSE);
+    }
+
     private void loadPlayersTabs(){
         for (Player player : mainController.getGameEngine().getDescriptor().getPlayersList()) { //load each Player Information
             Tab playerTab = addTabToPlayers(player.getPlayerName());
@@ -63,7 +85,7 @@ public class InformationController {
             try {
                 innerTabPaneRoot = innerTabPaneRootLoader.load(url.openStream());
                 InnerTabPaneRootController innerTabPaneRootController = innerTabPaneRootLoader.getController();
-                player.setColor(colors.pop());
+                innerTabPaneRootController.setCurrentPlayerColor(colors.pop());
                 innerTabPaneRootController.setCurrentPlayer(player);
                 innerTabPaneRootController.loadTerritoriesToTableView();
                 innerTabPaneRootController.loadPlayerData();
@@ -77,11 +99,8 @@ public class InformationController {
     private void loadTotalCycles() {
         totalRounds.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getTotalCycles()));
     }
-    private void currentRoundUpdate(){
-        currentRound.setText(Integer.toString(GameEngine.gameManager.roundNumber));
-    }
+
     public void updatePlayersData(){
-        currentRoundUpdate();
         playersInnerTabPaneRootControllers.forEach((player,innerTabPaneRootController) -> {
             innerTabPaneRootController.loadPlayerData();
         });
