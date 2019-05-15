@@ -81,10 +81,11 @@ public class HeaderController {
             btnManageRound.setText(END_TURN);
         }
         else { //New game with same XML.
+            mainController.getMapComponentController().clearMap();
             mainController.getMapComponentController().disableMap(false);
+            mainController.startGame();
             mainController.createMap();
             mainController.loadInformation();
-            mainController.startGame();
             mainController.startRound();
         }
     }
@@ -131,7 +132,6 @@ public class HeaderController {
             else { //Need to show the winner.
                 currentPlayerInTurnLabel.setText(winner.getPlayerName());
             }
-            btnManageRound.setDisable(true);
             setButtonsDisabled(true);
             mainController.getMapComponentController().disableMap(true);
             btnManageRound.setText(NEW_GAME);

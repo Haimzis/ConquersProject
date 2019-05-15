@@ -267,6 +267,7 @@ public class GameManager implements Serializable {
 
     @Nullable//returns the winner - player with most profits from territories
     public Player getWinnerPlayer() {
+        int j = 0;
         int winnerPlayerID=1,maxScore =0;
         int size =gameDescriptor.getPlayersList().size();
         int [] playerScores= new int [size+1];
@@ -276,11 +277,12 @@ public class GameManager implements Serializable {
         //make scores array
         for(Player player: gameDescriptor.getPlayersList()) {
             for(Integer territoryID:player.getTerritoriesID()) {
-                playerScores[player.getID()]+= gameDescriptor.getTerritoryMap().get(territoryID).getProfit();
+                playerScores[j]+= gameDescriptor.getTerritoryMap().get(territoryID).getProfit();
+                j++;
             }
         }
         //checks for max score and winner id
-        for (int i=1;i<= size ; i++) {
+        for (int i=0;i< size ; i++) {
 
             if(playerScores[i] >= maxScore) {
                 maxScore = playerScores[i];
@@ -292,7 +294,7 @@ public class GameManager implements Serializable {
             if(playerScores[i] == maxScore && winnerPlayerID != i)
                 return null; //there are at least 2 winners - draw!
         }
-        return gameDescriptor.getPlayersList().get(winnerPlayerID-1);
+        return gameDescriptor.getPlayersList().get(winnerPlayerID);
     }
     //get price of rehabilitation Army in territory
     public int getRehabilitationArmyPriceInTerritory(Territory territory){

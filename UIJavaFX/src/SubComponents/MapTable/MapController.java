@@ -113,4 +113,8 @@ public class MapController {
     public void  disableMap(Boolean value) {
         GridComponent.setDisable(value);
     }
+
+    public void clearMap() {
+        GridComponent.getChildren().clear();
+    }
 }

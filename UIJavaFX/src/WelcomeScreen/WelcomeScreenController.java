@@ -34,6 +34,7 @@ public class WelcomeScreenController {
     private SimpleStringProperty selectedFileProperty;
     private GameEngine gameEngine;
     private Boolean loadSucceed;
+    private boolean gameLoaded;
 
     public WelcomeScreenController(){
         gameEngine = new GameEngine();
@@ -84,8 +85,8 @@ public class WelcomeScreenController {
             lbl_message.setStyle("-fx-opacity: 1;");
         }
         else {
-            loadSucceed = gameEngine.loadGame(gameEngine.getLoadFilePath(tbx_path.getText()));
-            if (!loadSucceed) {
+            gameLoaded = gameEngine.loadGame(gameEngine.getLoadFilePath(tbx_path.getText()));
+            if (!gameLoaded) {
                 lbl_message.setText("Could not load saved game file!");
                 lbl_message.setStyle("-fx-opacity: 1;");
             } else {
@@ -111,7 +112,7 @@ public class WelcomeScreenController {
             appController.setGameEngine(gameEngine);
             appController.createMap();
             appController.loadInformation();
-            if(!loadSucceed) { //Check if its a loaded game
+            if(!gameLoaded) { //Check if its a loaded game
                 appController.startGame();
             }
             appController.startRound();
