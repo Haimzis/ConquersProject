@@ -80,6 +80,7 @@ public class MapController {
                 counter++;
             }
         }
+        disableMap(true);
     }
 
     private void onTerritoryPressListener(Territory territory) {

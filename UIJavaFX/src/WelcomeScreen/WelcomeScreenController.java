@@ -69,6 +69,7 @@ public class WelcomeScreenController {
             lbl_message.setStyle("-fx-opacity: 1;");
         }
         else {
+            lbl_message.setStyle("-fx-opacity: 0;");
             loadSucceed = gameEngine.loadXML(tbx_path.getText());
             if (!loadSucceed) {
                 lbl_message.setText("could not load XML file!");
@@ -83,6 +84,7 @@ public class WelcomeScreenController {
             lbl_message.setStyle("-fx-opacity: 1;");
         }
         else {
+            lbl_message.setStyle("-fx-opacity: 0;");
             gameLoaded = gameEngine.loadGame(gameEngine.getLoadFilePath(tbx_path.getText()));
             if (!gameLoaded) {
                 lbl_message.setText("Could not load saved game file!");
@@ -92,34 +94,39 @@ public class WelcomeScreenController {
     }
     @FXML
     private void startGame(){
-        try {
-            //Load FXML of Root(on stage)
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            URL url = getClass().getResource(APP_FXML_INCLUDE_RESOURCE);
-            fxmlLoader.setLocation(url);
-            Parent root1 = fxmlLoader.load(url.openStream());
-            //create Scene
-            Scene scene = new Scene(root1, 500, 550);
-            //set new size of this stage
-            primaryStage.setHeight(600);
-            primaryStage.setWidth(900);
-            primaryStage.setScene(scene);
-            //wire up game engine to appController
-            AppController appController = fxmlLoader.getController();
-            appController.setPrimaryStage(primaryStage);
-            appController.setGameEngine(gameEngine);
-            //start game
-            if(!gameLoaded) { //Check if its a loaded game
-                appController.startGame();
+        if(gameLoaded || loadSucceed) {
+            try {
+                //Load FXML of Root(on stage)
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                URL url = getClass().getResource(APP_FXML_INCLUDE_RESOURCE);
+                fxmlLoader.setLocation(url);
+                Parent root1 = fxmlLoader.load(url.openStream());
+                //create Scene
+                Scene scene = new Scene(root1, 500, 550);
+                //set new size of this stage
+                primaryStage.setHeight(600);
+                primaryStage.setWidth(900);
+                primaryStage.setScene(scene);
+                //wire up game engine to appController
+                AppController appController = fxmlLoader.getController();
+                appController.setPrimaryStage(primaryStage);
+                appController.setGameEngine(gameEngine);
+                //start game
+                if(!gameLoaded) { //Check if its a loaded game
+                    appController.startGame();
+                }
+                //first load of xml into UI
+                appController.createMap();
+                appController.loadInformation();
+                //appController.startRound();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            //first load of xml into UI
-            appController.createMap();
-            appController.loadInformation();
-            //appController.startRound();
-        } catch (IOException e) {
-            e.printStackTrace();
+            primaryStage.show(); // show game
         }
-        primaryStage.show(); // show game
+        else {
+            lbl_message.setText("No game or XML has been loaded");
+            lbl_message.setStyle("-fx-opacity: 1;");
+        }
     }
-
 }

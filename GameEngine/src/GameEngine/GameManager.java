@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class GameManager implements Serializable {
+    private String currentPlayerName = "None";
     private int ID;
     public  int roundNumber=1;
     private static int gamesIDCounter = 0;
@@ -16,6 +17,9 @@ public class GameManager implements Serializable {
     private GameDescriptor gameDescriptor;
     private Player currentPlayerTurn=null;
     private Army   selectedArmyForce=null;
+
+
+
     private Queue<Player> playersTurns;
     private Territory selectedTerritoryByPlayer=null;
     private Stack<RoundHistory> replayStack = new Stack<>();  //Bonus #2
@@ -146,6 +150,9 @@ public class GameManager implements Serializable {
     //poll player from the queue and save him as current player for one turn
     public void nextPlayerInTurn() {
         currentPlayerTurn= playersTurns.poll();
+        if (currentPlayerTurn != null) {
+            currentPlayerName = currentPlayerTurn.getPlayerName();
+        }
     }
     //returns potential production of the current player turn
     //gives current player his funds, for his territories profits
@@ -286,7 +293,6 @@ public class GameManager implements Serializable {
         }
         //checks for max score and winner id
         for (int i=0;i< size ; i++) {
-
             if(playerScores[i] >= maxScore) {
                 maxScore = playerScores[i];
                 winnerPlayerID = i;
@@ -294,8 +300,9 @@ public class GameManager implements Serializable {
         }
         //checks for draw.
         for(int i=1;i<= size;i++) {
-            if(playerScores[i] == maxScore && winnerPlayerID != i)
+            if(playerScores[i] == maxScore && winnerPlayerID != i) {
                 return null; //there are at least 2 winners - draw!
+            }
         }
         return gameDescriptor.getPlayersList().get(winnerPlayerID);
     }
@@ -374,4 +381,5 @@ public class GameManager implements Serializable {
         }
         return null;
     }
+    public String getCurrentPlayerName() { return currentPlayerName; }
 }

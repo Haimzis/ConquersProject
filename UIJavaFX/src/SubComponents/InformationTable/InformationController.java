@@ -60,6 +60,7 @@ public class InformationController {
         colors.push("Blue");colors.push("Yellow");
     }
     public void loadInformation() {
+        playersInformationTabPane.getTabs().clear();
         loadColors();
         loadTotalCycles();
         loadBinding();

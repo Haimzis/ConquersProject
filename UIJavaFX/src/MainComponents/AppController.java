@@ -2,6 +2,7 @@ package MainComponents;
 
 import DataContainersTypes.Board;
 import GameEngine.GameEngine;
+import Resources.ResourceConstants;
 import SubComponents.Header.HeaderController;
 import SubComponents.InformationTable.InformationController;
 import SubComponents.MapTable.MapController;
@@ -10,6 +11,7 @@ import SubComponents.Popups.AttackPopup.AttackPopupController;
 import SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController;
 import SubComponents.Popups.OwnTerrainPopup.OwnTerrainController;
 import SubComponents.Popups.ResultPopup.ResultPopupController;
+import WelcomeScreen.WelcomeScreenController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,8 +20,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class AppController {
     @FXML private AnchorPane HeaderComponent;
@@ -99,6 +103,7 @@ public class AppController {
 
     public void startRound() {
         GameEngine.gameManager.startOfRoundUpdates();
+        updateInformation();
         nextPlayer();
     }
 
@@ -217,9 +222,36 @@ public class AppController {
 
     public void loadInformation() {
         InformationComponentController.loadInformation();
+        HeaderComponentController.loadBinding();
     }
 
     public boolean isGameOver() {
         return GameEngine.gameManager.isGameOver();
+    }
+
+    public void launchWelcomeScreen() {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+
+        //load Welcome Screen FXML
+        URL welcomeScreen = getClass().getResource(ResourceConstants.WELCOMESCREEN_FXML_INCLUDE_RESOURCE);
+        fxmlLoader.setLocation(welcomeScreen);
+        Parent root = null;
+        try {
+            root = fxmlLoader.load(welcomeScreen.openStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // wire up primary stage
+        primaryStage.setHeight(500);
+        primaryStage.setWidth(450);
+        WelcomeScreenController welcomeScreenController = fxmlLoader.getController();
+        welcomeScreenController.setPrimaryStage(primaryStage);
+
+        //set stage
+        primaryStage.setTitle("Conquerors");
+        Scene scene = new Scene(root, 450, 500);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
     }
 }

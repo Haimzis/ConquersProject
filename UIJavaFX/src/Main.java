@@ -33,7 +33,7 @@ public class Main extends Application {
 
         //set stage
         primaryStage.initStyle(StageStyle.DECORATED);
-        primaryStage.setTitle("Conquers Motha Fucka! (Ran is Gay)");
+        primaryStage.setTitle("Conquerors");
         Scene scene = new Scene(root, 450, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
