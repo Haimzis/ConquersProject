@@ -127,8 +127,8 @@ public class WelcomeScreenController {
                     appController.startGame();
                 }
                 //first load of xml into UI
-                appController.createMap();
                 appController.loadInformation();
+                appController.createMap();
                 //appController.startRound();
             } catch (IOException e) {
                 e.printStackTrace();

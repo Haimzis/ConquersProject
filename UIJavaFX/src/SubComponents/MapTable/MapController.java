@@ -75,7 +75,6 @@ public class MapController {
                     onTerritoryPressListener(territory);
                 });
 
-                //TODO: This throws null if we load a game , the list of tabes is 0.
                 if(territory.isConquered()) { //Color map if its conquered.(For load game functionality).
                     btnTerritory.setStyle("-fx-background-color: " + mainController.getColorByPlayerName(territory.getConquer().getPlayerName()));
                 }
