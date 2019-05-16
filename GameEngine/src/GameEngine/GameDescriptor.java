@@ -1,4 +1,5 @@
 package GameEngine;
+import Exceptions.invalidInputException;
 import GameObjects.Player;
 import GameObjects.Territory;
 import GameObjects.Unit;
@@ -14,23 +15,27 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GameDescriptor implements Serializable {
+    public static final String NO_DEFAULT_PROFIT = "No default profit detected in territories while not all territories has been declared in xml , please try again";
+    public static final String NO_DEFAULT_ARMY_THRESHOLD = "No default army threshold detected in territories while not all territories has been declared in xml , please try again";
+    public static final String RANKS_ARE_NOT_SEQUENTIAL = "Ranks are not sequential";
     private String lastKnownGoodString;
     private int initialFunds , totalCycles , columns , rows;
     private int defaultThreshold , defaultProfit;
     private Map<Integer,Territory> territoryMap;
     private Map<String , Unit> unitMap;
     private List<Player> playersList;
+    private String error;
     //private String gameType; //relevant for the third project
 
-    public GameDescriptor(Path xmlPath) {
+    public GameDescriptor(Path xmlPath) throws invalidInputException {
         Generated.GameDescriptor descriptor = null;
         try {
             descriptor = deserializeFrom(xmlPath);
         } catch (JAXBException ignored) { }
         if(descriptor == null) // GD was not created
-            throw new IllegalArgumentException();
+            throw new Exceptions.invalidInputException("Could not deserialize XML");
         if(!(checkRowsAndColumns(descriptor) && validateTerritories(descriptor) && validatePlayers(descriptor) && validateUnitsFromXml(descriptor))) //Checking the XML
-            throw new IllegalArgumentException();
+            throw new Exceptions.invalidInputException(error);
         lastKnownGoodString = xmlPath.toString();
         getGameStats(descriptor);
         this.playersList =  loadPlayers(descriptor);
@@ -177,7 +182,7 @@ public class GameDescriptor implements Serializable {
     private boolean validateTerritories(Generated.GameDescriptor descriptor) {
         for(int i = 0; i < descriptor.getGame().getTerritories().getTeritory().size() - 1 ; i++) { //Checking double ID
             if(descriptor.getGame().getTerritories().getTeritory().get(i).getId().equals(descriptor.getGame().getTerritories().getTeritory().get(i + 1).getId()))  {
-                System.out.println("Double ID in xml detected , please try again."); // CHANGE TO ERROR EXCEPTION
+                error = "Double ID in xml detected , please try again.";
                 return false; // an territory exists with the same ID
             }
         }
@@ -185,18 +190,17 @@ public class GameDescriptor implements Serializable {
     }
     private boolean validateTerritoryDefaults(Generated.GameDescriptor descriptor) {
         if(descriptor.getGame().getTerritories().getDefaultProfit() == null && descriptor.getGame().getTerritories().getTeritory().size() != territoryMap.size()) {
-            System.out.println("No default profit detected in territories while not all territories has been declared in xml , please try again"); // CHANGE TO ERROR EXCEPTION
+            error = NO_DEFAULT_PROFIT;
             return  false;
         }
         if(descriptor.getGame().getTerritories().getDefaultArmyThreshold() == null && descriptor.getGame().getTerritories().getTeritory().size() != territoryMap.size()) {
-            System.out.println("No default army threshold detected in territories while not all territories has been declared in xml , please try again"); // CHANGE TO ERROR EXCEPTION
+            error = NO_DEFAULT_ARMY_THRESHOLD;
             return  false;
         }
         return true;
     }
 
     private boolean validateUnitsFromXml(Generated.GameDescriptor descriptor) {
-
         //Check for duplicate types or ranks , EXAMPLE: If the type of the set is 2 and the size of the unit list is 3 there are duplicate types.
         Set<String> unitsTypeSet = new HashSet<>();
         Set<Byte> unitsRankSet = new HashSet<>();
@@ -209,11 +213,23 @@ public class GameDescriptor implements Serializable {
         List<Byte> sortedRanks = new ArrayList<>(unitsRankSet);
         Collections.sort(sortedRanks);
         for(int i = 0 ; i < sortedRanks.size() - 1 ; i++) {
-            if(sortedRanks.get(i).intValue()+1 != (sortedRanks.get(i+1).intValue()))
+            if(sortedRanks.get(i).intValue()+1 != (sortedRanks.get(i+1).intValue())) {
+                error = RANKS_ARE_NOT_SEQUENTIAL;
                 return false;
+            }
         }
-        return unitsTypeSet.size() == descriptor.getGame().getArmy().getUnit().size()
-                && unitsRankSet.size() == descriptor.getGame().getArmy().getUnit().size();
+       if(unitsTypeSet.size() == descriptor.getGame().getArmy().getUnit().size()) {
+           if(unitsRankSet.size() == descriptor.getGame().getArmy().getUnit().size()) {
+               return true;
+           }
+           else {
+               error = "A unit exists with the same rank in XML";
+           }
+        }
+       else {
+           error = "A Unit with the same type exists in the XML";
+       }
+        return  false;
     }
 
 
@@ -222,17 +238,35 @@ public class GameDescriptor implements Serializable {
         Set<Integer> playerIdsSet = new HashSet<>();
         if(descriptor.getPlayers() == null)
             return true;
-        if(descriptor.getPlayers().getPlayer().size() < 2 || descriptor.getPlayers().getPlayer().size() > 4)
+        if(descriptor.getPlayers().getPlayer().size() < 2 || descriptor.getPlayers().getPlayer().size() > 4) {
+            error = "Not a valid amount of players in XML";
             return false;
+        }
         for(int i = 0; i < descriptor.getPlayers().getPlayer().size(); i++) {
             playerIdsSet.add(descriptor.getPlayers().getPlayer().get(i).getId().intValue());
         }
-        return playerIdsSet.size() == descriptor.getPlayers().getPlayer().size();
+        if(playerIdsSet.size() == descriptor.getPlayers().getPlayer().size()) {
+            return true;
+        }
+        else {
+            error = "A player exists with the same ID in XML";
+            return false;
+        }
     }
 
     private boolean checkRowsAndColumns(Generated.GameDescriptor descriptor) {
-        return (descriptor.getGame().getBoard().getColumns().intValue() >= 3 && descriptor.getGame().getBoard().getColumns().intValue() <= 30)
-                && (descriptor.getGame().getBoard().getRows().intValue() <= 30 && descriptor.getGame().getBoard().getRows().intValue() >= 2);
+        if (descriptor.getGame().getBoard().getColumns().intValue() >= 3 && descriptor.getGame().getBoard().getColumns().intValue() <= 30) {
+            if((descriptor.getGame().getBoard().getRows().intValue() <= 30 && descriptor.getGame().getBoard().getRows().intValue() >= 2)) {
+                return true;
+            }
+            else {
+                error = "Rows in XML are invalid";
+            }
+        }
+        else {
+            error = "Columns in XML are invalid";
+        }
+        return false;
     }
 
     //TODO: Gets the last known good xml path , crashes if player moves the last know xml from it's former location.

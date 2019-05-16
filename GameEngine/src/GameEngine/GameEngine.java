@@ -1,5 +1,6 @@
 package GameEngine;
 
+import Exceptions.invalidInputException;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 
@@ -25,7 +26,7 @@ public class GameEngine {
     public void setDescriptor(GameDescriptor descriptor) {
         this.descriptor = descriptor;
     }
-    public Boolean loadXML(String XMLPath) {
+    public void loadXML(String XMLPath) throws invalidInputException {
         GameDescriptor gameDescriptor = null;
         ERROR validate = validateXML(XMLPath);
         switch (validate) {
@@ -33,15 +34,10 @@ public class GameEngine {
                 gameDescriptor = createDescriptor(getPath(XMLPath));
                 break;
             case XML_ERROR:
-                System.out.println("XML file not found");
                 flag = 0;
-                break;
+                throw  new Exceptions.invalidInputException("File is not .XML!");
         }
-
-        if(gameDescriptor != null) // Means everything is loaded and in place to begin the game
-            flag = 1; //GD has been loaded successfully
         this.descriptor = gameDescriptor;
-        return flag == 1;
     }
     private Path getPath(String xmlPath) {
         return Paths.get(xmlPath);
@@ -55,14 +51,8 @@ public class GameEngine {
     //*******************//
 
     //creates gameDescriptor object from the given XML
-    private GameDescriptor createDescriptor(Path xmlPath) {
-        try {
+    private GameDescriptor createDescriptor(Path xmlPath) throws invalidInputException {
             return new GameDescriptor(xmlPath);
-        }
-        catch (IllegalArgumentException e) {
-            System.out.println("Descriptor failed to create , try again with different XML.");
-            return null;
-        }
     }
     private ERROR validateXML(String xmlPath) {
         if(xmlPath.toLowerCase().endsWith(".xml"))

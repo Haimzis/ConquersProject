@@ -1,5 +1,6 @@
 package WelcomeScreen;
 
+import Exceptions.invalidInputException;
 import GameEngine.GameEngine;
 import MainComponents.AppController;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -70,9 +71,12 @@ public class WelcomeScreenController {
         }
         else {
             lbl_message.setStyle("-fx-opacity: 0;");
-            loadSucceed = gameEngine.loadXML(tbx_path.getText());
-            if (!loadSucceed) {
-                lbl_message.setText("could not load XML file!");
+            try {
+                gameEngine.loadXML(tbx_path.getText());
+                loadSucceed = true;
+            } catch (invalidInputException e) {
+                loadSucceed = false;
+                lbl_message.setText(e.getMessage());
                 lbl_message.setStyle("-fx-opacity: 1;");
             }
         }
@@ -80,7 +84,7 @@ public class WelcomeScreenController {
     @FXML
     public void setBtn_loadGameAction(){
         if(!isFileSelected.getValue()) {
-            lbl_message.setText("Yoo Matha fucka, choose file!");
+            lbl_message.setText("Choose saved game");
             lbl_message.setStyle("-fx-opacity: 1;");
         }
         else {

@@ -1,5 +1,6 @@
 package SubComponents.Header;
 
+import Exceptions.invalidInputException;
 import GameEngine.GameEngine;
 import GameObjects.Player;
 import MainComponents.AppController;
@@ -96,7 +97,10 @@ public class HeaderController {
         else {// This bitch clicked on 'new game' button
             mainController.getMapComponentController().clearMap();
             mainController.startGame();
-            mainController.getGameEngine().loadXML(mainController.getGameEngine().getDescriptor().getLastKnownGoodString());
+            try {
+                mainController.getGameEngine().loadXML(mainController.getGameEngine().getDescriptor().getLastKnownGoodString());
+            } catch (invalidInputException ignore) {
+            }
             mainController.createMap();
             mainController.loadInformation();
             btnManageRound.setText(START_ROUND);

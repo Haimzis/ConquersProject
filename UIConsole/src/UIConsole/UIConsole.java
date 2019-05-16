@@ -1,5 +1,6 @@
 package UIConsole;
 
+import Exceptions.invalidInputException;
 import GameEngine.GameEngine;
 import GameObjects.Player;
 import GameObjects.Territory;
@@ -59,7 +60,10 @@ public class UIConsole {
                             System.out.println("Enter XML path: ");
                             Scanner pathScanner  = new Scanner(System.in);
                             xmlPath = pathScanner.nextLine();
-                            engine.loadXML(xmlPath);
+                            try {
+                                engine.loadXML(xmlPath);
+                            } catch (invalidInputException ignored) {
+                            }
                             if(GameEngine.flag == 1) {
                                 System.out.println("XML Loaded successfully");
                                 lastKnownXmlPath = xmlPath;
@@ -136,6 +140,7 @@ public class UIConsole {
             catch(InputMismatchException e){
                 System.out.println("Enter one of the options listed");
                 sc.next();
+            } catch (invalidInputException ignored) {
             }
         }
     }
