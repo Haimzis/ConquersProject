@@ -74,6 +74,8 @@ public class WelcomeScreenController {
             try {
                 gameEngine.loadXML(tbx_path.getText());
                 loadSucceed = true;
+                lbl_message.setText("XML Loaded");
+                lbl_message.setStyle("-fx-opacity: 1;");
             } catch (invalidInputException e) {
                 loadSucceed = false;
                 lbl_message.setText(e.getMessage());
@@ -92,6 +94,11 @@ public class WelcomeScreenController {
             gameLoaded = gameEngine.loadGame(gameEngine.getLoadFilePath(tbx_path.getText()));
             if (!gameLoaded) {
                 lbl_message.setText("Could not load saved game file!");
+                lbl_message.setStyle("-fx-opacity: 1;");
+            }
+            else {
+                gameEngine.setDescriptor(GameEngine.gameManager.getGameDescriptor());
+                lbl_message.setText("Game loaded");
                 lbl_message.setStyle("-fx-opacity: 1;");
             }
         }

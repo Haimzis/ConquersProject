@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GameDescriptor implements Serializable {
-    public static final String NO_DEFAULT_PROFIT = "No default profit detected in territories while not all territories has been declared in xml , please try again";
-    public static final String NO_DEFAULT_ARMY_THRESHOLD = "No default army threshold detected in territories while not all territories has been declared in xml , please try again";
-    public static final String RANKS_ARE_NOT_SEQUENTIAL = "Ranks are not sequential";
+    private static final String NO_DEFAULT_PROFIT = "No default profit detected";
+    private static final String NO_DEFAULT_ARMY_THRESHOLD = "No default army threshold detected";
+    private static final String RANKS_ARE_NOT_SEQUENTIAL = "Ranks are not sequential";
     private String lastKnownGoodString;
     private int initialFunds , totalCycles , columns , rows;
     private int defaultThreshold , defaultProfit;
@@ -34,13 +34,13 @@ public class GameDescriptor implements Serializable {
         } catch (JAXBException ignored) { }
         if(descriptor == null) // GD was not created
             throw new Exceptions.invalidInputException("Could not deserialize XML");
+        getGameStats(descriptor);
+        this.territoryMap = buildTerritoryMap(descriptor);
+        this.playersList =  loadPlayers(descriptor);
+        this.unitMap = loadUnitsDescription(descriptor);
         if(!(checkRowsAndColumns(descriptor) && validateTerritories(descriptor) && validatePlayers(descriptor) && validateUnitsFromXml(descriptor))) //Checking the XML
             throw new Exceptions.invalidInputException(error);
         lastKnownGoodString = xmlPath.toString();
-        getGameStats(descriptor);
-        this.playersList =  loadPlayers(descriptor);
-        this.territoryMap = buildTerritoryMap(descriptor);
-        this.unitMap = loadUnitsDescription(descriptor);
     }
 
     //*********************//
@@ -182,7 +182,7 @@ public class GameDescriptor implements Serializable {
     private boolean validateTerritories(Generated.GameDescriptor descriptor) {
         for(int i = 0; i < descriptor.getGame().getTerritories().getTeritory().size() - 1 ; i++) { //Checking double ID
             if(descriptor.getGame().getTerritories().getTeritory().get(i).getId().equals(descriptor.getGame().getTerritories().getTeritory().get(i + 1).getId()))  {
-                error = "Double ID in xml detected , please try again.";
+                error = "Double territory ID in xml detected , please try again.";
                 return false; // an territory exists with the same ID
             }
         }
