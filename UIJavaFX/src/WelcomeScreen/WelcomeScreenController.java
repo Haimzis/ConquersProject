@@ -1,5 +1,7 @@
 package WelcomeScreen;
 
+import Events.EventHandler;
+import Events.EventObject;
 import Exceptions.invalidInputException;
 import GameEngine.GameEngine;
 import MainComponents.AppController;
@@ -125,10 +127,22 @@ public class WelcomeScreenController {
                 //start game
                 if(!gameLoaded) { //Check if its a loaded game
                     appController.startGame();
+                    //first load of xml into UI
+                    appController.loadInformation();
+                    appController.createMap();
                 }
-                //first load of xml into UI
-                appController.loadInformation();
-                appController.createMap();
+                else { //It's a loaded game
+                    appController.loadInformation();
+                    appController.createMap();
+                    GameEngine.gameManager.setEventListenerHandler(new EventHandler(){
+                    //Wire the listener again since it's not saved
+                        @Override
+                        public void handle(EventObject eventObject) {
+                            appController.getMapComponentController().unColorTerritory(eventObject.getIdentity());
+                            appController.getHeaderComponentController().writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
+                        }
+                    });
+                }
                 //appController.startRound();
             } catch (IOException e) {
                 e.printStackTrace();

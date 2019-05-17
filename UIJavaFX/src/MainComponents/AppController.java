@@ -2,6 +2,7 @@ package MainComponents;
 
 import DataContainersTypes.Board;
 import Events.EventHandler;
+import Events.EventListener;
 import Events.EventObject;
 import GameEngine.GameEngine;
 import Resources.ResourceConstants;
@@ -22,7 +23,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,6 +35,7 @@ public class AppController {
     @FXML private ScrollPane MapComponent;
     @FXML private MapController MapComponentController;
     private GameEngine gameEngine;
+    private EventListener eventListener;
 
 
     private Stage primaryStage;
@@ -106,6 +107,7 @@ public class AppController {
             @Override
             public void handle(EventObject eventObject) {
                 MapComponentController.unColorTerritory(eventObject.getIdentity());
+                HeaderComponentController.writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
             }
         });
     }
@@ -263,4 +265,10 @@ public class AppController {
         primaryStage.show();
 
     }
+
+    public void setEventListenerHandler(EventHandler eventHandler) {
+        eventListener = new EventListener();
+        this.eventListener.setEventsHandler(eventHandler);
+    }
+
 }

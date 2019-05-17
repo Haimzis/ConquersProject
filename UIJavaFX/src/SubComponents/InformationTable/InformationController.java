@@ -181,4 +181,12 @@ public class InformationController {
         }
     }
     public void setMainController(AppController mainController) { this.mainController = mainController; }
+
+    public void setFocusOnCurrentPlayer() {
+        for(int i = 0 ; i < playersInformationTabPane.getTabs().size(); i++) {
+            if(playersInformationTabPane.getTabs().get(i).getText().equals(GameEngine.gameManager.getCurrentPlayerName())) {
+                playersInformationTabPane.getSelectionModel().select(playersInformationTabPane.getTabs().get(i));
+            }
+        }
+    }
 }

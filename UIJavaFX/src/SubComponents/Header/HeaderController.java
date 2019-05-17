@@ -97,9 +97,10 @@ public class HeaderController {
                 } else { //normal - move next player..
                     errorLbl.setVisible(false);
                     mainController.nextPlayer();
-                    MapController.actionBeenTaken = false;
                 }
             }
+            MapController.actionBeenTaken = false;
+            mainController.getInformationComponentController().setFocusOnCurrentPlayer();
         }
         else {// This bitch clicked on 'new game' button
             mainController.getMapComponentController().clearMap();

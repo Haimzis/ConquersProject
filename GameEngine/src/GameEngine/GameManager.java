@@ -20,7 +20,7 @@ public class GameManager implements Serializable {
     private GameDescriptor gameDescriptor;
     private Player currentPlayerTurn=null;
     private Army   selectedArmyForce=null;
-    private EventListener eventListener;
+    private transient EventListener eventListener;
 
 
     private Queue<Player> playersTurns;
