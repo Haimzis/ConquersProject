@@ -8,16 +8,15 @@ public class EventTerritoryReleased implements EventObject{
     public Integer getIdentity() {
         return identity;
     }
-
     public String getMessage() {
         return message;
     }
 
-    EventTerritoryReleased(Integer identity,String message){
+    public EventTerritoryReleased(Integer identity,String message){
         this.identity = identity;
         this.message = message;
     }
-    EventTerritoryReleased(Integer identity){
+    public EventTerritoryReleased(Integer identity){
         this.identity = identity;
     }
 

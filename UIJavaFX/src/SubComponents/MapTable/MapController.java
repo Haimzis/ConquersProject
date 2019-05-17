@@ -122,4 +122,8 @@ public class MapController {
         GridComponent.getRowConstraints().clear();
         GridComponent.getColumnConstraints().clear();
     }
+
+    public void unColorTerritory(Integer territoryID) {
+        territoriesButtons.get(territoryID).setStyle("");
+    }
 }

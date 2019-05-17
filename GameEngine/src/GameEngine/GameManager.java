@@ -1,4 +1,6 @@
 package GameEngine;
+import Events.EventHandler;
+import Events.EventListener;
 import GameObjects.*;
 import History.*;
 import com.sun.istack.internal.Nullable;
@@ -17,7 +19,7 @@ public class GameManager implements Serializable {
     private GameDescriptor gameDescriptor;
     private Player currentPlayerTurn=null;
     private Army   selectedArmyForce=null;
-
+    private EventListener eventListener;
 
 
     private Queue<Player> playersTurns;
@@ -31,6 +33,11 @@ public class GameManager implements Serializable {
         loadPlayersIntoQueueOfTurns();
         roundsHistory = new Stack<>();
         roundsHistory.push(new RoundHistory(gameDescriptor,roundNumber));
+        }
+
+    public void setEventListenerHandler(EventHandler eventHandler) {
+        eventListener = new EventListener();
+        this.eventListener.setEventsHandler(eventHandler);
     }
 
     public GameDescriptor getGameDescriptor() {
@@ -172,7 +179,10 @@ public class GameManager implements Serializable {
 
         getTerritories(player).stream()
                 .filter(Territory::isArmyTotalPowerUnderThreshold)
-                .forEach(Territory::eliminateThisWeakArmy);
+                .forEach(territory ->
+                  eventListener.addEventObject(territory.eliminateThisWeakArmy()));
+                        //Territory::eliminateThisWeakArmy);
+        activateEventsHandler();
     }
     //pop the last round history from the history stack, and call updates function
     public void roundUndo() {
@@ -183,6 +193,10 @@ public class GameManager implements Serializable {
     public void endOfRoundUpdates() {
         roundsHistory.push(new RoundHistory(gameDescriptor,++roundNumber));
         loadPlayersIntoQueueOfTurns();
+        activateEventsHandler();
+    }
+    private void activateEventsHandler(){
+        eventListener.activateEventsHandler();
     }
 
     //**************************//
@@ -219,7 +233,7 @@ public class GameManager implements Serializable {
             return result;
         }
         if(battle.isWinnerArmyNotStrongEnoughToHoldTerritory())
-            selectedTerritoryByPlayer.xChangeFundsForUnitsAndHold();
+           eventListener.addEventObject(selectedTerritoryByPlayer.xChangeFundsForUnitsAndHold());
         return result;
     }
     //Returns True: if attacking player conquered the territory, Else: False. anyway its update stats of GameObjects.Territory.

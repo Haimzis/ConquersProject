@@ -1,11 +1,18 @@
 package Events;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventListener {
+public class EventListener implements Serializable {
     private List<EventObject> eventObjectsList = new ArrayList<>();
-    private EventHandler eventsHandler;
+    private EventHandler eventsHandler= new EventHandler(){ //default eventHandler
+
+        @Override
+        public void handle(EventObject eventObject) {
+            //do nothing
+        }
+    };
     public void setEventsHandler(EventHandler eventsHandler){
         this.eventsHandler = eventsHandler;
     }
@@ -19,5 +26,7 @@ public class EventListener {
         for(EventObject eventObject: eventObjectsList){
             eventsHandler.handle(eventObject);
         }
+        //make empty
+        eventObjectsList = new ArrayList<>();
     }
 }

@@ -1,6 +1,8 @@
 package MainComponents;
 
 import DataContainersTypes.Board;
+import Events.EventHandler;
+import Events.EventObject;
 import GameEngine.GameEngine;
 import Resources.ResourceConstants;
 import SubComponents.Header.HeaderController;
@@ -99,6 +101,13 @@ public class AppController {
 
     public void startGame() {
         gameEngine.newGame();
+        GameEngine.gameManager.setEventListenerHandler(new EventHandler(){
+
+            @Override
+            public void handle(EventObject eventObject) {
+                MapComponentController.unColorTerritory(eventObject.getIdentity());
+            }
+        });
     }
 
     public void startRound() {
