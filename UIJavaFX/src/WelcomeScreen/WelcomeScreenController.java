@@ -32,6 +32,7 @@ public class WelcomeScreenController {
 @FXML private TextField tbx_path;
 @FXML private Button btn_choosePath;
 @FXML private Label lbl_message;
+@FXML private Button buttonStartGame;
     private Stage primaryStage;
     private SimpleBooleanProperty isFileSelected;
     private SimpleStringProperty selectedFileProperty;
@@ -48,6 +49,7 @@ public class WelcomeScreenController {
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
+
     @FXML
     public void btn_choosePathAction() {
         FileChooser fileChooser = new FileChooser();
@@ -65,6 +67,7 @@ public class WelcomeScreenController {
         //
         isFileSelected.set(true);
     }
+
     @FXML
     public void btn_loadXMLAction(){
         if(!isFileSelected.getValue()) {
@@ -78,6 +81,8 @@ public class WelcomeScreenController {
                 loadSucceed = true;
                 lbl_message.setText("XML Loaded");
                 lbl_message.setStyle("-fx-opacity: 1;");
+                buttonStartGame.setDisable(false);
+
             } catch (invalidInputException e) {
                 loadSucceed = false;
                 lbl_message.setText(e.getMessage());
@@ -102,6 +107,7 @@ public class WelcomeScreenController {
                 gameEngine.setDescriptor(GameEngine.gameManager.getGameDescriptor());
                 lbl_message.setText("Game loaded");
                 lbl_message.setStyle("-fx-opacity: 1;");
+                buttonStartGame.setDisable(false);
             }
         }
     }

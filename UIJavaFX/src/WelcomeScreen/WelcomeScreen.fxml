@@ -53,7 +53,7 @@
                               <Font size="35.0" />
                            </font>
                         </Label>
-                        <Button fx:id="buttonStartGame" mnemonicParsing="false" onAction="#startGame" prefHeight="26.0" prefWidth="216.0" text="Start Game" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button fx:id="buttonStartGame" disable="true" mnemonicParsing="false" onAction="#startGame" prefHeight="26.0" prefWidth="216.0" text="Start Game" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                </children>

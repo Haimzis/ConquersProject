@@ -6,17 +6,13 @@ import GameObjects.Territory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.Label;
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 public class InnerTabPaneRootController {
@@ -27,6 +23,7 @@ public class InnerTabPaneRootController {
     @FXML private HBox PlayerColor;
     @FXML private ListView<String> unitsListView;
     @FXML private TableView<Territory> territoriesTableView;
+    @FXML private SplitPane SplitPaneComponent;
     private Player currentPlayer;
 
     public String getCurrentPlayerColor() {
@@ -53,12 +50,6 @@ public class InnerTabPaneRootController {
         TableColumn<Territory,Integer> armyThresholdCol = new TableColumn<>("Army Threshold");
         armyThresholdCol.setMinWidth(100);
 
-        territoriesTableView.setOnMouseClicked((MouseEvent event) -> {
-            if (event.getButton().equals(MouseButton.PRIMARY)){
-                loadConquerUnitsOnSelectedTerritory(territoriesTableView.getSelectionModel().getSelectedItem());
-            }
-        });
-
         IDCol.setCellValueFactory(
                 new PropertyValueFactory<>("ID")
         );
@@ -71,13 +62,35 @@ public class InnerTabPaneRootController {
         //noinspection unchecked
         territoriesTableView.getColumns().addAll(IDCol, profitCol, armyThresholdCol);
     }
-
-    private void loadConquerUnitsOnSelectedTerritory(Territory territory){
-        ObservableList<String> items =FXCollections.observableArrayList(createListOfUnitsStrings(territory));
+    @FXML
+    private void loadConquerUnitsOnSelectedTerritory(){
+        Territory territory = territoriesTableView.getSelectionModel().getSelectedItem();
+        ObservableList<String> items;
+        if(territory == null)
+            items= FXCollections.observableArrayList(new ArrayList<>(0));
+        else
+            items =FXCollections.observableArrayList(createListOfUnitsStrings(territory));
         unitsListView.setItems(items);
     }
-    //TODO: there is a bag right here, i will fix it.(Ran fuckU)
+    private void clearConquerUnitsListView(){
+        unitsListView.setItems(FXCollections.observableArrayList(new ArrayList<>(0)));
+    }
+    @FXML
+    private void releasedInnerTab(){
+        clearConquerUnitsListView();
+        dividerClose();
+    }
+    private void dividerClose(){
+        if(territoriesTableView.getItems().size()==0)
+            SplitPaneComponent.setDividerPosition(0, 0);
+        else{
+            SplitPaneComponent.setDividerPosition(0, 0.3);
+        }
+    }
+
     private List<String> createListOfUnitsStrings(Territory territory){
+        if(territory.getConquer() == null)
+            return new ArrayList<>(0);
         List<String> newList =new ArrayList<>(territory.getConquerArmyForce().getUnits().size());
         territory.getConquerArmyForce().getUnits().forEach(
                 unit ->newList.add(unit.getType() +"/ Current Power: "+ unit.getCurrentFirePower()));
