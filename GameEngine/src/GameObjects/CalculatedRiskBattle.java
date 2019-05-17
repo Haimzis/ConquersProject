@@ -25,7 +25,6 @@ public class CalculatedRiskBattle extends Battle implements Serializable{
             else currentConquerArmy.reduceCompetenceByPercent(0.5);
             attackResult = 0;
         }
-
     }
 
     //returns if attacker is won, relies on the random calculations
