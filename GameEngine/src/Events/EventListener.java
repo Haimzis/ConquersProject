@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventListener implements Serializable {
+public class EventListener {
     private List<EventObject> eventObjectsList = new ArrayList<>();
     private EventHandler eventsHandler= new EventHandler(){ //default eventHandler
 
