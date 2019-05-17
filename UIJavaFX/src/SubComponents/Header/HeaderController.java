@@ -158,7 +158,9 @@ public class HeaderController {
 
     @FXML
     private void retirePressListener() {
-
+        GameEngine.gameManager.selectedPlayerRetirement();
+        mainController.loadInformation();
+        
     }
 
     private void checkWinnerIfAny() {
