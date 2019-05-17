@@ -125,7 +125,7 @@ public class WelcomeScreenController {
                 appController.setPrimaryStage(primaryStage);
                 appController.setGameEngine(gameEngine);
                 //start game
-                if(!gameLoaded) { //Check if its a loaded game
+                if(!gameLoaded) { //Check if its not a loaded game
                     appController.startGame();
                     //first load of xml into UI
                     appController.loadInformation();

@@ -156,6 +156,11 @@ public class HeaderController {
         mainController.launchWelcomeScreen();
     }
 
+    @FXML
+    private void retirePressListener() {
+
+    }
+
     private void checkWinnerIfAny() {
         if(GameEngine.gameManager.isGameOver()) {
             Player winner = GameEngine.gameManager.getWinnerPlayer();

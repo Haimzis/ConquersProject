@@ -92,7 +92,7 @@
                   <MenuItem mnemonicParsing="false" text="Unspecified Action" />
               </items>
             </MenuButton>
-            <Button fx:id="btnRetire" disable="true" layoutX="139.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Retire" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Button fx:id="btnRetire" disable="true" layoutX="139.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#retirePressListener" text="Retire" GridPane.columnIndex="2" GridPane.rowIndex="5" />
             <Button fx:id="btnUndo" disable="true" layoutX="268.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onUndoPressListener" text="Undo" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Button fx:id="btnExit" layoutX="526.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exitToWelcomeScreen" text="Exit to Menu screen" GridPane.columnIndex="6" GridPane.rowIndex="5" />
             <ToggleButton fx:id="btnAnimationToggle" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Animation On" GridPane.columnIndex="4" GridPane.rowIndex="5" />
