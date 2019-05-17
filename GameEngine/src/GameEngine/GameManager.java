@@ -1,6 +1,7 @@
 package GameEngine;
 import Events.EventHandler;
 import Events.EventListener;
+import Events.EventTerritoryReleased;
 import GameObjects.*;
 import History.*;
 import com.sun.istack.internal.Nullable;
@@ -195,7 +196,7 @@ public class GameManager implements Serializable {
         loadPlayersIntoQueueOfTurns();
         activateEventsHandler();
     }
-    private void activateEventsHandler(){
+    public void activateEventsHandler(){
         eventListener.activateEventsHandler();
     }
 
@@ -230,6 +231,7 @@ public class GameManager implements Serializable {
             selectedArmyForce = null;
         }
         else{ // DRAW
+            eventListener.addEventObject(new EventTerritoryReleased(selectedTerritoryByPlayer.getID()));
             return result;
         }
         if(battle.isWinnerArmyNotStrongEnoughToHoldTerritory())

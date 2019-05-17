@@ -130,6 +130,7 @@ public class HeaderController {
         else {
             btnUndo.setDisable(true);
         }
+        MapController.actionBeenTaken = false;
     }
 
     @FXML
