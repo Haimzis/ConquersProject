@@ -26,6 +26,7 @@ public class MapController {
     private final int MIN_WIDTH_SIZE= 146;
     private final int MIN_HEIGHT_SIZE = 98;
     private Button currentlySelectedButton;
+    public static boolean actionBeenTaken;
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
@@ -70,9 +71,14 @@ public class MapController {
                 territoriesButtons.put(counter,btnTerritory);
                 GridComponent.add(btnTerritory,j,i);
                 btnTerritory.setOnAction(event -> {
-                    Object node = event.getSource();
-                    currentlySelectedButton = (Button)node;
-                    onTerritoryPressListener(territory);
+                    if(!actionBeenTaken) {
+                        Object node = event.getSource();
+                        currentlySelectedButton = (Button)node;
+                        onTerritoryPressListener(territory);
+                    }
+                    else {
+                        mainController.getHeaderComponentController().writeIntoError("You have already played your turn");
+                    }
                 });
 
                 if(territory.isConquered()) { //Color map if its conquered.(For load game functionality).

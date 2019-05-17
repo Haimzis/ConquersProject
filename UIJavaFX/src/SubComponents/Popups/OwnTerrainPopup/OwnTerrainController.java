@@ -2,6 +2,7 @@ package SubComponents.Popups.OwnTerrainPopup;
 
 import GameEngine.GameEngine;
 import MainComponents.AppController;
+import SubComponents.MapTable.MapController;
 import SubComponents.Popups.ActionPopupController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -53,5 +54,6 @@ public class OwnTerrainController implements ActionPopupController {
     @Override
     public void startAction() { //Enforce and print it's been enforced.
         GameEngine.gameManager.transformSelectedArmyForceToSelectedTerritory();
+        MapController.actionBeenTaken = true;
     }
 }

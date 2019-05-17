@@ -3,6 +3,7 @@ package SubComponents.Popups.AttackPopup;
 import GameEngine.GameEngine;
 import GameObjects.Unit;
 import MainComponents.AppController;
+import SubComponents.MapTable.MapController;
 import SubComponents.Popups.ActionPopupController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -39,6 +40,7 @@ public class AttackPopupController implements ActionPopupController {
         mainController.getMapComponentController().colorTerritory();
         mainController.showResultsPopup(resultOfBattle , infoOfBattle);
         mainController.updateInformation();
+        MapController.actionBeenTaken = true;
     }
 
     private void startNeutralAttack() {

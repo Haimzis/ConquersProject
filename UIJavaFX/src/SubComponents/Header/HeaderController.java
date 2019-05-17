@@ -4,6 +4,7 @@ import Exceptions.invalidInputException;
 import GameEngine.GameEngine;
 import GameObjects.Player;
 import MainComponents.AppController;
+import SubComponents.MapTable.MapController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -48,6 +49,11 @@ public class HeaderController {
         errorLbl.setVisible(true);
     }
 
+    public void writeIntoError(String error) {
+        errorLbl.setText(error);
+        errorLbl.setVisible(true);
+    }
+
     public void hideErrorLabel() {
         errorLbl.setVisible(false);
     }
@@ -89,19 +95,21 @@ public class HeaderController {
                     if (mainController.isGameOver())
                         checkWinnerIfAny();
                 } else { //normal - move next player..
+                    errorLbl.setVisible(false);
                     mainController.nextPlayer();
+                    MapController.actionBeenTaken = false;
                 }
             }
         }
         else {// This bitch clicked on 'new game' button
             mainController.getMapComponentController().clearMap();
-            mainController.startGame();
             try {
                 mainController.getGameEngine().loadXML(mainController.getGameEngine().getDescriptor().getLastKnownGoodString());
             } catch (invalidInputException ignore) {
             }
-            mainController.createMap();
+            mainController.startGame();
             mainController.loadInformation();
+            mainController.createMap();
             headerInfoArea.getChildren().clear();
             btnManageRound.setText(START_ROUND);
         }
