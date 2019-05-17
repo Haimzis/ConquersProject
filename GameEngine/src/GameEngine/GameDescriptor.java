@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class GameDescriptor implements Serializable {
     private static final String NO_DEFAULT_PROFIT = "No default profit detected";
     private static final String NO_DEFAULT_ARMY_THRESHOLD = "No default army threshold detected";
-    private static final String RANKS_ARE_NOT_SEQUENTIAL = "Ranks are not sequential";
+    private static final String RANKS_ARE_NOT_SEQUENTIAL = "Ranks in XML are not sequential";
     private String lastKnownGoodString;
     private int initialFunds , totalCycles , columns , rows;
     private int defaultThreshold , defaultProfit;

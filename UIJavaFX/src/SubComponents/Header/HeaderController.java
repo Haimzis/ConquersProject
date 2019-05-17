@@ -93,7 +93,6 @@ public class HeaderController {
                 }
             }
         }
-
         else {// This bitch clicked on 'new game' button
             mainController.getMapComponentController().clearMap();
             mainController.startGame();
@@ -103,6 +102,7 @@ public class HeaderController {
             }
             mainController.createMap();
             mainController.loadInformation();
+            headerInfoArea.getChildren().clear();
             btnManageRound.setText(START_ROUND);
         }
     }
