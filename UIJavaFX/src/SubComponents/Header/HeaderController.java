@@ -160,7 +160,8 @@ public class HeaderController {
     private void retirePressListener() {
         GameEngine.gameManager.selectedPlayerRetirement();
         mainController.loadInformation();
-        
+
+
     }
 
     private void checkWinnerIfAny() {
