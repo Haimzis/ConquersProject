@@ -87,6 +87,11 @@ public class HeaderController {
         errorLbl.getScene().getStylesheets().add("/MainComponents/Theme1.css");
         btnStyles.setText("Theme One");
     }
+
+    public Button getBtnManageRound() {
+        return btnManageRound;
+    }
+
     @FXML
     private void changeToThemeTwo(){
         errorLbl.getScene().getStylesheets().removeAll("/MainComponents/Default.css" ,"/MainComponents/Theme1.css");
@@ -102,7 +107,7 @@ public class HeaderController {
     @FXML
     public void roundManagerBtnListener() {
         if(!btnManageRound.getText().equals(NEW_GAME)) {
-            if (!GameEngine.gameManager.roundStarted()) {//you're the first bitch
+            if (!GameEngine.gameManager.roundStarted()) { //you're the first bitch
                 writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has started" + "\n");
                 btnManageRound.setText(END_TURN);
                 mainController.startRound();
@@ -121,6 +126,7 @@ public class HeaderController {
         }
         else {// This bitch clicked on 'new game' button
             mainController.getMapComponentController().clearMap();
+            btnReplay.setDisable(true);
             try {
                 mainController.getGameEngine().loadXML(mainController.getGameEngine().getDescriptor().getLastKnownGoodString());
             } catch (invalidInputException ignore) {

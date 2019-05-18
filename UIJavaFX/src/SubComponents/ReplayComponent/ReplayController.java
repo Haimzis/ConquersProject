@@ -48,8 +48,10 @@ public class ReplayController {
     public void setReplayState(){
         if(ReplayComponent.isVisible()){
             generateReplayState();
+            mainController.getHeaderComponentController().getBtnManageRound().setDisable(false);
         }
         else{
+            mainController.getHeaderComponentController().getBtnManageRound().setDisable(true);
             exitReplayState();
         }
         ReplayComponent.setManaged(!ReplayComponent.isManaged());
