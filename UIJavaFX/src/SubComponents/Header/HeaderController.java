@@ -7,14 +7,10 @@ import MainComponents.AppController;
 import SubComponents.MapTable.MapController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -35,21 +31,15 @@ public class HeaderController {
     @FXML private Button btnManageRound;
     @FXML private Button btnSave;
     @FXML private Button btnUndo;
-
-    public Button getBtnSave() {
-        return btnSave;
-    }
-
-    public Button getBtnUndo() {
-        return btnUndo;
-    }
-
     @FXML private MenuButton btnStyles;
     @FXML private ToggleButton btnAnimationToggle;
     @FXML private ToggleButton btnReplay;
     @FXML private Button btnExit;
     @FXML private Label errorLbl;
     @FXML private Button btnRetire;
+    @FXML private MenuItem defaultTheme;
+    @FXML private MenuItem themeOne;
+    @FXML private MenuItem themeTwo;
     private StringProperty currentPlayerProperty;
 
     public void setBtnReplayAccessible(){
@@ -84,10 +74,31 @@ public class HeaderController {
     public void setCurrentPlayerInTurnLbl(String currentPlayerName) {
         currentPlayerProperty.setValue(currentPlayerName);
     }
+
+    @FXML
+    private void changeToDefaultTheme(){
+        errorLbl.getScene().getStylesheets().removeAll("/MainComponents/Theme1.css" ,"/MainComponents/Theme2.css");
+        errorLbl.getScene().getStylesheets().add("/MainComponents/Default.css");
+        btnStyles.setText("Default");
+    }
+    @FXML
+    private void changeToThemeOne(){
+        errorLbl.getScene().getStylesheets().removeAll("/MainComponents/Default.css" ,"/MainComponents/Theme2.css");
+        errorLbl.getScene().getStylesheets().add("/MainComponents/Theme1.css");
+        btnStyles.setText("Theme One");
+    }
+    @FXML
+    private void changeToThemeTwo(){
+        errorLbl.getScene().getStylesheets().removeAll("/MainComponents/Default.css" ,"/MainComponents/Theme1.css");
+        errorLbl.getScene().getStylesheets().add("/MainComponents/Theme2.css");
+        btnStyles.setText("Theme Two");
+    }
+
     @FXML
     public void setReplayState(){
         mainController.getReplayComponentController().setReplayState();
     }
+
     @FXML
     public void roundManagerBtnListener() {
         if(!btnManageRound.getText().equals(NEW_GAME)) {
@@ -228,5 +239,12 @@ public class HeaderController {
         btnSave.setDisable(set);
         btnUndo.setDisable(set);
         btnRetire.setDisable(!set);
+    }
+    public Button getBtnSave() {
+        return btnSave;
+    }
+
+    public Button getBtnUndo() {
+        return btnUndo;
     }
 }

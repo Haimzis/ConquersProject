@@ -1,0 +1,11 @@
+.button {
+    -fx-background-color: linear-gradient(#dc9256, #ab4742);
+}
+
+.menu-button {
+    -fx-background-color: linear-gradient(#dc9256, #ab4742);
+}
+
+.toggle-button {
+    -fx-background-color: linear-gradient(#dc9256, #ab4742);
+}

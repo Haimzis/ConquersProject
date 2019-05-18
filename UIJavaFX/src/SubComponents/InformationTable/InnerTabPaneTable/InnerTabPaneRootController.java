@@ -59,6 +59,12 @@ public class InnerTabPaneRootController {
         armyThresholdCol.setCellValueFactory(
                 new PropertyValueFactory<>("ArmyThreshold")
         );
+
+        //CSS
+        IDCol.setId("innerTabId_Id");
+        profitCol.setId("innerTabProfit_Id");
+        armyThresholdCol.setId("innerTabThreshold_Id");
+
         //noinspection unchecked
         territoriesTableView.getColumns().addAll(IDCol, profitCol, armyThresholdCol);
     }

@@ -1,0 +1,34 @@
+.button {
+    -fx-border-color: #ff9800;
+    -fx-background-color: orange;
+}
+
+.button:hover {
+    -fx-border-color: #ff9800;
+    -fx-background-color: white;
+}
+
+.menu-button {
+    -fx-border-color: #ff9800;
+    -fx-background-color: orange;
+}
+
+.toggle-button {
+    -fx-border-color: #ff9800;
+    -fx-background-color: orange;
+}
+
+.label {
+    -fx-font: Serif;
+    -fx-font-size: 14;
+}
+
+#innerTabId_Id {
+    -fx-background-color: teal;
+}
+#innerTabProfit_Id {
+    -fx-background-color: red;
+}
+#innerTabThreshold_Id {
+    -fx-background-color: red;
+}

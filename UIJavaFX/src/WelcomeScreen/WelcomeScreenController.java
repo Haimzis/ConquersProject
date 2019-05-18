@@ -15,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -128,7 +127,7 @@ public class WelcomeScreenController {
                 primaryStage.setScene(scene);
 
                 //CSS
-                scene.getStylesheets().add("/MainComponents/App.css");
+                scene.getStylesheets().add("/MainComponents/Default.css");
 
                 //wire up game engine to appController
                 AppController appController = fxmlLoader.getController();

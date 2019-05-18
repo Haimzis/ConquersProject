@@ -73,10 +73,10 @@ public class AppController {
             MapComponentController.setMainController(this);
         }
         //initialize CSS path
-        MapComponent.getStylesheets().add(getClass().getResource("/SubComponents/MapTable/Map.css").toExternalForm());
-        HeaderComponent.getStylesheets().add(getClass().getResource("/SubComponents/Header/Header.css").toExternalForm());
-        InformationComponent.getStylesheets().add(getClass().getResource("/SubComponents/InformationTable/InformationTable.css").toExternalForm());
-        ReplayComponent.getStylesheets().add(getClass().getResource("/SubComponents/ReplayComponent/Replay.css").toExternalForm());
+        MapComponent.getStylesheets().add("/SubComponents/MapTable/Map.css");
+        HeaderComponent.getStylesheets().add("/SubComponents/Header/Header.css");
+        InformationComponent.getStylesheets().add("/SubComponents/InformationTable/InformationTable.css");
+        ReplayComponent.getStylesheets().add("/SubComponents/ReplayComponent/Replay.css");
 
     }
     public String getColorByPlayerName(String playerName){
