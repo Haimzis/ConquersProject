@@ -14,6 +14,7 @@ import SubComponents.Popups.AttackPopup.AttackPopupController;
 import SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController;
 import SubComponents.Popups.OwnTerrainPopup.OwnTerrainController;
 import SubComponents.Popups.ResultPopup.ResultPopupController;
+import SubComponents.ReplayComponent.ReplayController;
 import WelcomeScreen.WelcomeScreenController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,11 +35,12 @@ public class AppController {
     @FXML private InformationController InformationComponentController;
     @FXML private ScrollPane MapComponent;
     @FXML private MapController MapComponentController;
+    @FXML private AnchorPane ReplayComponent;
+    @FXML private ReplayController ReplayComponentController;
     private GameEngine gameEngine;
     private EventListener eventListener;
-
-
     private Stage primaryStage;
+
     public InformationController getInformationComponentController() {
         return InformationComponentController;
     }
@@ -48,7 +50,9 @@ public class AppController {
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
-
+    public ReplayController getReplayComponentController() {
+        return ReplayComponentController;
+    }
     public HeaderController getHeaderComponentController() {
         return HeaderComponentController;
     }
@@ -63,7 +67,8 @@ public class AppController {
     @FXML
     public void initialize() {
         if (HeaderComponentController != null && InformationComponentController != null
-        && MapComponentController != null) {
+        && MapComponentController != null && ReplayComponentController!= null) {
+            ReplayComponentController.setMainController(this);
             HeaderComponentController.setMainController(this);
             InformationComponentController.setMainController(this);
             MapComponentController.setMainController(this);
@@ -86,7 +91,17 @@ public class AppController {
     public void setMapComponentController(MapController mapComponentController) {
         this.MapComponentController = mapComponentController;
     }
-
+    public void loadRoundHistory(){
+        GameEngine.gameManager.peekHistory();
+        getInformationComponentController().loadRoundHistory();
+        getMapComponentController().clearMap();
+        createMap();
+    }
+    public void loadCurrentInformation(){
+        getInformationComponentController().loadRoundHistory();
+        getMapComponentController().clearMap();
+        createMap();
+    }
     public void updateInformation(){
         InformationComponentController.updatePlayersData();
     }
@@ -115,7 +130,14 @@ public class AppController {
     public void startRound() {
         GameEngine.gameManager.startOfRoundUpdates();
         updateInformation();
+        setBtnReplayAccessible();
         nextPlayer();
+    }
+
+    private void setBtnReplayAccessible() {
+        if(GameEngine.gameManager.isLastRound()){
+            HeaderComponentController.setBtnReplayAccessible();
+        }
     }
 
     public void nextPlayer() {
@@ -263,11 +285,6 @@ public class AppController {
         Scene scene = new Scene(root, 450, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    public void setEventListenerHandler(EventHandler eventHandler) {
-        eventListener = new EventListener();
-        this.eventListener.setEventsHandler(eventHandler);
     }
 
 }

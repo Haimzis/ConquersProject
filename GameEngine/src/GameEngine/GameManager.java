@@ -106,24 +106,41 @@ public class GameManager implements Serializable {
 
     }
     //Bonus #2
-    public void prevReplay(){
-        if(!roundsHistory.isEmpty())
+    public boolean prevReplay(){
+        if(!roundsHistory.isEmpty()) {
             replayStack.push(roundsHistory.pop());
-
-    }
-    //Bonus #2
-    public void nextReplay(){
-        if(!replayStack.isEmpty())
-            roundsHistory.push(replayStack.pop());
-    }
-    //Bonus #2
-    public RoundHistory peekHistory(){
-        if(!replayStack.isEmpty()) {
-            return replayStack.peek();
+            return true;
         }
-        return null;
-    }
+        return false;
 
+    }
+    //Bonus #2
+    public boolean nextReplay(){
+        if(!replayStack.isEmpty()) {
+            roundsHistory.push(replayStack.pop());
+            return true;
+        }
+        return false;
+    }
+    //Bonus #2
+    public void peekHistory(){
+        if(!replayStack.isEmpty()) {
+            roundNumber = replayStack.peek().getRoundNumber();
+            gameDescriptor.setTerritoryMap(replayStack.peek().getCopyOfMap());
+            gameDescriptor.setPlayersList(replayStack.peek().getCopyOfPlayersList());
+        }
+    }
+    //Bonus #2
+    public void generateReplayState(){
+        replayStack.push(new RoundHistory(gameDescriptor,roundNumber)); //push "fake history"
+    }
+    public void exitReplayState(){
+        while(!replayStack.isEmpty()){
+            roundsHistory.push(replayStack.pop());
+        }
+        peekHistory();
+        roundsHistory.pop();//pop the "fake history"
+    }
     //**************************//
     /*     Rounds Management    */
     //**************************//
@@ -260,6 +277,9 @@ public class GameManager implements Serializable {
     //**************************//
     /*   Get InformationTable   */
     //**************************//
+    public boolean isLastRound(){
+        return gameDescriptor.getTotalCycles()==roundNumber;
+    }
     public boolean roundStarted(){
         return !(playersTurns.size() == gameDescriptor.getPlayersList().size());
     }

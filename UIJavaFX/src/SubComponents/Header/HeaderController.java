@@ -43,7 +43,9 @@ public class HeaderController {
     @FXML private Button btnRetire;
     private StringProperty currentPlayerProperty;
 
-
+    public void setBtnReplayAccessible(){
+        btnReplay.setDisable(false);
+    }
     public void setErrorOfNotValidTerritory() {
         errorLbl.setText("This is not a valid territory!");
         errorLbl.setVisible(true);
@@ -73,7 +75,10 @@ public class HeaderController {
     public void setCurrentPlayerInTurnLbl(String currentPlayerName) {
         currentPlayerProperty.setValue(currentPlayerName);
     }
-
+    @FXML
+    public void setReplayState(){
+        mainController.getReplayComponentController().setReplayState();
+    }
     @FXML
     public void roundManagerBtnListener() {
         if(!btnManageRound.getText().equals(NEW_GAME)) {
