@@ -62,7 +62,7 @@ public class InformationController {
         playersTabs = new HashMap<>();
         playersInnerTabPaneRootControllers=new HashMap<>();
     }
-    private void loadBinding() {
+    public void loadBinding() {
         currentRoundProperty = new SimpleIntegerProperty(GameEngine.gameManager.roundNumber);
         StringExpression currentRoundSE = Bindings.concat(currentRoundProperty);
         currentRound.textProperty().bind(currentRoundSE);

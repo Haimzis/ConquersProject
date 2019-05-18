@@ -101,6 +101,7 @@ public class AppController {
         createMap();
     }
     public void loadCurrentInformation(){
+        InformationComponentController.loadBinding();
         getInformationComponentController().loadRoundHistory();
         getMapComponentController().clearMap();
         createMap();

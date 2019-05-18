@@ -165,7 +165,9 @@ public class GameManager implements Serializable {
         while(!replayStack.isEmpty()){
             roundsHistory.push(replayStack.pop());
         }
-        peekHistory();
+        roundNumber = roundsHistory.peek().getRoundNumber();
+        gameDescriptor.setTerritoryMap(roundsHistory.peek().getCopyOfMap());
+        gameDescriptor.setPlayersList(roundsHistory.peek().getCopyOfPlayersList());
         roundsHistory.pop();//pop the "fake history"
     }
     //**************************//

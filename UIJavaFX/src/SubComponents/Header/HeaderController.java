@@ -237,6 +237,7 @@ public class HeaderController {
             }
             setButtonsDisabled(true);
             btnRetire.setDisable(true);
+            btnReplay.setDisable(true);
             mainController.getMapComponentController().disableMap(true);
             btnManageRound.setText(NEW_GAME);
         }

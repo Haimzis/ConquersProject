@@ -38,21 +38,21 @@ public class ReplayController {
     }
     private void generateReplayState(){
         GameEngine.gameManager.generateReplayState();
-        mainController.getMapComponentController().disableMap(false);
     }
     private void exitReplayState(){
         GameEngine.gameManager.exitReplayState();
         mainController.loadCurrentInformation();
-        mainController.getMapComponentController().disableMap(true);
     }
     public void setReplayState(){
         if(ReplayComponent.isVisible()){
-            generateReplayState();
+            exitReplayState();
             mainController.getHeaderComponentController().getBtnManageRound().setDisable(false);
+            mainController.getMapComponentController().disableMap(false);
         }
         else{
             mainController.getHeaderComponentController().getBtnManageRound().setDisable(true);
-            exitReplayState();
+            mainController.getMapComponentController().disableMap(true);
+            generateReplayState();
         }
         ReplayComponent.setManaged(!ReplayComponent.isManaged());
         ReplayComponent.setVisible(!ReplayComponent.isVisible());
