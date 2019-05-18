@@ -427,4 +427,13 @@ public class GameManager implements Serializable {
         return null;
     }
     public String getCurrentPlayerName() { return currentPlayerName; }
+
+    public Player getForcedWinner() {
+        nextPlayerInTurn();
+        if(currentPlayerTurn == null) {
+            loadPlayersIntoQueueOfTurns();
+            nextPlayerInTurn();
+        }
+        return currentPlayerTurn;
+    }
 }

@@ -35,6 +35,15 @@ public class HeaderController {
     @FXML private Button btnManageRound;
     @FXML private Button btnSave;
     @FXML private Button btnUndo;
+
+    public Button getBtnSave() {
+        return btnSave;
+    }
+
+    public Button getBtnUndo() {
+        return btnUndo;
+    }
+
     @FXML private MenuButton btnStyles;
     @FXML private ToggleButton btnAnimationToggle;
     @FXML private ToggleButton btnReplay;
@@ -168,20 +177,27 @@ public class HeaderController {
     @FXML
     private void retirePressListener() {
         GameEngine.gameManager.selectedPlayerRetirement();
+        writeIntoTextArea(GameEngine.gameManager.getCurrentPlayerName() + " Has retired." + "\n");
         if(GameEngine.gameManager.checkIfOnlyOnePlayer()) {
             forceWinner();
+            mainController.loadInformation();
+            mainController.getInformationComponentController().setFocusOnCurrentPlayer();
+            return;
         }
-        writeIntoTextArea(GameEngine.gameManager.getCurrentPlayerName() + " Has retired." + "\n");
-        if(!GameEngine.gameManager.isNextPlayerNull()) {
+        if(!GameEngine.gameManager.isNextPlayerNull()) { //More than one player , but the last one retired so a new round begins
             mainController.nextPlayer();
         }
         else {
             newRound();
         }
         mainController.loadInformation();
+        mainController.getInformationComponentController().setFocusOnCurrentPlayer();
     }
 
     private void forceWinner() {
+        Player winner = GameEngine.gameManager.getForcedWinner();
+        errorLbl.setText(winner.getPlayerName());
+        writeIntoTextArea(winner.getPlayerName() + " has won by a technical.");
         setButtonsDisabled(true);
         btnRetire.setDisable(true);
         mainController.getMapComponentController().disableMap(true);

@@ -148,6 +148,8 @@ public class WelcomeScreenController {
                             appController.getHeaderComponentController().writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
                         }
                     });
+                    appController.getHeaderComponentController().getBtnSave().setDisable(false);
+                    appController.getHeaderComponentController().getBtnUndo().setDisable(false);
                 }
                 //appController.startRound();
             } catch (IOException e) {
