@@ -27,16 +27,11 @@ public class InnerTabPaneRootController {
     private Player currentPlayer;
 
     public String getCurrentPlayerColor() {
-        return currentPlayerColor;
+        return currentPlayer.getColor();
     }
-
-    private String currentPlayerColor;
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
-    }
-    public void setCurrentPlayerColor(String color){
-        this.currentPlayerColor=color;
     }
     public void loadTerritoriesToTableView(){
         territoriesTableView.setEditable(false);
@@ -106,7 +101,7 @@ public class InnerTabPaneRootController {
         this.PlayerID.setText(Integer.toString(currentPlayer.getID()));
         this.PlayerName.setText(currentPlayer.getPlayerName());
         this.PlayerTurings.setText(Integer.toString(currentPlayer.getFunds()));
-        this.PlayerColor.setStyle("-fx-background-color: "+ currentPlayerColor);
+        this.PlayerColor.setStyle("-fx-background-color: "+ getCurrentPlayerColor());
         if(GameEngine.gameManager!=null){
             final ObservableList<Territory> data =
                     FXCollections.observableArrayList(GameEngine.gameManager.getTerritoryListByPlayer(currentPlayer));

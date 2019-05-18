@@ -193,6 +193,7 @@ public class HeaderController {
     private void retirePressListener() {
         GameEngine.gameManager.selectedPlayerRetirement();
         writeIntoTextArea(GameEngine.gameManager.getCurrentPlayerName() + " Has retired." + "\n");
+
         if(GameEngine.gameManager.checkIfOnlyOnePlayer()) {
             forceWinner();
             mainController.loadInformation();

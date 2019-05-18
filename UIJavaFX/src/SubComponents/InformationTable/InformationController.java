@@ -33,9 +33,7 @@ public class InformationController {
     @FXML private TableView<Unit> unitsTableView;
     private Map<String,Tab> playersTabs= new HashMap<>();
     private Map<String, InnerTabPaneRootController> playersInnerTabPaneRootControllers= new HashMap<>();
-    private static Stack<String> colors = new Stack<>();
     private IntegerProperty currentRoundProperty;
-
 
     public String getColorByPlayerName(String playerName){
         return playersInnerTabPaneRootControllers.get(playerName).getCurrentPlayerColor();
@@ -52,13 +50,8 @@ public class InformationController {
     public void decCurrentRoundProperty(){
         currentRoundProperty.setValue(currentRoundProperty.getValue() - 1);
     }
-    private void loadColors(){
-        colors.push("Green");colors.push("Red");
-        colors.push("Blue");colors.push("Yellow");
-    }
     public void loadInformation() {
         resetPlayerTabs();
-        loadColors();
         loadTotalCycles();
         loadBinding();
         loadPlayersTabs();
@@ -87,7 +80,6 @@ public class InformationController {
             try {
                 innerTabPaneRoot = innerTabPaneRootLoader.load(url.openStream());
                 InnerTabPaneRootController innerTabPaneRootController = innerTabPaneRootLoader.getController();
-                innerTabPaneRootController.setCurrentPlayerColor(colors.pop());
                 innerTabPaneRootController.setCurrentPlayer(player);
                 innerTabPaneRootController.loadTerritoriesToTableView();
                 innerTabPaneRootController.loadPlayerData();

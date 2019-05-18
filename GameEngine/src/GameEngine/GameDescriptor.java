@@ -94,10 +94,13 @@ public class GameDescriptor implements Serializable {
     }
 
     private List<Player> loadPlayers(Generated.GameDescriptor descriptor) {
+        Stack<String> colors = new Stack<>();
+        colors.push("Green");colors.push("Red");
+        colors.push("Blue");colors.push("Yellow");
         List<Player> playersList = new ArrayList<>();
         if(descriptor.getPlayers() == null) {
-            Player playerOne = new Player(1 , "Ran", initialFunds);
-            Player playerTwo = new Player(2 , "Haim", initialFunds);
+            Player playerOne = new Player(1 , "Ran", initialFunds,"Blue");
+            Player playerTwo = new Player(2 , "Haim", initialFunds,"Red");
             playersList.add(playerOne);
             playersList.add(playerTwo);
         } else {
@@ -109,7 +112,7 @@ public class GameDescriptor implements Serializable {
                 id = player.getId().intValue();
                 name = player.getName();
 
-                Player newPlayer = new Player(id , name, initialFunds);
+                Player newPlayer = new Player(id , name, initialFunds,colors.pop());
                 playersList.add(newPlayer);
             }
         }
