@@ -38,7 +38,6 @@ public class AppController {
     @FXML private AnchorPane ReplayComponent;
     @FXML private ReplayController ReplayComponentController;
     private GameEngine gameEngine;
-    private EventListener eventListener;
     private Stage primaryStage;
 
     public InformationController getInformationComponentController() {
@@ -75,6 +74,10 @@ public class AppController {
         }
         //initialize CSS path
         MapComponent.getStylesheets().add(getClass().getResource("/SubComponents/MapTable/Map.css").toExternalForm());
+        HeaderComponent.getStylesheets().add(getClass().getResource("/SubComponents/Header/Header.css").toExternalForm());
+        InformationComponent.getStylesheets().add(getClass().getResource("/SubComponents/InformationTable/InformationTable.css").toExternalForm());
+        ReplayComponent.getStylesheets().add(getClass().getResource("/SubComponents/ReplayComponent/Replay.css").toExternalForm());
+
     }
     public String getColorByPlayerName(String playerName){
         return InformationComponentController.getColorByPlayerName(playerName);
@@ -159,6 +162,11 @@ public class AppController {
             fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/OwnTerrainPopup/OwnTerrainPopUpFXML.fxml"));
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root, 242, 223);
+
+            //CSS
+            scene.getStylesheets().add("/SubComponents/Popups/OwnTerrainPopup/OwnTerrain.css");
+
+            //Stage
             Stage stage = new Stage();
             stage.setTitle("Own Territory");
             stage.setScene(scene);
@@ -183,6 +191,11 @@ public class AppController {
                 fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/AttackPopup/AttackPopupFXML.fxml"));
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root, 242, 223);
+
+                //CSS
+                scene.getStylesheets().add("/SubComponents/Popups/AttackPopup/Attack.css");
+
+                //Stage
                 Stage stage = new Stage();
                 stage.setTitle("Attack");
                 stage.setScene(scene);
@@ -192,6 +205,7 @@ public class AppController {
                 attackPopupController.setMainController(this);
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setResizable(false);
+
                 stage.show();
             } else { // Neutral territory
                 AttackPopupController attackPopupController = new AttackPopupController();
@@ -211,6 +225,11 @@ public class AppController {
             fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/BuyUnitsPopup/BuyUnitsPopupFXML.fxml"));
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root, 242, 223);
+
+            //CSS
+            scene.getStylesheets().add("/SubComponents/Popups/BuyUnitsPopup/BuyUnits.css");
+
+            //Stage
             Stage stage = new Stage();
             stage.setTitle("New Window");
             stage.setScene(scene);
@@ -236,6 +255,11 @@ public class AppController {
             fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/ResultPopup/ResultPopupFXML.fxml"));
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root, 250, 586);
+
+            //CSS
+            scene.getStylesheets().add("/SubComponents/Popups/ResultPopup/Result.css");
+
+            //Stage
             Stage stage = new Stage();
             stage.setTitle(result.toString());
             stage.setScene(scene);

@@ -2,49 +2,42 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Popups.AttackPopup.AttackPopupController">
-  <content>
-    <AnchorPane minHeight="0.0" minWidth="0.0">
+<SplitPane id="attackPopup_Id" dividerPositions="0.27184466019417475" orientation="VERTICAL" styleClass="Attack.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Popups.AttackPopup.AttackPopupController">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
-            <SplitPane dividerPositions="0.27184466019417475" orientation="VERTICAL">
-              <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                     <children>
-                        <Label layoutX="22.0" layoutY="18.0" prefHeight="19.0" prefWidth="171.0" text="Choose what to do">
-                           <font>
-                              <Font name="Aharoni Bold" size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Button fx:id="btnWellTimed" layoutX="48.0" layoutY="25.0" mnemonicParsing="false" onAction="#wellTimedAttackListener" prefHeight="25.0" prefWidth="125.0" text="Well Timed Attack" />
-                        <Button fx:id="calculatedRisk_btn" layoutX="47.0" layoutY="74.0" mnemonicParsing="false" onAction="#calculatedRiskAttackListener" prefHeight="25.0" prefWidth="125.0" text="Calculated Risk Attack">
-                           <font>
-                              <Font size="11.0" />
-                           </font></Button>
-                        <ImageView fitHeight="24.0" fitWidth="51.0" layoutX="13.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../Resources/clock.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="26.0" fitWidth="46.0" layoutX="12.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../Resources/bitcoin.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </AnchorPane>
-              </items>
-            </SplitPane>
-         </children></AnchorPane>
-  </content>
-</ScrollPane>
+            <Label layoutX="22.0" layoutY="18.0" prefHeight="19.0" prefWidth="171.0" text="Choose what to do">
+               <font>
+                  <Font name="Aharoni Bold" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="btnWellTimed" layoutX="48.0" layoutY="25.0" mnemonicParsing="false" onAction="#wellTimedAttackListener" prefHeight="25.0" prefWidth="125.0" text="Well Timed Attack" />
+            <Button fx:id="calculatedRisk_btn" layoutX="47.0" layoutY="74.0" mnemonicParsing="false" onAction="#calculatedRiskAttackListener" prefHeight="25.0" prefWidth="125.0" text="Calculated Risk Attack">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <ImageView fitHeight="24.0" fitWidth="51.0" layoutX="13.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Resources/clock.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="26.0" fitWidth="46.0" layoutX="12.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Resources/bitcoin.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+  </items>
+</SplitPane>

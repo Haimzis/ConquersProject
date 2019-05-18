@@ -126,6 +126,10 @@ public class WelcomeScreenController {
                 primaryStage.setHeight(600);
                 primaryStage.setWidth(900);
                 primaryStage.setScene(scene);
+
+                //CSS
+                scene.getStylesheets().add("/MainComponents/App.css");
+
                 //wire up game engine to appController
                 AppController appController = fxmlLoader.getController();
                 appController.setPrimaryStage(primaryStage);

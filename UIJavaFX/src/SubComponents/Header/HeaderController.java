@@ -102,8 +102,7 @@ public class HeaderController {
                 if (GameEngine.gameManager.isCycleOver()) {//you're the last bitch, end your turn and call endOfRoundUpdate
                     newRound();
                 } else { //normal - move next player..
-                    errorLbl.setVisible(false);
-                    mainController.nextPlayer();
+                    nextTurn();
                 }
             }
             MapController.actionBeenTaken = false;
@@ -121,6 +120,11 @@ public class HeaderController {
             headerInfoArea.getChildren().clear();
             btnManageRound.setText(START_ROUND);
         }
+    }
+
+    private void nextTurn() {
+        errorLbl.setVisible(false);
+        mainController.nextPlayer();
     }
 
     private void newRound() {
@@ -184,10 +188,10 @@ public class HeaderController {
             mainController.getInformationComponentController().setFocusOnCurrentPlayer();
             return;
         }
-        if(!GameEngine.gameManager.isNextPlayerNull()) { //More than one player , but the last one retired so a new round begins
+        if(!GameEngine.gameManager.isNextPlayerNull()) {
             mainController.nextPlayer();
         }
-        else {
+        else { //More than one player , but the last one retired so a new round begins
             newRound();
         }
         mainController.loadInformation();

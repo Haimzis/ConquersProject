@@ -17,6 +17,7 @@ public class OwnTerrainController implements ActionPopupController {
     private AppController mainController;
     @FXML private Label infoLabel;
     @FXML private Button enforceArmyBtn;
+    @FXML private Button btnRehabilitate;
 
 
     public void setMainController(AppController mainController) { this.mainController = mainController; }
@@ -27,6 +28,8 @@ public class OwnTerrainController implements ActionPopupController {
         if(GameEngine.gameManager.isSelectedPlayerHasEnoughMoney(enoughMoney)) {
             GameEngine.gameManager.rehabilitateSelectedTerritoryArmy();
             showLabelWhenDone("Done!" , Color.BLACK);
+            btnRehabilitate.setDisable(true);
+            enforceArmyBtn.setDisable(true);
         }
         else { // Not enough funds
             showLabelWhenDone("Not enough funds." , Color.RED);
