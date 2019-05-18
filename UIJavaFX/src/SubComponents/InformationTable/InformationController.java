@@ -57,14 +57,18 @@ public class InformationController {
         colors.push("Blue");colors.push("Yellow");
     }
     public void loadInformation() {
-        playersInformationTabPane.getTabs().clear();
+        resetPlayerTabs();
         loadColors();
         loadTotalCycles();
         loadBinding();
         loadPlayersTabs();
         loadUnitsToTableView();
     }
-
+    private void resetPlayerTabs(){
+        playersInformationTabPane.getTabs().clear();
+        playersTabs = new HashMap<>();
+        playersInnerTabPaneRootControllers=new HashMap<>();
+    }
     private void loadBinding() {
         currentRoundProperty = new SimpleIntegerProperty(GameEngine.gameManager.roundNumber);
         StringExpression currentRoundSE = Bindings.concat(currentRoundProperty);
