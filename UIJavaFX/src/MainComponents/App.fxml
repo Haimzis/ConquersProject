@@ -3,16 +3,16 @@
 <?import javafx.scene.layout.BorderPane?>
 
 <BorderPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainComponents.AppController">
+   <bottom>
+      <fx:include fx:id="ReplayComponent" source="../SubComponents/ReplayComponent/Replay.fxml" />
+   </bottom>
    <center>
       <fx:include fx:id="MapComponent" source="../SubComponents/MapTable/Map.fxml" BorderPane.alignment="CENTER" />
    </center>
-   <top>
-      <fx:include fx:id="HeaderComponent" source="../SubComponents/Header/Header.fxml" />
-   </top>
    <left>
       <fx:include fx:id="InformationComponent" source="../SubComponents/InformationTable/Information.fxml" />
    </left>
-   <bottom>
-      <fx:include source="../SubComponents/ReplayComponent/Replay.fxml" />
-   </bottom>
+   <top>
+      <fx:include fx:id="HeaderComponent" source="../SubComponents/Header/Header.fxml" />
+   </top>
 </BorderPane>

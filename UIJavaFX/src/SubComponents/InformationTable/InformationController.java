@@ -42,10 +42,7 @@ public class InformationController {
     }
 
     public void undoUpdate(){
-        playersInnerTabPaneRootControllers.forEach((player,playerInnerTabPaneRootControllers)-> {
-            playerInnerTabPaneRootControllers.setCurrentPlayer(GameEngine.gameManager.getPlayerByName(player));
-            playerInnerTabPaneRootControllers.loadPlayerData();
-        });
+        loadRoundHistory();
         decCurrentRoundProperty();
     }
 
@@ -188,5 +185,12 @@ public class InformationController {
                 playersInformationTabPane.getSelectionModel().select(playersInformationTabPane.getTabs().get(i));
             }
         }
+    }
+
+    public void loadRoundHistory() {
+        playersInnerTabPaneRootControllers.forEach((player, playerInnerTabPaneRootControllers) -> {
+            playerInnerTabPaneRootControllers.setCurrentPlayer(GameEngine.gameManager.getPlayerByName(player));
+            playerInnerTabPaneRootControllers.loadPlayerData();
+        });
     }
 }

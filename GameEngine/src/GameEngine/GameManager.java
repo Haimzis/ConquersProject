@@ -108,13 +108,24 @@ public class GameManager implements Serializable {
             roundsHistory.push(replayStack.pop());
     }
     //Bonus #2
-    public RoundHistory peekHistory(){
+    public void peekHistory(){
         if(!replayStack.isEmpty()) {
-            return replayStack.peek();
+            roundNumber = roundsHistory.peek().getRoundNumber();
+            gameDescriptor.setTerritoryMap(roundsHistory.peek().getCopyOfMap());
+            gameDescriptor.setPlayersList(roundsHistory.peek().getCopyOfPlayersList());
         }
-        return null;
     }
-
+    //Bonus #2
+    public void generateReplayState(){
+        replayStack.push(new RoundHistory(gameDescriptor,roundNumber)); //push "fake history"
+    }
+    public void exitReplayState(){
+        while(!replayStack.isEmpty()){
+            roundsHistory.push(replayStack.pop());
+        }
+        peekHistory();
+        roundsHistory.pop();//pop the "fake history"
+    }
     //**************************//
     /*     Rounds Management    */
     //**************************//
@@ -251,6 +262,9 @@ public class GameManager implements Serializable {
     //**************************//
     /*   Get InformationTable   */
     //**************************//
+    public boolean isLastRound(){
+        return gameDescriptor.getTotalCycles()==roundNumber;
+    }
     public boolean roundStarted(){
         return !(playersTurns.size() == gameDescriptor.getPlayersList().size());
     }
