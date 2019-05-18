@@ -98,11 +98,12 @@ public class GameManager implements Serializable {
     public void selectedPlayerRetirement(){
         List<Integer> mapsToClear = currentPlayerTurn.getTerritoriesID();
         roundsHistory.forEach(roundHistory -> {
-            mapsToClear.forEach(TerritoryID-> roundHistory.getMapHistory().get(TerritoryID).eliminateThisWeakArmy());
+            roundHistory.getPlayerStatsHistory().stream().filter(player -> player.getID() == currentPlayerTurn.getID()).forEach(player -> getCurrentPlayerTerritories().clear());
             roundHistory.getPlayerStatsHistory().remove(currentPlayerTurn);
         });
-        mapsToClear.forEach(TerritoryID->gameDescriptor.getTerritoryMap().get(TerritoryID).eliminateThisWeakArmy());
+        mapsToClear.forEach(TerritoryID->eventListener.addEventObject(gameDescriptor.getTerritoryMap().get(TerritoryID).eliminateThisWeakArmy()));
         gameDescriptor.getPlayersList().remove(currentPlayerTurn);
+
     }
     //Bonus #2
     public void prevReplay(){
