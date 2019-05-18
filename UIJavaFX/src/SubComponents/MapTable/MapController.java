@@ -124,6 +124,7 @@ public class MapController {
     }
 
     public void clearMap() {
+        territoriesButtons = new HashMap<>();
         GridComponent.getChildren().clear();
         GridComponent.getRowConstraints().clear();
         GridComponent.getColumnConstraints().clear();

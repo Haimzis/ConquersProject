@@ -1,8 +1,7 @@
 package GameObjects;
-import javafx.beans.property.StringProperty;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Player implements Serializable {
@@ -78,5 +77,16 @@ public class Player implements Serializable {
     }
     public void addTerritory(Territory territory) {
             TerritoriesID.add(territory.getID());
+    }
+    public void removeTerritory(Integer territoryToRemove){
+        if(!TerritoriesID.isEmpty()) {
+            Iterator territory = TerritoriesID.iterator();
+            while (territory.hasNext()) {
+                Integer TerritoryID = (Integer)territory.next();
+                if (territoryToRemove.equals(TerritoryID)) {
+                    territory.remove();
+                }
+            }
+        }
     }
 }

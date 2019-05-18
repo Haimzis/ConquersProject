@@ -4,6 +4,7 @@ import Events.EventObject;
 import Events.EventTerritoryReleased;
 
 import java.io.Serializable;
+import java.util.Iterator;
 
 public class Territory implements Serializable {
     private int ID;
@@ -89,6 +90,7 @@ public class Territory implements Serializable {
         conquer=null;
         return new EventTerritoryReleased(this.ID);
     }
+
     //After fight, removes territory from conquer list- but pay him Funds as units amount
     public EventObject xChangeFundsForUnitsAndHold() {
         conquer.incrementFunds(conquerArmyForce.getArmyValueInFunds());
