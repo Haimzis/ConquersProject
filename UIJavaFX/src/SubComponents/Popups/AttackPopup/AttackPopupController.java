@@ -40,7 +40,7 @@ public class AttackPopupController implements ActionPopupController {
         mainController.getMapComponentController().colorTerritory();
         mainController.showResultsPopup(resultOfBattle , infoOfBattle);
         mainController.updateInformation();
-        //GameEngine.gameManager.activateEventsHandler();
+        GameEngine.gameManager.activateEventsHandler();
         MapController.actionBeenTaken = true;
     }
 

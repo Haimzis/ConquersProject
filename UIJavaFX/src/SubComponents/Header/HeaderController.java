@@ -86,14 +86,7 @@ public class HeaderController {
 
             } else { // round started already
                 if (GameEngine.gameManager.isCycleOver()) {//you're the last bitch, end your turn and call endOfRoundUpdate
-                    writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has ended" + "\n");
-                    btnManageRound.setText(START_ROUND);
-                    mainController.endOfRoundUpdates();
-                    mainController.getMapComponentController().disableMap(true);
-                    setCurrentPlayerInTurnLbl("None");
-                    setButtonsDisabled(false);
-                    if (mainController.isGameOver())
-                        checkWinnerIfAny();
+                    newRound();
                 } else { //normal - move next player..
                     errorLbl.setVisible(false);
                     mainController.nextPlayer();
@@ -114,6 +107,17 @@ public class HeaderController {
             headerInfoArea.getChildren().clear();
             btnManageRound.setText(START_ROUND);
         }
+    }
+
+    private void newRound() {
+        writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has ended" + "\n");
+        btnManageRound.setText(START_ROUND);
+        mainController.endOfRoundUpdates();
+        mainController.getMapComponentController().disableMap(true);
+        setCurrentPlayerInTurnLbl("None");
+        setButtonsDisabled(false);
+        if (mainController.isGameOver())
+            checkWinnerIfAny();
     }
 
     @FXML
@@ -159,9 +163,24 @@ public class HeaderController {
     @FXML
     private void retirePressListener() {
         GameEngine.gameManager.selectedPlayerRetirement();
+        if(GameEngine.gameManager.checkIfOnlyOnePlayer()) {
+            forceWinner();
+        }
+        writeIntoTextArea(GameEngine.gameManager.getCurrentPlayerName() + " Has retired." + "\n");
+        if(!GameEngine.gameManager.isNextPlayerNull()) {
+            mainController.nextPlayer();
+        }
+        else {
+            newRound();
+        }
         mainController.loadInformation();
+    }
 
-
+    private void forceWinner() {
+        setButtonsDisabled(true);
+        btnRetire.setDisable(true);
+        mainController.getMapComponentController().disableMap(true);
+        btnManageRound.setText(NEW_GAME);
     }
 
     private void checkWinnerIfAny() {

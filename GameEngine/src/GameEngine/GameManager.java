@@ -41,6 +41,14 @@ public class GameManager implements Serializable {
         this.eventListener.setEventsHandler(eventHandler);
     }
 
+    public boolean checkIfOnlyOnePlayer() {
+        return gameDescriptor.getPlayersList().size() == 1;
+    }
+
+    public boolean isNextPlayerNull() {
+        return playersTurns.peek() == null;
+    }
+
     public GameDescriptor getGameDescriptor() {
         return gameDescriptor;
     }
