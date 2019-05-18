@@ -17,25 +17,33 @@ public class ReplayController {
     }
     @FXML
     public void btnNextClicked(){
-        GameEngine.gameManager.nextReplay();
-        loadRoundHistory();
-        mainController.getInformationComponentController().incCurrentRoundProperty();
+        if(GameEngine.gameManager.nextReplay()) {
+            loadRoundHistory();
+            mainController.getInformationComponentController().incCurrentRoundProperty();
+        }
+        else{
+            //exception
+        }
     }
     @FXML
     public void btnPrevClicked(){
-        GameEngine.gameManager.prevReplay();
-        loadRoundHistory();
-        mainController.getInformationComponentController().decCurrentRoundProperty();
+        if(GameEngine.gameManager.prevReplay()) {
+            loadRoundHistory();
+            mainController.getInformationComponentController().decCurrentRoundProperty();
+        }
+        else {
+            //exception
+        }
 
     }
     private void generateReplayState(){
         GameEngine.gameManager.generateReplayState();
-        mainController.getMapComponentController().disableMap(true);
+        mainController.getMapComponentController().disableMap(false);
     }
     private void exitReplayState(){
         GameEngine.gameManager.exitReplayState();
         mainController.loadCurrentInformation();
-        mainController.getMapComponentController().disableMap(false);
+        mainController.getMapComponentController().disableMap(true);
     }
     public void setReplayState(){
         if(ReplayComponent.isVisible()){

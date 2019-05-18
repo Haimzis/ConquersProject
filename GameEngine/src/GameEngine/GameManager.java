@@ -97,22 +97,28 @@ public class GameManager implements Serializable {
         gameDescriptor.getPlayersList().remove(currentPlayerTurn);
     }
     //Bonus #2
-    public void prevReplay(){
-        if(!roundsHistory.isEmpty())
+    public boolean prevReplay(){
+        if(!roundsHistory.isEmpty()) {
             replayStack.push(roundsHistory.pop());
+            return true;
+        }
+        return false;
 
     }
     //Bonus #2
-    public void nextReplay(){
-        if(!replayStack.isEmpty())
+    public boolean nextReplay(){
+        if(!replayStack.isEmpty()) {
             roundsHistory.push(replayStack.pop());
+            return true;
+        }
+        return false;
     }
     //Bonus #2
     public void peekHistory(){
         if(!replayStack.isEmpty()) {
-            roundNumber = roundsHistory.peek().getRoundNumber();
-            gameDescriptor.setTerritoryMap(roundsHistory.peek().getCopyOfMap());
-            gameDescriptor.setPlayersList(roundsHistory.peek().getCopyOfPlayersList());
+            roundNumber = replayStack.peek().getRoundNumber();
+            gameDescriptor.setTerritoryMap(replayStack.peek().getCopyOfMap());
+            gameDescriptor.setPlayersList(replayStack.peek().getCopyOfPlayersList());
         }
     }
     //Bonus #2
