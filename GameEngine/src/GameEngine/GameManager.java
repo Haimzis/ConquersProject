@@ -108,6 +108,7 @@ public class GameManager implements Serializable {
         //clear present
         removeTerritoriesOfPlayerFromCurrentTime();
         gameDescriptor.getPlayersList().remove(currentPlayerTurn);
+        nextPlayerInTurn();
         activateEventsHandler();
     }
 
@@ -151,7 +152,7 @@ public class GameManager implements Serializable {
     //Bonus #2
     public void peekHistory(){
         if(!replayStack.isEmpty()) {
-            roundNumber = replayStack.peek().getRoundNumber();
+            roundNumber = replayStack.peek().getRoundNumber()+1;
             gameDescriptor.setTerritoryMap(replayStack.peek().getCopyOfMap());
             gameDescriptor.setPlayersList(replayStack.peek().getCopyOfPlayersList());
         }
@@ -212,6 +213,9 @@ public class GameManager implements Serializable {
         currentPlayerTurn= playersTurns.poll();
         if (currentPlayerTurn != null) {
             currentPlayerName = currentPlayerTurn.getPlayerName();
+        }
+        else {
+            currentPlayerName = "None";
         }
     }
     //returns potential production of the current player turn
