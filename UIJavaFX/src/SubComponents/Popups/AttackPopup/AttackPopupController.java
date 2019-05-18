@@ -70,7 +70,6 @@ public class AttackPopupController implements ActionPopupController {
         else { // Draw
             resultOfBattle = Result.DRAW;
         }
-
     }
 
     private void checkIfWinnerCanHold() {

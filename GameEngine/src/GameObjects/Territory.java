@@ -2,9 +2,7 @@ package GameObjects;
 
 import Events.EventObject;
 import Events.EventTerritoryReleased;
-
 import java.io.Serializable;
-import java.util.Iterator;
 
 public class Territory implements Serializable {
     private int ID;

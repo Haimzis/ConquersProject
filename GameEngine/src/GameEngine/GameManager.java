@@ -96,28 +96,40 @@ public class GameManager implements Serializable {
     }
     //Bonus #2
     public void selectedPlayerRetirement(){
-        //clear history
+        //clear past
         roundsHistory.forEach(roundHistory -> {
             roundHistory.getPlayerStatsHistory().forEach(player -> {
                     if(player.getID() == currentPlayerTurn.getID()){
-                        removeTerritoriesOfPlayer();
+                        removeTerritoriesOfPlayerFromSpecificTime(player,roundHistory);
                     }
             });
             roundHistory.getPlayerStatsHistory().remove(currentPlayerTurn);
         });
         //clear present
-        removeTerritoriesOfPlayer();
+        removeTerritoriesOfPlayerFromCurrentTime();
         gameDescriptor.getPlayersList().remove(currentPlayerTurn);
         activateEventsHandler();
     }
 
-    private void removeTerritoriesOfPlayer() {
+    private void removeTerritoriesOfPlayerFromSpecificTime(Player player,RoundHistory roundHistory) {
+        List<Integer> mapsToClear = player.getTerritoriesID();
+        while(!mapsToClear.isEmpty()){
+            Integer territoryID = mapsToClear.get(0);
+            getTerritoryFromSpecificTime(roundHistory,territoryID).eliminateThisWeakArmy();
+            mapsToClear.remove(0);
+        }
+    }
+    private Territory getTerritoryFromSpecificTime(RoundHistory roundHistory,Integer territoryID){
+        return roundHistory.getMapHistory().get(territoryID);
+    }
+    private void removeTerritoriesOfPlayerFromCurrentTime() {
         List<Integer> mapsToClear = currentPlayerTurn.getTerritoriesID();
         while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
             eventListener.addEventObject(getTerritoryByID(territoryID).eliminateThisWeakArmy());
         }
     }
+
 
     //Bonus #2
     public boolean prevReplay(){

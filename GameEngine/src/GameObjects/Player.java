@@ -10,17 +10,32 @@ public class Player implements Serializable {
     private int funds;
     private List<Integer> TerritoriesID;
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    private String color;
+
     public Player(int id, String playerName, int funds) {
         ID = id;
         this.playerName = playerName;
         this.funds = funds;
         TerritoriesID = new ArrayList<>();
     }
+    public Player(int id, String playerName, int funds,String color) {
+        this(id, playerName, funds);
+        this.color = color;
+    }
     public Player(Player player) {
         ID = player.getID();
         this.playerName =player.getPlayerName();
         this.funds = player.getFunds();
         this.TerritoriesID = new ArrayList<>();
+        this.color = player.color;
         if (!player.getTerritoriesID().isEmpty())
             //player.getTerritoriesID().forEach(territoryID -> this.TerritoriesID.add(new Integer(territoryID)));
             this.TerritoriesID.addAll(player.getTerritoriesID()); //TODO: I need to check that the undo works well with it
