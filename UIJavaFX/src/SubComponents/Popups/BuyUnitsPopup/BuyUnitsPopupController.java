@@ -38,7 +38,7 @@ public class BuyUnitsPopupController {
         amountToBuy.setTextFormatter(new TextFormatter<>(
                 new IntegerStringConverter(),
                 0,
-                c -> Pattern.matches("\\n*", c.getText()) ? c : null ));
+                c -> Pattern.matches("\\d*", c.getText()) ? c : null ));
 
         //Build dropdown list of units and bind the total label
         for(String key : mainController.getGameEngine().getDescriptor().getUnitMap().keySet()) {
