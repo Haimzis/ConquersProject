@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
@@ -85,4 +86,8 @@
          </tabs>
       </TabPane>
    </children>
+   <stylesheets>
+      <URL value="@../InformationTable.css" />
+      <URL value="@../../../MainComponents/Default.css" />
+   </stylesheets>
 </AnchorPane>
