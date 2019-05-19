@@ -235,6 +235,7 @@ public class HeaderController {
             else { //Need to show the winner.
                 setCurrentPlayerInTurnLbl(winner.getPlayerName());
             }
+            writeIntoTextArea("Game ended");
             setButtonsDisabled(true);
             btnRetire.setDisable(true);
             btnReplay.setDisable(true);

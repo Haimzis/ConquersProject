@@ -152,7 +152,7 @@ public class GameManager implements Serializable {
     //Bonus #2
     public void peekHistory(){
         if(!replayStack.isEmpty()) {
-            roundNumber = replayStack.peek().getRoundNumber()+1;
+            roundNumber = replayStack.peek().getRoundNumber();
             gameDescriptor.setTerritoryMap(replayStack.peek().getCopyOfMap());
             gameDescriptor.setPlayersList(replayStack.peek().getCopyOfPlayersList());
         }
@@ -365,8 +365,8 @@ public class GameManager implements Serializable {
         for(Player player: gameDescriptor.getPlayersList()) {
             for(Integer territoryID:player.getTerritoriesID()) {
                 playerScores[j]+= gameDescriptor.getTerritoryMap().get(territoryID).getProfit();
-                j++;
             }
+            j++;
         }
         //checks for max score and winner id
         for (int i=0;i< size ; i++) {
