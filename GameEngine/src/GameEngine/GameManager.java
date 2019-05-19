@@ -106,7 +106,6 @@ public class GameManager implements Serializable {
         //clear present
         removeTerritoriesOfPlayerFromCurrentTime();
         gameDescriptor.getPlayersList().remove(currentPlayerTurn);
-        nextPlayerInTurn();
         activateEventsHandler();
     }
 
@@ -375,8 +374,10 @@ public class GameManager implements Serializable {
         }
         //checks for draw.
         for(int i=1;i<= size;i++) {
-            if(playerScores[i] == maxScore && winnerPlayerID != i) {
-                return null; //there are at least 2 winners - draw!
+            for(int k  = i+1; k < size ; k++) {
+                if(i != k && playerScores[k] == playerScores[i]) {
+                    return null;
+                }
             }
         }
         return gameDescriptor.getPlayersList().get(winnerPlayerID);
