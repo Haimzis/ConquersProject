@@ -81,18 +81,17 @@ public class Territory implements Serializable {
         return conquerArmyForce.getTotalPower() < this.getArmyThreshold();
     }
     //Update Conquer,And his army to null. remove territory from conquer list.
-    public EventObject eliminateThisWeakArmy() {
+    public void eliminateThisWeakArmy() {
         conquerArmyForce.destroyArmy();
         conquerArmyForce=null;
-        conquer.getTerritoriesID().remove(new Integer(this.getID()));
+        //conquer.getTerritoriesID().remove(new Integer(this.getID()));
         conquer=null;
-        return new EventTerritoryReleased(this.ID);
     }
 
     //After fight, removes territory from conquer list- but pay him Funds as units amount
-    public EventObject xChangeFundsForUnitsAndHold() {
+    public void xChangeFundsForUnitsAndHold() {
         conquer.incrementFunds(conquerArmyForce.getArmyValueInFunds());
-        return eliminateThisWeakArmy();
+        eliminateThisWeakArmy();
     }
     //update GameObjects.Army competence of territory
     public void reduceCompetence() {
