@@ -77,15 +77,15 @@ public class HeaderController {
 
     @FXML
     private void changeToDefaultTheme(){
-        errorLbl.getScene().getStylesheets().removeAll("/MainComponents/Theme1.css" ,"/MainComponents/Theme2.css");
+        errorLbl.getScene().getStylesheets().removeAll("/MainComponents/Theme1.css" , "/MainComponents/Avengers.css");
         errorLbl.getScene().getStylesheets().add("/MainComponents/Default.css");
         btnStyles.setText("Default");
     }
     @FXML
     private void changeToThemeOne(){
-        errorLbl.getScene().getStylesheets().removeAll("/MainComponents/Default.css" ,"/MainComponents/Theme2.css");
+        errorLbl.getScene().getStylesheets().removeAll("/MainComponents/Default.css" , "/MainComponents/Avengers.css");
         errorLbl.getScene().getStylesheets().add("/MainComponents/Theme1.css");
-        btnStyles.setText("Theme One");
+        btnStyles.setText("Avengers");
     }
 
     public Button getBtnManageRound() {
@@ -95,8 +95,8 @@ public class HeaderController {
     @FXML
     private void changeToThemeTwo(){
         errorLbl.getScene().getStylesheets().removeAll("/MainComponents/Default.css" ,"/MainComponents/Theme1.css");
-        errorLbl.getScene().getStylesheets().add("/MainComponents/Theme2.css");
-        btnStyles.setText("Theme Two");
+        errorLbl.getScene().getStylesheets().add("/MainComponents/Avengers.css");
+        btnStyles.setText("Avengers");
     }
 
     @FXML

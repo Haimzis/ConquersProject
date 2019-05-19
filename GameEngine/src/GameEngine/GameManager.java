@@ -21,8 +21,6 @@ public class GameManager implements Serializable {
     private Player currentPlayerTurn=null;
     private Army   selectedArmyForce=null;
     private transient EventListener eventListener;
-
-
     private Queue<Player> playersTurns;
     private Territory selectedTerritoryByPlayer=null;
     private Stack<RoundHistory> replayStack = new Stack<>();  //Bonus #2
@@ -128,9 +126,9 @@ public class GameManager implements Serializable {
         while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
             eventListener.addEventObject(getTerritoryByID(territoryID).eliminateThisWeakArmy());
+            mapsToClear.remove(0);
         }
     }
-
 
     //Bonus #2
     public boolean prevReplay(){

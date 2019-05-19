@@ -19,7 +19,7 @@
 }
 
 .label {
-    -fx-font: Serif;
+    -fx-font-family: "Serif";
     -fx-font-size: 14;
 }
 

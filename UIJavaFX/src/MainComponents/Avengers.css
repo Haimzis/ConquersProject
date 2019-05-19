@@ -9,3 +9,6 @@
 .toggle-button {
     -fx-background-color: linear-gradient(#dc9256, #ab4742);
 }
+body {
+    font: bold 11px/1.5em Verdana;
+}
