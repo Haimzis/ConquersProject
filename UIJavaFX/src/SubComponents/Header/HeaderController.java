@@ -212,6 +212,7 @@ public class HeaderController {
         else { //More than one player , but the last one retired so a new round begins
             newRound();
         }
+        MapController.actionBeenTaken = false;
         mainController.loadInformation();
         mainController.getInformationComponentController().setFocusOnCurrentPlayer();
     }

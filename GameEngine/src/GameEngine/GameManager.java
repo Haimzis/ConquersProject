@@ -125,7 +125,7 @@ public class GameManager implements Serializable {
         while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
             eventListener.addEventObject(getTerritoryByID(territoryID).eliminateThisWeakArmy());
-            mapsToClear.remove(0);
+
         }
     }
 
