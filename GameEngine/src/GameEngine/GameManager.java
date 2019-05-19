@@ -114,7 +114,6 @@ public class GameManager implements Serializable {
         while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
             removeConquerFromTerritory(getTerritoryFromSpecificTime(roundHistory,territoryID));
-            mapsToClear.remove(0);
         }
     }
     private Territory getTerritoryFromSpecificTime(RoundHistory roundHistory,Integer territoryID){
@@ -122,11 +121,9 @@ public class GameManager implements Serializable {
     }
     private void removeTerritoriesOfPlayerFromCurrentTime() {
         List<Integer> mapsToClear = currentPlayerTurn.getTerritoriesID();
-        int i=mapsToClear.size();
-        while(i!=0){
+        while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
             removeConquerFromTerritory(getTerritoryByID(territoryID));
-            i--;
         }
     }
 
