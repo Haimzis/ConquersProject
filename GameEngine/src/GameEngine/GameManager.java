@@ -113,7 +113,7 @@ public class GameManager implements Serializable {
         List<Integer> mapsToClear = player.getTerritoriesID();
         while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
-            getTerritoryFromSpecificTime(roundHistory,territoryID).eliminateThisWeakArmy();
+            removeConquerFromTerritory(getTerritoryFromSpecificTime(roundHistory,territoryID));
             mapsToClear.remove(0);
         }
     }
@@ -122,10 +122,11 @@ public class GameManager implements Serializable {
     }
     private void removeTerritoriesOfPlayerFromCurrentTime() {
         List<Integer> mapsToClear = currentPlayerTurn.getTerritoriesID();
-        while(!mapsToClear.isEmpty()){
+        int i=mapsToClear.size();
+        while(i!=0){
             Integer territoryID = mapsToClear.get(0);
-            eventListener.addEventObject(getTerritoryByID(territoryID).eliminateThisWeakArmy());
-
+            removeConquerFromTerritory(getTerritoryByID(territoryID));
+            i--;
         }
     }
 
@@ -235,9 +236,7 @@ public class GameManager implements Serializable {
 
         getTerritories(player).stream()
                 .filter(Territory::isArmyTotalPowerUnderThreshold)
-                .forEach(territory ->
-                  eventListener.addEventObject(territory.eliminateThisWeakArmy()));
-                        //Territory::eliminateThisWeakArmy);
+                .forEach(this::removeConquerFromTerritory);
         activateEventsHandler();
     }
     //pop the last round history from the history stack, and call updates function
@@ -256,8 +255,20 @@ public class GameManager implements Serializable {
     }
 
     //**************************//
-    /* War and Conquest Control*/
+    /* War and Conquest Control */
     //**************************//
+    private void removeConquerFromTerritory(Territory territory){
+        Player conquer = territory.getConquer();
+        territory.eliminateThisWeakArmy();
+        eventListener.addEventObject(new EventTerritoryReleased(territory.getID()));
+        conquer.getTerritoriesID().remove(new Integer(territory.getID()));
+    }
+    private void removeConquerFromTerritoryWithXChange(Territory territory){
+        Player conquer = territory.getConquer();
+        territory.xChangeFundsForUnitsAndHold();
+        eventListener.addEventObject(new EventTerritoryReleased(territory.getID()));
+        conquer.getTerritoriesID().remove(new Integer(territory.getID()));
+    }
     //Returns 0 = AttackerLoss : 1 = AttackerWins : 2 = DRAW
     public int attackConqueredTerritoryByWellTimedBattle(){
         return attackConqueredTerritory(new WellTimedBattle(
@@ -290,7 +301,7 @@ public class GameManager implements Serializable {
             return result;
         }
         if(battle.isWinnerArmyNotStrongEnoughToHoldTerritory())
-           eventListener.addEventObject(selectedTerritoryByPlayer.xChangeFundsForUnitsAndHold());
+           removeConquerFromTerritoryWithXChange(selectedTerritoryByPlayer);
         return result;
     }
     //Returns True: if attacking player conquered the territory, Else: False. anyway its update stats of GameObjects.Territory.
@@ -314,12 +325,10 @@ public class GameManager implements Serializable {
     }
     public List<Territory> getTerritoryListByPlayer(Player player){
         List<Territory> territories = new ArrayList<>(player.getTerritoriesID().size());
-        player.getTerritoriesID().forEach(territoryID -> {
-            territories.add(getTerritoryByID(territoryID));
-        });
+        player.getTerritoriesID().forEach(territoryID -> territories.add(getTerritoryByID(territoryID)));
         return territories;
     }
-    public Territory getTerritoryByID(Integer territoryID){
+    private Territory getTerritoryByID(Integer territoryID){
         return gameDescriptor.getTerritoryMap().get(territoryID);
     }
     public int getFundsBeforeProduction() {
