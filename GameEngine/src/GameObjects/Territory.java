@@ -1,5 +1,4 @@
 package GameObjects;
-
 import java.io.Serializable;
 
 public class Territory implements Serializable {
