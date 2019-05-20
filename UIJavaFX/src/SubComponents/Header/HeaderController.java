@@ -9,6 +9,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -41,6 +42,7 @@ public class HeaderController {
     @FXML private MenuItem themeOne;
     @FXML private MenuItem themeTwo;
     private StringProperty currentPlayerProperty;
+    private static final PseudoClass THEME = PseudoClass.getPseudoClass("ocean");
 
     public void setBtnReplayAccessible(){
         btnReplay.setDisable(false);
@@ -77,15 +79,16 @@ public class HeaderController {
 
     @FXML
     private void changeToDefaultTheme(){
-        errorLbl.getScene().getStylesheets().removeAll("/MainComponents/Theme1.css" , "/MainComponents/Avengers.css");
+        errorLbl.getScene().getStylesheets().clear();
         errorLbl.getScene().getStylesheets().add("/MainComponents/Default.css");
         btnStyles.setText("Default");
     }
     @FXML
     private void changeToThemeOne(){
-        errorLbl.getScene().getStylesheets().removeAll("/MainComponents/Default.css" , "/MainComponents/Avengers.css");
+        errorLbl.getScene().getStylesheets().clear();
         errorLbl.getScene().getStylesheets().add("/MainComponents/Theme1.css");
-        btnStyles.setText("Avengers");
+        btnStyles.setText("Ocean");
+        btnStyles.pseudoClassStateChanged(THEME , true);
     }
 
     public Button getBtnManageRound() {
@@ -94,7 +97,7 @@ public class HeaderController {
 
     @FXML
     private void changeToThemeTwo(){
-        errorLbl.getScene().getStylesheets().removeAll("/MainComponents/Default.css" ,"/MainComponents/Theme1.css");
+        errorLbl.getScene().getStylesheets().clear();
         errorLbl.getScene().getStylesheets().add("/MainComponents/Avengers.css");
         btnStyles.setText("Avengers");
     }

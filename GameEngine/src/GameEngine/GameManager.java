@@ -123,7 +123,7 @@ public class GameManager implements Serializable {
     }
 
     private void removeTerritoriesOfPlayerFromCurrentTime() {
-        List<Integer> mapsToClear = currentPlayerTurn.getTerritoriesID();
+        List<Integer> mapsToClear = new ArrayList<>(currentPlayerTurn.getTerritoriesID());
         while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
             eventListener.addEventObject(getTerritoryByID(territoryID).eliminateThisWeakArmy());
@@ -375,7 +375,7 @@ public class GameManager implements Serializable {
             }
         }
         //checks for draw.
-        for(int i=1;i<= size;i++) {
+        for(int i=0;i < size;i++) {
             for(int k  = i+1; k < size ; k++) {
                 if(i != k && playerScores[k] == playerScores[i]) {
                     return null;
