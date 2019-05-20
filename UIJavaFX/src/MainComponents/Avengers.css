@@ -1,3 +1,12 @@
+/* GENERAL APP CSS */
+.root{
+    -fx-font-size: 12px;
+    -fx-font-family: Aharoni;
+    -fx-base: rgb(104, 118, 129);
+    -fx-background: rgb(104, 118, 129);
+}
+
+/* BUTTONS CSS */
 .button {
     -fx-background-color: linear-gradient(#dc9256, #ab4742);
 }

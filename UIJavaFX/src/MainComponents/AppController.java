@@ -232,7 +232,7 @@ public class AppController {
 
             //Stage
             Stage stage = new Stage();
-            stage.setTitle("New Window");
+            stage.setTitle("Buy Units");
             stage.setScene(scene);
 
             //Wire up the controller and initialize game engine

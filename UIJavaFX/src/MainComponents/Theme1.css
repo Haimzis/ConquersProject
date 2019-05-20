@@ -1,6 +1,32 @@
+/* GENERAL APP CSS */
+.root{
+    -fx-font-size: 12px;
+    -fx-font-family: Aharoni;
+    -fx-base: rgb(104, 118, 129);
+    -fx-background: rgb(104, 118, 129);
+}
+
+/* BUTTONS CSS */
 .button {
     -fx-border-color: #ff9800;
-    -fx-background-color: orange;
+    -fx-background-color: linear-gradient(to bottom, #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#87bcea 100%);
+    -fx-text-fill: black;
+}
+
+.menu-button {
+    -fx-border-color: #ff9800;
+    -fx-background-color: linear-gradient(to bottom, #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#87bcea 100%);
+    -fx-text-fill: black;
+}
+
+.toggle-button {
+    -fx-border-color: #ff9800;
+    -fx-background-color: linear-gradient(to bottom, #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#87bcea 100%);
+    -fx-text-fill: black;
+}
+
+.menu-item {
+    -fx-text-fill: black;
 }
 
 .button:hover {
@@ -8,27 +34,38 @@
     -fx-background-color: white;
 }
 
-.menu-button {
-    -fx-border-color: #ff9800;
-    -fx-background-color: orange;
-}
 
-.toggle-button {
-    -fx-border-color: #ff9800;
-    -fx-background-color: orange;
-}
-
-.label {
-    -fx-font-family: "Serif";
-    -fx-font-size: 14;
-}
-
+/* INFO TABLE CSS */
 #innerTabId_Id {
-    -fx-background-color: teal;
+    -fx-background-color: red;
+    -fx-border-color: blue;
 }
 #innerTabProfit_Id {
     -fx-background-color: red;
+    -fx-border-color: blue;
 }
 #innerTabThreshold_Id {
     -fx-background-color: red;
+    -fx-border-color: blue;
 }
+
+#currentPlayer_Id {
+    -fx-font-size: 54;
+}
+
+.tab-pane {
+    -fx-background-color: grey;
+
+}
+
+.tab-pane:top *.tab-header-area {
+    -fx-background-color: linear-gradient(to bottom, rgba(30,87,153,0) 0%,rgba(30,87,153,0.8) 15%,rgba(30,87,153,1) 19%,rgba(30,87,153,1) 20%,rgba(41,137,216,1) 50%,rgba(30,87,153,1) 80%,rgba(30,87,153,1) 81%,rgba(30,87,153,0.8) 85%,rgba(30,87,153,0) 100%);
+}
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {-fx-border-color: red}
+
+/* MAP CSS */
+
+.btn_Territory {
+    -fx-background-color: linear-gradient(to bottom, #87e0fd 2%,#87e0fd 32%,#53cbf1 40%,#05abe0 95%);
+}
+
