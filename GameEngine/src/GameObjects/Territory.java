@@ -1,5 +1,7 @@
 package GameObjects;
 
+import Events.EventObject;
+import Events.EventTerritoryReleased;
 import java.io.Serializable;
 
 public class Territory implements Serializable {
@@ -79,16 +81,18 @@ public class Territory implements Serializable {
         return conquerArmyForce.getTotalPower() < this.getArmyThreshold();
     }
     //Update Conquer,And his army to null. remove territory from conquer list.
-    public void eliminateThisWeakArmy() {
+    public EventObject eliminateThisWeakArmy() {
         conquerArmyForce.destroyArmy();
         conquerArmyForce=null;
+        conquer.getTerritoriesID().remove(new Integer(this.getID()));
         conquer=null;
+        return new EventTerritoryReleased(this.ID);
     }
 
     //After fight, removes territory from conquer list- but pay him Funds as units amount
-    public void xChangeFundsForUnitsAndHold() {
+    public EventObject xChangeFundsForUnitsAndHold() {
         conquer.incrementFunds(conquerArmyForce.getArmyValueInFunds());
-        eliminateThisWeakArmy();
+        return eliminateThisWeakArmy();
     }
     //update GameObjects.Army competence of territory
     public void reduceCompetence() {

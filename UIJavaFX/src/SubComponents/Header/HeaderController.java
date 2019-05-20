@@ -213,7 +213,7 @@ public class HeaderController {
             newRound();
         }
         MapController.actionBeenTaken = false;
-        mainController.loadInformation();
+        mainController.getInformationComponentController().loadInformation();
         mainController.getInformationComponentController().setFocusOnCurrentPlayer();
     }
 
