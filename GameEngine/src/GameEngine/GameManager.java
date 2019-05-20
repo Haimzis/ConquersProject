@@ -8,6 +8,7 @@ import com.sun.istack.internal.Nullable;
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -357,7 +358,7 @@ public class GameManager implements Serializable {
         int winnerPlayerID=1,maxScore =0;
         int size =gameDescriptor.getPlayersList().size();
         int [] playerScores= new int [size+1];
-
+        List<Integer> playersScoreList = new ArrayList<>();
         for (int i=0; i<= size;i++) playerScores[i] = 0;
 
         //make scores array
@@ -367,23 +368,43 @@ public class GameManager implements Serializable {
             }
             j++;
         }
+
+        for(int i = 0 ; i < size ; i++) {
+            playersScoreList.add(playerScores[i]);
+        }
+
         //checks for max score and winner id
-        for (int i=0;i< size ; i++) {
+        for (int i=0; i< size ; i++) {
             if(playerScores[i] >= maxScore) {
                 maxScore = playerScores[i];
                 winnerPlayerID = i;
             }
         }
+
+        if(maxScore == 0) {
+            return null;
+        }
+
         //checks for draw.
-        for(int i=0;i < size;i++) {
-            for(int k  = i+1; k < size ; k++) {
-                if(i != k && playerScores[k] == playerScores[i]) {
+        List<Integer> duplicates =
+                playersScoreList.stream().collect(Collectors.groupingBy(Function.identity()))
+                        .entrySet()
+                        .stream()
+                        .filter(e -> e.getValue().size() > 1)
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toList());
+        duplicates.removeAll(Arrays.asList(Integer.valueOf(0)));
+        if(duplicates.size() != 0) {
+            for(Integer score : duplicates) {
+                if(score == maxScore) {
                     return null;
                 }
             }
         }
         return gameDescriptor.getPlayersList().get(winnerPlayerID);
     }
+
+
     //get price of rehabilitation Army in territory
     public int getRehabilitationArmyPriceInTerritory(Territory territory){
         return territory.getRehabilitationArmyPriceInTerritory();
