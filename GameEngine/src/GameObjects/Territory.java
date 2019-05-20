@@ -1,7 +1,5 @@
 package GameObjects;
 
-import Events.EventObject;
-import Events.EventTerritoryReleased;
 import java.io.Serializable;
 
 public class Territory implements Serializable {
@@ -84,7 +82,6 @@ public class Territory implements Serializable {
     public void eliminateThisWeakArmy() {
         conquerArmyForce.destroyArmy();
         conquerArmyForce=null;
-        //conquer.getTerritoriesID().remove(new Integer(this.getID()));
         conquer=null;
     }
 
