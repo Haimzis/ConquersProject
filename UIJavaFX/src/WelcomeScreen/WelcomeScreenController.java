@@ -5,8 +5,10 @@ import Events.EventObject;
 import Exceptions.invalidInputException;
 import GameEngine.GameEngine;
 import MainComponents.AppController;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -21,34 +24,54 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 import static Resources.ResourceConstants.APP_FXML_INCLUDE_RESOURCE;
 
 public class WelcomeScreenController {
 @FXML private FlowPane WelcomeScreenComponent;
+@FXML private TextField tbx_path;
+@FXML private Label lbl_message;
+@FXML private Button btn_choosePath;
+@FXML private Button buttonStartGame;
 @FXML private Button btn_loadXML;
 @FXML private Button btn_loadGame;
-@FXML private TextField tbx_path;
-@FXML private Button btn_choosePath;
-@FXML private Label lbl_message;
-@FXML private Button buttonStartGame;
     private Stage primaryStage;
-    private SimpleBooleanProperty isFileSelected;
-    private SimpleStringProperty selectedFileProperty;
+    private SimpleStringProperty messageProperty;
+    private SimpleStringProperty selectedFilePathProperty;
+    private SimpleBooleanProperty isFileSelectedProperty;
+    private SimpleBooleanProperty isLoadSucceedProperty;
     private GameEngine gameEngine;
-    private Boolean loadSucceed;
-    private boolean gameLoaded;
+    private GameLoader gameLoader;
+    //private Boolean loadSucceed;
+    //private Boolean gameLoaded;
 
     public WelcomeScreenController(){
         gameEngine = new GameEngine();
-        isFileSelected = new SimpleBooleanProperty(false);
-        selectedFileProperty = new SimpleStringProperty("");
-        loadSucceed=false;
+        //binds
+        isLoadSucceedProperty = new SimpleBooleanProperty(false);
+        isFileSelectedProperty = new SimpleBooleanProperty(false);
+        selectedFilePathProperty = new SimpleStringProperty("");
+        messageProperty = new SimpleStringProperty("");
     }
+    @FXML
+    public void initialize(){
+        buttonStartGame.disableProperty().bind(isLoadSucceedProperty.not());
+        btn_loadXML.disableProperty().bind(isFileSelectedProperty.not());
+        btn_loadGame.disableProperty().bind(isFileSelectedProperty.not());
+        tbx_path.textProperty().bind(selectedFilePathProperty);
+        lbl_message.textProperty().bind(messageProperty);
+    }
+    public void setGameLoader(GameLoader gameLoader) {this.gameLoader = gameLoader;}
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
-
+    public void hideMessage(){
+        lbl_message.setStyle("-fx-opacity: 0;");
+    }
+    public void showMessage(){
+        lbl_message.setStyle("-fx-opacity: 1;");
+    }
     @FXML
     public void btn_choosePathAction() {
         FileChooser fileChooser = new FileChooser();
@@ -60,14 +83,68 @@ public class WelcomeScreenController {
         }
 
         String absolutePath = selectedFile.getAbsolutePath();
-        selectedFileProperty.set(absolutePath);
-        //need to do task
-        tbx_path.setText(selectedFile.getPath());
-        //
-        isFileSelected.set(true);
+        selectedFilePathProperty.set(selectedFile.getPath());
+        isFileSelectedProperty.set(true);
     }
 
     @FXML
+    public void btn_loadXMLAction(){
+        gameLoader.loadXML(gameEngine,
+                        messageProperty,
+                        selectedFilePathProperty,
+                        isLoadSucceedProperty,
+                        () -> {
+                            toggleTaskButtons(false);
+                            showMessage();
+                        }
+        );
+    }
+
+    @FXML
+    public void setBtn_loadGameAction(){
+        toggleTaskButtons(true);
+        gameLoader.loadSavedGame(gameEngine,
+                        messageProperty,
+                        selectedFilePathProperty,
+                        isLoadSucceedProperty,
+                () -> {
+                    toggleTaskButtons(false);
+                    showMessage();
+                }
+        );
+    }
+    private void toggleTaskButtons(boolean disableState) {
+        btn_loadXML.setDisable(disableState);
+        btn_loadGame.setDisable(disableState);
+    }
+    @FXML
+    private void startGame() {
+
+    }
+    /*public void bindTaskToUIComponents(Task<Boolean> aTask, Runnable onFinish) {
+        // task message
+        taskMessageLabel.textProperty().bind(aTask.messageProperty());
+
+        // task progress bar
+        taskProgressBar.progressProperty().bind(aTask.progressProperty());
+
+        // task percent label
+        progressPercentLabel.textProperty().bind(
+                Bindings.concat(
+                        Bindings.format(
+                                "%.0f",
+                                Bindings.multiply(
+                                        aTask.progressProperty(),
+                                        100)),
+                        " %"));
+
+        // task cleanup upon finish
+        aTask.valueProperty().addListener((observable, oldValue, newValue) -> {
+            onTaskFinished(Optional.ofNullable(onFinish));
+        });
+    }
+    *///V
+/*    @FXML
     public void btn_loadXMLAction(){
         if(!isFileSelected.getValue()) {
             lbl_message.setText("Yoo Matha fucka, choose file!");
@@ -88,8 +165,8 @@ public class WelcomeScreenController {
                 lbl_message.setStyle("-fx-opacity: 1;");
             }
         }
-    }
-    @FXML
+    }*/
+/*    @FXML
     public void setBtn_loadGameAction(){
         if(!isFileSelected.getValue()) {
             lbl_message.setText("Choose saved game");
@@ -109,8 +186,8 @@ public class WelcomeScreenController {
                 buttonStartGame.setDisable(false);
             }
         }
-    }
-    @FXML
+    }*/
+/*    @FXML
     private void startGame(){
         if(gameLoaded || loadSucceed) {
             try {
@@ -164,5 +241,5 @@ public class WelcomeScreenController {
             lbl_message.setText("No game or XML has been loaded");
             lbl_message.setStyle("-fx-opacity: 1;");
         }
-    }
+    }*/
 }
