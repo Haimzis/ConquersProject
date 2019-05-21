@@ -19,7 +19,7 @@ public class GameLoader {
     public void loadXML(GameEngine gameEngine,
                         SimpleStringProperty messageProperty,
                         SimpleStringProperty selectedFilePathProperty,
-                        SimpleBooleanProperty isLoadSucceedProperty, Runnable onFinish) {
+                        SimpleBooleanProperty isLoadSucceedProperty) {
 
         currentRunningTask = new XMLLoaderTask(
                 gameEngine,
@@ -33,7 +33,7 @@ public class GameLoader {
     public void loadSavedGame(GameEngine gameEngine,
                               SimpleStringProperty messageProperty,
                               SimpleStringProperty selectedFilePathProperty,
-                              SimpleBooleanProperty isLoadSucceedProperty,Runnable onFinish) {
+                              SimpleBooleanProperty isLoadSucceedProperty) {
 
         currentRunningTask = new SavedGameLoaderTask(
                 gameEngine,

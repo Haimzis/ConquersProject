@@ -38,7 +38,7 @@ public class SavedGameLoaderTask extends Task<Boolean> {
             e.printStackTrace();
             Platform.runLater(()-> {
                 messageDelegate.accept("Could not load saved game file!");
-                isLoadSucceedDelegate.accept(true);
+                isLoadSucceedDelegate.accept(false);
             });
         }
         return Boolean.TRUE;
