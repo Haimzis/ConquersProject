@@ -9,9 +9,18 @@ public class Player implements Serializable {
     private String playerName;
     private int funds;
     private List<Integer> TerritoriesID;
+    private String image;
 
     public String getColor() {
         return color;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void setColor(String color) {
@@ -35,6 +44,7 @@ public class Player implements Serializable {
         this.playerName =player.getPlayerName();
         this.funds = player.getFunds();
         this.TerritoriesID = new ArrayList<>();
+        this.image = player.image;
         this.color = player.color;
         if (!player.getTerritoriesID().isEmpty())
             //player.getTerritoriesID().forEach(territoryID -> this.TerritoriesID.add(new Integer(territoryID)));

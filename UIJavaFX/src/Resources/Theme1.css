@@ -42,18 +42,29 @@
 }
 
 #currentPlayer_Id {
+    -fx-text-fill: darkblue;
     -fx-font-size: 54;
 }
 
 .tab-pane {
     -fx-background-color: grey;
-
 }
 
-.tab-pane:top *.tab-header-area {
-    -fx-background-color: linear-gradient(to bottom, rgba(30,87,153,0) 0%,rgba(30,87,153,0.8) 15%,rgba(30,87,153,1) 19%,rgba(30,87,153,1) 20%,rgba(41,137,216,1) 50%,rgba(30,87,153,1) 80%,rgba(30,87,153,1) 81%,rgba(30,87,153,0.8) 85%,rgba(30,87,153,0) 100%);
+#infoGrid_Id .label {
+    -fx-text-fill: black;
 }
-.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {-fx-border-color: red}
+#infoGrid_Id .tab-pane {
+    -fx-background-color: linear-gradient(to bottom, rgba(0,183,234,1) 0%,rgba(0,158,195,1) 100%);;
+}
+#infoGrid_Id .tab-pane > .tab-header-area >.headers-region {
+    -fx-background-color: linear-gradient(to bottom, rgba(0,183,234,1) 0%,rgba(0,158,195,1) 100%);;
+}
+
+
+.tab-pane:focused {-fx-border-color: blue;}
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label {-fx-text-fill: lightblue;}
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .focus-indicator {-fx-text-fill: blue}
+
 
 /* MAP CSS */
 
@@ -61,10 +72,19 @@
     -fx-background-color: linear-gradient(to bottom, #87e0fd 2%,#87e0fd 32%,#53cbf1 40%,#05abe0 95%);
 }
 
+#isTheWinner_Id {
+    -fx-text-fill: red;
+}
+
+#annoucments_Id {
+    -fx-text-fill: blue;
+}
 /* GENERAL APP CSS */
 .root{
     -fx-font-size: 12px;
-    -fx-font-family: Aharoni;
+    -fx-font-family: "Maiandra GD";
     -fx-base: rgb(104, 118, 129);
     -fx-background: rgb(104, 118, 129);
+    -fx-background-image: url("../Resources/ocean1.jpeg");
+
 }

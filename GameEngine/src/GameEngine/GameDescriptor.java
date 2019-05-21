@@ -97,6 +97,7 @@ public class GameDescriptor implements Serializable {
         Stack<String> colors = new Stack<>();
         colors.push("Green");colors.push("Red");
         colors.push("Blue");colors.push("Yellow");
+
         List<Player> playersList = new ArrayList<>();
         if(descriptor.getPlayers() == null) {
             Player playerOne = new Player(1 , "Ran", initialFunds,"Blue");

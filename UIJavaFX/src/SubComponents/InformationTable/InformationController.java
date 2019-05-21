@@ -78,6 +78,7 @@ public class InformationController {
             innerTabPaneRootLoader.setLocation(url);
             Parent innerTabPaneRoot = null;
             try {
+
                 innerTabPaneRoot = innerTabPaneRootLoader.load(url.openStream());
                 InnerTabPaneRootController innerTabPaneRootController = innerTabPaneRootLoader.getController();
                 innerTabPaneRootController.setCurrentPlayer(player);

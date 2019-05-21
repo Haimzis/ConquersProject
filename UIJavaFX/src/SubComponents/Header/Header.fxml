@@ -76,11 +76,16 @@
                                     <Insets right="20.0" />
                                  </HBox.margin>
                               </Label>
-                              <Button id="roundManager_Id" fx:id="btnManageRound" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#roundManagerBtnListener" prefHeight="80.0" prefWidth="51.0" text="Start Round" textAlignment="CENTER" textOverrun="LEADING_ELLIPSIS" wrapText="true" />
+                              <Button id="roundManager_Id" fx:id="btnManageRound" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#roundManagerBtnListener" text="Start Round" textAlignment="CENTER" textOverrun="LEADING_ELLIPSIS" wrapText="true" />
                            </children>
                         </HBox>
-                        <Label text="Announcments" underline="true" GridPane.columnIndex="2" />
+                        <Label id="annoucments_Id" text="Announcments" underline="true" GridPane.columnIndex="2" />
                         <Label fx:id="errorLbl" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label id="isTheWinner_Id" fx:id="winner_label" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="17.0" prefWidth="228.0" text="Is the winner!" visible="false" GridPane.rowIndex="6">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" />
+                           </GridPane.margin>
+                        </Label>
                      </children>
                   </GridPane>
                </children>
@@ -89,7 +94,7 @@
             <MenuButton fx:id="btnStyles" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Styles" GridPane.columnIndex="3" GridPane.rowIndex="5">
               <items>
                 <MenuItem fx:id="defaultTheme" mnemonicParsing="false" onAction="#changeToDefaultTheme" text="Default" />
-                <MenuItem fx:id="themeOne" mnemonicParsing="false" onAction="#changeToThemeOne" text="Them One" />
+                <MenuItem fx:id="themeOne" mnemonicParsing="false" onAction="#changeToThemeOne" text="Ocean" />
                   <MenuItem fx:id="themeTwo" mnemonicParsing="false" onAction="#changeToThemeTwo" text="Avengers" />
               </items>
             </MenuButton>

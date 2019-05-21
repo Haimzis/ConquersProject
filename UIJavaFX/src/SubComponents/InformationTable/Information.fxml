@@ -11,9 +11,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="information_Id" fx:id="InformationComponent" minWidth="-Infinity" prefHeight="586.0" prefWidth="284.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.InformationTable.InformationController">
+<AnchorPane id="information_Id" fx:id="InformationComponent" minWidth="-Infinity" prefHeight="586.0" prefWidth="284.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.InformationTable.InformationController">
    <children>
-      <GridPane prefHeight="600.0" prefWidth="284.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <GridPane id="infoGrid_Id" prefHeight="600.0" prefWidth="284.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
             <ColumnConstraints hgrow="NEVER" maxWidth="87.39996337890625" minWidth="-Infinity" prefWidth="42.19996337890625" />
             <ColumnConstraints hgrow="NEVER" maxWidth="131.4" minWidth="-Infinity" prefWidth="71.00003662109376" />
@@ -36,8 +36,14 @@
         </rowConstraints>
          <children>
             <TabPane fx:id="playersInformationTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="7" GridPane.rowIndex="4" GridPane.rowSpan="2" />
-            <Label fx:id="playersInformationLable" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="162.0" text="Players Information" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-            <Label fx:id="unitsInformationLable" alignment="CENTER" contentDisplay="CENTER" prefHeight="49.0" prefWidth="166.0" text="Units Information" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+            <Label fx:id="playersInformationLable" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="162.0" text="Players Information" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Label fx:id="unitsInformationLable" alignment="CENTER" contentDisplay="CENTER" prefHeight="49.0" prefWidth="166.0" text="Units Information" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="126.0" text="Round Number:" GridPane.columnSpan="2" GridPane.rowIndex="2" />
             <Text strokeWidth="0.0" text="/" textAlignment="CENTER" wrappingWidth="8.63433837890625" GridPane.columnIndex="4" GridPane.rowIndex="2">
                <font>

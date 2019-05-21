@@ -5,17 +5,24 @@ import GameEngine.GameEngine;
 import GameObjects.Player;
 import MainComponents.AppController;
 import SubComponents.MapTable.MapController;
+import javafx.animation.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.css.PseudoClass;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -38,11 +45,10 @@ public class HeaderController {
     @FXML private Button btnExit;
     @FXML private Label errorLbl;
     @FXML private Button btnRetire;
-    @FXML private MenuItem defaultTheme;
-    @FXML private MenuItem themeOne;
-    @FXML private MenuItem themeTwo;
+    @FXML private Label winner_label;
     private StringProperty currentPlayerProperty;
-    private static final PseudoClass THEME = PseudoClass.getPseudoClass("ocean");
+
+
 
     public ToggleButton getBtnAnimationToggle() {
         return btnAnimationToggle;
@@ -95,16 +101,16 @@ public class HeaderController {
 
     @FXML
     private void changeToDefaultTheme(){
-        errorLbl.getScene().getStylesheets().clear();
-        errorLbl.getScene().getStylesheets().add("/MainComponents/Default.css");
+        mainController.getPrimaryStage().getScene().getStylesheets().clear();
+        mainController.getPrimaryStage().getScene().getStylesheets().add("/MainComponents/Default.css");
         btnStyles.setText("Default");
+        currentPlayerInTurnLabel.setFont(Font.font("System", 54));
     }
     @FXML
     private void changeToThemeOne(){
-        errorLbl.getScene().getStylesheets().clear();
-        errorLbl.getScene().getStylesheets().add("/MainComponents/Theme1.css");
+        mainController.getPrimaryStage().getScene().getStylesheets().clear();
+        mainController.getPrimaryStage().getScene().getStylesheets().add("/Resources/Theme1.css");
         btnStyles.setText("Ocean");
-        btnStyles.pseudoClassStateChanged(THEME , true);
     }
 
     public Button getBtnManageRound() {
@@ -113,9 +119,11 @@ public class HeaderController {
 
     @FXML
     private void changeToThemeTwo(){
-        errorLbl.getScene().getStylesheets().clear();
-        errorLbl.getScene().getStylesheets().add("/MainComponents/Avengers.css");
+        mainController.getPrimaryStage().getScene().getStylesheets().clear();
+        mainController.getPrimaryStage().getScene().getStylesheets().add("/MainComponents/Avengers.css");
         btnStyles.setText("Avengers");
+        currentPlayerInTurnLabel.setFont(Font.loadFont(getClass().getResourceAsStream("/Resources/Avengers.ttf"), 54));
+
     }
 
     @FXML
@@ -126,7 +134,7 @@ public class HeaderController {
     @FXML
     public void roundManagerBtnListener() {
         if(!btnManageRound.getText().equals(NEW_GAME)) {
-            if (!GameEngine.gameManager.roundStarted()) { //you're the first bitch
+            if (!GameEngine.gameManager.roundStarted()) {
                 writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has started" + "\n");
                 btnManageRound.setText(END_TURN);
                 mainController.startRound();
@@ -146,6 +154,7 @@ public class HeaderController {
         else {// This bitch clicked on 'new game' button
             mainController.getMapComponentController().clearMap();
             btnReplay.setDisable(true);
+            winner_label.setVisible(false);
             try {
                 mainController.getGameEngine().loadXML(mainController.getGameEngine().getDescriptor().getLastKnownGoodString());
             } catch (invalidInputException ignore) {
@@ -207,6 +216,18 @@ public class HeaderController {
         else {
             errorLbl.setText("Failed to save game");
         }
+        showErrorLabel();
+    }
+
+    private void showErrorLabel() {
+        errorLbl.setVisible(true);
+        PauseTransition visiblePause = new PauseTransition(
+                Duration.seconds(3)
+        );
+        visiblePause.setOnFinished(
+                event -> errorLbl.setVisible(false)
+        );
+        visiblePause.play();
     }
 
     @FXML
@@ -238,12 +259,15 @@ public class HeaderController {
 
     private void forceWinner() {
         Player winner = GameEngine.gameManager.getForcedWinner();
-        errorLbl.setText(winner.getPlayerName());
         writeIntoTextArea(winner.getPlayerName() + " has won by a technical.");
+        winner_label.setVisible(true);
         setButtonsDisabled(true);
         btnRetire.setDisable(true);
         mainController.getMapComponentController().disableMap(true);
         btnManageRound.setText(NEW_GAME);
+        if(MapController.isAnimationOn) {
+            animateWinner();
+        }
     }
 
     private void checkWinnerIfAny() {
@@ -254,6 +278,10 @@ public class HeaderController {
             }
             else { //Need to show the winner.
                 setCurrentPlayerInTurnLbl(winner.getPlayerName());
+                winner_label.setVisible(true);
+                if(MapController.isAnimationOn) {
+                    animateWinner();
+                }
             }
             writeIntoTextArea("Game ended");
             setButtonsDisabled(true);
@@ -262,6 +290,16 @@ public class HeaderController {
             mainController.getMapComponentController().disableMap(true);
             btnManageRound.setText(NEW_GAME);
         }
+    }
+
+    private void animateWinner() {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(2), new KeyValue(currentPlayerInTurnLabel.textFillProperty(), Color.GOLD)),
+                new KeyFrame(Duration.seconds(2), new KeyValue(winner_label.textFillProperty(), Color.GOLD))
+        );
+        timeline.setAutoReverse(true);
+        timeline.setCycleCount(4);
+        timeline.play();
     }
 
     private void setButtonsDisabled(Boolean set) {

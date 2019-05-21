@@ -55,6 +55,7 @@ public class WellTimedBattle extends Battle implements Serializable {
         }
         //DRAW
         battleTerritory.getConquer().getTerritoriesID().remove(new Integer(battleTerritory.getID())); //Removes Defeated Conquer Army
+        battleTerritory.eliminateThisWeakArmy();
         attackResult=2;
     }
 }
