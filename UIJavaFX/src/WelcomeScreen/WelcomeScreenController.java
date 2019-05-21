@@ -1,32 +1,17 @@
 package WelcomeScreen;
 
-import Events.EventHandler;
-import Events.EventObject;
-import Exceptions.invalidInputException;
 import GameEngine.GameEngine;
-import MainComponents.AppController;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Optional;
-
-import static Resources.ResourceConstants.APP_FXML_INCLUDE_RESOURCE;
 
 public class WelcomeScreenController {
 @FXML private FlowPane WelcomeScreenComponent;
@@ -81,8 +66,6 @@ public class WelcomeScreenController {
         if (selectedFile == null) {
             return;
         }
-
-        String absolutePath = selectedFile.getAbsolutePath();
         selectedFilePathProperty.set(selectedFile.getPath());
         isFileSelectedProperty.set(true);
     }
