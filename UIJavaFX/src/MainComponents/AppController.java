@@ -77,6 +77,7 @@ public class AppController {
         HeaderComponent.getStylesheets().add("/SubComponents/Header/Header.css");
         InformationComponent.getStylesheets().add("/SubComponents/InformationTable/InformationTable.css");
         ReplayComponent.getStylesheets().add("/SubComponents/ReplayComponent/Replay.css");
+        HeaderComponentController.getBtnAnimationToggle().setSelected(true);
 
     }
     public String getColorByPlayerName(String playerName){

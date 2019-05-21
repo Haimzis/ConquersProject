@@ -96,7 +96,7 @@
             <Button fx:id="btnRetire" alignment="CENTER" disable="true" layoutX="139.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#retirePressListener" text="Retire" GridPane.columnIndex="2" GridPane.rowIndex="5" />
             <Button fx:id="btnUndo" alignment="CENTER" disable="true" layoutX="268.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onUndoPressListener" text="Undo" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Button fx:id="btnExit" alignment="CENTER" layoutX="526.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exitToWelcomeScreen" text="Exit to Menu screen" GridPane.columnIndex="6" GridPane.rowIndex="5" />
-            <ToggleButton fx:id="btnAnimationToggle" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Animation On" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+            <ToggleButton fx:id="btnAnimationToggle" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#animationController" text="Animations On" GridPane.columnIndex="4" GridPane.rowIndex="5" />
             <ToggleButton fx:id="btnReplay" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setReplayState" text="Replay" GridPane.columnIndex="5" GridPane.rowIndex="5" />
          </children>
       </GridPane>

@@ -44,6 +44,22 @@ public class HeaderController {
     private StringProperty currentPlayerProperty;
     private static final PseudoClass THEME = PseudoClass.getPseudoClass("ocean");
 
+    public ToggleButton getBtnAnimationToggle() {
+        return btnAnimationToggle;
+    }
+
+    @FXML
+    private void animationController() {
+        if(btnAnimationToggle.isSelected()) {
+            MapController.isAnimationOn = true;
+            btnAnimationToggle.setText("Animations On");
+        }
+        else {
+            MapController.isAnimationOn = false;
+            btnAnimationToggle.setText("Animations Off");
+        }
+    }
+
     public void setBtnReplayAccessible(){
         btnReplay.setDisable(false);
     }

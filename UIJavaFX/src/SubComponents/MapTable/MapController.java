@@ -4,13 +4,12 @@ import DataContainersTypes.Board;
 import GameEngine.GameEngine;
 import GameObjects.Territory;
 import MainComponents.AppController;
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
+import javafx.util.Duration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +26,7 @@ public class MapController {
     private final int MIN_HEIGHT_SIZE = 98;
     private Button currentlySelectedButton;
     public static boolean actionBeenTaken;
+    public static boolean isAnimationOn = true;
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
@@ -115,12 +115,32 @@ public class MapController {
     public void colorTerritory() {
         Territory territory = GameEngine.gameManager.getSelectedTerritoryByPlayer();
         if(territory.isConquered()) {
-            currentlySelectedButton.setStyle("-fx-background-color: " + mainController.getColorByPlayerName(territory.getConquer().getPlayerName()));
+            if(isAnimationOn) {
+                animateColor(territory);
+                popTerritoriesOfWinner(1.0 ,1.0 ,1.15, 1.15);
+            }
+            else {
+                currentlySelectedButton.setStyle("-fx-background-color: " + mainController.getColorByPlayerName(territory.getConquer().getPlayerName()));
+            }
         }
+    }
+
+    private void animateColor(Territory territory) {
+        currentlySelectedButton.setStyle("-fx-background-color: " + mainController.getColorByPlayerName(territory.getConquer().getPlayerName()));
+        fadeAnimation();
+
     }
 
     public void  disableMap(Boolean value) {
         GridComponent.setDisable(value);
+        territoriesButtons.forEach((integer, button) -> {
+            if(value) {
+                button.setOpacity(0.5);
+            }
+            else {
+                button.setOpacity(1.0);
+            }
+        });
     }
 
     public void clearMap() {
@@ -132,5 +152,30 @@ public class MapController {
 
     public void unColorTerritory(Integer territoryID) {
         territoriesButtons.get(territoryID).setStyle("");
+        if(isAnimationOn) {
+            fadeAnimation();
+        }
+    }
+
+    private void fadeAnimation() {
+        FadeTransition fd = new FadeTransition(Duration.seconds(2), currentlySelectedButton);
+        fd.setCycleCount(2);
+        fd.setFromValue(1);
+        fd.setToValue(0.3);
+        fd.setAutoReverse(true);
+        fd.play();
+    }
+
+    private void popTerritoriesOfWinner(double from_x , double from_y , double to_x , double to_y) {
+        for(Territory territory: GameEngine.gameManager.getCurrentPlayerTerritories()) {
+            ScaleTransition st = new ScaleTransition(Duration.millis(2000), territoriesButtons.get(territory.getID()));
+            st.setCycleCount(2);
+            st.setFromX(from_x);
+            st.setFromY(from_y);
+            st.setToX(to_x);
+            st.setToY(to_y);
+            st.setAutoReverse(true);
+            st.play();
+        }
     }
 }
