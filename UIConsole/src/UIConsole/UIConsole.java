@@ -335,7 +335,6 @@ public class UIConsole {
             case 1:
                 unitType = SOLDIER;
                 break;
-
         }
         System.out.println("Select how many " + unitType + " to buy");
         howManyToAdd = scanner.nextInt();
