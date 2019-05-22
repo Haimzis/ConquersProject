@@ -1,6 +1,5 @@
 package WelcomeScreen;
 
-import Events.EventHandler;
 import GameEngine.GameEngine;
 import MainComponents.AppController;
 import javafx.beans.property.SimpleBooleanProperty;
