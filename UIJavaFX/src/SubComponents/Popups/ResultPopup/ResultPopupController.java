@@ -21,10 +21,6 @@ public class ResultPopupController {
     public void setMainController(AppController mainController) { this.mainController = mainController; }
 
 
-    public void animatePopUp() {
-
-    }
-
     public void populateInfoBasedOnResult(String info , AttackPopupController.Result result) {
         switch(result) {
             case WIN:

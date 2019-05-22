@@ -3,9 +3,6 @@ package SubComponents.Popups.BuyUnitsPopup;
 import GameEngine.GameEngine;
 import MainComponents.AppController;
 import SubComponents.Popups.ActionPopupController;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -14,7 +11,6 @@ import javafx.util.converter.IntegerStringConverter;
 import java.util.regex.Pattern;
 
 public class BuyUnitsPopupController {
-    @FXML private Label sumLbl;
     @FXML private MenuButton unitChoices;
     @FXML private TextField amountToBuy;
     @FXML private Label errorLabel;
@@ -51,22 +47,7 @@ public class BuyUnitsPopupController {
             });
             unitChoices.getItems().add(unitToShowItem);
         }
-
-        //bindTotal();
     }
-
-    private void bindTotal() {
-        //Bind the total label
-        IntegerProperty price = new SimpleIntegerProperty();
-        IntegerProperty quantity = new SimpleIntegerProperty();
-        IntegerProperty total = new SimpleIntegerProperty();
-
-
-
-        total.bind(price.multiply(quantity));
-        sumLbl.textProperty().bind(total.asString());
-    }
-
 
     private void populateUnitInformation() {
         powerLbl.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()).getMaxFirePower()));

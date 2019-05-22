@@ -125,13 +125,10 @@ public class WelcomeScreenController {
                 else { //It's a loaded game
                     appController.loadInformation();
                     appController.createMap();
-                    GameEngine.gameManager.setEventListenerHandler(new EventHandler(){
-                        //Wire the listener again since it's not saved
-                        @Override
-                        public void handle(Events.EventObject eventObject) {
-                            appController.getMapComponentController().unColorTerritory(eventObject.getIdentity());
-                            appController.getHeaderComponentController().writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
-                        }
+                    //Wire the listener again since it's not saved
+                    GameEngine.gameManager.setEventListenerHandler(eventObject -> {
+                        appController.getMapComponentController().unColorTerritory(eventObject.getIdentity());
+                        appController.getHeaderComponentController().writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
                     });
                     appController.getHeaderComponentController().getBtnSave().setDisable(false);
                     appController.getHeaderComponentController().getBtnUndo().setDisable(false);

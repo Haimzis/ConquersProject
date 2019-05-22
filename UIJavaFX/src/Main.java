@@ -7,8 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import javax.annotation.Resource;
 import java.net.URL;
 
 public class Main extends Application {

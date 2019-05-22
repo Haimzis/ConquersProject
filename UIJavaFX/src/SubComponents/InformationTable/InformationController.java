@@ -96,9 +96,7 @@ public class InformationController {
     }
 
     public void updatePlayersData(){
-        playersInnerTabPaneRootControllers.forEach((player,innerTabPaneRootController) -> {
-            innerTabPaneRootController.loadPlayerData();
-        });
+        playersInnerTabPaneRootControllers.forEach((player,innerTabPaneRootController) -> innerTabPaneRootController.loadPlayerData());
     }
     private void loadUnitsToTableView() {
         final ObservableList<Unit> data =
@@ -162,15 +160,7 @@ public class InformationController {
         playersInformationTabPane.getTabs().add(tab);
         return tab;
     }
-    private void removeTab(String playerName, TabPane playersInformationTabPane) {
-        for (int i = 0; i < playersInformationTabPane.getTabs().size(); i++) {
-            String tabTitle = playersInformationTabPane.getTabs().get(i).getText();
-            if (tabTitle.equals(playerName)) {
-                playersInformationTabPane.getTabs().remove(i);
-                break;
-            }
-        }
-    }
+
     public void setMainController(AppController mainController) { this.mainController = mainController; }
 
     public void setFocusOnCurrentPlayer() {

@@ -18,7 +18,7 @@ public class AttackPopupController implements ActionPopupController {
     private String typeOfAttack = null;
     private static final String WELL_TIMED = "Well Timed Attack";
     private static final String CALCULATED_RISK = "Calculated Risk Attack";
-    public enum Result {WIN , LOSE , DRAW, WINCOULDNOTHOLD}
+    public enum Result {WIN , LOSE , DRAW, WIN_COULD_NOT_HOLD}
     private Result resultOfBattle;
     private String infoOfBattle;
     @FXML private Button btnWellTimed;
@@ -74,7 +74,7 @@ public class AttackPopupController implements ActionPopupController {
 
     private void checkIfWinnerCanHold() {
         if (GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquerArmyForce() == null) { //Check if there are enough to hold territory
-            resultOfBattle = Result.WINCOULDNOTHOLD;
+            resultOfBattle = Result.WIN_COULD_NOT_HOLD;
         }
         else {
             resultOfBattle = Result.WIN;

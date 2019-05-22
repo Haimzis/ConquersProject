@@ -5,6 +5,7 @@ import GameEngine.GameEngine;
 import GameObjects.Player;
 import GameObjects.Territory;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.InputMismatchException;
@@ -140,7 +141,7 @@ public class UIConsole {
             catch(InputMismatchException e){
                 System.out.println("Enter one of the options listed");
                 sc.next();
-            } catch (invalidInputException ignored) {
+            } catch (invalidInputException | IOException | ClassNotFoundException ignored) {
             }
         }
     }
@@ -334,7 +335,6 @@ public class UIConsole {
             case 1:
                 unitType = SOLDIER;
                 break;
-
         }
         System.out.println("Select how many " + unitType + " to buy");
         howManyToAdd = scanner.nextInt();
