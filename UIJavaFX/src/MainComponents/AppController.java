@@ -83,7 +83,17 @@ public class AppController {
         return InformationComponentController.getColorByPlayerName(playerName);
 
     }
+    public void setHeaderComponentController(HeaderController headerComponentController) {
+        this.HeaderComponentController = headerComponentController;
+    }
 
+    public void setInformationComponentController(InformationController informationComponentController) {
+        this.InformationComponentController = informationComponentController;
+    }
+
+    public void setMapComponentController(MapController mapComponentController) {
+        this.MapComponentController = mapComponentController;
+    }
     public void loadRoundHistory(){
         GameEngine.gameManager.peekHistory();
         getInformationComponentController().loadRoundHistory();
