@@ -14,6 +14,7 @@ import SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController;
 import SubComponents.Popups.OwnTerrainPopup.OwnTerrainController;
 import SubComponents.Popups.ResultPopup.ResultPopupController;
 import SubComponents.ReplayComponent.ReplayController;
+import WelcomeScreen.GameLoader;
 import WelcomeScreen.WelcomeScreenController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -158,10 +159,9 @@ public class AppController {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/OwnTerrainPopup/OwnTerrainPopUpFXML.fxml"));
             Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root, 242, 223);
+            Scene scene = new Scene(root, 262, 223);
 
             //CSS
-            scene.getStylesheets().clear();
             switch (HeaderComponentController.currentTheme) {
                 case "Ocean":
                     scene.getStylesheets().add("/SubComponents/Popups/OwnTerrainPopup/Own_Ocean.css");
@@ -197,10 +197,9 @@ public class AppController {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/AttackPopup/AttackPopupFXML.fxml"));
                 Parent root = fxmlLoader.load();
-                Scene scene = new Scene(root, 242, 223);
+                Scene scene = new Scene(root, 262, 223);
 
                 //CSS
-                scene.getStylesheets().clear();
                 switch (HeaderComponentController.currentTheme) {
                     case "Ocean":
                         scene.getStylesheets().add("/SubComponents/Popups/AttackPopup/Attack_Ocean.css");
@@ -241,10 +240,15 @@ public class AppController {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/BuyUnitsPopup/BuyUnitsPopupFXML.fxml"));
             Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root, 242, 223);
+            Scene scene = new Scene(root, 262, 223);
+
+
+            //Stage
+            Stage stage = new Stage();
+            stage.setTitle("Buy Units");
+            stage.setScene(scene);
 
             //CSS
-            scene.getStylesheets().clear();
             switch (HeaderComponentController.currentTheme) {
                 case "Ocean":
                     scene.getStylesheets().add("/SubComponents/Popups/BuyUnitsPopup/BuyUnits_Ocean.css");
@@ -255,11 +259,6 @@ public class AppController {
                 case "Default":
                     break;
             }
-
-            //Stage
-            Stage stage = new Stage();
-            stage.setTitle("Buy Units");
-            stage.setScene(scene);
 
             //Wire up the controller and initialize game engine
             BuyUnitsPopupController buyUnitsComponentController= fxmlLoader.getController();
@@ -284,7 +283,6 @@ public class AppController {
             Scene scene = new Scene(root, 250, 586);
 
             //CSS
-            scene.getStylesheets().clear();
             switch (HeaderComponentController.currentTheme) {
                 case "Ocean":
                     scene.getStylesheets().add("/SubComponents/Popups/ResultPopup/Result_Ocean.css");
@@ -336,6 +334,8 @@ public class AppController {
             primaryStage.setWidth(450);
             WelcomeScreenController welcomeScreenController = fxmlLoader.getController();
             welcomeScreenController.setPrimaryStage(primaryStage);
+            GameLoader gameLoader = new GameLoader(welcomeScreenController);
+            welcomeScreenController.setGameLoader(gameLoader);
 
             //set stage
             primaryStage.setTitle("Conquerors");
