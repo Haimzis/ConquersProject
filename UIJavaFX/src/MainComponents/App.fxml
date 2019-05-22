@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainComponents.AppController">
-   <bottom>
-      <fx:include fx:id="ReplayComponent" source="../SubComponents/ReplayComponent/Replay.fxml" />
-   </bottom>
-   <center>
-      <fx:include fx:id="MapComponent" source="../SubComponents/MapTable/Map.fxml" BorderPane.alignment="CENTER" />
-   </center>
-   <left>
-      <fx:include fx:id="InformationComponent" source="../SubComponents/InformationTable/Information.fxml" />
-   </left>
-   <top>
-      <fx:include fx:id="HeaderComponent" source="../SubComponents/Header/Header.fxml" />
-   </top>
-</BorderPane>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainComponents.AppController">
+   <content>
+      <BorderPane minHeight="530.0" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0">
+         <bottom>
+            <fx:include fx:id="ReplayComponent" source="../SubComponents/ReplayComponent/Replay.fxml" />
+         </bottom>
+         <center>
+            <fx:include fx:id="MapComponent" source="../SubComponents/MapTable/Map.fxml" BorderPane.alignment="CENTER" />
+         </center>
+         <left>
+            <fx:include fx:id="InformationComponent" source="../SubComponents/InformationTable/Information.fxml" />
+         </left>
+         <top>
+            <fx:include fx:id="HeaderComponent" source="../SubComponents/Header/Header.fxml" />
+         </top>
+      </BorderPane>
+   </content>
+</ScrollPane>
