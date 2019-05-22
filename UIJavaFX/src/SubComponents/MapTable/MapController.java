@@ -22,8 +22,6 @@ public class MapController {
     private AppController mainController;
     private Map<Integer, Button> territoriesButtons= new HashMap<>();
     private Board map;
-    private final int MIN_WIDTH_SIZE= 146;
-    private final int MIN_HEIGHT_SIZE = 98;
     private Button currentlySelectedButton;
     public static boolean actionBeenTaken;
     public static boolean isAnimationOn = true;
@@ -37,8 +35,10 @@ public class MapController {
     public void createMap(){
         int columns=map.getColumns(),rows=map.getRows();
         double heightSize = GridComponent.getPrefHeight() / rows,widthSize= GridComponent.getPrefWidth() / columns;
+        int MIN_HEIGHT_SIZE = 98;
         if(heightSize < MIN_HEIGHT_SIZE)
             heightSize = MIN_HEIGHT_SIZE;
+        int MIN_WIDTH_SIZE = 146;
         if(widthSize < MIN_WIDTH_SIZE)
             widthSize = MIN_WIDTH_SIZE;
         for (int i = 0; i < rows; i++) {

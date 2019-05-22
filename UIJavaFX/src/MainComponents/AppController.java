@@ -329,24 +329,24 @@ public class AppController {
         //load Welcome Screen FXML
         URL welcomeScreen = getClass().getResource(ResourceConstants.WELCOMESCREEN_FXML_INCLUDE_RESOURCE);
         fxmlLoader.setLocation(welcomeScreen);
-        Parent root = null;
         try {
-            root = fxmlLoader.load(welcomeScreen.openStream());
+            Parent root = fxmlLoader.load(welcomeScreen.openStream());
+            // wire up primary stage
+            primaryStage.setHeight(500);
+            primaryStage.setWidth(450);
+            WelcomeScreenController welcomeScreenController = fxmlLoader.getController();
+            welcomeScreenController.setPrimaryStage(primaryStage);
+
+            //set stage
+            primaryStage.setTitle("Conquerors");
+            Scene scene = new Scene(root, 450, 500);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // wire up primary stage
-        primaryStage.setHeight(500);
-        primaryStage.setWidth(450);
-        WelcomeScreenController welcomeScreenController = fxmlLoader.getController();
-        welcomeScreenController.setPrimaryStage(primaryStage);
 
-        //set stage
-        primaryStage.setTitle("Conquerors");
-        assert root != null;
-        Scene scene = new Scene(root, 450, 500);
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 
 }
