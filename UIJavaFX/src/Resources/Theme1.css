@@ -41,10 +41,6 @@
     -fx-border-color: blue;
 }
 
-#currentPlayer_Id {
-    -fx-text-fill: darkblue;
-    -fx-font-size: 54;
-}
 
 .tab-pane {
     -fx-background-color: grey;

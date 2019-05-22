@@ -1,4 +1,5 @@
 import Resources.ResourceConstants;
+import WelcomeScreen.GameLoader;
 import WelcomeScreen.WelcomeScreenController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +30,8 @@ public class Main extends Application {
 
         // wire up primary stage
         WelcomeScreenController welcomeScreenController = fxmlLoader.getController();
+        GameLoader gameLoader = new GameLoader(welcomeScreenController);
+        welcomeScreenController.setGameLoader(gameLoader);
         welcomeScreenController.setPrimaryStage(primaryStage);
 
         //set stage

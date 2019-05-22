@@ -110,7 +110,7 @@ public class BuyUnitsPopupController {
                 }
                 else {
                     //do some exception : amount is negative
-                    showLabel("Invalid amount , please enter positive number.");
+                    showLabel("Invalid amount.");
                 }
             }
             else{

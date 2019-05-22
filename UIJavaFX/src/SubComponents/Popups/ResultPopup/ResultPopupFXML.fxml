@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
@@ -14,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainAnchor" prefHeight="586.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Popups.ResultPopup.ResultPopupController">
+<AnchorPane fx:id="mainAnchor" prefHeight="586.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Popups.ResultPopup.ResultPopupController">
    <children>
       <GridPane layoutY="149.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -80,9 +79,4 @@
          </children>
       </GridPane>
    </children>
-   <stylesheets>
-      <URL value="@Result.css" />
-      <URL value="@../Popups.css" />
-      <URL value="@../../../MainComponents/Default.css" />
-   </stylesheets>
 </AnchorPane>

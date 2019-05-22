@@ -18,6 +18,8 @@ public class GameDescriptor implements Serializable {
     private static final String NO_DEFAULT_PROFIT = "No default profit detected";
     private static final String NO_DEFAULT_ARMY_THRESHOLD = "No default army threshold detected";
     private static final String RANKS_ARE_NOT_SEQUENTIAL = "Ranks in XML are not sequential";
+    private static final String THE_SAME_RANK_IN_XML = "A unit exists with the same rank in XML";
+    private static final String SAME_TYPE_EXISTS_IN_THE_XML = "A Unit with the same type exists in the XML";
     private String lastKnownGoodString;
     private int initialFunds , totalCycles , columns , rows;
     private int defaultThreshold , defaultProfit;
@@ -164,7 +166,7 @@ public class GameDescriptor implements Serializable {
         this.columns = descriptor.getGame().getBoard().getColumns().intValue();
         this.rows = descriptor.getGame().getBoard().getRows().intValue();
         //this.gameType = descriptor.getGameType();
-        if(descriptor.getGame().getTerritories().getDefaultArmyThreshold() != null) {
+        if(descriptor.getGame().getTerritories().getDefaultProfit() != null) {
             this.defaultProfit = descriptor.getGame().getTerritories().getDefaultProfit().intValue();
         }
         if(descriptor.getGame().getTerritories().getDefaultArmyThreshold() != null) {
@@ -182,12 +184,19 @@ public class GameDescriptor implements Serializable {
     //*********************//
     /*     Validators     */
     //*********************//
-    //TODO: Not good , only checks if adjacent territories in list have the same ID.
     private boolean validateTerritories(Generated.GameDescriptor descriptor) {
-        for(int i = 0; i < descriptor.getGame().getTerritories().getTeritory().size() - 1 ; i++) { //Checking double ID
-            if(descriptor.getGame().getTerritories().getTeritory().get(i).getId().equals(descriptor.getGame().getTerritories().getTeritory().get(i + 1).getId()))  {
-                error = "Double territory ID in xml detected , please try again.";
-                return false; // an territory exists with the same ID
+        Set<Integer> territoryIds = new HashSet<>();
+        for(int i = 0; i < descriptor.getGame().getTerritories().getTeritory().size(); i++) { //Checking double ID
+            territoryIds.add(descriptor.getGame().getTerritories().getTeritory().get(i).getId().intValue());
+        }
+        if(territoryIds.size() != descriptor.getGame().getTerritories().getTeritory().size()) {
+            error = "Double territory ID in xml detected , please try again.";
+            return false;
+        }
+        for(Generated.Teritory territory: descriptor.getGame().getTerritories().getTeritory()) {
+            if(territory.getId().intValue() > columns * rows) {
+                error = "Defined territory ID's exceed board limit in XML.";
+                return false;
             }
         }
         return validateTerritoryDefaults(descriptor);
@@ -227,11 +236,11 @@ public class GameDescriptor implements Serializable {
                return true;
            }
            else {
-               error = "A unit exists with the same rank in XML";
+               error = THE_SAME_RANK_IN_XML;
            }
         }
        else {
-           error = "A Unit with the same type exists in the XML";
+           error = SAME_TYPE_EXISTS_IN_THE_XML;
        }
         return  false;
     }

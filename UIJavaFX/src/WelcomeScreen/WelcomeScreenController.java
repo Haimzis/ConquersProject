@@ -1,8 +1,6 @@
 package WelcomeScreen;
 
 import Events.EventHandler;
-import Events.EventObject;
-import Exceptions.invalidInputException;
 import GameEngine.GameEngine;
 import MainComponents.AppController;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -26,29 +24,42 @@ import static Resources.ResourceConstants.APP_FXML_INCLUDE_RESOURCE;
 
 public class WelcomeScreenController {
 @FXML private FlowPane WelcomeScreenComponent;
+@FXML private TextField tbx_path;
+@FXML private Label lbl_message;
+@FXML private Button btn_choosePath;
+@FXML private Button buttonStartGame;
 @FXML private Button btn_loadXML;
 @FXML private Button btn_loadGame;
-@FXML private TextField tbx_path;
-@FXML private Button btn_choosePath;
-@FXML private Label lbl_message;
-@FXML private Button buttonStartGame;
     private Stage primaryStage;
-    private SimpleBooleanProperty isFileSelected;
-    private SimpleStringProperty selectedFileProperty;
+    private SimpleStringProperty messageProperty;
+    private SimpleStringProperty selectedFilePathProperty;
+    private SimpleBooleanProperty isFileSelectedProperty;
+    private SimpleBooleanProperty isLoadSucceedProperty;
     private GameEngine gameEngine;
-    private Boolean loadSucceed;
-    private boolean gameLoaded;
+    private GameLoader gameLoader;
+    private Boolean gameAlreadyLoaded=false;
 
     public WelcomeScreenController(){
         gameEngine = new GameEngine();
-        isFileSelected = new SimpleBooleanProperty(false);
-        selectedFileProperty = new SimpleStringProperty("");
-        loadSucceed=false;
+        //binds
+        isLoadSucceedProperty = new SimpleBooleanProperty(false);
+        isFileSelectedProperty = new SimpleBooleanProperty(false);
+        selectedFilePathProperty = new SimpleStringProperty("");
+        messageProperty = new SimpleStringProperty("");
     }
+    @FXML
+    public void initialize(){
+        buttonStartGame.disableProperty().bind(isLoadSucceedProperty.not());
+        btn_loadXML.disableProperty().bind(isFileSelectedProperty.not());
+        btn_loadGame.disableProperty().bind(isFileSelectedProperty.not());
+        tbx_path.textProperty().bind(selectedFilePathProperty);
+        lbl_message.textProperty().bind(messageProperty);
+
+    }
+    public void setGameLoader(GameLoader gameLoader) {this.gameLoader = gameLoader;}
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
-
     @FXML
     public void btn_choosePathAction() {
         FileChooser fileChooser = new FileChooser();
@@ -58,61 +69,32 @@ public class WelcomeScreenController {
         if (selectedFile == null) {
             return;
         }
-
-        String absolutePath = selectedFile.getAbsolutePath();
-        selectedFileProperty.set(absolutePath);
-        //need to do task
-        tbx_path.setText(selectedFile.getPath());
-        //
-        isFileSelected.set(true);
+        selectedFilePathProperty.set(selectedFile.getPath());
+        isFileSelectedProperty.set(true);
     }
 
     @FXML
     public void btn_loadXMLAction(){
-        if(!isFileSelected.getValue()) {
-            lbl_message.setText("Yoo Matha fucka, choose file!");
-            lbl_message.setStyle("-fx-opacity: 1;");
-        }
-        else {
-            lbl_message.setStyle("-fx-opacity: 0;");
-            try {
-                gameEngine.loadXML(tbx_path.getText());
-                loadSucceed = true;
-                lbl_message.setText("XML Loaded");
-                lbl_message.setStyle("-fx-opacity: 1;");
-                buttonStartGame.setDisable(false);
-
-            } catch (invalidInputException e) {
-                loadSucceed = false;
-                lbl_message.setText(e.getMessage());
-                lbl_message.setStyle("-fx-opacity: 1;");
-            }
-        }
+        gameAlreadyLoaded = false;
+        gameLoader.loadXML(gameEngine,
+                        messageProperty,
+                        selectedFilePathProperty,
+                        isLoadSucceedProperty);
     }
+
     @FXML
     public void setBtn_loadGameAction(){
-        if(!isFileSelected.getValue()) {
-            lbl_message.setText("Choose saved game");
-            lbl_message.setStyle("-fx-opacity: 1;");
-        }
-        else {
-            lbl_message.setStyle("-fx-opacity: 0;");
-            gameLoaded = gameEngine.loadGame(gameEngine.getLoadFilePath(tbx_path.getText()));
-            if (!gameLoaded) {
-                lbl_message.setText("Could not load saved game file!");
-                lbl_message.setStyle("-fx-opacity: 1;");
-            }
-            else {
-                gameEngine.setDescriptor(GameEngine.gameManager.getGameDescriptor());
-                lbl_message.setText("Game loaded");
-                lbl_message.setStyle("-fx-opacity: 1;");
-                buttonStartGame.setDisable(false);
-            }
-        }
+        gameAlreadyLoaded = true;
+        gameLoader.loadSavedGame(gameEngine,
+                        messageProperty,
+                        selectedFilePathProperty,
+                        isLoadSucceedProperty);
     }
+
+
+
     @FXML
     private void startGame(){
-        if(gameLoaded || loadSucceed) {
             try {
                 //Load FXML of Root(on stage)
                 FXMLLoader fxmlLoader = new FXMLLoader();
@@ -134,7 +116,7 @@ public class WelcomeScreenController {
                 appController.setPrimaryStage(primaryStage);
                 appController.setGameEngine(gameEngine);
                 //start game
-                if(!gameLoaded) { //Check if its not a loaded game
+                if(!gameAlreadyLoaded) { //Check if its not a loaded game
                     appController.startGame();
                     //first load of xml into UI
                     appController.loadInformation();
@@ -144,9 +126,9 @@ public class WelcomeScreenController {
                     appController.loadInformation();
                     appController.createMap();
                     GameEngine.gameManager.setEventListenerHandler(new EventHandler(){
-                    //Wire the listener again since it's not saved
+                        //Wire the listener again since it's not saved
                         @Override
-                        public void handle(EventObject eventObject) {
+                        public void handle(Events.EventObject eventObject) {
                             appController.getMapComponentController().unColorTerritory(eventObject.getIdentity());
                             appController.getHeaderComponentController().writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
                         }
@@ -154,15 +136,11 @@ public class WelcomeScreenController {
                     appController.getHeaderComponentController().getBtnSave().setDisable(false);
                     appController.getHeaderComponentController().getBtnUndo().setDisable(false);
                 }
-                //appController.startRound();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             primaryStage.show(); // show game
-        }
-        else {
-            lbl_message.setText("No game or XML has been loaded");
-            lbl_message.setStyle("-fx-opacity: 1;");
-        }
+
     }
+
 }

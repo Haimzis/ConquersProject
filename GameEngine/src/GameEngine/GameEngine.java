@@ -80,7 +80,7 @@ public class GameEngine {
             return false;
         }
     }
-    public boolean loadGame(Path path) {
+    public boolean loadGame(Path path) throws IOException, ClassNotFoundException {
         try (ObjectInputStream in =
                      new ObjectInputStream(
                              new FileInputStream(path.toString()))) {
@@ -88,7 +88,7 @@ public class GameEngine {
             flag = 1;
             return true;
         } catch (IOException | ClassNotFoundException e) {
-            return false;
+            throw e;
         }
     }
 }

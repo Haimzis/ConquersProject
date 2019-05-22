@@ -95,7 +95,7 @@
               <items>
                 <MenuItem fx:id="defaultTheme" mnemonicParsing="false" onAction="#changeToDefaultTheme" text="Default" />
                 <MenuItem fx:id="themeOne" mnemonicParsing="false" onAction="#changeToThemeOne" text="Ocean" />
-                  <MenuItem fx:id="themeTwo" mnemonicParsing="false" onAction="#changeToThemeTwo" text="Avengers" />
+                  <MenuItem fx:id="themeTwo" mnemonicParsing="false" onAction="#changeToThemeTwo" text="Black Core" />
               </items>
             </MenuButton>
             <Button fx:id="btnRetire" alignment="CENTER" disable="true" layoutX="139.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#retirePressListener" text="Retire" GridPane.columnIndex="2" GridPane.rowIndex="5" />

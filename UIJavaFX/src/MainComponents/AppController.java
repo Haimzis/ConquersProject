@@ -166,7 +166,17 @@ public class AppController {
             Scene scene = new Scene(root, 242, 223);
 
             //CSS
-            scene.getStylesheets().add("/SubComponents/Popups/OwnTerrainPopup/OwnTerrain.css");
+            scene.getStylesheets().clear();
+            switch (HeaderComponentController.currentTheme) {
+                case "Ocean":
+                    scene.getStylesheets().add("/SubComponents/Popups/OwnTerrainPopup/Own_Ocean.css");
+                    break;
+                case "Black Core":
+                    scene.getStylesheets().add("/SubComponents/Popups/OwnTerrainPopup/Own_BlackCore.css");
+                    break;
+                case "Default":
+                    break;
+            }
 
             //Stage
             Stage stage = new Stage();
@@ -195,7 +205,17 @@ public class AppController {
                 Scene scene = new Scene(root, 242, 223);
 
                 //CSS
-                scene.getStylesheets().add("/SubComponents/Popups/AttackPopup/Attack.css");
+                scene.getStylesheets().clear();
+                switch (HeaderComponentController.currentTheme) {
+                    case "Ocean":
+                        scene.getStylesheets().add("/SubComponents/Popups/AttackPopup/Attack_Ocean.css");
+                        break;
+                    case "Black Core":
+                        scene.getStylesheets().add("/SubComponents/Popups/AttackPopup/Attack_BlackCore.css");
+                        break;
+                    case "Default":
+                        break;
+                }
 
                 //Stage
                 Stage stage = new Stage();
@@ -229,7 +249,17 @@ public class AppController {
             Scene scene = new Scene(root, 242, 223);
 
             //CSS
-            scene.getStylesheets().add("/SubComponents/Popups/BuyUnitsPopup/BuyUnits.css");
+            scene.getStylesheets().clear();
+            switch (HeaderComponentController.currentTheme) {
+                case "Ocean":
+                    scene.getStylesheets().add("/SubComponents/Popups/BuyUnitsPopup/BuyUnits_Ocean.css");
+                    break;
+                case "Black Core":
+                    scene.getStylesheets().add("/SubComponents/Popups/BuyUnitsPopup/BuyUnits_BlackCore.css");
+                    break;
+                case "Default":
+                    break;
+            }
 
             //Stage
             Stage stage = new Stage();
@@ -259,7 +289,17 @@ public class AppController {
             Scene scene = new Scene(root, 250, 586);
 
             //CSS
-            scene.getStylesheets().add("/SubComponents/Popups/ResultPopup/Result.css");
+            scene.getStylesheets().clear();
+            switch (HeaderComponentController.currentTheme) {
+                case "Ocean":
+                    scene.getStylesheets().add("/SubComponents/Popups/ResultPopup/Result_Ocean.css");
+                    break;
+                case "Black Core":
+                    scene.getStylesheets().add("/SubComponents/Popups/ResultPopup/Result_BlackCore.css");
+                    break;
+                case "Default":
+                    break;
+            }
 
             //Stage
             Stage stage = new Stage();

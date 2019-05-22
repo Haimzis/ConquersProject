@@ -10,12 +10,8 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -47,6 +43,7 @@ public class HeaderController {
     @FXML private Button btnRetire;
     @FXML private Label winner_label;
     private StringProperty currentPlayerProperty;
+    public String currentTheme = "Default";
 
 
 
@@ -105,12 +102,17 @@ public class HeaderController {
         mainController.getPrimaryStage().getScene().getStylesheets().add("/MainComponents/Default.css");
         btnStyles.setText("Default");
         currentPlayerInTurnLabel.setFont(Font.font("System", 54));
+        currentPlayerInTurnLabel.setStyle("-fx-text-fill: black");
+        currentTheme = "Default";
     }
     @FXML
     private void changeToThemeOne(){
         mainController.getPrimaryStage().getScene().getStylesheets().clear();
         mainController.getPrimaryStage().getScene().getStylesheets().add("/Resources/Theme1.css");
         btnStyles.setText("Ocean");
+        currentPlayerInTurnLabel.setFont(Font.loadFont(getClass().getResourceAsStream("/Resources/ocean.ttf"), 54));
+        currentPlayerInTurnLabel.setStyle("-fx-text-fill: darkblue");
+        currentTheme = "Ocean";
     }
 
     public Button getBtnManageRound() {
@@ -120,9 +122,11 @@ public class HeaderController {
     @FXML
     private void changeToThemeTwo(){
         mainController.getPrimaryStage().getScene().getStylesheets().clear();
-        mainController.getPrimaryStage().getScene().getStylesheets().add("/MainComponents/Avengers.css");
-        btnStyles.setText("Avengers");
+        mainController.getPrimaryStage().getScene().getStylesheets().add("/MainComponents/BlackCore.css");
+        btnStyles.setText("Black Core");
         currentPlayerInTurnLabel.setFont(Font.loadFont(getClass().getResourceAsStream("/Resources/Avengers.ttf"), 54));
+        currentPlayerInTurnLabel.setStyle("-fx-text-fill: rgb(0, 51, 102)");
+        currentTheme = "Black Core";
 
     }
 

@@ -62,12 +62,12 @@
             <Button id="btn_loadxml" fx:id="btn_loadXML" mnemonicParsing="false" onAction="#btn_loadXMLAction" prefHeight="85.0" prefWidth="234.0" stylesheets="@WelcomeScreen.css" text="Load XML" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <Button id="btn_loadgame" fx:id="btn_loadGame" mnemonicParsing="false" onAction="#setBtn_loadGameAction" prefHeight="78.0" prefWidth="250.0" stylesheets="@WelcomeScreen.css" text="Load Game" GridPane.columnIndex="2" GridPane.rowIndex="6" />
             <TextField id="tbx_path" fx:id="tbx_path" stylesheets="@WelcomeScreen.css" text="Choose File...." GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
-            <Button id="btn_choosepath" fx:id="btn_choosePath" mnemonicParsing="false" onAction="#btn_choosePathAction" prefHeight="26.0" prefWidth="29.0" stylesheets="@WelcomeScreen.css" text="..." GridPane.columnIndex="4" GridPane.rowIndex="3" />
-            <Label id="lbl_message" fx:id="lbl_message" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" opacity="0.0" prefHeight="44.0" prefWidth="345.0" stylesheets="@WelcomeScreen.css" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
+            <Label id="lbl_message" fx:id="lbl_message" alignment="CENTER" contentDisplay="BOTTOM" prefHeight="44.0" prefWidth="345.0" stylesheets="@WelcomeScreen.css" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </Label>
+            <Button id="btn_choosepath" fx:id="btn_choosePath" mnemonicParsing="false" onAction="#btn_choosePathAction" prefHeight="26.0" prefWidth="29.0" stylesheets="@WelcomeScreen.css" text="..." GridPane.columnIndex="4" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </children>
