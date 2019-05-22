@@ -101,7 +101,7 @@
          </children>
          <stylesheets>
             <URL value="@../InformationTable.css" />
-            <URL value="@../../../MainComponents/Default.css" />
+            <URL value="@../../../Resources/Default.css" />
          </stylesheets>
       </AnchorPane>
    </content>

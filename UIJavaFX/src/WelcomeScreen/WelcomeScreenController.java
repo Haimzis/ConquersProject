@@ -108,7 +108,7 @@ public class WelcomeScreenController {
                 primaryStage.setScene(scene);
 
                 //CSS
-                scene.getStylesheets().add("/MainComponents/Default.css");
+                scene.getStylesheets().add("/Resources/Default.css");
 
                 //wire up game engine to appController
                 AppController appController = fxmlLoader.getController();
