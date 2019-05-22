@@ -1,3 +1,11 @@
+
+#app {
+    -fx-font-size: 12px;
+    -fx-font-family: "Maiandra GD";
+    -fx-base: rgb(104, 118, 129);
+    -fx-background: rgb(104, 118, 129);
+    -fx-background-image: url("ocean1.jpeg");
+}
 /* BUTTONS CSS */
 .button {
     -fx-border-color: #ff9800;
@@ -75,12 +83,4 @@
 #annoucments_Id {
     -fx-text-fill: blue;
 }
-/* GENERAL APP CSS */
-.root{
-    -fx-font-size: 12px;
-    -fx-font-family: "Maiandra GD";
-    -fx-base: rgb(104, 118, 129);
-    -fx-background: rgb(104, 118, 129);
-    -fx-background-image: url("../Resources/ocean1.jpeg");
 
-}

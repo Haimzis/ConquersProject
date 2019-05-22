@@ -73,6 +73,6 @@
    </children>
    <stylesheets>
       <URL value="@WelcomeScreen.css" />
-      <URL value="@../MainComponents/Default.css" />
+      <URL value="@../Resources/Default.css" />
    </stylesheets>
 </FlowPane>

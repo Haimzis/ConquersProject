@@ -28,6 +28,6 @@
    </children>
    <stylesheets>
       <URL value="@Replay.css" />
-      <URL value="@../../MainComponents/Default.css" />
+      <URL value="@../../Resources/Default.css" />
    </stylesheets>
 </AnchorPane>

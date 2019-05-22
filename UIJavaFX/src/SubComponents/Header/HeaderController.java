@@ -98,7 +98,7 @@ public class HeaderController {
     @FXML
     private void changeToDefaultTheme(){
         mainController.getPrimaryStage().getScene().getStylesheets().clear();
-        mainController.getPrimaryStage().getScene().getStylesheets().add("/MainComponents/Default.css");
+        mainController.getPrimaryStage().getScene().getStylesheets().add("/Resources/Default.css");
         btnStyles.setText("Default");
         currentPlayerInTurnLabel.setFont(Font.font("System", 54));
         currentPlayerInTurnLabel.setStyle("-fx-text-fill: black");
@@ -121,7 +121,7 @@ public class HeaderController {
     @FXML
     private void changeToThemeTwo(){
         mainController.getPrimaryStage().getScene().getStylesheets().clear();
-        mainController.getPrimaryStage().getScene().getStylesheets().add("/MainComponents/BlackCore.css");
+        mainController.getPrimaryStage().getScene().getStylesheets().add("/Resources/BlackCore.css");
         btnStyles.setText("Black Core");
         currentPlayerInTurnLabel.setFont(Font.loadFont(getClass().getResourceAsStream("/Resources/Avengers.ttf"), 54));
         currentPlayerInTurnLabel.setStyle("-fx-text-fill: rgb(0, 51, 102)");

@@ -11,6 +11,6 @@
    </content>
    <stylesheets>
       <URL value="@Map.css" />
-      <URL value="@../../MainComponents/Default.css" />
+      <URL value="@../../Resources/Default.css" />
    </stylesheets>
 </ScrollPane>
