@@ -158,7 +158,7 @@ public class AppController {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/OwnTerrainPopup/OwnTerrainPopUpFXML.fxml"));
             Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root, 242, 223);
+            Scene scene = new Scene(root, 262, 223);
 
             //CSS
             switch (HeaderComponentController.currentTheme) {
@@ -196,7 +196,7 @@ public class AppController {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/AttackPopup/AttackPopupFXML.fxml"));
                 Parent root = fxmlLoader.load();
-                Scene scene = new Scene(root, 242, 223);
+                Scene scene = new Scene(root, 262, 223);
 
                 //CSS
                 switch (HeaderComponentController.currentTheme) {
@@ -239,7 +239,7 @@ public class AppController {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/BuyUnitsPopup/BuyUnitsPopupFXML.fxml"));
             Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root, 242, 223);
+            Scene scene = new Scene(root, 262, 223);
 
 
             //Stage
