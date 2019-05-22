@@ -1,8 +1,6 @@
 package GameEngine;
 
 import Exceptions.invalidInputException;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -87,8 +85,6 @@ public class GameEngine {
             gameManager = (GameManager) in.readObject();
             flag = 1;
             return true;
-        } catch (IOException | ClassNotFoundException e) {
-            throw e;
         }
     }
 }

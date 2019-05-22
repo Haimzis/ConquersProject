@@ -83,17 +83,7 @@ public class AppController {
         return InformationComponentController.getColorByPlayerName(playerName);
 
     }
-    public void setHeaderComponentController(HeaderController headerComponentController) {
-        this.HeaderComponentController = headerComponentController;
-    }
 
-    public void setInformationComponentController(InformationController informationComponentController) {
-        this.InformationComponentController = informationComponentController;
-    }
-
-    public void setMapComponentController(MapController mapComponentController) {
-        this.MapComponentController = mapComponentController;
-    }
     public void loadRoundHistory(){
         GameEngine.gameManager.peekHistory();
         getInformationComponentController().loadRoundHistory();
@@ -121,13 +111,9 @@ public class AppController {
 
     public void startGame() {
         gameEngine.newGame();
-        GameEngine.gameManager.setEventListenerHandler(new EventHandler(){
-
-            @Override
-            public void handle(EventObject eventObject) {
-                MapComponentController.unColorTerritory(eventObject.getIdentity());
-                HeaderComponentController.writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
-            }
+        GameEngine.gameManager.setEventListenerHandler(eventObject -> {
+            MapComponentController.unColorTerritory(eventObject.getIdentity());
+            HeaderComponentController.writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
         });
     }
 

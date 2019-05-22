@@ -11,8 +11,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class GameDescriptor implements Serializable {
     private static final String NO_DEFAULT_PROFIT = "No default profit detected";
@@ -68,7 +66,6 @@ public class GameDescriptor implements Serializable {
     public void setPlayersList(List<Player> playersList) {
         this.playersList = playersList;
     }
-
     public Territory getTerritoryByID(Integer territoryID){
         return territoryMap.get(territoryID);
     }
@@ -281,9 +278,6 @@ public class GameDescriptor implements Serializable {
         }
         return false;
     }
-
-    //TODO: Gets the last known good xml path , crashes if player moves the last know xml from it's former location.
-    // Find a better way to implement.
     public String getLastKnownGoodString() {
         return lastKnownGoodString;
     }
