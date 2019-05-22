@@ -64,7 +64,9 @@ public class GameManager implements Serializable {
     //retrieve amount of required units, create them in selectedArmyForce,and decrement the price from player
     public void buyUnits(Unit unit, int amount) {
         int unitPrice;
-        selectedArmyForce = new Army();
+        if(selectedArmyForce == null) {
+            selectedArmyForce = new Army();
+        }
         for(int i=0;i<amount;i++) {
             Unit unitToAdd = new Unit(unit.getType()
                     , unit.getRank()
