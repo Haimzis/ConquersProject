@@ -4,6 +4,7 @@
     -fx-font-family: "Arial Black";
     -fx-base: rgb(104, 118, 129);
     -fx-background: rgb(104, 118, 129);
+    -fx-background-image: url("../Resources/Darkapps.jpg");
 }
 
 /* BUTTONS CSS */
