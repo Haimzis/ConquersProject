@@ -343,6 +343,7 @@ public class AppController {
 
         //set stage
         primaryStage.setTitle("Conquerors");
+        assert root != null;
         Scene scene = new Scene(root, 450, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
