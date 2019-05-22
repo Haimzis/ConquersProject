@@ -2,7 +2,6 @@ package MainComponents;
 
 import DataContainersTypes.Board;
 import Events.EventHandler;
-import Events.EventListener;
 import Events.EventObject;
 import GameEngine.GameEngine;
 import Resources.ResourceConstants;

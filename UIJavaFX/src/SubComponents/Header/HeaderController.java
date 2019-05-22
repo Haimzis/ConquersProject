@@ -38,7 +38,6 @@ public class HeaderController {
     @FXML private MenuButton btnStyles;
     @FXML private ToggleButton btnAnimationToggle;
     @FXML private ToggleButton btnReplay;
-    @FXML private Button btnExit;
     @FXML private Label errorLbl;
     @FXML private Button btnRetire;
     @FXML private Label winner_label;
