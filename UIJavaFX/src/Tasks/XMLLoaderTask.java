@@ -13,7 +13,6 @@ public class XMLLoaderTask extends Task<Boolean> {
     private Consumer<String> messageDelegate;
     private Supplier<String> filePathDelegate;
     private Consumer<Boolean> isLoadSucceedDelegate;
-    private final long SLEEP_TIME = 5;
 
     public XMLLoaderTask(GameEngine gameEngine,
                          Consumer<String> messageDelegate,

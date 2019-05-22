@@ -7,9 +7,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 
-import java.util.Optional;
-import java.util.function.Consumer;
-
 public class GameLoader {
     private Task<Boolean> currentRunningTask;
     private WelcomeScreenController controller;
@@ -26,7 +23,6 @@ public class GameLoader {
                 messageProperty::set,
                 selectedFilePathProperty::getValue,
                 isLoadSucceedProperty::set);
-        //controller.bindTaskToUIComponents(currentRunningTask, onFinish);
         new Thread(currentRunningTask).start();
     }
 
@@ -40,13 +36,6 @@ public class GameLoader {
                 messageProperty::set,
                 selectedFilePathProperty::getValue,
                 isLoadSucceedProperty::set);
-        //controller.bindTaskToUIComponents(currentRunningTask, onFinish);
         new Thread(currentRunningTask).start();
     }
-
-    public void cancelCurrentTask() {
-        currentRunningTask.cancel();
-    }
-
-
 }

@@ -162,9 +162,6 @@ public class InformationController {
         playersInformationTabPane.getTabs().add(tab);
         return tab;
     }
-    private void deleteTabFromPlayers(String playerName) {
-        removeTab(playerName, playersInformationTabPane);
-    }
     private void removeTab(String playerName, TabPane playersInformationTabPane) {
         for (int i = 0; i < playersInformationTabPane.getTabs().size(); i++) {
             String tabTitle = playersInformationTabPane.getTabs().get(i).getText();
