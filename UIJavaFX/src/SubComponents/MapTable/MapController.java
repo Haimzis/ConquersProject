@@ -127,7 +127,7 @@ public class MapController {
 
     private void animateColor(Territory territory) {
         currentlySelectedButton.setStyle("-fx-background-color: " + mainController.getColorByPlayerName(territory.getConquer().getPlayerName()));
-        fadeAnimation();
+        fadeIn();
 
     }
 
@@ -153,11 +153,11 @@ public class MapController {
     public void unColorTerritory(Integer territoryID) {
         territoriesButtons.get(territoryID).setStyle("");
         if(isAnimationOn) {
-            fadeAnimation();
+            fadeOut(territoryID);
         }
     }
 
-    private void fadeAnimation() {
+    private void fadeIn() {
         FadeTransition fd = new FadeTransition(Duration.seconds(2), currentlySelectedButton);
         fd.setCycleCount(2);
         fd.setFromValue(1);
@@ -165,6 +165,16 @@ public class MapController {
         fd.setAutoReverse(true);
         fd.play();
     }
+
+    private void fadeOut(Integer territoryId) {
+        FadeTransition fd = new FadeTransition(Duration.seconds(2), territoriesButtons.get(territoryId));
+        fd.setCycleCount(2);
+        fd.setFromValue(1);
+        fd.setToValue(0.3);
+        fd.setAutoReverse(true);
+        fd.play();
+    }
+
 
     private void popTerritoriesOfWinner(double from_x , double from_y , double to_x , double to_y) {
         for(Territory territory: GameEngine.gameManager.getCurrentPlayerTerritories()) {

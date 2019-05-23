@@ -65,6 +65,7 @@ public class BuyUnitsPopupController {
     public void btnDoneStartAction(){
         parentPopupController.startAction();
         mainController.updateInformation();
+        GameEngine.gameManager.setSelectedArmyForce(null);
         closePopup();
     }
 

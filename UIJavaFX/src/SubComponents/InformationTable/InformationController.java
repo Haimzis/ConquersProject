@@ -122,7 +122,7 @@ public class InformationController {
         TableColumn<Unit,Integer> worthCol = new TableColumn<>("Worth");
         worthCol.setMinWidth(70);
         //appearanceCol
-        TableColumn<Unit,Integer> appearanceCol = new TableColumn<>();
+        TableColumn<Unit,Integer> appearanceCol = new TableColumn<>("Appearance");
         appearanceCol.setMinWidth(100);
 
         nameCol.setCellValueFactory(
@@ -155,7 +155,7 @@ public class InformationController {
     private Tab addTabToPlayers(String playerName) {
         Tab tab = new Tab(playerName);
         tab.setOnSelectionChanged(event -> {
-            //TODO: write if - that disable the option to see territories of another player.
+            //TODO: write if - that disable the option to see territories of another player. /done - ran
         });
         playersInformationTabPane.getTabs().add(tab);
         return tab;

@@ -66,11 +66,15 @@ public class InnerTabPaneRootController {
     @FXML
     private void loadConquerUnitsOnSelectedTerritory(){
         Territory territory = territoriesTableView.getSelectionModel().getSelectedItem();
-        ObservableList<String> items;
-        if(territory == null)
+        ObservableList<String> items = null;
+        if(territory == null) {
             items= FXCollections.observableArrayList(new ArrayList<>(0));
-        else
-            items =FXCollections.observableArrayList(createListOfUnitsStrings(territory));
+        }
+        else { //Show only if its the current player territory.
+            if(territory.getConquer().getID() == GameEngine.gameManager.getCurrentPlayerTurn().getID()) {
+                items =FXCollections.observableArrayList(createListOfUnitsStrings(territory));
+            }
+        }
         unitsListView.setItems(items);
     }
     private void clearConquerUnitsListView(){

@@ -474,6 +474,10 @@ public class GameManager implements Serializable {
         return currentPlayerTurn;
     }
 
+    public void setSelectedArmyForce(Army selectedArmyForce) {
+        this.selectedArmyForce = selectedArmyForce;
+    }
+
     public Player getPlayerByName(String playerName) {
         for(Player player: getGameDescriptor().getPlayersList()){
             if(player.getPlayerName().equals(playerName)){
