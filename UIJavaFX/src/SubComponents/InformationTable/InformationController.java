@@ -69,6 +69,7 @@ public class InformationController {
     }
 
     private void loadPlayersTabs(){
+        tvUnits.getColumns().clear();
         for (Player player : mainController.getGameEngine().getDescriptor().getPlayersList()) { //load each Player Information
             Tab playerTab = addTabToPlayers(player.getPlayerName());
             playersTabs.put(player.getPlayerName(), playerTab);
