@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane fx:id="WelcomeScreenComponent" alignment="CENTER" columnHalignment="CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WelcomeScreen.WelcomeScreenController">
+<FlowPane fx:id="WelcomeScreenComponent" alignment="CENTER" columnHalignment="CENTER" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WelcomeScreen.WelcomeScreenController">
    <children>
       <GridPane prefHeight="414.0" prefWidth="384.0">
          <columnConstraints>

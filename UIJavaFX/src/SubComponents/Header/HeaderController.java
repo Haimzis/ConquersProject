@@ -236,6 +236,11 @@ public class HeaderController {
         visiblePause.play();
     }
 
+    public void writeAndShowError(String error) {
+        lblError.setText(error);
+        showErrorLabel();
+    }
+
     @FXML
     private void exitToWelcomeScreen() {
         mainController.launchWelcomeScreen();

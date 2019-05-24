@@ -23,6 +23,7 @@ public class ReplayController {
         }
         else{
             //exception
+            mainController.getHeaderComponentController().writeAndShowError("Cant replay over last round!");
         }
     }
     @FXML
@@ -33,6 +34,7 @@ public class ReplayController {
         }
         else {
             //exception
+            mainController.getHeaderComponentController().writeAndShowError("Cant replay  before first round!");
         }
 
     }
