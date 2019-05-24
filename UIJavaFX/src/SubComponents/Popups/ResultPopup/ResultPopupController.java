@@ -7,15 +7,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 
 public class ResultPopupController {
     private AppController mainController;
     @FXML private ImageView victoryIcon;
     @FXML private ImageView defeatIcon;
     @FXML private ImageView drawIcon;
-    @FXML private Label resultsLabel;
-    @FXML private TextArea resultsTextArea;
+    @FXML private Label lblResult;
+    @FXML private TextArea txtaResults;
     @FXML private AnchorPane mainAnchor;
 
     public void setMainController(AppController mainController) { this.mainController = mainController; }
@@ -36,21 +35,21 @@ public class ResultPopupController {
     }
 
     private void populateDrawInfo(String info) {
-        resultsLabel.setText("DRAW");
+        lblResult.setText("DRAW");
         drawIcon.setVisible(true);
-        resultsTextArea.appendText(info);
+        txtaResults.appendText(info);
 
     }
 
     private void populateLoseInfo(String info) {
-        resultsLabel.setText("DEFEAT");
+        lblResult.setText("DEFEAT");
         defeatIcon.setVisible(true);
-        resultsTextArea.appendText(info);
+        txtaResults.appendText(info);
     }
 
     private void populateWinInfo(String info) {
-        resultsLabel.setText("VICTORY!");
+        lblResult.setText("VICTORY!");
         victoryIcon.setVisible(true);
-        resultsTextArea.appendText(info);
+        txtaResults.appendText(info);
     }
 }

@@ -27,10 +27,10 @@ import java.util.*;
 public class InformationController {
     private AppController mainController;
     @FXML public AnchorPane InformationComponent;
-    @FXML private Label currentRound;
-    @FXML private Label totalRounds;
-    @FXML private TabPane playersInformationTabPane;
-    @FXML private TableView<Unit> unitsTableView;
+    @FXML private Label lblCurrentRound;
+    @FXML private Label lblTotalRounds;
+    @FXML private TabPane tpPlayersInformation;
+    @FXML private TableView<Unit> tvUnits;
     private Map<String,Tab> playersTabs= new HashMap<>();
     private Map<String, InnerTabPaneRootController> playersInnerTabPaneRootControllers= new HashMap<>();
     private IntegerProperty currentRoundProperty;
@@ -58,20 +58,21 @@ public class InformationController {
         loadUnitsToTableView();
     }
     private void resetPlayerTabs(){
-        playersInformationTabPane.getTabs().clear();
+        tpPlayersInformation.getTabs().clear();
         playersTabs = new HashMap<>();
         playersInnerTabPaneRootControllers=new HashMap<>();
     }
     public void loadBinding() {
         currentRoundProperty = new SimpleIntegerProperty(GameEngine.gameManager.roundNumber);
         StringExpression currentRoundSE = Bindings.concat(currentRoundProperty);
-        currentRound.textProperty().bind(currentRoundSE);
+        lblCurrentRound.textProperty().bind(currentRoundSE);
     }
 
     private void loadPlayersTabs(){
         for (Player player : mainController.getGameEngine().getDescriptor().getPlayersList()) { //load each Player Information
             Tab playerTab = addTabToPlayers(player.getPlayerName());
             playersTabs.put(player.getPlayerName(), playerTab);
+
             //load inner TabPane Construct into tabs
             FXMLLoader innerTabPaneRootLoader = new FXMLLoader();
             URL url = getClass().getResource(ResourceConstants.INNER_PANETAB_FXML_INCLUDE_RESOURCE);
@@ -92,17 +93,18 @@ public class InformationController {
         }
     }
     private void loadTotalCycles() {
-        totalRounds.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getTotalCycles()));
+        lblTotalRounds.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getTotalCycles()));
     }
 
     public void updatePlayersData(){
         playersInnerTabPaneRootControllers.forEach((player,innerTabPaneRootController) -> innerTabPaneRootController.loadPlayerData());
+        tvUnits.refresh();
     }
     private void loadUnitsToTableView() {
         final ObservableList<Unit> data =
                 FXCollections.observableArrayList(mainController.getGameEngine().getDescriptor().getUnitMap().values());
-        unitsTableView.setEditable(false);
-        unitsTableView.setItems(data);
+        tvUnits.setEditable(false);
+        tvUnits.setItems(data);
         //nameCol
         TableColumn<Unit,String> nameCol = new TableColumn<>("Name");
         nameCol.setMinWidth(70);
@@ -146,27 +148,23 @@ public class InformationController {
         appearanceCol.setCellValueFactory(
                 new PropertyValueFactory<>("Appearance")
         );
-        //TODO: need to update Appearance column, Problem: Units does not knows the gameManager
-        unitsTableView.setItems(data);
+        tvUnits.setItems(data);
         //noinspection unchecked
-        unitsTableView.getColumns().addAll(nameCol, rankCol, priceCol,firePowerCol,competenceReductionCol,worthCol,appearanceCol);
+        tvUnits.getColumns().addAll(nameCol, rankCol, priceCol,firePowerCol,competenceReductionCol,worthCol,appearanceCol);
     }
 
     private Tab addTabToPlayers(String playerName) {
         Tab tab = new Tab(playerName);
-        tab.setOnSelectionChanged(event -> {
-            //TODO: write if - that disable the option to see territories of another player. /done - ran
-        });
-        playersInformationTabPane.getTabs().add(tab);
+        tpPlayersInformation.getTabs().add(tab);
         return tab;
     }
 
     public void setMainController(AppController mainController) { this.mainController = mainController; }
 
     public void setFocusOnCurrentPlayer() {
-        for(int i = 0 ; i < playersInformationTabPane.getTabs().size(); i++) {
-            if(playersInformationTabPane.getTabs().get(i).getText().equals(GameEngine.gameManager.getCurrentPlayerName())) {
-                playersInformationTabPane.getSelectionModel().select(playersInformationTabPane.getTabs().get(i));
+        for(int i = 0; i < tpPlayersInformation.getTabs().size(); i++) {
+            if(tpPlayersInformation.getTabs().get(i).getText().equals(GameEngine.gameManager.getCurrentPlayerName())) {
+                tpPlayersInformation.getSelectionModel().select(tpPlayersInformation.getTabs().get(i));
             }
         }
     }

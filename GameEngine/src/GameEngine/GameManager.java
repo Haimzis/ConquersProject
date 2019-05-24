@@ -496,4 +496,16 @@ public class GameManager implements Serializable {
         }
         return currentPlayerTurn;
     }
+
+    public int getAppearanceOfUnitWithSpecificType(String typeOfUnit) {
+        int counterOfSpecificUnitType = 0;
+        Territory territory;
+        for (Player player : gameDescriptor.getPlayersList()) {
+            for (Integer territoryID : player.getTerritoriesID()) {
+                territory = getTerritoryByID(territoryID);
+                counterOfSpecificUnitType = (int) (counterOfSpecificUnitType + territory.getConquerArmyForce().getUnits().stream().filter(unit -> typeOfUnit.equals(unit.getType())).count());
+            }
+        }
+        return counterOfSpecificUnitType;
+    }
 }

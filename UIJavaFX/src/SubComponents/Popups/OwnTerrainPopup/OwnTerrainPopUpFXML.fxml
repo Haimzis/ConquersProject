@@ -33,8 +33,8 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Button fx:id="btnRehabilitate" layoutX="27.0" layoutY="25.0" mnemonicParsing="false" onAction="#rehabilitateArmyOnTerrain" prefHeight="25.0" prefWidth="186.0" text="Rehabilitate Army" />
-                        <Button fx:id="enforceArmyBtn" layoutX="29.0" layoutY="79.0" mnemonicParsing="false" onAction="#enforceArmyOnTerritory" prefHeight="25.0" prefWidth="182.0" text="Add units to existing Army" />
-                        <Label fx:id="infoLabel" layoutX="100.0" layoutY="124.0" prefHeight="20.0" prefWidth="41.0" text="Done!" visible="false">
+                        <Button fx:id="btnEnforceArmy" layoutX="29.0" layoutY="79.0" mnemonicParsing="false" onAction="#enforceArmyOnTerritory" prefHeight="25.0" prefWidth="182.0" text="Add units to existing Army" />
+                        <Label fx:id="lblInfo" layoutX="100.0" layoutY="124.0" prefHeight="20.0" prefWidth="41.0" text="Done!" visible="false">
                            <font>
                               <Font name="Aharoni Bold" size="14.0" />
                            </font>

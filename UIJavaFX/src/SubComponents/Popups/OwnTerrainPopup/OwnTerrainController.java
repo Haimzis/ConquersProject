@@ -15,8 +15,8 @@ import java.util.function.Supplier;
 
 public class OwnTerrainController implements ActionPopupController {
     private AppController mainController;
-    @FXML private Label infoLabel;
-    @FXML private Button enforceArmyBtn;
+    @FXML private Label lblInfo;
+    @FXML private Button btnEnforceArmy;
     @FXML private Button btnRehabilitate;
 
 
@@ -29,7 +29,7 @@ public class OwnTerrainController implements ActionPopupController {
             GameEngine.gameManager.rehabilitateSelectedTerritoryArmy();
             showLabelWhenDone("Done!" , Color.BLACK);
             btnRehabilitate.setDisable(true);
-            enforceArmyBtn.setDisable(true);
+            btnEnforceArmy.setDisable(true);
         }
         else { // Not enough funds
             showLabelWhenDone("Not enough funds." , Color.RED);
@@ -44,14 +44,14 @@ public class OwnTerrainController implements ActionPopupController {
     }
 
     private void closePopup() {
-        Stage stage = (Stage) enforceArmyBtn.getScene().getWindow();
+        Stage stage = (Stage) btnEnforceArmy.getScene().getWindow();
         stage.close();
     }
 
     private void showLabelWhenDone(String s, Paint color) {
-        infoLabel.setText(s);
-        infoLabel.setVisible(true);
-        infoLabel.setTextFill(color);
+        lblInfo.setText(s);
+        lblInfo.setVisible(true);
+        lblInfo.setTextFill(color);
     }
 
     @Override

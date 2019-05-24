@@ -1,5 +1,7 @@
 package GameObjects;
 
+import GameEngine.GameEngine;
+
 import java.io.Serializable;
 
 public class Unit implements Serializable {
@@ -47,6 +49,9 @@ public class Unit implements Serializable {
         return competenceReduction;
     }
     public double getWorth(){return (double)this.purchase / (double)this.maxFirePower;}
+    public int getAppearance(){
+        return GameEngine.gameManager.getAppearanceOfUnitWithSpecificType(this.type);
+    }
     //**************************//
     /*          Methods         */
     //**************************//
@@ -54,16 +59,21 @@ public class Unit implements Serializable {
         return (getWorth())*(this.getMaxFirePower() - this.getCurrentFirePower());
     }
     public void reduceCompetence() {
-        if(this.currentFirePower > competenceReduction)
+        if(this.currentFirePower > competenceReduction) {
             this.currentFirePower -= competenceReduction;
-        else
+        }
+        else {
             this.type = "Dead";
+        }
     }
+
     public void reduceCompetenceByPercent(double remainPercentage) {
-        if((int)((currentFirePower* remainPercentage)+0.5) > competenceReduction)
-            this.currentFirePower = (int)((currentFirePower* remainPercentage)+0.5);
-        else
+        if((int)((currentFirePower* remainPercentage)+0.5) > competenceReduction) {
+            this.currentFirePower = (int) ((currentFirePower * remainPercentage) + 0.5);
+        }
+        else {
             this.type = "Dead";
+        }
     }
     public void killUnit() {
         reduceCompetenceByPercent(0);

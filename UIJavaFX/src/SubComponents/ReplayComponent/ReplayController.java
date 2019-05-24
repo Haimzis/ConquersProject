@@ -48,10 +48,12 @@ public class ReplayController {
             exitReplayState();
             mainController.getHeaderComponentController().getBtnManageRound().setDisable(false);
             mainController.getMapComponentController().disableMap(false);
+            mainController.getHeaderComponentController().getBtnRetire().setDisable(false);
         }
         else{
             mainController.getHeaderComponentController().getBtnManageRound().setDisable(true);
             mainController.getMapComponentController().disableMap(true);
+            mainController.getHeaderComponentController().getBtnRetire().setDisable(true);
             generateReplayState();
         }
         ReplayComponent.setManaged(!ReplayComponent.isManaged());

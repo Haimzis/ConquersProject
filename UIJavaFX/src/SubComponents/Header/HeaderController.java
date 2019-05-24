@@ -30,20 +30,19 @@ public class HeaderController {
     private static final String NEW_GAME = "New Game";
     public AnchorPane HeaderComponent;
     private AppController mainController;
-    @FXML private  TextFlow headerInfoArea;
-    @FXML private Label currentPlayerInTurnLabel;
+    @FXML private  TextFlow tfHeaderInfoArea;
+    @FXML private Label lblCurrentPlayerInTurn;
     @FXML private Button btnManageRound;
     @FXML private Button btnSave;
     @FXML private Button btnUndo;
     @FXML private MenuButton btnStyles;
     @FXML private ToggleButton btnAnimationToggle;
     @FXML private ToggleButton btnReplay;
-    @FXML private Label errorLbl;
+    @FXML private Label lblError;
     @FXML private Button btnRetire;
-    @FXML private Label winner_label;
+    @FXML private Label lblWinner;
     private StringProperty currentPlayerProperty;
     public String currentTheme = "Default";
-
 
 
     public ToggleButton getBtnAnimationToggle() {
@@ -66,29 +65,29 @@ public class HeaderController {
         btnReplay.setDisable(false);
     }
     public void setErrorOfNotValidTerritory() {
-        errorLbl.setText("This is not a valid territory!");
-        errorLbl.setVisible(true);
+        lblError.setText("This is not a valid territory!");
+        lblError.setVisible(true);
     }
 
     public void writeIntoError(String error) {
-        errorLbl.setText(error);
-        errorLbl.setVisible(true);
+        lblError.setText(error);
+        lblError.setVisible(true);
     }
 
     public void hideErrorLabel() {
-        errorLbl.setVisible(false);
+        lblError.setVisible(false);
     }
     public void setMainController(AppController mainController) { this.mainController = mainController; }
 
     public  void writeIntoTextArea(String text) {
         Text textToAdd = new Text(text);
-        headerInfoArea.getChildren().add(textToAdd);
+        tfHeaderInfoArea.getChildren().add(textToAdd);
     }
 
     public void loadBinding() {
         currentPlayerProperty = new SimpleStringProperty(GameEngine.gameManager.getCurrentPlayerName());
         StringExpression currentRoundSE = Bindings.concat(currentPlayerProperty);
-        currentPlayerInTurnLabel.textProperty().bind(currentRoundSE);
+        lblCurrentPlayerInTurn.textProperty().bind(currentRoundSE);
     }
 
     public void setCurrentPlayerInTurnLbl(String currentPlayerName) {
@@ -100,8 +99,8 @@ public class HeaderController {
         mainController.getPrimaryStage().getScene().getStylesheets().clear();
         mainController.getPrimaryStage().getScene().getStylesheets().add("/Resources/Default.css");
         btnStyles.setText("Default");
-        currentPlayerInTurnLabel.setFont(Font.font("System", 54));
-        currentPlayerInTurnLabel.setStyle("-fx-text-fill: black");
+        lblCurrentPlayerInTurn.setFont(Font.font("System", 54));
+        lblCurrentPlayerInTurn.setStyle("-fx-text-fill: black");
         currentTheme = "Default";
     }
     @FXML
@@ -109,8 +108,8 @@ public class HeaderController {
         mainController.getPrimaryStage().getScene().getStylesheets().clear();
         mainController.getPrimaryStage().getScene().getStylesheets().add("/Resources/Theme1.css");
         btnStyles.setText("Ocean");
-        currentPlayerInTurnLabel.setFont(Font.loadFont(getClass().getResourceAsStream("/Resources/ocean.ttf"), 54));
-        currentPlayerInTurnLabel.setStyle("-fx-text-fill: darkblue");
+        lblCurrentPlayerInTurn.setFont(Font.loadFont(getClass().getResourceAsStream("/Resources/ocean.ttf"), 54));
+        lblCurrentPlayerInTurn.setStyle("-fx-text-fill: darkblue");
         currentTheme = "Ocean";
     }
 
@@ -123,8 +122,8 @@ public class HeaderController {
         mainController.getPrimaryStage().getScene().getStylesheets().clear();
         mainController.getPrimaryStage().getScene().getStylesheets().add("/Resources/BlackCore.css");
         btnStyles.setText("Black Core");
-        currentPlayerInTurnLabel.setFont(Font.loadFont(getClass().getResourceAsStream("/Resources/Avengers.ttf"), 54));
-        currentPlayerInTurnLabel.setStyle("-fx-text-fill: rgb(0, 51, 102)");
+        lblCurrentPlayerInTurn.setFont(Font.loadFont(getClass().getResourceAsStream("/Resources/Avengers.ttf"), 54));
+        lblCurrentPlayerInTurn.setStyle("-fx-text-fill: rgb(0, 51, 102)");
         currentTheme = "Black Core";
 
     }
@@ -157,7 +156,7 @@ public class HeaderController {
         else {// This bitch clicked on 'new game' button
             mainController.getMapComponentController().clearMap();
             btnReplay.setDisable(true);
-            winner_label.setVisible(false);
+            lblWinner.setVisible(false);
             try {
                 mainController.getGameEngine().loadXML(mainController.getGameEngine().getDescriptor().getLastKnownGoodString());
             } catch (invalidInputException ignore) {
@@ -165,13 +164,13 @@ public class HeaderController {
             mainController.startGame();
             mainController.loadInformation();
             mainController.createMap();
-            headerInfoArea.getChildren().clear();
+            tfHeaderInfoArea.getChildren().clear();
             btnManageRound.setText(START_ROUND);
         }
     }
 
     private void nextTurn() {
-        errorLbl.setVisible(false);
+        lblError.setVisible(false);
         mainController.nextPlayer();
     }
 
@@ -214,21 +213,25 @@ public class HeaderController {
         }
 
         if(GameEngine.saveGame(Paths.get(selectedFile.getAbsolutePath()), GameEngine.gameManager)) {
-            errorLbl.setText("Game saved successfully");
+            lblError.setText("Game saved successfully");
         }
         else {
-            errorLbl.setText("Failed to save game");
+            lblError.setText("Failed to save game");
         }
         showErrorLabel();
     }
 
+    public Button getBtnRetire() {
+        return btnRetire;
+    }
+
     private void showErrorLabel() {
-        errorLbl.setVisible(true);
+        lblError.setVisible(true);
         PauseTransition visiblePause = new PauseTransition(
                 Duration.seconds(3)
         );
         visiblePause.setOnFinished(
-                event -> errorLbl.setVisible(false)
+                event -> lblError.setVisible(false)
         );
         visiblePause.play();
     }
@@ -263,7 +266,7 @@ public class HeaderController {
     private void forceWinner() {
         Player winner = GameEngine.gameManager.getForcedWinner();
         writeIntoTextArea(winner.getPlayerName() + " has won by a technical.");
-        winner_label.setVisible(true);
+        lblWinner.setVisible(true);
         setButtonsDisabled(true);
         btnRetire.setDisable(true);
         mainController.getMapComponentController().disableMap(true);
@@ -281,7 +284,7 @@ public class HeaderController {
             }
             else { //Need to show the winner.
                 setCurrentPlayerInTurnLbl(winner.getPlayerName());
-                winner_label.setVisible(true);
+                lblWinner.setVisible(true);
                 if(MapController.isAnimationOn) {
                     animateWinner();
                 }
@@ -297,8 +300,8 @@ public class HeaderController {
 
     private void animateWinner() {
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(2), new KeyValue(currentPlayerInTurnLabel.textFillProperty(), Color.GOLD)),
-                new KeyFrame(Duration.seconds(2), new KeyValue(winner_label.textFillProperty(), Color.GOLD))
+                new KeyFrame(Duration.seconds(2), new KeyValue(lblCurrentPlayerInTurn.textFillProperty(), Color.GOLD)),
+                new KeyFrame(Duration.seconds(2), new KeyValue(lblWinner.textFillProperty(), Color.GOLD))
         );
         timeline.setAutoReverse(true);
         timeline.setCycleCount(4);

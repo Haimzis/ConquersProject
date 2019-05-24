@@ -46,9 +46,9 @@ public class Player implements Serializable {
         this.TerritoriesID = new ArrayList<>();
         this.image = player.image;
         this.color = player.color;
-        if (!player.getTerritoriesID().isEmpty())
-            //player.getTerritoriesID().forEach(territoryID -> this.TerritoriesID.add(new Integer(territoryID)));
-            this.TerritoriesID.addAll(player.getTerritoriesID()); //TODO: I need to check that the undo works well with it
+        if (!player.getTerritoriesID().isEmpty()) {
+            this.TerritoriesID.addAll(player.getTerritoriesID());
+        }
     }
 
     //**************************//

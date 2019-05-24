@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController">
+<HBox alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.Popups.BuyUnitsPopup.BuyUnitsPopupController">
 <SplitPane dividerPositions="0.42916666666666664" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="242.0" prefWidth="223.0">
 <items>
     <AnchorPane prefHeight="76.0" prefWidth="200.0">
@@ -39,21 +39,21 @@
                         <GridPane.margin>
                            <Insets top="5.0" />
                         </GridPane.margin></Label>
-                     <Label fx:id="cost" alignment="CENTER" text="Cost:" underline="true" visible="false" GridPane.rowIndex="1">
+                     <Label fx:id="lblTitleCost" alignment="CENTER" text="Cost:" underline="true" visible="false" GridPane.rowIndex="1">
                         <padding>
                            <Insets left="2.0" />
                         </padding></Label>
-                     <Label fx:id="competence_reduction" alignment="CENTER" layoutX="10.0" layoutY="52.0" text="Competence Reduction:" underline="true" visible="false" GridPane.columnSpan="3" GridPane.rowIndex="2">
+                     <Label fx:id="lblTitleCompetenceReduction" alignment="CENTER" layoutX="10.0" layoutY="52.0" text="Competence Reduction:" underline="true" visible="false" GridPane.columnSpan="3" GridPane.rowIndex="2">
                         <padding>
                            <Insets left="2.0" />
                         </padding></Label>
-                     <Label fx:id="fire_power" alignment="CENTER" layoutX="10.0" layoutY="85.0" prefWidth="60.0" text="Fire Power:" underline="true" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                     <Label fx:id="lblTitleFirePower" alignment="CENTER" layoutX="10.0" layoutY="85.0" prefWidth="60.0" text="Fire Power:" underline="true" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="3">
                         <padding>
                            <Insets left="2.0" />
                         </padding></Label>
-                     <Label fx:id="costLbl" alignment="CENTER" maxWidth="1.7976931348623157E308" text="0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                     <Label fx:id="reductionLbl" alignment="CENTER" layoutX="54.0" layoutY="39.0" maxWidth="1.7976931348623157E308" text="0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                     <Label fx:id="powerLbl" alignment="CENTER" layoutX="142.0" layoutY="64.0" maxWidth="1.7976931348623157E308" text="0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                     <Label fx:id="lblCost" alignment="CENTER" maxWidth="1.7976931348623157E308" text="0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     <Label fx:id="lblReduction" alignment="CENTER" layoutX="54.0" layoutY="39.0" maxWidth="1.7976931348623157E308" text="0" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                     <Label fx:id="lblFirePower" alignment="CENTER" layoutX="142.0" layoutY="64.0" maxWidth="1.7976931348623157E308" text="0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                   </children>
                </GridPane>
         </children>
@@ -102,7 +102,7 @@
                             <Font name="Book Antiqua" size="12.0" />
                         </font>
                     </Button>
-                     <Button fx:id="doneBtn" disable="true" layoutX="67.0" layoutY="79.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btnDoneStartAction" text="Done" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                     <Button fx:id="btnDone" disable="true" layoutX="67.0" layoutY="79.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#btnDoneStartAction" text="Done" GridPane.columnIndex="3" GridPane.rowIndex="3">
                         <font>
                            <Font name="Book Antiqua" size="12.0" />
                         </font>
@@ -110,7 +110,7 @@
                            <Insets right="5.0" />
                         </GridPane.margin>
                      </Button>
-                     <Label fx:id="errorLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" textFill="RED" visible="false" GridPane.columnSpan="4" GridPane.rowIndex="4">
+                     <Label fx:id="lblError" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" textFill="RED" visible="false" GridPane.columnSpan="4" GridPane.rowIndex="4">
                         <font>
                            <Font name="Centaur" size="13.0" />
                         </font>

@@ -17,13 +17,13 @@ import java.util.List;
 
 public class InnerTabPaneRootController {
     @FXML private AnchorPane rootComponent;
-    @FXML private Label PlayerID;
-    @FXML private Label PlayerName;
-    @FXML private Label PlayerTurings;
-    @FXML private HBox PlayerColor;
-    @FXML private ListView<String> unitsListView;
-    @FXML private TableView<Territory> territoriesTableView;
-    @FXML private SplitPane SplitPaneComponent;
+    @FXML private Label lblPlayerID;
+    @FXML private Label lblPlayerName;
+    @FXML private Label lblPlayerTurings;
+    @FXML private HBox hbPlayerColor;
+    @FXML private ListView<String> lvUnits;
+    @FXML private TableView<Territory> tvTerritories;
+    @FXML private SplitPane spDividerComponent;
     private Player currentPlayer;
 
     public String getCurrentPlayerColor() {
@@ -34,7 +34,7 @@ public class InnerTabPaneRootController {
         this.currentPlayer = currentPlayer;
     }
     public void loadTerritoriesToTableView(){
-        territoriesTableView.setEditable(false);
+        tvTerritories.setEditable(false);
         //nameCol
         TableColumn<Territory,Integer> IDCol = new TableColumn<>("ID");
         IDCol.setMinWidth(30);
@@ -55,17 +55,12 @@ public class InnerTabPaneRootController {
                 new PropertyValueFactory<>("ArmyThreshold")
         );
 
-        //CSS
-        IDCol.setId("innerTabId_Id");
-        profitCol.setId("innerTabProfit_Id");
-        armyThresholdCol.setId("innerTabThreshold_Id");
-
         //noinspection unchecked
-        territoriesTableView.getColumns().addAll(IDCol, profitCol, armyThresholdCol);
+        tvTerritories.getColumns().addAll(IDCol, profitCol, armyThresholdCol);
     }
     @FXML
     private void loadConquerUnitsOnSelectedTerritory(){
-        Territory territory = territoriesTableView.getSelectionModel().getSelectedItem();
+        Territory territory = tvTerritories.getSelectionModel().getSelectedItem();
         ObservableList<String> items = null;
         if(territory == null) {
             items= FXCollections.observableArrayList(new ArrayList<>(0));
@@ -75,10 +70,10 @@ public class InnerTabPaneRootController {
                 items =FXCollections.observableArrayList(createListOfUnitsStrings(territory));
             }
         }
-        unitsListView.setItems(items);
+        lvUnits.setItems(items);
     }
     private void clearConquerUnitsListView(){
-        unitsListView.setItems(FXCollections.observableArrayList(new ArrayList<>(0)));
+        lvUnits.setItems(FXCollections.observableArrayList(new ArrayList<>(0)));
     }
     @FXML
     private void releasedInnerTab(){
@@ -86,10 +81,10 @@ public class InnerTabPaneRootController {
         dividerClose();
     }
     private void dividerClose(){
-        if(territoriesTableView.getItems().size()==0)
-            SplitPaneComponent.setDividerPosition(0, 0);
+        if(tvTerritories.getItems().size()==0)
+            spDividerComponent.setDividerPosition(0, 0);
         else{
-            SplitPaneComponent.setDividerPosition(0, 0.3);
+            spDividerComponent.setDividerPosition(0, 0.3);
         }
     }
 
@@ -102,14 +97,14 @@ public class InnerTabPaneRootController {
         return newList;
     }
     public void loadPlayerData(){
-        this.PlayerID.setText(Integer.toString(currentPlayer.getID()));
-        this.PlayerName.setText(currentPlayer.getPlayerName());
-        this.PlayerTurings.setText(Integer.toString(currentPlayer.getFunds()));
-        this.PlayerColor.setStyle("-fx-background-color: "+ getCurrentPlayerColor());
+        this.lblPlayerID.setText(Integer.toString(currentPlayer.getID()));
+        this.lblPlayerName.setText(currentPlayer.getPlayerName());
+        this.lblPlayerTurings.setText(Integer.toString(currentPlayer.getFunds()));
+        this.hbPlayerColor.setStyle("-fx-background-color: "+ getCurrentPlayerColor());
         if(GameEngine.gameManager!=null){
             final ObservableList<Territory> data =
                     FXCollections.observableArrayList(GameEngine.gameManager.getTerritoryListByPlayer(currentPlayer));
-            territoriesTableView.setItems(data);
+            tvTerritories.setItems(data);
         }
     }
 }

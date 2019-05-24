@@ -13,14 +13,14 @@ import java.util.regex.Pattern;
 public class BuyUnitsPopupController {
     @FXML private MenuButton unitChoices;
     @FXML private TextField amountToBuy;
-    @FXML private Label errorLabel;
-    @FXML private Button doneBtn;
-    @FXML private Label powerLbl;
-    @FXML private Label reductionLbl;
-    @FXML private Label costLbl;
-    @FXML private Label cost;
-    @FXML private Label competence_reduction;
-    @FXML private Label fire_power;
+    @FXML private Label lblError;
+    @FXML private Button btnDone;
+    @FXML private Label lblFirePower;
+    @FXML private Label lblReduction;
+    @FXML private Label lblCost;
+    @FXML private Label lblTitleCost;
+    @FXML private Label lblTitleCompetenceReduction;
+    @FXML private Label lblTitleFirePower;
 
     private AppController mainController;
     private boolean isUnitSelected=false;
@@ -50,15 +50,15 @@ public class BuyUnitsPopupController {
     }
 
     private void populateUnitInformation() {
-        powerLbl.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()).getMaxFirePower()));
-        reductionLbl.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()).getCompetenceReduction()));
-        costLbl.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()).getPurchase()));
-        cost.setVisible(true);
-        competence_reduction.setVisible(true);
-        fire_power.setVisible(true);
-        powerLbl.setVisible(true);
-        reductionLbl.setVisible(true);
-        costLbl.setVisible(true);
+        lblFirePower.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()).getMaxFirePower()));
+        lblReduction.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()).getCompetenceReduction()));
+        lblCost.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()).getPurchase()));
+        lblTitleCost.setVisible(true);
+        lblTitleCompetenceReduction.setVisible(true);
+        lblTitleFirePower.setVisible(true);
+        lblFirePower.setVisible(true);
+        lblReduction.setVisible(true);
+        lblCost.setVisible(true);
     }
 
     @FXML
@@ -76,14 +76,14 @@ public class BuyUnitsPopupController {
             if(amountToBuy.getText().matches("-?\\d+(\\.\\d+)?")){//checks if str is number
                 int amount , cost;
                 amount = Integer.parseInt(amountToBuy.getText());
-                cost = Integer.parseInt(costLbl.getText());
+                cost = Integer.parseInt(lblCost.getText());
                 if(amount >0){
                     if(GameEngine.gameManager.getCurrentPlayerFunds() >= amount*cost) {
                         GameEngine.gameManager.buyUnits(
                                 mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()),
                                 amount);
                         showLabel("Success!");
-                        doneBtn.setDisable(false);
+                        btnDone.setDisable(false);
                     }
                     else {
                         //do some exception : amount is not not enough
@@ -107,12 +107,12 @@ public class BuyUnitsPopupController {
     }
 
     private void showLabel(String s) {
-        errorLabel.setText(s);
-        errorLabel.setVisible(true);
+        lblError.setText(s);
+        lblError.setVisible(true);
     }
 
     private void closePopup() {
-        Stage stage = (Stage) doneBtn.getScene().getWindow();
+        Stage stage = (Stage) btnDone.getScene().getWindow();
         stage.close();
     }
 }
