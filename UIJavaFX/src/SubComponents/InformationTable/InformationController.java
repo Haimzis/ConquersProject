@@ -69,7 +69,6 @@ public class InformationController {
     }
 
     private void loadPlayersTabs(){
-        tvUnits.getColumns().clear();
         for (Player player : mainController.getGameEngine().getDescriptor().getPlayersList()) { //load each Player Information
             Tab playerTab = addTabToPlayers(player.getPlayerName());
             playersTabs.put(player.getPlayerName(), playerTab);
@@ -102,6 +101,7 @@ public class InformationController {
         tvUnits.refresh();
     }
     private void loadUnitsToTableView() {
+        tvUnits.getColumns().clear();
         final ObservableList<Unit> data =
                 FXCollections.observableArrayList(mainController.getGameEngine().getDescriptor().getUnitMap().values());
         tvUnits.setEditable(false);
@@ -175,5 +175,6 @@ public class InformationController {
             playerInnerTabPaneRootControllers.setCurrentPlayer(GameEngine.gameManager.getPlayerByName(player));
             playerInnerTabPaneRootControllers.loadPlayerData();
         });
+        tvUnits.refresh();
     }
 }
