@@ -336,6 +336,8 @@ public class AppController {
             welcomeScreenController.setPrimaryStage(primaryStage);
             GameLoader gameLoader = new GameLoader(welcomeScreenController);
             welcomeScreenController.setGameLoader(gameLoader);
+            welcomeScreenController.setForNewGame();
+            welcomeScreenController.btn_loadXMLAction();
 
             //set stage
             primaryStage.setTitle("Conquerors");

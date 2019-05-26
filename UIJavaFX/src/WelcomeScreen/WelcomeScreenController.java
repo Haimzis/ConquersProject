@@ -37,6 +37,7 @@ public class WelcomeScreenController {
     private GameEngine gameEngine;
     private GameLoader gameLoader;
     private Boolean gameAlreadyLoaded=false;
+    private static String lastKnownGoodString;
 
     public WelcomeScreenController(){
         gameEngine = new GameEngine();
@@ -81,6 +82,11 @@ public class WelcomeScreenController {
                         isLoadSucceedProperty);
     }
 
+    public void setForNewGame() {
+        selectedFilePathProperty.set(lastKnownGoodString);
+        isFileSelectedProperty.set(true);
+    }
+
     @FXML
     public void setBtn_loadGameAction(){
         gameAlreadyLoaded = true;
@@ -114,6 +120,7 @@ public class WelcomeScreenController {
                 AppController appController = fxmlLoader.getController();
                 appController.setPrimaryStage(primaryStage);
                 appController.setGameEngine(gameEngine);
+                lastKnownGoodString = gameEngine.getDescriptor().getLastKnownGoodString();
                 //start game
                 if(!gameAlreadyLoaded) { //Check if its not a loaded game
                     appController.startGame();
