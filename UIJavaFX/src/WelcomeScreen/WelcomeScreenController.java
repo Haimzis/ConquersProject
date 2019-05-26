@@ -109,8 +109,8 @@ public class WelcomeScreenController {
                 //create Scene
                 Scene scene = new Scene(root1, 500, 550);
                 //set new size of this stage
-                primaryStage.setHeight(600);
-                primaryStage.setWidth(900);
+                primaryStage.setHeight(650);
+                primaryStage.setWidth(950);
                 primaryStage.setScene(scene);
 
                 //CSS
