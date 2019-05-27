@@ -84,7 +84,6 @@ public class Territory implements Serializable {
     public EventObject eliminateThisWeakArmy() {
         conquerArmyForce.destroyArmy();
         conquerArmyForce=null;
-        conquer.getTerritoriesID().remove(new Integer(this.getID()));
         conquer=null;
         return new EventTerritoryReleased(this.ID);
     }
