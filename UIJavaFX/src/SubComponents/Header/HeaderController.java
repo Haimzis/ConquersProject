@@ -44,11 +44,32 @@ public class HeaderController {
     private StringProperty currentPlayerProperty;
     public String currentTheme = "Default";
 
-
+    //*********************//
+    /*  Getters & Setters  */
+    //*********************//
     public ToggleButton getBtnAnimationToggle() {
         return btnAnimationToggle;
     }
+    public void setMainController(AppController mainController) { this.mainController = mainController; }
+    public void setCurrentPlayerInTurnLbl(String currentPlayerName) {
+        currentPlayerProperty.setValue(currentPlayerName);
+    }
+    public Button getBtnManageRound() {
+        return btnManageRound;
+    }
+    public Button getBtnRetire() {
+        return btnRetire;
+    }
+    public Button getBtnSave() {
+        return btnSave;
+    }
+    public Button getBtnUndo() {
+        return btnUndo;
+    }
 
+    //*********************//
+    /*    Functionality    */
+    //*********************//
     @FXML
     private void animationController() {
         if(btnAnimationToggle.isSelected()) {
@@ -77,7 +98,7 @@ public class HeaderController {
     public void hideErrorLabel() {
         lblError.setVisible(false);
     }
-    public void setMainController(AppController mainController) { this.mainController = mainController; }
+
 
     public  void writeIntoTextArea(String text) {
         Text textToAdd = new Text(text);
@@ -90,9 +111,7 @@ public class HeaderController {
         lblCurrentPlayerInTurn.textProperty().bind(currentRoundSE);
     }
 
-    public void setCurrentPlayerInTurnLbl(String currentPlayerName) {
-        currentPlayerProperty.setValue(currentPlayerName);
-    }
+
 
     @FXML
     private void changeToDefaultTheme(){
@@ -113,9 +132,7 @@ public class HeaderController {
         currentTheme = "Ocean";
     }
 
-    public Button getBtnManageRound() {
-        return btnManageRound;
-    }
+
 
     @FXML
     private void changeToThemeTwo(){
@@ -181,7 +198,7 @@ public class HeaderController {
         mainController.getMapComponentController().disableMap(true);
         setCurrentPlayerInTurnLbl("None");
         setButtonsDisabled(false);
-        if (mainController.isGameOver())
+        if (GameEngine.gameManager.isGameOver())
             checkWinnerIfAny();
     }
 
@@ -221,9 +238,7 @@ public class HeaderController {
         showErrorLabel();
     }
 
-    public Button getBtnRetire() {
-        return btnRetire;
-    }
+
 
     private void showErrorLabel() {
         lblError.setVisible(true);
@@ -317,12 +332,5 @@ public class HeaderController {
         btnSave.setDisable(set);
         btnUndo.setDisable(set);
         btnRetire.setDisable(!set);
-    }
-    public Button getBtnSave() {
-        return btnSave;
-    }
-
-    public Button getBtnUndo() {
-        return btnUndo;
     }
 }

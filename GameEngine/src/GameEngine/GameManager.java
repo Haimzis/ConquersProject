@@ -112,29 +112,6 @@ public class GameManager implements Serializable {
         activateEventsHandler();
     }
 
-    private void removeTerritoriesOfPlayerFromSpecificTime(Player player,RoundHistory roundHistory) {
-        List<Integer> mapsToClear = player.getTerritoriesID();
-        while(!mapsToClear.isEmpty()){
-            Integer territoryID = mapsToClear.get(0);
-            getTerritoryFromSpecificTime(roundHistory,territoryID).eliminateThisWeakArmy();
-            mapsToClear.remove(0);
-        }
-    }
-
-    private Territory getTerritoryFromSpecificTime(RoundHistory roundHistory,Integer territoryID){
-        return roundHistory.getMapHistory().get(territoryID);
-    }
-
-    private void removeTerritoriesOfPlayerFromCurrentTime() {
-        List<Integer> mapsToClear = new ArrayList<>(currentPlayerTurn.getTerritoriesID());
-        while(!mapsToClear.isEmpty()){
-            Integer territoryID = mapsToClear.get(0);
-            releaseTerritory(getTerritoryByID(territoryID));
-            eventListener.addEventObject(new EventTerritoryReleased(territoryID));
-            mapsToClear.remove(0);
-        }
-    }
-
     //Bonus #2
     public boolean prevReplay(){
         if(!roundsHistory.isEmpty()) {
@@ -142,7 +119,6 @@ public class GameManager implements Serializable {
             return true;
         }
         return false;
-
     }
     //Bonus #2
     public boolean nextReplay(){
@@ -254,14 +230,6 @@ public class GameManager implements Serializable {
         updateGameDescriptorAfterUndo();
     }
 
-    private void releaseTerritory(Territory territory) {
-        Player playerSelected = getPlayerByID(territory.getConquerID());
-        if (playerSelected != null) {
-            playerSelected.removeTerritory(territory.getID());
-        }
-        territory.eliminateThisWeakArmy();
-    }
-
     //load history of round into the stack,update the queue of players turns
     public void endOfRoundUpdates() {
         roundsHistory.push(new RoundHistory(gameDescriptor,++roundNumber));
@@ -275,6 +243,32 @@ public class GameManager implements Serializable {
     //**************************//
     /* War and Conquest Control*/
     //**************************//
+
+    private void removeTerritoriesOfPlayerFromSpecificTime(Player player,RoundHistory roundHistory) {
+        List<Integer> mapsToClear = player.getTerritoriesID();
+        while(!mapsToClear.isEmpty()){
+            Integer territoryID = mapsToClear.get(0);
+            getTerritoryFromSpecificTime(roundHistory,territoryID).eliminateThisWeakArmy();
+            mapsToClear.remove(0);
+        }
+    }
+
+    private void removeTerritoriesOfPlayerFromCurrentTime() {
+        List<Integer> mapsToClear = new ArrayList<>(currentPlayerTurn.getTerritoriesID());
+        while(!mapsToClear.isEmpty()){
+            Integer territoryID = mapsToClear.get(0);
+            releaseTerritory(getTerritoryByID(territoryID));
+            eventListener.addEventObject(new EventTerritoryReleased(territoryID));
+            mapsToClear.remove(0);
+        }
+    }
+    private void releaseTerritory(Territory territory) {
+        Player playerSelected = getPlayerByID(territory.getConquerID());
+        if (playerSelected != null) {
+            playerSelected.removeTerritory(territory.getID());
+        }
+        territory.eliminateThisWeakArmy();
+    }
     //Returns 0 = AttackerLoss : 1 = AttackerWins : 2 = DRAW
     public int attackConqueredTerritoryByWellTimedBattle(){
         return attackConqueredTerritory(new WellTimedBattle(
@@ -527,5 +521,9 @@ public class GameManager implements Serializable {
             }
         }
         return counterOfSpecificUnitType;
+    }
+
+    private Territory getTerritoryFromSpecificTime(RoundHistory roundHistory,Integer territoryID){
+        return roundHistory.getMapHistory().get(territoryID);
     }
 }

@@ -38,6 +38,9 @@ public class AppController {
     private GameEngine gameEngine;
     private Stage primaryStage;
 
+    //*********************//
+    /*  Getters & Setters  */
+    //*********************//
     public InformationController getInformationComponentController() {
         return InformationComponentController;
     }
@@ -53,14 +56,31 @@ public class AppController {
     public HeaderController getHeaderComponentController() {
         return HeaderComponentController;
     }
-
     public GameEngine getGameEngine() {
         return gameEngine;
     }
     public void setGameEngine(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
     }
+    public String getColorByPlayerID(Integer playerID){
+        return InformationComponentController.getColorByPlayerID(playerID);
+    }
+    public void setHeaderComponentController(HeaderController headerComponentController) {
+        this.HeaderComponentController = headerComponentController;
+    }
+    public void setInformationComponentController(InformationController informationComponentController) {
+        this.InformationComponentController = informationComponentController;
+    }
+    public void setMapComponentController(MapController mapComponentController) {
+        this.MapComponentController = mapComponentController;
+    }
+    public MapController getMapComponentController() {
+        return MapComponentController;
+    }
 
+    //*********************//
+    /*  Load & Initialize */
+    //*********************//
     @FXML
     public void initialize() {
         if (HeaderComponentController != null && InformationComponentController != null
@@ -76,22 +96,6 @@ public class AppController {
         InformationComponent.getStylesheets().add("/SubComponents/InformationTable/InformationTable.css");
         ReplayComponent.getStylesheets().add("/SubComponents/ReplayComponent/Replay.css");
         HeaderComponentController.getBtnAnimationToggle().setSelected(true);
-
-    }
-    public String getColorByPlayerID(Integer playerID){
-        return InformationComponentController.getColorByPlayerID(playerID);
-
-    }
-    public void setHeaderComponentController(HeaderController headerComponentController) {
-        this.HeaderComponentController = headerComponentController;
-    }
-
-    public void setInformationComponentController(InformationController informationComponentController) {
-        this.InformationComponentController = informationComponentController;
-    }
-
-    public void setMapComponentController(MapController mapComponentController) {
-        this.MapComponentController = mapComponentController;
     }
     public void loadRoundHistory(){
         GameEngine.gameManager.peekHistory();
@@ -105,8 +109,9 @@ public class AppController {
         getMapComponentController().clearMap();
         createMap();
     }
-    public void updateInformation(){
-        InformationComponentController.updatePlayersData();
+    public void loadInformation() {
+        InformationComponentController.loadInformation();
+        HeaderComponentController.loadBinding();
     }
     public void createMap(){
         MapComponentController.setMap(
@@ -117,40 +122,9 @@ public class AppController {
                 ));
         MapComponentController.createMap();
     }
-
-    public void startGame() {
-        gameEngine.newGame();
-        GameEngine.gameManager.setEventListenerHandler(eventObject -> {
-            MapComponentController.unColorTerritory(eventObject.getIdentity());
-            HeaderComponentController.writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
-        });
-    }
-
-    public void startRound() {
-        GameEngine.gameManager.startOfRoundUpdates();
-        updateInformation();
-        setBtnReplayAccessible();
-        nextPlayer();
-    }
-
-    private void setBtnReplayAccessible() {
-        if(GameEngine.gameManager.isLastRound()){
-            HeaderComponentController.setBtnReplayAccessible();
-        }
-    }
-
-    public void nextPlayer() {
-        GameEngine.gameManager.nextPlayerInTurn();
-        HeaderComponentController.setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName());
-    }
-    public void endOfRoundUpdates(){
-        GameEngine.gameManager.endOfRoundUpdates();
-        InformationComponentController.incCurrentRoundProperty();
-    }
-    public MapController getMapComponentController() {
-        return MapComponentController;
-    }
-
+    //*********************//
+    /* Show PopUps&Windows */
+    //*********************//
     public void showOwnTerritoryPopup() {
         try {
             //Load FXML
@@ -310,14 +284,7 @@ public class AppController {
 
     }
 
-    public void loadInformation() {
-        InformationComponentController.loadInformation();
-        HeaderComponentController.loadBinding();
-    }
 
-    public boolean isGameOver() {
-        return GameEngine.gameManager.isGameOver();
-    }
 
     public void launchWelcomeScreen() {
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -349,4 +316,40 @@ public class AppController {
 
     }
 
+    //*********************//
+    /*    Functionality    */
+    //*********************//
+    public void updateInformation(){
+        InformationComponentController.updatePlayersData();
+    }
+
+    public void startGame() {
+        gameEngine.newGame();
+        GameEngine.gameManager.setEventListenerHandler(eventObject -> {
+            MapComponentController.unColorTerritory(eventObject.getIdentity());
+            HeaderComponentController.writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
+        });
+    }
+
+    public void startRound() {
+        GameEngine.gameManager.startOfRoundUpdates();
+        updateInformation();
+        setBtnReplayAccessible();
+        nextPlayer();
+    }
+
+    private void setBtnReplayAccessible() {
+        if(GameEngine.gameManager.isLastRound()){
+            HeaderComponentController.setBtnReplayAccessible();
+        }
+    }
+
+    public void nextPlayer() {
+        GameEngine.gameManager.nextPlayerInTurn();
+        HeaderComponentController.setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName());
+    }
+    public void endOfRoundUpdates(){
+        GameEngine.gameManager.endOfRoundUpdates();
+        InformationComponentController.incCurrentRoundProperty();
+    }
 }
