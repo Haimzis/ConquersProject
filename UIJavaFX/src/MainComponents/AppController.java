@@ -1,8 +1,6 @@
 package MainComponents;
 
 import DataContainersTypes.Board;
-import Events.EventHandler;
-import Events.EventObject;
 import GameEngine.GameEngine;
 import Resources.ResourceConstants;
 import SubComponents.Header.HeaderController;
@@ -80,8 +78,8 @@ public class AppController {
         HeaderComponentController.getBtnAnimationToggle().setSelected(true);
 
     }
-    public String getColorByPlayerName(String playerName){
-        return InformationComponentController.getColorByPlayerName(playerName);
+    public String getColorByPlayerID(Integer playerID){
+        return InformationComponentController.getColorByPlayerID(playerID);
 
     }
     public void setHeaderComponentController(HeaderController headerComponentController) {

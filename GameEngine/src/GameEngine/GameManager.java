@@ -116,7 +116,7 @@ public class GameManager implements Serializable {
         List<Integer> mapsToClear = player.getTerritoriesID();
         while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
-            eliminateThisArmy(getTerritoryFromSpecificTime(roundHistory,territoryID));
+            getTerritoryFromSpecificTime(roundHistory,territoryID).eliminateThisWeakArmy();
             mapsToClear.remove(0);
         }
     }
@@ -129,7 +129,8 @@ public class GameManager implements Serializable {
         List<Integer> mapsToClear = new ArrayList<>(currentPlayerTurn.getTerritoriesID());
         while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
-            eventListener.addEventObject(eliminateThisArmy(getTerritoryByID(territoryID)));
+            releaseTerritory(getTerritoryByID(territoryID));
+            eventListener.addEventObject(new EventTerritoryReleased(territoryID));
             mapsToClear.remove(0);
         }
     }
@@ -240,8 +241,10 @@ public class GameManager implements Serializable {
 
         getTerritories(player).stream()
                 .filter(Territory::isArmyTotalPowerUnderThreshold)
-                .forEach(territory ->
-                  eventListener.addEventObject(eliminateThisArmy(territory)));
+                .forEach(territory -> {
+                    releaseTerritory(territory);
+                    eventListener.addEventObject(new EventTerritoryReleased(territory.getID()));
+                        });
                         //Territory::eliminateThisWeakArmy);
         activateEventsHandler();
     }
@@ -251,17 +254,12 @@ public class GameManager implements Serializable {
         updateGameDescriptorAfterUndo();
     }
 
-    private Events.EventObject eliminateThisArmy(Territory territory) {
-        Player playerSelected = null;
-        for(Player player : getGameDescriptor().getPlayersList()) {
-            if(player.getID() == territory.getConquer().getID()) {
-                playerSelected = player;
-            }
-        }
+    private void releaseTerritory(Territory territory) {
+        Player playerSelected = getPlayerByID(territory.getConquerID());
         if (playerSelected != null) {
             playerSelected.removeTerritory(territory.getID());
         }
-        return territory.eliminateThisWeakArmy();
+        territory.eliminateThisWeakArmy();
     }
 
     //load history of round into the stack,update the queue of players turns
@@ -283,6 +281,7 @@ public class GameManager implements Serializable {
                 selectedTerritoryByPlayer.getConquerArmyForce(),
                 selectedArmyForce,
                 selectedTerritoryByPlayer,
+                getPlayerByID(selectedTerritoryByPlayer.getConquerID()),
                 gameDescriptor.getUnitMap().size()));
     }
     //Returns 0 = AttackerLoss : 1 = AttackerWins : 2 = DRAW
@@ -290,7 +289,8 @@ public class GameManager implements Serializable {
         return attackConqueredTerritory(new CalculatedRiskBattle(
                 selectedTerritoryByPlayer.getConquerArmyForce(),
                 selectedArmyForce,
-                selectedTerritoryByPlayer));
+                selectedTerritoryByPlayer,
+                getPlayerByID(selectedTerritoryByPlayer.getConquerID())));
     }
     //Returns AttackerLoss - 0 : AttackerWins - 1 : DRAW - 2
     private int attackConqueredTerritory(Battle battle) {
@@ -298,7 +298,7 @@ public class GameManager implements Serializable {
         battle.startBattle();
         result = battle.getResult();
         if(result == 1) { // AttackerWins
-            selectedTerritoryByPlayer.setConquer(currentPlayerTurn);
+            selectedTerritoryByPlayer.setConquerID(currentPlayerTurn.getID());
             currentPlayerTurn.addTerritory(selectedTerritoryByPlayer);
         }
         else if(result == 0){ // AttackerLoss
@@ -308,8 +308,10 @@ public class GameManager implements Serializable {
             eventListener.addEventObject(new EventTerritoryReleased(selectedTerritoryByPlayer.getID()));
             return result;
         }
-        if(battle.isWinnerArmyNotStrongEnoughToHoldTerritory())
-           eventListener.addEventObject(selectedTerritoryByPlayer.xChangeFundsForUnitsAndHold());
+        if(battle.isWinnerArmyNotStrongEnoughToHoldTerritory()){
+            xChangeFundsForUnitsAndHold(selectedTerritoryByPlayer);
+            eventListener.addEventObject(new EventTerritoryReleased(selectedTerritoryByPlayer.getID()));
+        }
         return result;
     }
     //Returns True: if attacking player conquered the territory, Else: False. anyway its update stats of GameObjects.Territory.
@@ -317,11 +319,16 @@ public class GameManager implements Serializable {
         if (isSelectedArmyForceBigEnough()) {
             currentPlayerTurn.addTerritory(selectedTerritoryByPlayer);
             selectedTerritoryByPlayer.setConquerArmyForce(selectedArmyForce);
-            selectedTerritoryByPlayer.setConquer(currentPlayerTurn);
+            selectedTerritoryByPlayer.setConquerID(currentPlayerTurn.getID());
         }
         return isSelectedArmyForceBigEnough();
     }
-
+    private void xChangeFundsForUnitsAndHold(Territory territory){
+        int valueOfArmyForce = territory.getConquerArmyForce().getArmyValueInFunds();
+        Player conquer = getPlayerByID(territory.getConquerID());
+        conquer.incrementFunds(valueOfArmyForce);
+        territory.eliminateThisWeakArmy();
+    }
     //**************************//
     /*   Get InformationTable   */
     //**************************//
@@ -333,9 +340,7 @@ public class GameManager implements Serializable {
     }
     public List<Territory> getTerritoryListByPlayer(Player player){
         List<Territory> territories = new ArrayList<>(player.getTerritoriesID().size());
-        player.getTerritoriesID().forEach(territoryID -> {
-            territories.add(getTerritoryByID(territoryID));
-        });
+        player.getTerritoriesID().forEach(territoryID -> territories.add(getTerritoryByID(territoryID)));
         return territories;
     }
     public Territory getTerritoryByID(Integer territoryID){
@@ -409,7 +414,7 @@ public class GameManager implements Serializable {
                         .filter(e -> e.getValue().size() > 1)
                         .map(Map.Entry::getKey)
                         .collect(Collectors.toList());
-        duplicates.removeAll(Arrays.asList(Integer.valueOf(0)));
+        duplicates.removeAll(Collections.singletonList(0));
         if(duplicates.size() != 0) {
             for(Integer score : duplicates) {
                 if(score == maxScore) {
@@ -457,9 +462,9 @@ public class GameManager implements Serializable {
     }
     //Checks if current player is the conquer of this GameObjects.Territory.
     public boolean isTerritoryBelongsCurrentPlayer() {
-        if(selectedTerritoryByPlayer.getConquer() == null)
+        if(selectedTerritoryByPlayer.getConquerID() == null)
             return false;
-        return selectedTerritoryByPlayer.getConquer().equals(currentPlayerTurn);
+        return selectedTerritoryByPlayer.getConquerID().equals(currentPlayerTurn.getID());
     }
     //Returns True if selected territory is conquered. Else False
     public boolean isConquered() {
@@ -492,9 +497,9 @@ public class GameManager implements Serializable {
         this.selectedArmyForce = selectedArmyForce;
     }
 
-    public Player getPlayerByName(String playerName) {
+    public Player getPlayerByID(Integer playerID) {
         for(Player player: getGameDescriptor().getPlayersList()){
-            if(player.getPlayerName().equals(playerName)){
+            if(player.getID()==(playerID)){
                 return player;
             }
         }
@@ -516,22 +521,9 @@ public class GameManager implements Serializable {
         Territory territory=null;
         for (Player player : gameDescriptor.getPlayersList()) {
             for (Integer territoryID : player.getTerritoriesID()) {
-                try {
                     territory = getTerritoryByID(territoryID);
                     counterOfSpecificUnitType = (int) (counterOfSpecificUnitType + territory.getConquerArmyForce().getUnits().stream().filter(unit -> typeOfUnit.equals(unit.getType())).count());
-                }
-                catch (NullPointerException e){
-                    System.out.print(territoryID);
-                    if(territory == null){
-                        System.out.println("Territory is null");
-                    }
-                    if(territory.getConquer() == null){
-                        System.out.println("Conquer is null");
-                    }
-                    if(territory.getConquerArmyForce() == null){
-                        System.out.println("Army is null");
-                    }
-                }
+
             }
         }
         return counterOfSpecificUnitType;

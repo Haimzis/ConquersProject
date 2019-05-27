@@ -66,7 +66,7 @@ public class InnerTabPaneRootController {
             items= FXCollections.observableArrayList(new ArrayList<>(0));
         }
         else { //Show only if its the current player territory.
-            if(territory.getConquer().getID() == GameEngine.gameManager.getCurrentPlayerTurn().getID()) {
+            if(territory.getConquerID() == GameEngine.gameManager.getCurrentPlayerTurn().getID()) {
                 items =FXCollections.observableArrayList(createListOfUnitsStrings(territory));
             }
         }
@@ -89,7 +89,7 @@ public class InnerTabPaneRootController {
     }
 
     private List<String> createListOfUnitsStrings(Territory territory){
-        if(territory.getConquer() == null)
+        if(territory.getConquerID() == null)
             return new ArrayList<>(0);
         List<String> newList =new ArrayList<>(territory.getConquerArmyForce().getUnits().size());
         territory.getConquerArmyForce().getUnits().forEach(

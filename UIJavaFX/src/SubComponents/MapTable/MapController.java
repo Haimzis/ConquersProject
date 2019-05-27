@@ -82,7 +82,7 @@ public class MapController {
                 });
 
                 if(territory.isConquered()) { //Color map if its conquered.(For load game functionality).
-                    btnTerritory.setStyle("-fx-background-color: " + mainController.getColorByPlayerName(territory.getConquer().getPlayerName()));
+                    btnTerritory.setStyle("-fx-background-color: " + mainController.getColorByPlayerID(territory.getConquerID()));
                 }
                 counter++;
             }
@@ -120,13 +120,13 @@ public class MapController {
                 popTerritoriesOfWinner(1.0 ,1.0 ,1.15, 1.15);
             }
             else {
-                currentlySelectedButton.setStyle("-fx-background-color: " + mainController.getColorByPlayerName(territory.getConquer().getPlayerName()));
+                currentlySelectedButton.setStyle("-fx-background-color: " + mainController.getColorByPlayerID(territory.getConquerID()));
             }
         }
     }
 
     private void animateColor(Territory territory) {
-        currentlySelectedButton.setStyle("-fx-background-color: " + mainController.getColorByPlayerName(territory.getConquer().getPlayerName()));
+        currentlySelectedButton.setStyle("-fx-background-color: " + mainController.getColorByPlayerID(territory.getConquerID()));
         fadeIn();
 
     }

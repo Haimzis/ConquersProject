@@ -31,12 +31,12 @@ public class InformationController {
     @FXML private Label lblTotalRounds;
     @FXML private TabPane tpPlayersInformation;
     @FXML private TableView<Unit> tvUnits;
-    private Map<String,Tab> playersTabs= new HashMap<>();
-    private Map<String, InnerTabPaneRootController> playersInnerTabPaneRootControllers= new HashMap<>();
+    private Map<Integer,Tab> playersTabs= new HashMap<>();
+    private Map<Integer, InnerTabPaneRootController> playersInnerTabPaneRootControllers= new HashMap<>();
     private IntegerProperty currentRoundProperty;
 
-    public String getColorByPlayerName(String playerName){
-        return playersInnerTabPaneRootControllers.get(playerName).getCurrentPlayerColor();
+    public String getColorByPlayerID(Integer playerID){
+        return  playersInnerTabPaneRootControllers.get(playerID).getCurrentPlayerColor();
     }
 
     public void undoUpdate(){
@@ -71,7 +71,7 @@ public class InformationController {
     private void loadPlayersTabs(){
         for (Player player : mainController.getGameEngine().getDescriptor().getPlayersList()) { //load each Player Information
             Tab playerTab = addTabToPlayers(player.getPlayerName());
-            playersTabs.put(player.getPlayerName(), playerTab);
+            playersTabs.put(player.getID(), playerTab);
 
             //load inner TabPane Construct into tabs
             FXMLLoader innerTabPaneRootLoader = new FXMLLoader();
@@ -85,7 +85,7 @@ public class InformationController {
                 innerTabPaneRootController.setCurrentPlayer(player);
                 innerTabPaneRootController.loadTerritoriesToTableView();
                 innerTabPaneRootController.loadPlayerData();
-                playersInnerTabPaneRootControllers.put(player.getPlayerName(), innerTabPaneRootController);
+                playersInnerTabPaneRootControllers.put(player.getID(), innerTabPaneRootController);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -172,7 +172,7 @@ public class InformationController {
 
     public void loadRoundHistory() {
         playersInnerTabPaneRootControllers.forEach((player, playerInnerTabPaneRootControllers) -> {
-            playerInnerTabPaneRootControllers.setCurrentPlayer(GameEngine.gameManager.getPlayerByName(player));
+            playerInnerTabPaneRootControllers.setCurrentPlayer(GameEngine.gameManager.getPlayerByID(player));
             playerInnerTabPaneRootControllers.loadPlayerData();
         });
         tvUnits.refresh();

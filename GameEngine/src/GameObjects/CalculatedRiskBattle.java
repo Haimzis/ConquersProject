@@ -4,15 +4,15 @@ import java.util.Random;
 
 public class CalculatedRiskBattle extends Battle implements Serializable{
 
-    public CalculatedRiskBattle(Army newConquerArmy, Army newAttackingArmy, Territory newBattleTerritory){
-        super(newConquerArmy,newAttackingArmy,newBattleTerritory);
+    public CalculatedRiskBattle(Army newConquerArmy, Army newAttackingArmy, Territory newBattleTerritory,Player currentConquer){
+        super(newConquerArmy,newAttackingArmy,newBattleTerritory,currentConquer);
     }
 
     @Override
     //updates players armies after battle
     public void startBattle() {
         if(isAttackSucceed()){//updates stats after attacker is won
-            battleTerritory.getConquer().getTerritoriesID().remove(new Integer(battleTerritory.getID())); //Removes Defeated Conquer Army
+            currentConquer.removeTerritory(battleTerritory.getID()); //Removes Defeated Conquer Army
             if(attackingArmy.getTotalPower() >= currentConquerArmy.getTotalPower()) // Goliath effect
                 attackingArmy.reduceCompetenceByPercent(1-((double)currentConquerArmy.getTotalPower()) / ((double)attackingArmy.getTotalPower()));
             else attackingArmy.reduceCompetenceByPercent(0.5);

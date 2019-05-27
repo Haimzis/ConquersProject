@@ -4,12 +4,14 @@ import java.io.Serializable;
 public abstract class Battle implements Serializable {
     protected Army currentConquerArmy,attackingArmy;
     protected Territory battleTerritory;
+    protected Player currentConquer;
     protected int attackResult;
 
-    Battle(Army newConquerArmy, Army newAttackingArmy, Territory newBattleTerritory){
+    Battle(Army newConquerArmy, Army newAttackingArmy, Territory newBattleTerritory, Player currentConquer){
         this.currentConquerArmy=newConquerArmy;
         this.attackingArmy=newAttackingArmy;
         this.battleTerritory=newBattleTerritory;
+        this.currentConquer = currentConquer;
     }
     public abstract void startBattle();
     //returns true if Attacker won, Else false

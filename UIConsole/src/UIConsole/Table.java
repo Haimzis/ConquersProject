@@ -87,9 +87,9 @@ public class Table {
         if (territoryFieldID == 1) System.out.print(currentPrintedObject.getID());
         if (territoryFieldID == 2) System.out.print(currentPrintedObject.getProfit());
         if (territoryFieldID == 3) {
-            if (currentPrintedObject.getConquer() == null) System.out.print('N');
+            if (currentPrintedObject.getConquerID() == null) System.out.print('N');
             else {
-                if (currentPrintedObject.getConquer().equals(player1))
+                if (currentPrintedObject.getConquerID().equals(player1.getID()))
                     System.out.print(PLAYER_1_SIGN);
                 else System.out.print(PLAYER_2_SIGN);
             }
