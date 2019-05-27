@@ -116,7 +116,7 @@ public class GameManager implements Serializable {
         List<Integer> mapsToClear = player.getTerritoriesID();
         while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
-            getTerritoryFromSpecificTime(roundHistory,territoryID).eliminateThisWeakArmy();
+            eliminateThisArmy(getTerritoryFromSpecificTime(roundHistory,territoryID));
             mapsToClear.remove(0);
         }
     }
@@ -129,7 +129,7 @@ public class GameManager implements Serializable {
         List<Integer> mapsToClear = new ArrayList<>(currentPlayerTurn.getTerritoriesID());
         while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
-            eventListener.addEventObject(getTerritoryByID(territoryID).eliminateThisWeakArmy());
+            eventListener.addEventObject(eliminateThisArmy(getTerritoryByID(territoryID)));
             mapsToClear.remove(0);
         }
     }
@@ -241,7 +241,7 @@ public class GameManager implements Serializable {
         getTerritories(player).stream()
                 .filter(Territory::isArmyTotalPowerUnderThreshold)
                 .forEach(territory ->
-                  eventListener.addEventObject(territory.eliminateThisWeakArmy()));
+                  eventListener.addEventObject(eliminateThisArmy(territory)));
                         //Territory::eliminateThisWeakArmy);
         activateEventsHandler();
     }
@@ -250,6 +250,20 @@ public class GameManager implements Serializable {
         roundsHistory.pop();
         updateGameDescriptorAfterUndo();
     }
+
+    private Events.EventObject eliminateThisArmy(Territory territory) {
+        Player playerSelected = null;
+        for(Player player : getGameDescriptor().getPlayersList()) {
+            if(player.getID() == territory.getConquer().getID()) {
+                playerSelected = player;
+            }
+        }
+        if (playerSelected != null) {
+            playerSelected.removeTerritory(territory.getID());
+        }
+        return territory.eliminateThisWeakArmy();
+    }
+
     //load history of round into the stack,update the queue of players turns
     public void endOfRoundUpdates() {
         roundsHistory.push(new RoundHistory(gameDescriptor,++roundNumber));
