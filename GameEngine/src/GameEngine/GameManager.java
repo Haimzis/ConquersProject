@@ -194,8 +194,8 @@ public class GameManager implements Serializable {
     //load information of previous turn, after undo use
     private void updateGameDescriptorAfterUndo() {
         roundNumber = roundsHistory.peek().getRoundNumber();
-        gameDescriptor.setTerritoryMap(roundsHistory.peek().getCopyOfMap());
-        gameDescriptor.setPlayersList(roundsHistory.peek().getCopyOfPlayersList());
+        gameDescriptor.setTerritoryMap(roundsHistory.peek().getCopyOfMap()); //This Set the gameDescriptor Territories as copy
+        gameDescriptor.setPlayersList(roundsHistory.peek().getCopyOfPlayersList()); //This Set the gameDescriptor players as copy
         updateTurnsObjectQueue();
     }
     //retrieve all maps from rounds history by there right order from begging
@@ -499,11 +499,25 @@ public class GameManager implements Serializable {
 
     public int getAppearanceOfUnitWithSpecificType(String typeOfUnit) {
         int counterOfSpecificUnitType = 0;
-        Territory territory;
+        Territory territory=null;
         for (Player player : gameDescriptor.getPlayersList()) {
             for (Integer territoryID : player.getTerritoriesID()) {
-                territory = getTerritoryByID(territoryID);
-                counterOfSpecificUnitType = (int) (counterOfSpecificUnitType + territory.getConquerArmyForce().getUnits().stream().filter(unit -> typeOfUnit.equals(unit.getType())).count());
+                try {
+                    territory = getTerritoryByID(territoryID);
+                    counterOfSpecificUnitType = (int) (counterOfSpecificUnitType + territory.getConquerArmyForce().getUnits().stream().filter(unit -> typeOfUnit.equals(unit.getType())).count());
+                }
+                catch (NullPointerException e){
+                    System.out.print(territoryID);
+                    if(territory == null){
+                        System.out.println("Territory is null");
+                    }
+                    if(territory.getConquer() == null){
+                        System.out.println("Conquer is null");
+                    }
+                    if(territory.getConquerArmyForce() == null){
+                        System.out.println("Army is null");
+                    }
+                }
             }
         }
         return counterOfSpecificUnitType;
