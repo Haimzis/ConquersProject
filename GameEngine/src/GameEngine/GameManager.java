@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class GameManager implements Serializable {
     private String currentPlayerName = "None";
     private int ID;
-    public  int roundNumber=1;
+    private int roundNumber=1;
     private static int gamesIDCounter = 0;
     private Stack<RoundHistory> roundsHistory;
     private GameDescriptor gameDescriptor;

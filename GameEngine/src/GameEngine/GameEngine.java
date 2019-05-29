@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.*;
 
 import static java.nio.file.Files.exists;
 
@@ -14,7 +15,7 @@ import static java.nio.file.Files.exists;
 
 public class GameEngine {
     private GameDescriptor descriptor;
-    public static GameManager gameManager;
+    private Map<Integer ,GameManager> gameManagers = new HashMap<>();
 
 
     public enum ERROR {XML_ERROR , PASS}
@@ -43,7 +44,8 @@ public class GameEngine {
         return Paths.get(xmlPath);
     }
     public void newGame() {
-        gameManager = new GameManager(descriptor);
+        GameManager newGame =new GameManager(descriptor);
+       gameManagers.put(newGame.getGameManagerID(),newGame);
     }
 
     //********************//
@@ -84,7 +86,8 @@ public class GameEngine {
         try (ObjectInputStream in =
                      new ObjectInputStream(
                              new FileInputStream(path.toString()))) {
-            gameManager = (GameManager) in.readObject();
+            GameManager loadedGame = (GameManager) in.readObject();
+            gameManagers.replace(loadedGame.getGameManagerID(),loadedGame);
             flag = 1;
             return true;
         }

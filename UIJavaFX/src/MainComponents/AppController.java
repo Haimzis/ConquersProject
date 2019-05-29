@@ -1,5 +1,4 @@
 package MainComponents;
-
 import DataContainersTypes.Board;
 import GameEngine.GameEngine;
 import Resources.ResourceConstants;
@@ -22,7 +21,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 

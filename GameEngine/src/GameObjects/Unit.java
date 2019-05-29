@@ -49,9 +49,11 @@ public class Unit implements Serializable {
         return competenceReduction;
     }
     public double getWorth(){return (double)this.purchase / (double)this.maxFirePower;}
-    public int getAppearance(){
-        return GameEngine.gameManager.getAppearanceOfUnitWithSpecificType(this.type);
-    }
+
+    //TODO: find another way to implement this shit.
+    //public int getAppearance(){
+    //    return GameEngine.gameManager.getAppearanceOfUnitWithSpecificType(this.type);
+    //}
     //**************************//
     /*          Methods         */
     //**************************//
