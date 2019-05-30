@@ -1,6 +1,5 @@
 package SubComponents.Popups.OwnTerrainPopup;
 
-import GameEngine.GameEngine;
 import MainComponents.AppController;
 import SubComponents.MapTable.MapController;
 import SubComponents.Popups.ActionPopupController;
@@ -24,9 +23,9 @@ public class OwnTerrainController implements ActionPopupController {
 
     @FXML
     public void rehabilitateArmyOnTerrain() {
-        Supplier<Integer> enoughMoney = () -> GameEngine.gameManager.getRehabilitationArmyPriceInTerritory(GameEngine.gameManager.getSelectedTerritoryByPlayer());
-        if(GameEngine.gameManager.isSelectedPlayerHasEnoughMoney(enoughMoney)) {
-            GameEngine.gameManager.rehabilitateSelectedTerritoryArmy();
+        Supplier<Integer> enoughMoney = () -> mainController.getCurrentGameManager().getRehabilitationArmyPriceInTerritory(mainController.getCurrentGameManager().getSelectedTerritoryByPlayer());
+        if(mainController.getCurrentGameManager().isSelectedPlayerHasEnoughMoney(enoughMoney)) {
+            mainController.getCurrentGameManager().rehabilitateSelectedTerritoryArmy();
             showLabelWhenDone("Done!" , Color.BLACK);
             btnRehabilitate.setDisable(true);
             btnEnforceArmy.setDisable(true);
@@ -56,7 +55,7 @@ public class OwnTerrainController implements ActionPopupController {
 
     @Override
     public void startAction() { //Enforce and print it's been enforced.
-        GameEngine.gameManager.transformSelectedArmyForceToSelectedTerritory();
+        mainController.getCurrentGameManager().transformSelectedArmyForceToSelectedTerritory();
         MapController.actionBeenTaken = true;
     }
 }

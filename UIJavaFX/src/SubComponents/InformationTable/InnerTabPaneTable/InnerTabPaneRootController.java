@@ -3,6 +3,7 @@ package SubComponents.InformationTable.InnerTabPaneTable;
 import GameEngine.GameEngine;
 import GameObjects.Player;
 import GameObjects.Territory;
+import SubComponents.InformationTable.InformationController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,12 +25,15 @@ public class InnerTabPaneRootController {
     @FXML private ListView<String> lvUnits;
     @FXML private TableView<Territory> tvTerritories;
     @FXML private SplitPane spDividerComponent;
+    private InformationController informationController;
     private Player currentPlayer;
 
     public String getCurrentPlayerColor() {
         return currentPlayer.getColor();
     }
-
+    public void setInformationController(InformationController informationController) {
+        this.informationController = informationController;
+    }
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
@@ -66,7 +70,7 @@ public class InnerTabPaneRootController {
             items= FXCollections.observableArrayList(new ArrayList<>(0));
         }
         else { //Show only if its the current player territory.
-            if(territory.getConquerID() == GameEngine.gameManager.getCurrentPlayerTurn().getID()) {
+            if(territory.getConquerID() == informationController.getMainController().getCurrentGameManager().getCurrentPlayerTurn().getID()) {
                 items =FXCollections.observableArrayList(createListOfUnitsStrings(territory));
             }
         }
@@ -101,9 +105,9 @@ public class InnerTabPaneRootController {
         this.lblPlayerName.setText(currentPlayer.getPlayerName());
         this.lblPlayerTurings.setText(Integer.toString(currentPlayer.getFunds()));
         this.hbPlayerColor.setStyle("-fx-background-color: "+ getCurrentPlayerColor());
-        if(GameEngine.gameManager!=null){
+        if(informationController.getMainController().getCurrentGameManager()!=null){
             final ObservableList<Territory> data =
-                    FXCollections.observableArrayList(GameEngine.gameManager.getTerritoryListByPlayer(currentPlayer));
+                    FXCollections.observableArrayList(informationController.getMainController().getCurrentGameManager().getTerritoryListByPlayer(currentPlayer));
             tvTerritories.setItems(data);
         }
     }

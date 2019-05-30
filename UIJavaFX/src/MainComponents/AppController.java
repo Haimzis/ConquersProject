@@ -1,7 +1,6 @@
 package MainComponents;
-
+import GameEngine.*;
 import DataContainersTypes.Board;
-import GameEngine.GameEngine;
 import Resources.ResourceConstants;
 import SubComponents.Header.HeaderController;
 import SubComponents.InformationTable.InformationController;
@@ -23,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -36,6 +36,7 @@ public class AppController {
     @FXML private AnchorPane ReplayComponent;
     @FXML private ReplayController ReplayComponentController;
     private GameEngine gameEngine;
+    private GameManager currentGameManager;
     private Stage primaryStage;
 
     //*********************//
@@ -77,6 +78,12 @@ public class AppController {
     public MapController getMapComponentController() {
         return MapComponentController;
     }
+    public void setCurrentGameManager(GameManager currentGameManager){
+        this.currentGameManager = currentGameManager;
+    }
+    public GameManager getCurrentGameManager() {
+        return currentGameManager;
+    }
 
     //*********************//
     /*  Load & Initialize */
@@ -98,7 +105,7 @@ public class AppController {
         HeaderComponentController.getBtnAnimationToggle().setSelected(true);
     }
     public void loadRoundHistory(){
-        GameEngine.gameManager.peekHistory();
+        currentGameManager.peekHistory();
         getInformationComponentController().loadRoundHistory();
         getMapComponentController().clearMap();
         createMap();
@@ -116,9 +123,9 @@ public class AppController {
     public void createMap(){
         MapComponentController.setMap(
                 new Board(
-                        gameEngine.getDescriptor().getColumns(),
-                        gameEngine.getDescriptor().getRows(),
-                        gameEngine.getDescriptor().getTerritoryMap()
+                        currentGameManager.getGameDescriptor().getColumns(),
+                        currentGameManager.getGameDescriptor().getRows(),
+                        currentGameManager.getGameDescriptor().getTerritoryMap()
                 ));
         MapComponentController.createMap();
     }
@@ -164,7 +171,7 @@ public class AppController {
 
     public void showAttackPopup() {
         try {
-            if (GameEngine.gameManager.isConquered()) {
+            if (currentGameManager.isConquered()) {
                 //Load FXML
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/SubComponents/Popups/AttackPopup/AttackPopupFXML.fxml"));
@@ -323,33 +330,33 @@ public class AppController {
         InformationComponentController.updatePlayersData();
     }
 
-    public void startGame() {
-        gameEngine.newGame();
-        GameEngine.gameManager.setEventListenerHandler(eventObject -> {
+    public void startGame(GameDescriptor gameDescriptor) {
+        currentGameManager = gameEngine.newGame(gameDescriptor);
+        currentGameManager.setEventListenerHandler(eventObject -> {
             MapComponentController.unColorTerritory(eventObject.getIdentity());
             HeaderComponentController.writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
         });
     }
 
     public void startRound() {
-        GameEngine.gameManager.startOfRoundUpdates();
+        currentGameManager.startOfRoundUpdates();
         updateInformation();
         setBtnReplayAccessible();
         nextPlayer();
     }
 
     private void setBtnReplayAccessible() {
-        if(GameEngine.gameManager.isLastRound()){
+        if(currentGameManager.isLastRound()){
             HeaderComponentController.setBtnReplayAccessible();
         }
     }
 
     public void nextPlayer() {
-        GameEngine.gameManager.nextPlayerInTurn();
-        HeaderComponentController.setCurrentPlayerInTurnLbl(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName());
+        currentGameManager.nextPlayerInTurn();
+        HeaderComponentController.setCurrentPlayerInTurnLbl(currentGameManager.getCurrentPlayerTurn().getPlayerName());
     }
     public void endOfRoundUpdates(){
-        GameEngine.gameManager.endOfRoundUpdates();
+        currentGameManager.endOfRoundUpdates();
         InformationComponentController.incCurrentRoundProperty();
     }
 }

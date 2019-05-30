@@ -81,8 +81,8 @@ public class UIConsole {
                             System.out.println("Game started!");
                             gameStarted = true;
                             if(gameHasBeenPlayed) // If a game has been played and they wish to start a new one with the same XML.
-                                engine.loadXML(engine.getDescriptor().getLastKnownGoodString());
-                            engine.newGame(); //Initialize manager from descriptor from xml
+                                engine.loadXML(engine.getLastGameDescriptor().getLastKnownGoodString());
+                            engine.newGame(engine.getLastGameDescriptor()); //Initialize manager from descriptor from xml
                             roundManager(); //Start the game , regardless of XML loaded manager or saved game manager
                         }
                         else //game has started AND is running
@@ -114,7 +114,7 @@ public class UIConsole {
                             System.out.println("Enter the full path of which the game will be saved:");
                             Scanner pathScanner = new Scanner(System.in);
                             savePath = pathScanner.nextLine();
-                            GameEngine.saveGame(Paths.get(savePath), GameEngine.gameManager);
+                            GameEngine.saveGame(Paths.get(savePath), engine.getConsoleGameManager());
                         } else
                             System.out.println("No game is found to save.");
                         break;
@@ -126,7 +126,6 @@ public class UIConsole {
                             Path load = engine.getLoadFilePath(loadPath);
                             if (engine.loadGame(load)) {
                                 gameStarted = true;
-                                engine.setDescriptor(GameEngine.gameManager.getGameDescriptor());
                             }
                         }
                         break;
@@ -150,19 +149,19 @@ public class UIConsole {
     //******************//
     //Players select a territory if they have none(only have to select if it's the first round).
     private void chooseTerritoryIfNone() {
-        System.out.println(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName()
+        System.out.println(engine.getConsoleGameManager().getCurrentPlayerTurn().getPlayerName()
                 + ", You have no territories!"
                 + "\n");
         drawMap();
         System.out.println("Please select a territory: ");
         Scanner sc = new Scanner(System.in);
         int territoryID = sc.nextInt();
-        while(!engine.getDescriptor().getTerritoryMap().containsKey(territoryID)) {
+        while(!engine.getConsoleGameManager().getGameDescriptor().getTerritoryMap().containsKey(territoryID)) {
             System.out.println("Enter a valid territory ID as shown.");
             territoryID = sc.nextInt();
         }
-        Territory targetTerritory = engine.getDescriptor().getTerritoryMap().get(territoryID);
-        GameEngine.gameManager.setSelectedTerritoryForTurn(targetTerritory);
+        Territory targetTerritory = engine.getConsoleGameManager().getGameDescriptor().getTerritoryMap().get(territoryID);
+        engine.getConsoleGameManager().setSelectedTerritoryForTurn(targetTerritory);
         if(targetTerritory.isConquered()) {
             attackConqueredTerritoryResult(targetTerritory);
         }else {
@@ -171,7 +170,7 @@ public class UIConsole {
     }
     //The main function who works on the current selected territory.
     private void actOnTerritory() {
-        if(!GameEngine.gameManager.getCurrentPlayerTerritories().isEmpty()) {
+        if(!engine.getConsoleGameManager().getCurrentPlayerTerritories().isEmpty()) {
             int territoryID;
             Scanner scanner = new Scanner(System.in);
             System.out.println("Select a territory to act on: ");
@@ -180,19 +179,19 @@ public class UIConsole {
                 System.out.println("Enter a valid territory ID.");
                 territoryID = scanner.nextInt();
             }
-            Territory targetTerritory = engine.getDescriptor().getTerritoryMap().get(territoryID);
-            GameEngine.gameManager.setSelectedTerritoryForTurn(targetTerritory);
-            if(GameEngine.gameManager.isTerritoryBelongsCurrentPlayer()) { //Player working on his territory
+            Territory targetTerritory = engine.getConsoleGameManager().getGameDescriptor().getTerritoryMap().get(territoryID);
+            engine.getConsoleGameManager().setSelectedTerritoryForTurn(targetTerritory);
+            if(engine.getConsoleGameManager().isTerritoryBelongsCurrentPlayer()) { //Player working on his territory
                 actOnSelfTerritory(territoryID, scanner, targetTerritory);
             }
-            else if(GameEngine.gameManager.isConquered()) { //Belongs to a different player
-                if(GameEngine.gameManager.isTargetTerritoryValid()){ // Is it valid too attack?
+            else if(engine.getConsoleGameManager().isConquered()) { //Belongs to a different player
+                if(engine.getConsoleGameManager().isTargetTerritoryValid()){ // Is it valid too attack?
                     attackConqueredTerritoryResult(targetTerritory);
                 } else { //Not valid
                     System.out.println("Invalid target territory");
                 }
             } else { // Neutral(When he has atleast one territory)
-                if(GameEngine.gameManager.isTargetTerritoryValid()){
+                if(engine.getConsoleGameManager().isTargetTerritoryValid()){
                     getNeutralTerritory(targetTerritory);
                 }
                 else { //Not valid
@@ -217,18 +216,18 @@ public class UIConsole {
         switch (choice)
         {
             case 1: // Rehabilitate
-                Supplier<Integer> enoughMoney = () -> GameEngine.gameManager.getRehabilitationArmyPriceInTerritory(targetTerritory);
-                if(GameEngine.gameManager.isSelectedPlayerHasEnoughMoney(enoughMoney)) {
+                Supplier<Integer> enoughMoney = () -> engine.getConsoleGameManager().getRehabilitationArmyPriceInTerritory(targetTerritory);
+                if(engine.getConsoleGameManager().isSelectedPlayerHasEnoughMoney(enoughMoney)) {
                     System.out.println("Rehabilitating army on territory number: " + territoryID + "...");
                     sleepAbit(1);
-                    GameEngine.gameManager.rehabilitateSelectedTerritoryArmy();
+                    engine.getConsoleGameManager().rehabilitateSelectedTerritoryArmy();
                 }
                 else
                     System.out.println("Not enough Turings.");
                 break;
             case 2: //Buy a UNIT(Soldier for now)
                 printAndBuySelectedUnit();
-                GameEngine.gameManager.transformSelectedArmyForceToSelectedTerritory();
+                engine.getConsoleGameManager().transformSelectedArmyForceToSelectedTerritory();
                 break;
         }
     }
@@ -237,10 +236,10 @@ public class UIConsole {
         System.out.println("Territory threshold: "
                 + targetTerritory.getArmyThreshold()
                 +  " You have "
-                + GameEngine.gameManager.getCurrentPlayerFunds()
+                + engine.getConsoleGameManager().getCurrentPlayerFunds()
                 + " Turings");
         printAndBuySelectedUnit();
-        if(GameEngine.gameManager.conquerNeutralTerritory())
+        if(engine.getConsoleGameManager().conquerNeutralTerritory())
             System.out.println("Territory : "
                     + targetTerritory.getID()
                     + " Has been conquered!"
@@ -261,9 +260,9 @@ public class UIConsole {
                 selection = sc.nextInt();
                 switch (selection) {
                     case 1:
-                        return GameEngine.gameManager.attackConqueredTerritoryByCalculatedRiskBattle();
+                        return engine.getConsoleGameManager().attackConqueredTerritoryByCalculatedRiskBattle();
                     case 2:
-                        return GameEngine.gameManager.attackConqueredTerritoryByWellTimedBattle();
+                        return engine.getConsoleGameManager().attackConqueredTerritoryByWellTimedBattle();
                 }
             }
             catch(InputMismatchException e){
@@ -301,7 +300,7 @@ public class UIConsole {
     }
     //checks if a territory is in 1 block away(rows and columns)
     private boolean checkTerritoryIdValid(int territoryID) {
-        return engine.getDescriptor().getTerritoryMap().containsKey(territoryID);
+        return engine.getConsoleGameManager().getGameDescriptor().getTerritoryMap().containsKey(territoryID);
     }
     //Prints the army stats on the territory.
     private void printArmyOnTerritory(Territory targetTerritory) {
@@ -319,7 +318,7 @@ public class UIConsole {
     /*     Unit Func     */
     //******************//
     private void buyUnits(int amount,String unitType) {
-       GameEngine.gameManager.buyUnits(engine.getDescriptor().getUnitMap().get(unitType) , amount);
+        engine.getConsoleGameManager().buyUnits(engine.getConsoleGameManager().getGameDescriptor().getUnitMap().get(unitType) , amount);
     }
     private void printAndBuySelectedUnit(){
         Scanner scanner = new Scanner(System.in);
@@ -338,7 +337,7 @@ public class UIConsole {
         }
         System.out.println("Select how many " + unitType + " to buy");
         howManyToAdd = scanner.nextInt();
-        while(howManyToAdd*engine.getDescriptor().getUnitMap().get(unitType).getPurchase() > GameEngine.gameManager.getCurrentPlayerFunds()){ //must enter a valid amount to purchase
+        while(howManyToAdd*engine.getConsoleGameManager().getGameDescriptor().getUnitMap().get(unitType).getPurchase() > engine.getConsoleGameManager().getCurrentPlayerFunds()){ //must enter a valid amount to purchase
             System.out.println("not enough funds , please write down a lower amount to buy");
             howManyToAdd = scanner.nextInt();
             if(howManyToAdd == 0) //Exit loop if the player does not wish to buy at all.
@@ -348,7 +347,7 @@ public class UIConsole {
     }
     private void printUnitTypesForChoice() {
         System.out.println("The following units are available: ");
-        engine.getDescriptor().getUnitMap()
+        engine.getConsoleGameManager().getGameDescriptor().getUnitMap()
                 .forEach((k,v)-> System.out.println(k));
         System.out.println("Enter 1 for soldier");
     }
@@ -358,7 +357,7 @@ public class UIConsole {
     //******************//
     //Prints the winner of the game.
     private void getGameWinner() {
-        Player winner = GameEngine.gameManager.getWinnerPlayer();
+        Player winner = engine.getConsoleGameManager().getWinnerPlayer();
         if(winner == null){
             System.out.println("DRAW!");
         } else {
@@ -371,24 +370,24 @@ public class UIConsole {
     }
     private void printFundsBeforeProduction() {
         System.out.println("Turings before potential production added: "
-                + GameEngine.gameManager.getFundsBeforeProduction());
+                + engine.getConsoleGameManager().getFundsBeforeProduction());
 
     }
     private void printFunds() {
-        System.out.println("Turings after production: "+ GameEngine.gameManager.getCurrentPlayerFunds());
+        System.out.println("Turings after production: "+ engine.getConsoleGameManager().getCurrentPlayerFunds());
     }
     private void printHistory() {
         printMapLegend();
-        GameEngine.gameManager.getMapsHistoryByOrder()
+        engine.getConsoleGameManager().getMapsHistoryByOrder()
                 .forEach(this::drawMap);
     }
     //Show the stats of current round.
     private void showRoundStats() {
         System.out.println("Current round is: "
-                + (GameEngine.gameManager.roundNumber)
+                + (engine.getConsoleGameManager().roundNumber)
                 + "\n"
                 + "The total rounds for this game are: "
-                + engine.getDescriptor().getTotalCycles()
+                + engine.getConsoleGameManager().getGameDescriptor().getTotalCycles()
                 + "\n");
     }
     private void showCurrentPlayerStats(){ // We print this after a new turn has started
@@ -399,7 +398,7 @@ public class UIConsole {
     }
     private void showAllPlayersStats() {
         System.out.println("The players who are currently playing are: " + "\n");
-        engine.getDescriptor().getPlayersList().parallelStream()
+        engine.getConsoleGameManager().getGameDescriptor().getPlayersList().parallelStream()
                 .forEach(player -> System.out.println("Player name: "
                         + player.getPlayerName()
                         + "\n" + "Player ID: "
@@ -421,8 +420,8 @@ public class UIConsole {
     }
     //Print the stats of current player territories.
     private void showCurrentPlayerTerritoriesStats() {
-        System.out.println(GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName() + " holds: " + GameEngine.gameManager.getCurrentPlayerTerritoriesAmount() + " territories.");
-        GameEngine.gameManager.getCurrentPlayerTerritories().forEach(territory ->
+        System.out.println(engine.getConsoleGameManager().getCurrentPlayerTurn().getPlayerName() + " holds: " + engine.getConsoleGameManager().getCurrentPlayerTerritoriesAmount() + " territories.");
+        engine.getConsoleGameManager().getCurrentPlayerTerritories().forEach(territory ->
                 System.out.println("Territory ID: " + territory.getID()
                         + " Total power: "
                         + territory.getConquerArmyForce().getTotalPower()
@@ -439,7 +438,7 @@ public class UIConsole {
                         + territory.getConquerArmyForce().getTotalPower()
                         + "\n"
                         + "The cost to regain full power for all units: "
-                        + GameEngine.gameManager.getRehabilitationArmyPriceInTerritory(territory)
+                        + engine.getConsoleGameManager().getRehabilitationArmyPriceInTerritory(territory)
                         + "\n"
                         + "--------------------------------------"
                         + "\n"));
@@ -450,18 +449,18 @@ public class UIConsole {
     //******************************//
     //Start turn of player in turn.
     private void startTurn() {
-        System.out.println("Round number: " + GameEngine.gameManager.roundNumber);
-        System.out.println("Current player: " +GameEngine.gameManager.getCurrentPlayerTurn().getPlayerName());
+        System.out.println("Round number: " + engine.getConsoleGameManager().roundNumber);
+        System.out.println("Current player: " +engine.getConsoleGameManager().getCurrentPlayerTurn().getPlayerName());
         printFundsBeforeProduction();
         printFunds();
         showCurrentPlayerStats();
     }
     //This function manages each round , including turns between players.
     private void roundManager(){
-        GameEngine.gameManager.startOfRoundUpdates();
-        while(!GameEngine.gameManager.isCycleOver()) {
-            GameEngine.gameManager.nextPlayerInTurn();
-            if(GameEngine.gameManager.roundNumber == 1 && GameEngine.gameManager.getCurrentPlayerTerritories().isEmpty()) {
+        engine.getConsoleGameManager().startOfRoundUpdates();
+        while(!engine.getConsoleGameManager().isCycleOver()) {
+            engine.getConsoleGameManager().nextPlayerInTurn();
+            if(engine.getConsoleGameManager().roundNumber == 1 && engine.getConsoleGameManager().getCurrentPlayerTerritories().isEmpty()) {
                 firstRound();
             } else {
                 startTurn();
@@ -473,20 +472,20 @@ public class UIConsole {
             }
         }
         System.out.println("Ending round..." + "\n");
-        GameEngine.gameManager.endOfRoundUpdates();
+        engine.getConsoleGameManager().endOfRoundUpdates();
         sleepAbit(1);
-        if(GameEngine.gameManager.isGameOver()) {
+        if(engine.getConsoleGameManager().isGameOver()) {
             getGameWinner();
             gameStarted = false;
             gameHasBeenPlayed = true;
-            GameEngine.gameManager = null;
+            engine.deleteConsoleGameManager();
         }
     }
     private void undoRound() {
-        if(GameEngine.gameManager.isUndoPossible()) {
+        if(engine.getConsoleGameManager().isUndoPossible()) {
             System.out.println("Undoing round...");
             sleepAbit(1);
-            GameEngine.gameManager.roundUndo();
+            engine.getConsoleGameManager().roundUndo();
         }
         else
             System.out.println("Undo is not possible at first round.");
@@ -504,7 +503,7 @@ public class UIConsole {
             case 1: //Laying on the eggs - Do nothing
                 break;
             case 2: //Players wishes to act on a territory
-                if(!GameEngine.gameManager.getCurrentPlayerTerritories().isEmpty()) {
+                if(!engine.getConsoleGameManager().getCurrentPlayerTerritories().isEmpty()) {
                     drawMap();
                 }
                 actOnTerritory();
@@ -521,30 +520,30 @@ public class UIConsole {
     //*****************//
     private void drawMap() {
         printMapLegend();
-        Table map = new Table(engine.getDescriptor().getTerritoryMap()
-                ,engine.getDescriptor().getRows()
-                ,engine.getDescriptor().getColumns()
-                ,engine.getDescriptor().getPlayersList().get(0)
-                ,engine.getDescriptor().getPlayersList().get(1));
+        Table map = new Table(engine.getConsoleGameManager().getGameDescriptor().getTerritoryMap()
+                ,engine.getConsoleGameManager().getGameDescriptor().getRows()
+                ,engine.getConsoleGameManager().getGameDescriptor().getColumns()
+                ,engine.getConsoleGameManager().getGameDescriptor().getPlayersList().get(0)
+                ,engine.getConsoleGameManager().getGameDescriptor().getPlayersList().get(1));
         map.setTableDefaultStyle(1);
         map.print();
     }
     private void drawMap(Map<Integer,Territory> historyMap) {
         Table map = new Table(historyMap
-                ,engine.getDescriptor().getRows()
-                ,engine.getDescriptor().getColumns()
-                ,engine.getDescriptor().getPlayersList().get(0)
-                ,engine.getDescriptor().getPlayersList().get(1));
+                ,engine.getConsoleGameManager().getGameDescriptor().getRows()
+                ,engine.getConsoleGameManager().getGameDescriptor().getColumns()
+                ,engine.getConsoleGameManager().getGameDescriptor().getPlayersList().get(0)
+                ,engine.getConsoleGameManager().getGameDescriptor().getPlayersList().get(1));
         map.setTableDefaultStyle(1);
         map.print();
     }
     private void printMapLegend() {
         System.out.println("MapTable legend");
-        System.out.println(engine.getDescriptor().getPlayersList().get(0).getPlayerName()
+        System.out.println(engine.getConsoleGameManager().getGameDescriptor().getPlayersList().get(0).getPlayerName()
                 + ": "
                 + "X"
                 + ", "
-                + engine.getDescriptor().getPlayersList().get(1).getPlayerName()
+                + engine.getConsoleGameManager().getGameDescriptor().getPlayersList().get(1).getPlayerName()
                 + ": "
                 + "O");
         System.out.println("----------------------------");
