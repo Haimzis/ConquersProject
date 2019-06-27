@@ -28,7 +28,6 @@ public class SavedGameLoaderTask extends Task<Boolean> {
     protected Boolean call() {
         try {
             gameEngine.loadGame(gameEngine.getLoadFilePath(filePathDelegate.get()));
-            gameEngine.setDescriptor(GameEngine.gameManager.getGameDescriptor());
             Platform.runLater(()-> {
                 messageDelegate.accept("Game loaded");
                 isLoadSucceedDelegate.accept(true);

@@ -40,27 +40,27 @@ public class AttackPopupController implements ActionPopupController {
         mainController.getMapComponentController().colorTerritory();
         mainController.showResultsPopup(resultOfBattle , infoOfBattle);
         mainController.updateInformation();
-        GameEngine.gameManager.activateEventsHandler();
+        mainController.getCurrentGameManager().activateEventsHandler();
         MapController.actionBeenTaken = true;
     }
 
     private void startNeutralAttack() {
-        if(GameEngine.gameManager.conquerNeutralTerritory()) { // Got the territory
-            mainController.getHeaderComponentController().writeIntoTextArea("Territory " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID() + " has been conquered!" + "\n");
+        if(mainController.getCurrentGameManager().conquerNeutralTerritory()) { // Got the territory
+            mainController.getHeaderComponentController().writeIntoTextArea("Territory " + mainController.getCurrentGameManager().getSelectedTerritoryByPlayer().getID() + " has been conquered!" + "\n");
             resultOfBattle = Result.WIN;
 
         }
         else { // Failed to get territory ( Army is not big enough)
-            mainController.getHeaderComponentController().writeIntoTextArea("Failed to conquer territory number " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID() +"\n");
+            mainController.getHeaderComponentController().writeIntoTextArea("Failed to conquer territory number " + mainController.getCurrentGameManager().getSelectedTerritoryByPlayer().getID() +"\n");
             resultOfBattle = Result.LOSE;
         }
         infoOfBattle = createText();
     }
 
     private void startCalculatedRiskAttack() {
-        mainController.getHeaderComponentController().writeIntoTextArea("A battle has started upon territory number: " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID()+ "\n");
+        mainController.getHeaderComponentController().writeIntoTextArea("A battle has started upon territory number: " + mainController.getCurrentGameManager().getSelectedTerritoryByPlayer().getID()+ "\n");
         infoOfBattle = createText();
-        int attackerWon =  GameEngine.gameManager.attackConqueredTerritoryByCalculatedRiskBattle();
+        int attackerWon =  mainController.getCurrentGameManager().attackConqueredTerritoryByCalculatedRiskBattle();
         if(attackerWon == 1) { //Win
             checkIfWinnerCanHold();
         }
@@ -73,12 +73,12 @@ public class AttackPopupController implements ActionPopupController {
     }
 
     private void checkIfWinnerCanHold() {
-        if (GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquerArmyForce() == null) { //Check if there are enough to hold territory
+        if (mainController.getCurrentGameManager().getSelectedTerritoryByPlayer().getConquerArmyForce() == null) { //Check if there are enough to hold territory
             resultOfBattle = Result.WIN_COULD_NOT_HOLD;
         }
         else {
             resultOfBattle = Result.WIN;
-            mainController.getHeaderComponentController().writeIntoTextArea("Territory " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID() + " has been conquered!" + "\n");
+            mainController.getHeaderComponentController().writeIntoTextArea("Territory " + mainController.getCurrentGameManager().getSelectedTerritoryByPlayer().getID() + " has been conquered!" + "\n");
         }
     }
 
@@ -86,12 +86,12 @@ public class AttackPopupController implements ActionPopupController {
         if(typeOfAttack == null) { //Enemy
             switch (resultOfBattle) {
                 case WIN:
-                    return "You have conquered neutral territory : " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID();
+                    return "You have conquered neutral territory : " + mainController.getCurrentGameManager().getSelectedTerritoryByPlayer().getID();
                 case LOSE:
-                    return "You have FAILED to conquer  neutral territory : " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID();
+                    return "You have FAILED to conquer  neutral territory : " + mainController.getCurrentGameManager().getSelectedTerritoryByPlayer().getID();
             }
         }
-        int defendingArmySize = GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquerArmyForce().getUnits().size();
+        int defendingArmySize = mainController.getCurrentGameManager().getSelectedTerritoryByPlayer().getConquerArmyForce().getUnits().size();
         String defendingUnitsResult = "Type of attack was: "
                 + typeOfAttack
                 + "\n"
@@ -102,7 +102,7 @@ public class AttackPopupController implements ActionPopupController {
                 + "The defending territory units were: "
                 + "\n";
         List<String> unitNamesOnTerritoryList = new ArrayList<>();
-        for (Unit unit : GameEngine.gameManager.getSelectedTerritoryByPlayer().getConquerArmyForce().getUnits()) {
+        for (Unit unit : mainController.getCurrentGameManager().getSelectedTerritoryByPlayer().getConquerArmyForce().getUnits()) {
             unitNamesOnTerritoryList.add(unit.getType());
         }
         String defendingUnitsString = String.join(" ", unitNamesOnTerritoryList);
@@ -112,8 +112,8 @@ public class AttackPopupController implements ActionPopupController {
 
     private void startWellTimedAttack() {
         infoOfBattle = createText();
-        mainController.getHeaderComponentController().writeIntoTextArea("A battle has started upon territory number: " + GameEngine.gameManager.getSelectedTerritoryByPlayer().getID() + "\n");
-        int attackerWon =  GameEngine.gameManager.attackConqueredTerritoryByWellTimedBattle();
+        mainController.getHeaderComponentController().writeIntoTextArea("A battle has started upon territory number: " + mainController.getCurrentGameManager().getSelectedTerritoryByPlayer().getID() + "\n");
+        int attackerWon =  mainController.getCurrentGameManager().attackConqueredTerritoryByWellTimedBattle();
         if(attackerWon == 1) { //Win
             checkIfWinnerCanHold();
         }

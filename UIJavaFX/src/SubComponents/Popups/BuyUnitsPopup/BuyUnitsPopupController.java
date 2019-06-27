@@ -1,6 +1,5 @@
 package SubComponents.Popups.BuyUnitsPopup;
 
-import GameEngine.GameEngine;
 import MainComponents.AppController;
 import SubComponents.Popups.ActionPopupController;
 import javafx.fxml.FXML;
@@ -37,7 +36,7 @@ public class BuyUnitsPopupController {
                 c -> Pattern.matches("\\d*", c.getText()) ? c : null ));
 
         //Build dropdown list of units and bind the total label
-        for(String key : mainController.getGameEngine().getDescriptor().getUnitMap().keySet()) {
+        for(String key : mainController.getCurrentGameManager().getGameDescriptor().getUnitMap().keySet()) {
             MenuItem unitToShowItem = new MenuItem(key);
             unitToShowItem.setOnAction(event -> {
                 unitChoices.setText(unitToShowItem.getText());
@@ -50,9 +49,9 @@ public class BuyUnitsPopupController {
     }
 
     private void populateUnitInformation() {
-        lblFirePower.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()).getMaxFirePower()));
-        lblReduction.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()).getCompetenceReduction()));
-        lblCost.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()).getPurchase()));
+        lblFirePower.setText(Integer.toString(mainController.getCurrentGameManager().getGameDescriptor().getUnitMap().get(unitChoices.getText()).getMaxFirePower()));
+        lblReduction.setText(Integer.toString(mainController.getCurrentGameManager().getGameDescriptor().getUnitMap().get(unitChoices.getText()).getCompetenceReduction()));
+        lblCost.setText(Integer.toString(mainController.getCurrentGameManager().getGameDescriptor().getUnitMap().get(unitChoices.getText()).getPurchase()));
         lblTitleCost.setVisible(true);
         lblTitleCompetenceReduction.setVisible(true);
         lblTitleFirePower.setVisible(true);
@@ -65,7 +64,7 @@ public class BuyUnitsPopupController {
     public void btnDoneStartAction(){
         parentPopupController.startAction();
         mainController.updateInformation();
-        GameEngine.gameManager.setSelectedArmyForce(null);
+        mainController.getCurrentGameManager().setSelectedArmyForce(null);
         closePopup();
     }
 
@@ -78,9 +77,9 @@ public class BuyUnitsPopupController {
                 amount = Integer.parseInt(amountToBuy.getText());
                 cost = Integer.parseInt(lblCost.getText());
                 if(amount >0){
-                    if(GameEngine.gameManager.getCurrentPlayerFunds() >= amount*cost) {
-                        GameEngine.gameManager.buyUnits(
-                                mainController.getGameEngine().getDescriptor().getUnitMap().get(unitChoices.getText()),
+                    if(mainController.getCurrentGameManager().getCurrentPlayerFunds() >= amount*cost) {
+                        mainController.getCurrentGameManager().buyUnits(
+                                mainController.getCurrentGameManager().getGameDescriptor().getUnitMap().get(unitChoices.getText()),
                                 amount);
                         showLabel("Success!");
                         btnDone.setDisable(false);

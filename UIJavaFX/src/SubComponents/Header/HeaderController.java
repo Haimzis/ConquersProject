@@ -1,7 +1,7 @@
 package SubComponents.Header;
 
 import Exceptions.invalidInputException;
-import GameEngine.GameEngine;
+import GameEngine.*;
 import GameObjects.Player;
 import MainComponents.AppController;
 import SubComponents.MapTable.MapController;
@@ -44,11 +44,32 @@ public class HeaderController {
     private StringProperty currentPlayerProperty;
     public String currentTheme = "Default";
 
-
+    //*********************//
+    /*  Getters & Setters  */
+    //*********************//
     public ToggleButton getBtnAnimationToggle() {
         return btnAnimationToggle;
     }
+    public void setMainController(AppController mainController) { this.mainController = mainController; }
+    public void setCurrentPlayerInTurnLbl(String currentPlayerName) {
+        currentPlayerProperty.setValue(currentPlayerName);
+    }
+    public Button getBtnManageRound() {
+        return btnManageRound;
+    }
+    public Button getBtnRetire() {
+        return btnRetire;
+    }
+    public Button getBtnSave() {
+        return btnSave;
+    }
+    public Button getBtnUndo() {
+        return btnUndo;
+    }
 
+    //*********************//
+    /*    Functionality    */
+    //*********************//
     @FXML
     private void animationController() {
         if(btnAnimationToggle.isSelected()) {
@@ -77,7 +98,7 @@ public class HeaderController {
     public void hideErrorLabel() {
         lblError.setVisible(false);
     }
-    public void setMainController(AppController mainController) { this.mainController = mainController; }
+
 
     public  void writeIntoTextArea(String text) {
         Text textToAdd = new Text(text);
@@ -85,14 +106,12 @@ public class HeaderController {
     }
 
     public void loadBinding() {
-        currentPlayerProperty = new SimpleStringProperty(GameEngine.gameManager.getCurrentPlayerName());
+        currentPlayerProperty = new SimpleStringProperty(mainController.getCurrentGameManager().getCurrentPlayerName());
         StringExpression currentRoundSE = Bindings.concat(currentPlayerProperty);
         lblCurrentPlayerInTurn.textProperty().bind(currentRoundSE);
     }
 
-    public void setCurrentPlayerInTurnLbl(String currentPlayerName) {
-        currentPlayerProperty.setValue(currentPlayerName);
-    }
+
 
     @FXML
     private void changeToDefaultTheme(){
@@ -113,9 +132,7 @@ public class HeaderController {
         currentTheme = "Ocean";
     }
 
-    public Button getBtnManageRound() {
-        return btnManageRound;
-    }
+
 
     @FXML
     private void changeToThemeTwo(){
@@ -136,15 +153,15 @@ public class HeaderController {
     @FXML
     public void roundManagerBtnListener() {
         if(!btnManageRound.getText().equals(NEW_GAME)) {
-            if (!GameEngine.gameManager.roundStarted()) {
-                writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has started" + "\n");
+            if (!mainController.getCurrentGameManager().roundStarted()) {
+                writeIntoTextArea("Round " + mainController.getCurrentGameManager().getRoundNumber() + " has started" + "\n");
                 btnManageRound.setText(END_TURN);
                 mainController.startRound();
                 mainController.getMapComponentController().disableMap(false);
                 setButtonsDisabled(true);
 
             } else { // round started already
-                if (GameEngine.gameManager.isCycleOver()) {//you're the last bitch, end your turn and call endOfRoundUpdate
+                if (mainController.getCurrentGameManager().isCycleOver()) {//you're the last bitch, end your turn and call endOfRoundUpdate
                     newRound();
                 } else { //normal - move next player..
                     nextTurn();
@@ -158,10 +175,10 @@ public class HeaderController {
             btnReplay.setDisable(true);
             lblWinner.setVisible(false);
             try {
-                mainController.getGameEngine().loadXML(mainController.getGameEngine().getDescriptor().getLastKnownGoodString());
+                GameDescriptor gameDescriptor = mainController.getGameEngine().loadXML(mainController.getCurrentGameManager().getGameDescriptor().getLastKnownGoodString());
+                mainController.startGame(gameDescriptor);
             } catch (invalidInputException ignore) {
             }
-            mainController.startGame();
             mainController.loadInformation();
             mainController.createMap();
             tfHeaderInfoArea.getChildren().clear();
@@ -175,25 +192,25 @@ public class HeaderController {
     }
 
     private void newRound() {
-        writeIntoTextArea("Round " + GameEngine.gameManager.roundNumber + " has ended" + "\n");
+        writeIntoTextArea("Round " + mainController.getCurrentGameManager().getRoundNumber() + " has ended" + "\n");
         btnManageRound.setText(START_ROUND);
         mainController.endOfRoundUpdates();
         mainController.getMapComponentController().disableMap(true);
         setCurrentPlayerInTurnLbl("None");
         setButtonsDisabled(false);
-        if (mainController.isGameOver())
+        if (mainController.getCurrentGameManager().isGameOver())
             checkWinnerIfAny();
     }
 
     @FXML
     private void onUndoPressListener() {
-        if(GameEngine.gameManager.isUndoPossible()) {
-            writeIntoTextArea("Round " + (GameEngine.gameManager.roundNumber - 1) + " has been undone." + "\n");
-            GameEngine.gameManager.roundUndo();
+        if(mainController.getCurrentGameManager().isUndoPossible()) {
+            writeIntoTextArea("Round " + (mainController.getCurrentGameManager().getRoundNumber() - 1) + " has been undone." + "\n");
+            mainController.getCurrentGameManager().roundUndo();
             mainController.getInformationComponentController().undoUpdate();
             mainController.getMapComponentController().clearMap();
             mainController.createMap();
-            if(!GameEngine.gameManager.isUndoPossible()) {
+            if(!mainController.getCurrentGameManager().isUndoPossible()) {
                 btnUndo.setDisable(true);
             }
         }
@@ -212,7 +229,7 @@ public class HeaderController {
             selectedFile = chooser.showSaveDialog(null);
         }
 
-        if(GameEngine.saveGame(Paths.get(selectedFile.getAbsolutePath()), GameEngine.gameManager)) {
+        if(GameEngine.saveGame(Paths.get(selectedFile.getAbsolutePath()), mainController.getCurrentGameManager())) {
             lblError.setText("Game saved successfully");
         }
         else {
@@ -221,9 +238,7 @@ public class HeaderController {
         showErrorLabel();
     }
 
-    public Button getBtnRetire() {
-        return btnRetire;
-    }
+
 
     private void showErrorLabel() {
         lblError.setVisible(true);
@@ -248,16 +263,16 @@ public class HeaderController {
 
     @FXML
     private void retirePressListener() {
-        GameEngine.gameManager.selectedPlayerRetirement();
-        writeIntoTextArea(GameEngine.gameManager.getCurrentPlayerName() + " Has retired." + "\n");
+        mainController.getCurrentGameManager().selectedPlayerRetirement();
+        writeIntoTextArea(mainController.getCurrentGameManager().getCurrentPlayerName() + " Has retired." + "\n");
 
-        if(GameEngine.gameManager.checkIfOnlyOnePlayer()) {
+        if(mainController.getCurrentGameManager().checkIfOnlyOnePlayer()) {
             forceWinner();
             mainController.loadInformation();
             mainController.getInformationComponentController().setFocusOnCurrentPlayer();
             return;
         }
-        if(!GameEngine.gameManager.isNextPlayerNull()) {
+        if(!mainController.getCurrentGameManager().isNextPlayerNull()) {
             mainController.nextPlayer();
         }
         else { //More than one player , but the last one retired so a new round begins
@@ -269,7 +284,7 @@ public class HeaderController {
     }
 
     private void forceWinner() {
-        Player winner = GameEngine.gameManager.getForcedWinner();
+        Player winner = mainController.getCurrentGameManager().getForcedWinner();
         writeIntoTextArea(winner.getPlayerName() + " has won by a technical.");
         lblWinner.setVisible(true);
         setButtonsDisabled(true);
@@ -282,8 +297,8 @@ public class HeaderController {
     }
 
     private void checkWinnerIfAny() {
-        if(GameEngine.gameManager.isGameOver()) {
-            Player winner = GameEngine.gameManager.getWinnerPlayer();
+        if(mainController.getCurrentGameManager().isGameOver()) {
+            Player winner = mainController.getCurrentGameManager().getWinnerPlayer();
             if(winner == null) { //Show draw message
                 setCurrentPlayerInTurnLbl("Draw!");
             }
@@ -317,12 +332,5 @@ public class HeaderController {
         btnSave.setDisable(set);
         btnUndo.setDisable(set);
         btnRetire.setDisable(!set);
-    }
-    public Button getBtnSave() {
-        return btnSave;
-    }
-
-    public Button getBtnUndo() {
-        return btnUndo;
     }
 }

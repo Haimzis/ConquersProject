@@ -17,7 +17,7 @@ public class ReplayController {
     }
     @FXML
     public void btnNextClicked(){
-        if(GameEngine.gameManager.nextReplay()) {
+        if(mainController.getCurrentGameManager().nextReplay()) {
             loadRoundHistory();
             mainController.getInformationComponentController().incCurrentRoundProperty();
         }
@@ -28,7 +28,7 @@ public class ReplayController {
     }
     @FXML
     public void btnPrevClicked(){
-        if(GameEngine.gameManager.prevReplay()) {
+        if(mainController.getCurrentGameManager().prevReplay()) {
             loadRoundHistory();
             mainController.getInformationComponentController().decCurrentRoundProperty();
         }
@@ -36,13 +36,12 @@ public class ReplayController {
             //exception
             mainController.getHeaderComponentController().writeAndShowError("Cant replay  before first round!");
         }
-
     }
     private void generateReplayState(){
-        GameEngine.gameManager.generateReplayState();
+        mainController.getCurrentGameManager().generateReplayState();
     }
     private void exitReplayState(){
-        GameEngine.gameManager.exitReplayState();
+        mainController.getCurrentGameManager().exitReplayState();
         mainController.loadCurrentInformation();
     }
     public void setReplayState(){

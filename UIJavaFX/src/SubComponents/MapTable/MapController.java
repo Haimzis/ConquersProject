@@ -91,13 +91,13 @@ public class MapController {
     }
 
     private void onTerritoryPressListener(Territory territory) {
-        GameEngine.gameManager.setSelectedTerritoryForTurn(territory);
-        if(!GameEngine.gameManager.getCurrentPlayerTerritories().isEmpty()) {
-            if (GameEngine.gameManager.isTerritoryBelongsCurrentPlayer()) {
+        mainController.getCurrentGameManager().setSelectedTerritoryForTurn(territory);
+        if(!mainController.getCurrentGameManager().getCurrentPlayerTerritories().isEmpty()) {
+            if (mainController.getCurrentGameManager().isTerritoryBelongsCurrentPlayer()) {
                 mainController.showOwnTerritoryPopup();
             }
             else {
-                if(GameEngine.gameManager.isTargetTerritoryValid()) {
+                if(mainController.getCurrentGameManager().isTargetTerritoryValid()) {
                     mainController.showAttackPopup();
                     mainController.getHeaderComponentController().hideErrorLabel();
                 }
@@ -113,7 +113,7 @@ public class MapController {
     }
 
     public void colorTerritory() {
-        Territory territory = GameEngine.gameManager.getSelectedTerritoryByPlayer();
+        Territory territory = mainController.getCurrentGameManager().getSelectedTerritoryByPlayer();
         if(territory.isConquered()) {
             if(isAnimationOn) {
                 animateColor(territory);
@@ -177,7 +177,7 @@ public class MapController {
 
 
     private void popTerritoriesOfWinner(double from_x , double from_y , double to_x , double to_y) {
-        for(Territory territory: GameEngine.gameManager.getCurrentPlayerTerritories()) {
+        for(Territory territory: mainController.getCurrentGameManager().getCurrentPlayerTerritories()) {
             ScaleTransition st = new ScaleTransition(Duration.millis(2000), territoriesButtons.get(territory.getID()));
             st.setCycleCount(2);
             st.setFromX(from_x);

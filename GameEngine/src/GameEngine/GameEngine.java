@@ -1,33 +1,23 @@
 package GameEngine;
 
 import Exceptions.invalidInputException;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.nio.file.Files.exists;
 
 
 
 public class GameEngine {
-    private GameDescriptor descriptor;
-    private Map<Integer ,GameManager> gameManagers = new HashMap<>();
-
-
+    private Map<Integer, GameManager> gameManagers = new HashMap<>();
+    private GameDescriptor lastGameDescriptor;
     public enum ERROR {XML_ERROR , PASS}
     public static int flag = 0; //Final check flag if everything loaded.
 
-    public GameDescriptor getDescriptor() {
-        return descriptor;
-    }
-    public void setDescriptor(GameDescriptor descriptor) {
-        this.descriptor = descriptor;
-    }
-    public void loadXML(String XMLPath) throws invalidInputException {
+    public GameDescriptor loadXML(String XMLPath) throws invalidInputException {
         GameDescriptor gameDescriptor = null;
         ERROR validate = validateXML(XMLPath);
         switch (validate) {
@@ -38,23 +28,33 @@ public class GameEngine {
                 flag = 0;
                 throw  new Exceptions.invalidInputException("File is not .XML!");
         }
-        this.descriptor = gameDescriptor;
+        return gameDescriptor;
     }
     private Path getPath(String xmlPath) {
         return Paths.get(xmlPath);
     }
-    public void newGame() {
-        GameManager newGame =new GameManager(descriptor);
-       gameManagers.put(newGame.getGameManagerID(),newGame);
+    public GameDescriptor getLastGameDescriptor() {
+        return lastGameDescriptor;
     }
-
+    public GameManager newGame(GameDescriptor gameDescriptor) {
+        GameManager newGame = new GameManager(gameDescriptor);
+        gameManagers.put(newGame.getGameManagerID(), newGame);
+        return newGame;
+    }
+    public GameManager getConsoleGameManager(){
+        return gameManagers.get(0);
+    }
+    public void deleteConsoleGameManager(){
+        gameManagers.remove(0);
+    }
     //********************//
     /*  XML Validations  */
     //*******************//
 
     //creates gameDescriptor object from the given XML
     private GameDescriptor createDescriptor(Path xmlPath) throws invalidInputException {
-            return new GameDescriptor(xmlPath);
+            lastGameDescriptor = new GameDescriptor(xmlPath);
+            return lastGameDescriptor;
     }
     private ERROR validateXML(String xmlPath) {
         if(xmlPath.toLowerCase().endsWith(".xml"))

@@ -63,13 +63,13 @@ public class InformationController {
         playersInnerTabPaneRootControllers=new HashMap<>();
     }
     public void loadBinding() {
-        currentRoundProperty = new SimpleIntegerProperty(GameEngine.gameManager.roundNumber);
+        currentRoundProperty = new SimpleIntegerProperty(mainController.getCurrentGameManager().getRoundNumber());
         StringExpression currentRoundSE = Bindings.concat(currentRoundProperty);
         lblCurrentRound.textProperty().bind(currentRoundSE);
     }
 
     private void loadPlayersTabs(){
-        for (Player player : mainController.getGameEngine().getDescriptor().getPlayersList()) { //load each Player Information
+        for (Player player : mainController.getCurrentGameManager().getGameDescriptor().getPlayersList()) { //load each Player Information
             Tab playerTab = addTabToPlayers(player.getPlayerName());
             playersTabs.put(player.getID(), playerTab);
 
@@ -79,9 +79,9 @@ public class InformationController {
             innerTabPaneRootLoader.setLocation(url);
             Parent innerTabPaneRoot = null;
             try {
-
                 innerTabPaneRoot = innerTabPaneRootLoader.load(url.openStream());
                 InnerTabPaneRootController innerTabPaneRootController = innerTabPaneRootLoader.getController();
+                innerTabPaneRootController.setInformationController(this);
                 innerTabPaneRootController.setCurrentPlayer(player);
                 innerTabPaneRootController.loadTerritoriesToTableView();
                 innerTabPaneRootController.loadPlayerData();
@@ -93,7 +93,7 @@ public class InformationController {
         }
     }
     private void loadTotalCycles() {
-        lblTotalRounds.setText(Integer.toString(mainController.getGameEngine().getDescriptor().getTotalCycles()));
+        lblTotalRounds.setText(Integer.toString(mainController.getCurrentGameManager().getGameDescriptor().getTotalCycles()));
     }
 
     public void updatePlayersData(){
@@ -103,7 +103,7 @@ public class InformationController {
     private void loadUnitsToTableView() {
         tvUnits.getColumns().clear();
         final ObservableList<Unit> data =
-                FXCollections.observableArrayList(mainController.getGameEngine().getDescriptor().getUnitMap().values());
+                FXCollections.observableArrayList(mainController.getCurrentGameManager().getGameDescriptor().getUnitMap().values());
         tvUnits.setEditable(false);
         tvUnits.setItems(data);
         //nameCol
@@ -161,10 +161,12 @@ public class InformationController {
     }
 
     public void setMainController(AppController mainController) { this.mainController = mainController; }
-
+    public AppController getMainController() {
+        return mainController;
+    }
     public void setFocusOnCurrentPlayer() {
         for(int i = 0; i < tpPlayersInformation.getTabs().size(); i++) {
-            if(tpPlayersInformation.getTabs().get(i).getText().equals(GameEngine.gameManager.getCurrentPlayerName())) {
+            if(tpPlayersInformation.getTabs().get(i).getText().equals(mainController.getCurrentGameManager().getCurrentPlayerName())) {
                 tpPlayersInformation.getSelectionModel().select(tpPlayersInformation.getTabs().get(i));
             }
         }
@@ -172,7 +174,7 @@ public class InformationController {
 
     public void loadRoundHistory() {
         playersInnerTabPaneRootControllers.forEach((player, playerInnerTabPaneRootControllers) -> {
-            playerInnerTabPaneRootControllers.setCurrentPlayer(GameEngine.gameManager.getPlayerByID(player));
+            playerInnerTabPaneRootControllers.setCurrentPlayer(mainController.getCurrentGameManager().getPlayerByID(player));
             playerInnerTabPaneRootControllers.loadPlayerData();
         });
         tvUnits.refresh();

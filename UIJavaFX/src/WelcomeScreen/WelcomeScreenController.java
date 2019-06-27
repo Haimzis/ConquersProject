@@ -54,7 +54,6 @@ public class WelcomeScreenController {
         btn_loadGame.disableProperty().bind(isFileSelectedProperty.not());
         tbx_path.textProperty().bind(selectedFilePathProperty);
         lbl_message.textProperty().bind(messageProperty);
-
     }
     public void setGameLoader(GameLoader gameLoader) {this.gameLoader = gameLoader;}
     public void setPrimaryStage(Stage primaryStage) {
@@ -82,7 +81,7 @@ public class WelcomeScreenController {
                         isLoadSucceedProperty);
     }
 
-    public void setForNewGame() {
+    public void setForNewGame(){
         selectedFilePathProperty.set(lastKnownGoodString);
         isFileSelectedProperty.set(true);
     }
@@ -95,8 +94,6 @@ public class WelcomeScreenController {
                         selectedFilePathProperty,
                         isLoadSucceedProperty);
     }
-
-
 
     @FXML
     private void startGame(){
@@ -120,10 +117,10 @@ public class WelcomeScreenController {
                 AppController appController = fxmlLoader.getController();
                 appController.setPrimaryStage(primaryStage);
                 appController.setGameEngine(gameEngine);
-                lastKnownGoodString = gameEngine.getDescriptor().getLastKnownGoodString();
+                lastKnownGoodString = gameEngine.getLastGameDescriptor().getLastKnownGoodString();
                 //start game
                 if(!gameAlreadyLoaded) { //Check if its not a loaded game
-                    appController.startGame();
+                    appController.startGame(gameEngine.getLastGameDescriptor());
                     //first load of xml into UI
                     appController.loadInformation();
                     appController.createMap();
@@ -132,7 +129,7 @@ public class WelcomeScreenController {
                     appController.loadInformation();
                     appController.createMap();
                     //Wire the listener again since it's not saved
-                    GameEngine.gameManager.setEventListenerHandler(eventObject -> {
+                    appController.getCurrentGameManager().setEventListenerHandler(eventObject -> {
                         appController.getMapComponentController().unColorTerritory(eventObject.getIdentity());
                         appController.getHeaderComponentController().writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
                     });
