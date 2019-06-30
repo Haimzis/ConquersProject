@@ -12,10 +12,14 @@ import static java.nio.file.Files.exists;
 
 
 public class GameEngine {
-    private Map<Integer, GameManager> gameManagers = new HashMap<>();
+    private static Map<Integer, GameManager> gameManagers = new HashMap<>();
     private GameDescriptor lastGameDescriptor;
     public enum ERROR {XML_ERROR , PASS}
     public static int flag = 0; //Final check flag if everything loaded.
+
+    public static Map<Integer, GameManager> getGameManagers() {
+        return gameManagers;
+    }
 
     public GameDescriptor loadXML(String XMLPath) throws invalidInputException {
         GameDescriptor gameDescriptor = null;
@@ -56,6 +60,7 @@ public class GameEngine {
             lastGameDescriptor = new GameDescriptor(xmlPath);
             return lastGameDescriptor;
     }
+
     private ERROR validateXML(String xmlPath) {
         if(xmlPath.toLowerCase().endsWith(".xml"))
             return ERROR.PASS;

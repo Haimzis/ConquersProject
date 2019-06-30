@@ -14,7 +14,7 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     private final String LOBBY_URL = "../Lobby/Lobby.html";
     private final String SIGN_UP_URL = "../SignUp/SignUp.html";
-    private final String LOGIN_ERROR_URL = "/pages/loginerror/login_attempt_after_error.jsp";
+    private final String LOGIN_ERROR_URL = "/Pages/LoginError/login_attempt_after_error.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
                 playerNameFromParameter = playerNameFromParameter.trim();
                 synchronized (this) {
                     if (playerManager.isPlayerExists(playerNameFromParameter)) {
-                        String errorMessage = "Username " + playerNameFromParameter + " already exists. Please enter a different username.";
+                        String errorMessage = "Player name " + playerNameFromParameter + " already exists. Please enter a different name.";
                         // username already exists, forward the request back to index.jsp
                         // with a parameter that indicates that an error should be displayed
                         // the request dispatcher obtained from the servlet context is one that MUST get an absolute path (starting with'/')

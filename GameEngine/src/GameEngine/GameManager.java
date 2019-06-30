@@ -16,6 +16,9 @@ public class GameManager implements Serializable {
     private String currentPlayerName = "None";
     private int ID;
     private int roundNumber=1;
+
+
+    private String gameTitle;
     private static int gamesIDCounter = 0;
     private Stack<RoundHistory> roundsHistory;
     private GameDescriptor gameDescriptor;
@@ -34,7 +37,8 @@ public class GameManager implements Serializable {
         loadPlayersIntoQueueOfTurns();
         roundsHistory = new Stack<>();
         roundsHistory.push(new RoundHistory(gameDescriptor,roundNumber));
-        }
+        gameTitle = gameDescriptor.getGameTitle();
+    }
 
     public void setEventListenerHandler(EventHandler eventHandler) {
         eventListener = new EventListener();
@@ -495,6 +499,8 @@ public class GameManager implements Serializable {
     public int getRoundNumber() {
         return roundNumber;
     }
+
+    public String getGameTitle() { return gameTitle; }
 
     public void setRoundNumber(int roundNumber) {
         this.roundNumber = roundNumber;
