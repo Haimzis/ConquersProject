@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class UIConsole {
-    private String lastKnownXmlPath; //TODO : Ran - use it
     private boolean gameStarted , gameHasBeenPlayed;
     private static final String SOLDIER = "Soldier";
     private GameEngine engine;
@@ -67,7 +66,6 @@ public class UIConsole {
                             }
                             if(GameEngine.flag == 1) {
                                 System.out.println("XML Loaded successfully");
-                                lastKnownXmlPath = xmlPath;
                                 gameHasBeenPlayed = false; // If player reads a new XML that means he ran over the previous played game.
                             }
                         }
