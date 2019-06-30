@@ -78,9 +78,7 @@ public class GameDescriptor implements Serializable {
     public Territory getTerritoryByID(Integer territoryID){
         return territoryMap.get(territoryID);
     }
-    public String getGameTitle() {
-        return gameTitle;
-    }
+    public String getGameTitle() { return gameTitle; }
 
     //*********************//
     /*     XML Loaders    */
