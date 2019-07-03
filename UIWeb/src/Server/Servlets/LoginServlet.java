@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
                 synchronized (this) {
                     if (playerManager.isPlayerExists(playerNameFromParameter)) {
                         String errorMessage = "Player name " + playerNameFromParameter + " already exists. Please enter a different name.";
-                        // username already exists, forward the request back to index.jsp
+                        // username already exists, forward the request back to index.html
                         // with a parameter that indicates that an error should be displayed
                         // the request dispatcher obtained from the servlet context is one that MUST get an absolute path (starting with'/')
                         // and is relative to the web app root
