@@ -21,7 +21,6 @@ public class ServletUtils {
 	private static final Object gameManagerLock = new Object();
 
 	public static PlayerManager getPlayerManager(ServletContext servletContext) {
-
 		synchronized (playerManagerLock) {
 			if (servletContext.getAttribute(PLAYER_MANAGER_ATTRIBUTE_NAME) == null) {
 				servletContext.setAttribute(PLAYER_MANAGER_ATTRIBUTE_NAME, new PlayerManager());
@@ -44,9 +43,9 @@ public class ServletUtils {
 	public static int getIntParameter(HttpServletRequest request, String name) {
 		String value = request.getParameter(name);
 		if (value != null) {
-			try {
-				return Integer.parseInt(value);
-			} catch (NumberFormatException ignored) {
+				try {
+					return Integer.parseInt(value);
+				} catch (NumberFormatException ignored) {
 			}
 		}
 		return INT_PARAMETER_ERROR;
