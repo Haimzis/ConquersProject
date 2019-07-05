@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane fx:id="ReplayComponent" managed="false" prefHeight="50.0" prefWidth="600.0" visible="false" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.ReplayComponent.ReplayController">
+   <children>
+      <GridPane layoutX="120.0" layoutY="-31.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="-Infinity" minWidth="1.0" prefWidth="1.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="22.000006103515624" minHeight="2.0" prefHeight="2.0" vgrow="NEVER" />
+          <RowConstraints maxHeight="43.600006103515625" minHeight="10.0" prefHeight="42.79998779296875" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="20.799993896484374" minHeight="2.0" prefHeight="2.0" vgrow="NEVER" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="btnNext" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnNextClicked" prefHeight="118.0" prefWidth="10000.0" text="NEXT" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button fx:id="btnPrev" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnPrevClicked" prefHeight="143.0" prefWidth="10000.0" text="PREV" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+   </children>
+   <stylesheets>
+      <URL value="@Replay.css" />
+      <URL value="@../../Resources/Default.css" />
+   </stylesheets>
+</AnchorPane>

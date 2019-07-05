@@ -1,9 +1,11 @@
 package GameObjects;
 
-public class WellTimedBattle extends Battle {
+import java.io.Serializable;
+
+public class WellTimedBattle extends Battle implements Serializable {
     private int StrongestRank;
-    public WellTimedBattle(Army newConquerArmy, Army newAttackingArmy, Territory newBattleTerritory,int StrongestRank){
-        super(newConquerArmy,newAttackingArmy,newBattleTerritory);
+    public WellTimedBattle(Army newConquerArmy, Army newAttackingArmy, Territory newBattleTerritory,Player currentConquer,int StrongestRank){
+        super(newConquerArmy,newAttackingArmy,newBattleTerritory,currentConquer);
         this.StrongestRank = StrongestRank;
     }
 
@@ -42,7 +44,7 @@ public class WellTimedBattle extends Battle {
             unitsTypesCounterOfCurrentConquerArmy[unitsRank] -= temp;
             if(unitsTypesCounterOfAttackingArmy[unitsRank] > unitsTypesCounterOfCurrentConquerArmy[unitsRank]){//Attacker wins
                 attackResult = 1;
-                battleTerritory.getConquer().getTerritoriesID().remove(new Integer(battleTerritory.getID())); //Removes Defeated Conquer Army
+                currentConquer.removeTerritory(battleTerritory.getID()); //Removes Defeated Conquer Army
                 battleTerritory.setConquerArmyForce(attackingArmy);
                 return;
             }
@@ -52,7 +54,8 @@ public class WellTimedBattle extends Battle {
             }
         }
         //DRAW
-        battleTerritory.getConquer().getTerritoriesID().remove(new Integer(battleTerritory.getID())); //Removes Defeated Conquer Army
+        currentConquer.removeTerritory(battleTerritory.getID()); //Removes Defeated Conquer Army
+        battleTerritory.eliminateThisWeakArmy();
         attackResult=2;
     }
 }

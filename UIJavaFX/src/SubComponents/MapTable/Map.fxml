@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.GridPane?>
+
+<ScrollPane fx:id="MapComponent" fitToHeight="true" fitToWidth="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SubComponents.MapTable.MapController">
+   <content>
+      <GridPane id="map_Id" fx:id="GridComponent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+      </GridPane>
+   </content>
+   <stylesheets>
+      <URL value="@Map.css" />
+      <URL value="@../../Resources/Default.css" />
+   </stylesheets>
+</ScrollPane>

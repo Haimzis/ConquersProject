@@ -1,29 +1,54 @@
 package GameObjects;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Player implements Serializable {
     private int ID;
-    private String player_name;
+    private String playerName;
     private int funds;
     private List<Integer> TerritoriesID;
+    private String image;
 
-    public Player(int id, String player_name, int funds) {
+    public String getColor() {
+        return color;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    private String color;
+
+    public Player(int id, String playerName, int funds) {
         ID = id;
-        this.player_name = player_name;
+        this.playerName = playerName;
         this.funds = funds;
         TerritoriesID = new ArrayList<>();
     }
+    public Player(int id, String playerName, int funds,String color) {
+        this(id, playerName, funds);
+        this.color = color;
+    }
     public Player(Player player) {
         ID = player.getID();
-        this.player_name =player.getPlayer_name();
+        this.playerName =player.getPlayerName();
         this.funds = player.getFunds();
         this.TerritoriesID = new ArrayList<>();
-        if (!player.getTerritoriesID().isEmpty())
-            //player.getTerritoriesID().forEach(territoryID -> this.TerritoriesID.add(new Integer(territoryID)));
-            this.TerritoriesID.addAll(player.getTerritoriesID()); //TODO: I need to check that the undo works well with it
+        this.image = player.image;
+        this.color = player.color;
+        if (!player.getTerritoriesID().isEmpty()) {
+            this.TerritoriesID.addAll(player.getTerritoriesID());
+        }
     }
 
     //**************************//
@@ -35,8 +60,8 @@ public class Player implements Serializable {
     public int getID() {
         return ID;
     }
-    public String getPlayer_name() {
-        return player_name;
+    public String getPlayerName() {
+        return playerName;
     }
     public int getFunds() {
         return funds;
@@ -75,8 +100,18 @@ public class Player implements Serializable {
     {
         this.funds -= fundsAmount;
     }
-    public void addTerritory(Territory territory)
-    {
+    public void addTerritory(Territory territory) {
             TerritoriesID.add(territory.getID());
+    }
+    public void removeTerritory(Integer territoryToRemove){
+        if(!TerritoriesID.isEmpty()) {
+            Iterator territory = TerritoriesID.iterator();
+            while (territory.hasNext()) {
+                Integer TerritoryID = (Integer)territory.next();
+                if (territoryToRemove.equals(TerritoryID)) {
+                    territory.remove();
+                }
+            }
+        }
     }
 }

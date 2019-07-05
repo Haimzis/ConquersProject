@@ -1,0 +1,86 @@
+
+#app {
+    -fx-font-size: 12px;
+    -fx-font-family: "Maiandra GD";
+    -fx-base: rgb(104, 118, 129);
+    -fx-background: rgb(104, 118, 129);
+    -fx-background-image: url("ocean1.jpeg");
+}
+/* BUTTONS CSS */
+.button {
+    -fx-border-color: #ff9800;
+    -fx-background-color: linear-gradient(to bottom, #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#87bcea 100%);
+    -fx-text-fill: black;
+}
+
+.menu-button {
+    -fx-border-color: #ff9800;
+    -fx-background-color: linear-gradient(to bottom, #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#87bcea 100%);
+    -fx-text-fill: black;
+}
+
+.toggle-button {
+    -fx-border-color: #ff9800;
+    -fx-background-color: linear-gradient(to bottom, #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#87bcea 100%);
+    -fx-text-fill: black;
+}
+
+.menu-item {
+    -fx-text-fill: black;
+}
+
+.button:hover {
+    -fx-border-color: #ff9800;
+    -fx-background-color: white;
+}
+
+
+/* INFO TABLE CSS */
+#innerTabId_Id {
+    -fx-background-color: red;
+    -fx-border-color: blue;
+}
+#innerTabProfit_Id {
+    -fx-background-color: red;
+    -fx-border-color: blue;
+}
+#innerTabThreshold_Id {
+    -fx-background-color: red;
+    -fx-border-color: blue;
+}
+
+
+.tab-pane {
+    -fx-background-color: grey;
+}
+
+#infoGrid_Id .label {
+    -fx-text-fill: black;
+}
+#infoGrid_Id .tab-pane {
+    -fx-background-color: linear-gradient(to bottom, rgba(0,183,234,1) 0%,rgba(0,158,195,1) 100%);
+}
+#infoGrid_Id .tab-pane > .tab-header-area >.headers-region {
+    -fx-background-color: linear-gradient(to bottom, rgba(0,183,234,1) 0%,rgba(0,158,195,1) 100%);
+}
+
+
+.tab-pane:focused {-fx-border-color: blue;}
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label {-fx-text-fill: lightblue;}
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .focus-indicator {-fx-text-fill: blue;}
+
+
+/* MAP CSS */
+
+.btn_Territory {
+    -fx-background-color: linear-gradient(to bottom, #87e0fd 2%,#87e0fd 32%,#53cbf1 40%,#05abe0 95%);
+}
+
+#isTheWinner_Id {
+    -fx-text-fill: red;
+}
+
+#annoucments_Id {
+    -fx-text-fill: blue;
+}
+

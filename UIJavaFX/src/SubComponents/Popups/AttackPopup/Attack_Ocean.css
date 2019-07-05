@@ -1,0 +1,29 @@
+.root{
+    -fx-font-size: 12px;
+    -fx-font-family: "Maiandra GD";
+    -fx-base: rgb(104, 118, 129);
+    -fx-background: rgb(104, 118, 129);
+    -fx-background-image: url("/Resources/ocean1.jpeg");
+
+}
+
+.menu-item {
+    -fx-text-fill: black;
+}
+
+.button:hover {
+    -fx-border-color: #ff9800;
+    -fx-background-color: white;
+}
+
+.button {
+    -fx-border-color: #ff9800;
+    -fx-background-color: linear-gradient(to bottom, #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#87bcea 100%);
+    -fx-text-fill: black;
+}
+
+.menu-button {
+    -fx-border-color: #ff9800;
+    -fx-background-color: linear-gradient(to bottom, #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#87bcea 100%);
+    -fx-text-fill: black;
+}

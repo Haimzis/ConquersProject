@@ -1,26 +1,27 @@
 package GameEngine;
 
+import Exceptions.invalidInputException;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.nio.file.Files.exists;
 
 
 
 public class GameEngine {
-    private GameDescriptor descriptor;
-    public static GameManager gameManager;
+    private static Map<Integer, GameManager> gameManagers = new HashMap<>();
+    private GameDescriptor lastGameDescriptor;
     public enum ERROR {XML_ERROR , PASS}
     public static int flag = 0; //Final check flag if everything loaded.
 
-    public GameDescriptor getDescriptor() {
-        return descriptor;
+    public static Map<Integer, GameManager> getGameManagers() {
+        return gameManagers;
     }
-    public void setDescriptor(GameDescriptor descriptor) {
-        this.descriptor = descriptor;
-    }
-    public void loadXML(String XMLPath) {
+
+    public GameDescriptor loadXML(String XMLPath) throws invalidInputException {
         GameDescriptor gameDescriptor = null;
         ERROR validate = validateXML(XMLPath);
         switch (validate) {
@@ -28,36 +29,38 @@ public class GameEngine {
                 gameDescriptor = createDescriptor(getPath(XMLPath));
                 break;
             case XML_ERROR:
-                System.out.println("XML file not found");
                 flag = 0;
-                break;
+                throw  new Exceptions.invalidInputException("File is not .XML!");
         }
-
-        if(gameDescriptor != null) // Means everything is loaded and in place to begin the game
-            flag = 1; //GD has been loaded successfully
-        this.descriptor = gameDescriptor;
+        return gameDescriptor;
     }
     private Path getPath(String xmlPath) {
         return Paths.get(xmlPath);
     }
-    public void newGame() {
-        gameManager = new GameManager(descriptor);
+    public GameDescriptor getLastGameDescriptor() {
+        return lastGameDescriptor;
     }
-
+    public GameManager newGame(GameDescriptor gameDescriptor) {
+        GameManager newGame = new GameManager(gameDescriptor);
+        gameManagers.put(newGame.getGameManagerID(), newGame);
+        return newGame;
+    }
+    public GameManager getConsoleGameManager(){
+        return gameManagers.get(0);
+    }
+    public void deleteConsoleGameManager(){
+        gameManagers.remove(0);
+    }
     //********************//
     /*  XML Validations  */
     //*******************//
 
     //creates gameDescriptor object from the given XML
-    private GameDescriptor createDescriptor(Path xmlPath) {
-        try {
-            return new GameDescriptor(xmlPath);
-        }
-        catch (IllegalArgumentException e) {
-            System.out.println("Descriptor failed to create , try again with different XML.");
-            return null;
-        }
+    private GameDescriptor createDescriptor(Path xmlPath) throws invalidInputException {
+            lastGameDescriptor = new GameDescriptor(xmlPath);
+            return lastGameDescriptor;
     }
+
     private ERROR validateXML(String xmlPath) {
         if(xmlPath.toLowerCase().endsWith(".xml"))
             return ERROR.PASS;
@@ -75,26 +78,23 @@ public class GameEngine {
         if(!fileExist) return null;
         else return loadFilePath;
     }
-    public static void saveGame(Path path, GameManager manager) {
+    public static boolean saveGame(Path path, GameManager manager) {
         File file = new File(path.toString());
         try(ObjectOutputStream write= new ObjectOutputStream (new FileOutputStream(file))) {
             write.writeObject(manager);
-            System.out.println("Game saved successfully");
+            return true;
         } catch(IOException nse) {
-            System.out.println("Could not save game , please try again.");
+            return false;
         }
     }
-    public boolean loadGame(Path path) {
+    public boolean loadGame(Path path) throws IOException, ClassNotFoundException {
         try (ObjectInputStream in =
                      new ObjectInputStream(
                              new FileInputStream(path.toString()))) {
-            gameManager = (GameManager) in.readObject();
+            GameManager loadedGame = (GameManager) in.readObject();
+            gameManagers.replace(loadedGame.getGameManagerID(),loadedGame);
             flag = 1;
-            System.out.println("Game loaded successfully");
             return true;
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Could not load the game , please try again.");
-            return false;
         }
     }
 }
