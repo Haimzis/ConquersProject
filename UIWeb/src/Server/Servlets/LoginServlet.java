@@ -1,11 +1,9 @@
 package Server.Servlets;
 
-import GameEngine.PlayerManager;
 import Server.Constants.Constants;
 import Server.Users.UserManager;
 import Server.Utils.ServletUtils;
 import Server.Utils.SessionUtils;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +25,7 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+       response.setContentType("text/html;charset=UTF-8");
         String userFromSession = SessionUtils.getUsername(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
         if (userFromSession == null) {
