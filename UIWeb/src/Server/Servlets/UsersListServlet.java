@@ -1,8 +1,8 @@
 package Server.Servlets;
 
-import chat.utils.ServletUtils;
+import Server.Users.UserManager;
+import Server.Utils.ServletUtils;
 import com.google.gson.Gson;
-import engine.users.UserManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

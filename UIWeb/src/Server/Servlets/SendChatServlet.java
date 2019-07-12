@@ -1,9 +1,9 @@
 package Server.Servlets;
 
-import chat.constants.Constants;
-import chat.utils.ServletUtils;
-import chat.utils.SessionUtils;
-import engine.chat.ChatManager;
+import Server.Chat.ChatManager;
+import Server.Constants.Constants;
+import Server.Utils.ServletUtils;
+import Server.Utils.SessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

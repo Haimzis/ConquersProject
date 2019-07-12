@@ -1,8 +1,8 @@
 package Server.Servlets;
 
-import chat.utils.ServletUtils;
-import chat.utils.SessionUtils;
-import engine.users.UserManager;
+import Server.Utils.ServletUtils;
+import Server.Users.UserManager;
+import Server.Utils.SessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

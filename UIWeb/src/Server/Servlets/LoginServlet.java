@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class LoginServlet extends HttpServlet {
-    private final String LOBBY_URL = "../Lobby/Lobby.html";
-    private final String SIGN_UP_URL = "../SignUp/SignUp.html";
+    private final String LOBBY_URL = "../Lobby/lobby.html";
+    private final String SIGN_UP_URL = "../SignUp/signup.html";
     private final String LOGIN_ERROR_URL = "/Pages/LoginError/login_attempt_after_error.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

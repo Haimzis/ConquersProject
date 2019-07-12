@@ -1,11 +1,11 @@
 package Server.Servlets;
 
-import chat.constants.Constants;
-import chat.utils.ServletUtils;
-import chat.utils.SessionUtils;
+import Server.Chat.ChatManager;
+import Server.Chat.SingleChatEntry;
+import Server.Constants.Constants;
+import Server.Utils.ServletUtils;
+import Server.Utils.SessionUtils;
 import com.google.gson.Gson;
-import engine.chat.ChatManager;
-import engine.chat.SingleChatEntry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
