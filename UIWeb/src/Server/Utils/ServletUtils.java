@@ -1,4 +1,5 @@
 package Server.Utils;
+import Server.Chat.ChatManager;
 import Server.Users.UserManager;
 
 
@@ -13,10 +14,10 @@ public class ServletUtils {
 	private static final String CHAT_MANAGER_ATTRIBUTE_NAME = "chatManager";
 	private static final String ENGINE_MANAGER_ATTRIBUTE_NAME = "engineManager";
 
-	/*
+	/*/
 	Note how the synchronization is done only on the question and\or creation of the relevant managers and once they exists -
 	the actual fetch of them is remained unchronicled for performance POV
-	 */
+	/*/
 	private static final Object userManagerLock = new Object();
 	private static final Object chatManagerLock = new Object();
 	private static final Object engineManagerLock = new Object();
