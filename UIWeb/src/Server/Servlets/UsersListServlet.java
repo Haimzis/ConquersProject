@@ -15,7 +15,7 @@ import java.util.Set;
 public class UsersListServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         //returning JSON objects, not HTML
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
