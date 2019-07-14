@@ -10,7 +10,7 @@ function WelcomeUserName(){
 //add a method to the button in order to make that form use AJAX
 //and not actually submit the form
     $(function() { // onload...do
-    $.get(USER_URL, function(data, status){
+    $.get(USER_URL, function(data){
         $("#loggedUserName").text(data);
     });
 });
