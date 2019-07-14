@@ -29,7 +29,6 @@ public class LogoutServlet extends HttpServlet {
             https://tomcat.apache.org/tomcat-5.5-doc/servletapi/javax/servlet/http/HttpServletResponse.html#sendRedirect(java.lang.String)
             the best way (IMO) is to fetch the context path dynamically and build the redirection from it and on
              */
-
             response.sendRedirect(request.getContextPath() + "/index.html");
         }
     }

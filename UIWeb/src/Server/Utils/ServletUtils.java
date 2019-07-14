@@ -1,5 +1,4 @@
 package Server.Utils;
-import Server.Chat.ChatManager;
 import Server.Users.UserManager;
 
 
@@ -31,7 +30,7 @@ public class ServletUtils {
 		return (UserManager) servletContext.getAttribute(USER_MANAGER_ATTRIBUTE_NAME);
 	}
 
-	public static ChatManager getChatManager(ServletContext servletContext) {
+	/*public static ChatManager getChatManager(ServletContext servletContext) {
 		synchronized (chatManagerLock) {
 			if (servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME) == null) {
 				servletContext.setAttribute(CHAT_MANAGER_ATTRIBUTE_NAME, new ChatManager());
@@ -39,7 +38,7 @@ public class ServletUtils {
 		}
 		return (ChatManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
 	}
-
+*/
 	public static int getIntParameter(HttpServletRequest request, String name) {
 		String value = request.getParameter(name);
 		if (value != null) {
