@@ -8,28 +8,58 @@
 <body class="lobbyBody">
 <div class="toolBar">
     <div class="toolBarContent">
-        <span class="logoutSpan">Logout</span>
+        <form method="GET" action="logout" class="logoutSpan">
+            <input type="submit" value="Logout" />
+        </form>
         <span class="userNameSpan"></span>
         <span class="logoSpan"></span>
     </div>
 </div>
 <div class="mainDiv">
     <div class="popUpDiv">
+        <div class="popupContent">
+            <div class="details">
+                <div class="gameName"></div>
+                <div class="hostName"></div>
+                <div class="mapSize"></div>
+                <div class="turnAmount"></div>
+                <div class="playersAmount"></div>
+                <div>Current players:</div>
+                <div class="playersNames"></div>
+            </div>
+            <div class="map">
 
+            </div>
+        </div>
+        <div class="popupButtons">
+            <div class="popupButton">Join game</div>
+        </div>
     </div>
-    <div class="popupContent">
-        <div class="details">
-            <div class="gameName"></div>
-            <div class="hostName"></div>
-            <div class="mapSize"></div>
-            <div class="turnAmount"></div>
-            <div class="playersAmount"></div>
-            <div>Current players:</div>
-            <div class="playersNames"></div>
+    <div class="gamesDiv">
+        <div class="gamesActions">
+            <span>Host a game</span>
+            <input id="fileUpload" type="file" class="fileInput" accept="text/xml"/>
         </div>
-        <div class="map">
-
-        </div>
+        <table class="gamesTable">
+            <thead>
+            <th>Game ID</th>
+            <th>Game name</th>
+            <th>Host name</th>
+            <th>Number of players</th>
+            <th>Current Players</th>
+            <th>Amount of rounds</th>
+            </thead>
+            <tbody class="tableBody"></tbody>
+        </table>
+    </div>
+    <div class="usersDiv">
+        <table class="usersTable">
+            <thead>
+            <th>Users Online:</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>
