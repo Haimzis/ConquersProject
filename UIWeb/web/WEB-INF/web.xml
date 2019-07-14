@@ -4,8 +4,16 @@
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>Server.Servlets.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoggedUserName</servlet-name>
+        <servlet-class>Server.Servlets.LoggedUserName</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Pages/SignUp/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoggedUserName</servlet-name>
+        <url-pattern>/loggedUserName</url-pattern>
     </servlet-mapping>
 </web-app>
