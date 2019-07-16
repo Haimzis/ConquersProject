@@ -11,14 +11,50 @@ window.onload = function ()
     setInterval(refreshUserList, refreshRate);
 };
 
-function uploadXML(){
+function uploadXML(eventOfLoad){
+    var XMLFile = eventOfLoad.target.file[0];
     $.ajax({
-    url: UPLOAD_XML_URL,
+        url: UPLOAD_XML_URL,
         data: {
+            file: XMLFile
+        },
+        type: "POST",
+        success: uploadXMLCallBack
+    });
+}
+function uploadXMLCallBack(isXMLLoaded){
 
+    if(isXMLLoaded){
+        alert("Load game Success !!");
+        refreshGamesList();
+        clearFileInput();
+    }
+    else {
+        alert("XML didn't load well")
+    }
+}
+function refreshGamesList() {
+
+}
+
+function clearFileInput() {
+
+}
+function getUserName(){
+    var result="";
+    $.ajax
+    ({
+        async: false,
+        url:LOGGED_USERS_URL,
+        data: {
+            action: "getLoggedUsername"
+        },
+        type: 'GET',
+        success: function (userName) {
+            result = userName;
         }
-
-    })
+    });
+    return result;
 }
 function refreshLoginStatus() {
     $.ajax
