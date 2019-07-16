@@ -28,11 +28,6 @@ function onLogoutClick() {
     });
 }
 
-function logoutCallback(json) {
-    didUserCloseWindow = false;
-    window.location = "/";
-}
-
 function refreshLoginStatusCallback(username)
 {
         $('.userNameSpan').text("Hello " + username + " Welcome to Conquers!");
