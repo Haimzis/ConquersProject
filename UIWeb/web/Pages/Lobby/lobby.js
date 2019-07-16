@@ -32,6 +32,7 @@ function refreshLoginStatus() {
     });
 }
 
+
 function onLogoutClick() {
     $.get(USER_LOGOUT_URL,function logoutCallback() {
         window.location = "/UIWeb/index.html";
