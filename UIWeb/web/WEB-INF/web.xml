@@ -12,6 +12,10 @@
         <servlet-name>LoggedUserStatsServlet</servlet-name>
         <servlet-class>Server.Servlets.LoggedUsersServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateGameServlet</servlet-name>
+        <servlet-class>Server.Servlets.CreateGameServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -24,5 +28,9 @@
     <servlet-mapping>
         <servlet-name>LoggedUserStatsServlet</servlet-name>
         <url-pattern>/LoggedUsersStats</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateGameServlet</servlet-name>
+        <url-pattern>/games</url-pattern>
     </servlet-mapping>
 </web-app>
