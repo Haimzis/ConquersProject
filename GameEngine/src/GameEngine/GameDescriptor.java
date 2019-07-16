@@ -27,6 +27,15 @@ public class GameDescriptor implements Serializable {
     private Map<Integer,Territory> territoryMap;
     private Map<String , Unit> unitMap;
     private List<Player> playersList;
+
+    public int getInitialFunds() {
+        return initialFunds;
+    }
+
+    public void insertNewPlayer(Player newPlayer) {
+        playersList.add(newPlayer);
+    }
+
     private String error;
     private String gameType;
     private String gameTitle;

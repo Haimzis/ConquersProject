@@ -1,6 +1,8 @@
 package GameEngine;
 
 import Exceptions.invalidInputException;
+import GameObjects.Player;
+
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -59,6 +61,7 @@ public class GameEngine {
         gameManagers.put(newGame.getGameManagerID(), newGame);
         return newGame;
     }
+
     public GameManager getConsoleGameManager(){
         return gameManagers.get(0);
     }
@@ -115,5 +118,9 @@ public class GameEngine {
             flag = 1;
             return true;
         }
+    }
+    public Player createPlayerFromUser(String userName , int id , int funds) {
+        Player newPlayer = new Player(id , userName , funds);
+        return newPlayer;
     }
 }
