@@ -22,9 +22,6 @@ import java.io.PrintWriter;
 public class CreateGameServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         GameEngine engine = (GameEngine) getServletContext().getAttribute("engine");
         response.setContentType("application/json");
         GameDescriptor descriptor;
@@ -41,6 +38,10 @@ public class CreateGameServlet extends HttpServlet {
 
         } catch (invalidInputException e) {
             out.println(gson.toJson(new LoadGameStatus(false, e.getMessage())));
+            System.out.println("Manager didnt created , host didnt inserted");
         }
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     }
 }

@@ -3,6 +3,7 @@ var refreshRate = 2000; //milli seconds
 var USER_LOGOUT_URL = buildUrlWithContextPath("logout");
 var LOGGED_USERS_URL = buildUrlWithContextPath("LoggedUsersStats");
 var UPLOAD_XML_URL = buildUrlWithContextPath("UploadFile");
+var XML_LOAD = buildUrlWithContextPath("games");
 
 window.onload = function ()
 {
@@ -57,7 +58,7 @@ function refreshGamesList() {
     $.ajax
     (
         {
-            url: 'games',
+            url: XML_LOAD,
             data: {
                 action: 'gamesList'
             },
