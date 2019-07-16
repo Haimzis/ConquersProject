@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.*;
@@ -31,6 +32,28 @@ public class GameDescriptor implements Serializable {
     private String gameTitle;
 
     public GameDescriptor(Path xmlPath) throws invalidInputException {
+        Generated.GameDescriptor descriptor = null;
+        try {
+            descriptor = deserializeFrom(xmlPath);
+        } catch (JAXBException ignored) { }
+        if(descriptor == null) // GD was not created
+            throw new Exceptions.invalidInputException("Could not deserialize XML");
+        getGameStats(descriptor);
+        this.territoryMap = buildTerritoryMap(descriptor);
+        if(!gameType.equals(DYNAMIC_MULTI_PLAYER)) {
+            this.playersList =  loadPlayers(descriptor);
+        }
+        this.unitMap = loadUnitsDescription(descriptor);
+        if(!(checkRowsAndColumns(descriptor)
+                && validateTerritories(descriptor)
+                && validateDynamicMultiPlayer(descriptor)
+                && validatePlayers(descriptor)
+                && validateUnitsFromXml(descriptor))) //Checking the XML
+            throw new Exceptions.invalidInputException(error);
+        lastKnownGoodString = xmlPath.toString();
+    }
+
+    public GameDescriptor(InputStream xmlPath) throws invalidInputException {
         Generated.GameDescriptor descriptor = null;
         try {
             descriptor = deserializeFrom(xmlPath);
@@ -188,6 +211,12 @@ public class GameDescriptor implements Serializable {
         JAXBContext jc = JAXBContext.newInstance(Generated.GameDescriptor.class);
         Unmarshaller u = jc.createUnmarshaller();
         return (Generated.GameDescriptor) u.unmarshal(file);
+    }
+
+    private static Generated.GameDescriptor deserializeFrom(InputStream path) throws JAXBException { ;
+        JAXBContext jc = JAXBContext.newInstance(Generated.GameDescriptor.class);
+        Unmarshaller u = jc.createUnmarshaller();
+        return (Generated.GameDescriptor) u.unmarshal(path);
     }
 
 
