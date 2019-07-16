@@ -2,6 +2,7 @@ var chatVersion = 0;
 var refreshRate = 2000; //milli seconds
 var USER_LOGOUT_URL = buildUrlWithContextPath("logout");
 var LOGGED_USERS_URL = buildUrlWithContextPath("LoggedUsersStats");
+var UPLOAD_XML_URL = buildUrlWithContextPath("UploadFile");
 
 window.onload = function ()
 {
@@ -10,6 +11,15 @@ window.onload = function ()
     setInterval(refreshUserList, refreshRate);
 };
 
+function uploadXML(){
+    $.ajax({
+    url: UPLOAD_XML_URL,
+        data: {
+
+        }
+
+    })
+}
 function refreshLoginStatus() {
     $.ajax
     ({
