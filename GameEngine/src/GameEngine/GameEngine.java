@@ -21,6 +21,20 @@ public class GameEngine {
         return gameManagers;
     }
 
+    public GameDescriptor loadXML(InputStream XMLPath, String fileName) throws invalidInputException {
+        GameDescriptor gameDescriptor = null;
+        ERROR validate = validateXML(fileName);
+        switch (validate) {
+            case PASS:
+                gameDescriptor = createDescriptor(XMLPath);
+                break;
+            case XML_ERROR:
+                flag = 0;
+                throw  new Exceptions.invalidInputException("File is not .XML!");
+        }
+        return gameDescriptor;
+    }
+
     public GameDescriptor loadXML(String XMLPath) throws invalidInputException {
         GameDescriptor gameDescriptor = null;
         ERROR validate = validateXML(XMLPath);
@@ -59,6 +73,11 @@ public class GameEngine {
     private GameDescriptor createDescriptor(Path xmlPath) throws invalidInputException {
             lastGameDescriptor = new GameDescriptor(xmlPath);
             return lastGameDescriptor;
+    }
+
+    private GameDescriptor createDescriptor(InputStream xmlPath) throws invalidInputException {
+        lastGameDescriptor = new GameDescriptor(xmlPath);
+        return lastGameDescriptor;
     }
 
     private ERROR validateXML(String xmlPath) {
