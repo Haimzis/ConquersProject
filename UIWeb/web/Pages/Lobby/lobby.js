@@ -13,32 +13,91 @@ window.onload = function ()
 
 function uploadXML(eventOfLoad){
     var XMLFile = eventOfLoad.target.file[0];
-    $.ajax({
-        url: UPLOAD_XML_URL,
+    var reader = new FileReader();
+    var creatorName = getUserName();
+    reader.onload = function () {
+        var content = reader.result;
+        $.ajax(
+            {
+            url: UPLOAD_XML_URL,
+            data: {
+                file: content,
+                creator: creatorName
+            },
+            type: "POST",
+            success: uploadXMLCallBack
+        });
+    }
+    $.ajax // Getting creator's name.
+    ({
+        url: LOGGED_USERS_URL,
         data: {
-            file: XMLFile
+            action: "getLoggedUsername"
         },
-        type: "POST",
-        success: uploadXMLCallBack
+        type: 'GET',
+        success: function (userName) {
+            creatorName = userName;
+            reader.readAsText(XMLFile);
+        }
     });
 }
-function uploadXMLCallBack(isXMLLoaded){
 
-    if(isXMLLoaded){
+function uploadXMLCallBack(loadStatus){
+
+    if(loadStatus.isLoaded){
         alert("Load game Success !!");
         refreshGamesList();
         clearFileInput();
     }
     else {
-        alert("XML didn't load well")
+        alert(loadStatus.errorMessage)
     }
 }
 function refreshGamesList() {
-
+    $.ajax
+    (
+        {
+            url: 'games',
+            data: {
+                action: 'gamesList'
+            },
+            type: 'GET',
+            success: refreshGamesListCallback
+        }
+    )
 }
 
-function clearFileInput() {
+function refreshGamesListCallback(gameManagers) {
+    var gamesTable = $('.gamesTable tbody');
+    gamesTable.empty();
+    var gamesList = gameManagers;
 
+    gamesList.forEach(function (game) {
+        var tr = $(document.createElement('tr'));
+        var tdGameNumber = $(document.createElement('td')).text(game.key);
+        var tdGameName = $(document.createElement('td')).text(game.gameTitle);
+        var tdCreatorName = $(document.createElement('td')).text(game.creatorName);
+        var tdBoardSize = $(document.createElement('td')).text(game.rows + " X " + game.cols);
+        var tdPlayerNumber = $(document.createElement('td')).text(game.registeredPlayers + " / " + game.requiredPlayers);
+        var tdMovesNumber = $(document.createElement('td')).text(game.moves);
+
+        tdGameNumber.appendTo(tr);
+        tdGameName.appendTo(tr);
+        tdCreatorName.appendTo(tr);
+        tdBoardSize.appendTo(tr);
+        tdPlayerNumber.appendTo(tr);
+        tdMovesNumber.appendTo(tr);
+
+        tr.appendTo(gamesTable);
+    });
+
+    var tr = $('.tableBody tr');
+    for (var i = 0; i < tr.length; i++) {
+        //tr[i].onclick = createGameDialog;
+    }
+}
+function clearFileInput() {
+    document.getElementById("fileInput").value = "";
 }
 function getUserName(){
     var result="";
@@ -79,6 +138,7 @@ function refreshLoginStatusCallback(username)
 {
         $('.userNameSpan').text("Hello " + username + " Welcome to Conquers!");
 }
+
 //refresh connected users list
 function refreshUserList() {
     $.ajax(
