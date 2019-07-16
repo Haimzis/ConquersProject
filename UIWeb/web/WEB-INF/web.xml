@@ -5,6 +5,10 @@
         <servlet-class>Server.Servlets.LoginServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>LoggedUserName</servlet-name>
+        <servlet-class>Server.Servlets.LoggedUserName</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>Server.Servlets.LogoutServlet</servlet-class>
     </servlet>
@@ -15,5 +19,9 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/Pages/Lobby/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoggedUserName</servlet-name>
+        <url-pattern>/loggedUserName</url-pattern>
     </servlet-mapping>
 </web-app>
