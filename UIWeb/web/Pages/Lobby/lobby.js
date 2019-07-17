@@ -2,45 +2,39 @@ var chatVersion = 0;
 var refreshRate = 2000; //milli seconds
 var USER_LOGOUT_URL = buildUrlWithContextPath("logout");
 var LOGGED_USERS_URL = buildUrlWithContextPath("LoggedUsersStats");
-var UPLOAD_XML_URL = buildUrlWithContextPath("UploadFile");
-var XML_LOAD = buildUrlWithContextPath("games");
+var UPLOAD_XML_URL = buildUrlWithContextPath("uploadFile");
+var GAMES_LIST = buildUrlWithContextPath("games");
 
 window.onload = function ()
 {
+    $('#fileUploader').on('change' , uploadFileEvent); //add listener
     refreshLoginStatus();
     refreshUserList();
     setInterval(refreshUserList, refreshRate);
+    setInterval(refreshGamesList , refreshRate);
 };
 
-function uploadXML(eventOfLoad){
-    var XMLFile = eventOfLoad.target.file[0];
-    var reader = new FileReader();
-    var creatorName = getUserName();
-    reader.onload = function () {
-        var content = reader.result;
-        $.ajax(
-            {
-            url: UPLOAD_XML_URL,
-            data: {
-                file: content,
-                creator: creatorName
-            },
-            type: "POST",
-            success: uploadXMLCallBack
-        });
-    }
-    $.ajax // Getting creator's name.
-    ({
-        url: LOGGED_USERS_URL,
-        data: {
-            action: "getLoggedUsername"
-        },
-        type: 'GET',
-        success: function (userName) {
-            creatorName = userName;
-            reader.readAsText(XMLFile);
-        }
+function uploadXML(data){
+    $.ajax(
+        {
+        url: UPLOAD_XML_URL,
+        type: "POST",
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        cache: false,
+        data:data,
+        success: uploadXMLCallBack
     });
+}
+function uploadFileEvent(event)
+{
+    event.stopPropagation();
+    event.preventDefault();
+    var file = event.target.files[0];
+    var data = new FormData();
+    data.append('xml' , file);
+    uploadXML(data);
 }
 
 function uploadXMLCallBack(loadStatus){
@@ -58,9 +52,9 @@ function refreshGamesList() {
     $.ajax
     (
         {
-            url: XML_LOAD,
+            url: GAMES_LIST,
             data: {
-                action: 'gamesList'
+                action: 'roomsList'
             },
             type: 'GET',
             success: refreshGamesListCallback
@@ -68,19 +62,20 @@ function refreshGamesList() {
     )
 }
 
-function refreshGamesListCallback(gameManagers) {
+function refreshGamesListCallback(rooms) {
     var gamesTable = $('.gamesTable tbody');
+    var len = rooms.length;
     gamesTable.empty();
-    var gamesList = gameManagers;
-
-    gamesList.forEach(function (game) {
+    
+    for(i = 0 ;i < len ; i++) {
+        var manager = rooms[i];
         var tr = $(document.createElement('tr'));
-        var tdGameNumber = $(document.createElement('td')).text(game.key);
-        var tdGameName = $(document.createElement('td')).text(game.gameTitle);
-        var tdCreatorName = $(document.createElement('td')).text(game.creatorName);
-        var tdBoardSize = $(document.createElement('td')).text(game.rows + " X " + game.cols);
-        var tdPlayerNumber = $(document.createElement('td')).text(game.registeredPlayers + " / " + game.requiredPlayers);
-        var tdMovesNumber = $(document.createElement('td')).text(game.moves);
+        var tdGameNumber = $(document.createElement('td')).text(manager.id);
+        var tdGameName = $(document.createElement('td')).text(manager.gameTitle);
+        var tdCreatorName = $(document.createElement('td')).text(manager.creatorName);
+        var tdBoardSize = $(document.createElement('td')).text(manager.rows + " X " + manager.cols);
+        var tdPlayerNumber = $(document.createElement('td')).text(manager.registeredPlayers + " / " + manager.requiredPlayers);
+        var tdMovesNumber = $(document.createElement('td')).text(manager.moves);
 
         tdGameNumber.appendTo(tr);
         tdGameName.appendTo(tr);
@@ -90,15 +85,15 @@ function refreshGamesListCallback(gameManagers) {
         tdMovesNumber.appendTo(tr);
 
         tr.appendTo(gamesTable);
-    });
-
+        
+    }
     var tr = $('.tableBody tr');
     for (var i = 0; i < tr.length; i++) {
-        //tr[i].onclick = createGameDialog;
+        tr[i].onclick = createGameDialog;
     }
 }
 function clearFileInput() {
-    document.getElementById("fileInput").value = "";
+    document.getElementById("fileUploader").value = "";
 }
 function getUserName(){
     var result="";
@@ -167,3 +162,101 @@ function refreshUserListCallback(users) {
         tr.appendTo(usersTable);
     });
 }
+
+function createGameDialog(event) {
+    var td = event.currentTarget.children[0];
+    var number = td.innerText;
+    $.ajax
+    (
+        {
+            url: GAMES_LIST,
+            data: {
+                action: 'roomDetails',
+                id: number
+            },
+            type: 'GET',
+            success: createGameDialogCallback
+        }
+    )
+}
+
+function createGameDialogCallback(json) {
+    var div = $('.dialogDiv')[0];
+    div.style.display = "block";
+    var playersNamesDiv = $('.playersNames');
+    var i;
+    var key = json.id;
+    var creatorName = json.creatorName;
+    var gameName = json.gameTitle;
+    var boardSize = json.rows + " X " + json.cols;
+    var rounds = json.moves;
+    var playerNumber = json.registeredPlayers + " / " + json.requiredPlayers
+
+    $('.key').text("Game id: " + key + ".");
+    $('.creatorName').text("Game Creator: " + creatorName + ".");
+    $('.gameName').text("Game Title: " + gameName);
+    $('.boardSize').text("Map size: " + boardSize);
+    $('.moves').text("Round number: " + rounds);
+    $('.playerNumber').text("Players : " + playerNumber);
+    for (i = 0; i < json.registeredPlayers; i++) {
+        var playerDiv = $(document.createElement('div'));
+        playerDiv.addClass('playerDiv');
+        playerDiv.appendTo(playersNamesDiv);
+    }
+
+    var playerDivs = $('.playerDiv');
+    for (i = 0; i < json.registeredPlayers; i++) {
+        playerDivs[i].innerHTML = (+i + 1) + '. ' + json.activePlayers[i].playerName + '.';
+    }
+
+    //createBoard(json.rows, json.cols);
+}
+
+function removeGameDialog() {
+    $('.dialogDiv')[0].style.display = "none";
+}
+
+function joinGameClicked() {
+    var name = getUserName();
+    var roomId = getRoomId();
+    $.ajax
+    (
+        {
+            url: GAMES_LIST,
+            data: {
+                action: 'joinRoom',
+                user: name,
+                roomId: roomId
+            },
+            type: 'GET',
+            success: joinGameClickedCallback
+        }
+    );
+}
+
+function joinGameClickedCallback(json) {
+
+    if (json.isLoaded)
+    {
+        //window.location = "GameRoom.html";
+        alert("Yo");
+    }
+    else {
+        alert(json.errorMessage);
+    }
+}
+
+function getRoomId() {
+    var string = $('.key').text();
+    var result = +0;
+    var i = 9;
+    var temp = +string[i];
+    while (!isNaN(temp)) // while temp is a number..
+    {
+        result = result * 10 + temp;
+        i++;
+        temp = +string[i];
+    }
+    return result;
+}
+

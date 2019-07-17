@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class GameManager implements Serializable {
+    public String creatorName;
     private String currentPlayerName = "None";
     private int ID;
     private int roundNumber=1;
@@ -24,6 +25,8 @@ public class GameManager implements Serializable {
     private GameDescriptor gameDescriptor;
     private Player currentPlayerTurn=null;
     private Army   selectedArmyForce=null;
+    private GameStatus status;
+
 
     private transient EventListener eventListener;
     private Queue<Player> playersTurns;
@@ -31,6 +34,7 @@ public class GameManager implements Serializable {
     private Stack<RoundHistory> replayStack = new Stack<>();  //Bonus #2
 
     public GameManager(GameDescriptor gameDes) {
+        creatorName = gameDes.getPlayersList().get(0).getPlayerName();
         ID = ++gamesIDCounter;
         gameDescriptor = gameDes;
         playersTurns = new ArrayBlockingQueue<>(gameDescriptor.getPlayersList().size());
@@ -38,6 +42,7 @@ public class GameManager implements Serializable {
         roundsHistory = new Stack<>();
         roundsHistory.push(new RoundHistory(gameDescriptor,roundNumber));
         gameTitle = gameDescriptor.getGameTitle();
+        status = GameStatus.WaitingForPlayers;
     }
 
     public void setEventListenerHandler(EventHandler eventHandler) {
@@ -540,5 +545,12 @@ public class GameManager implements Serializable {
 
     private Territory getTerritoryFromSpecificTime(RoundHistory roundHistory,Integer territoryID){
         return roundHistory.getMapHistory().get(territoryID);
+    }
+    public GameStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(GameStatus status) {
+        this.status = status;
     }
 }
