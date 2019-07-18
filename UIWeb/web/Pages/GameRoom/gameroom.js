@@ -115,15 +115,15 @@ function createGameBoard(gameBoardData){
 
             var territoryID = $(document.createElement('div'));
             territoryID.addClass('id_Data');
-            territoryID.text(gameBoardData.territoryMap[id_index].ID);
+            territoryID.text("ID: " + gameBoardData.territoryMap[id_index].ID);
 
             var territoryArmyThreshold = $(document.createElement('div'));
             territoryArmyThreshold.addClass('armyThreshold_Data');
-            territoryArmyThreshold.text(gameBoardData.territoryMap[id_index].armyThreshold);
+            territoryArmyThreshold.text("Army Threshold: " + gameBoardData.territoryMap[id_index].armyThreshold);
 
             var territoryProfit = $(document.createElement('div'));
             territoryProfit.addClass('profitData');
-            territoryProfit.text(gameBoardData.territoryMap[id_index].profit);
+            territoryProfit.text("Profit: " + gameBoardData.territoryMap[id_index].profit);
 
             territoryData.append(territoryID,territoryArmyThreshold,territoryProfit);
             territoryData.appendTo(territorySquare);
