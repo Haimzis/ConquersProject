@@ -20,6 +20,17 @@ body{
     margin-right: 30px;
 }
 
+.Territory{
+    border: 1px black solid;
+    width: 50px;
+    transition: background 0.2s ease;
+}
+
+.Territory:hover {
+    background: antiquewhite;
+    cursor: pointer;
+}
+
 .leaveGame:hover {
     color: blueviolet;
     cursor: pointer;
