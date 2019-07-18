@@ -31,7 +31,6 @@ public class CreateGameServlet extends HttpServlet {
             out.println(gson.toJson(new LoadGameStatus(true, "")));
             RoomDescriptor newRoom = new RoomDescriptor(engine.newGame(descriptor), SessionUtils.getUsername(request));
             roomsManager.addNewRoom(newRoom);
-
         } catch (invalidInputException e) {
             out.println(gson.toJson(new LoadGameStatus(false, e.getMessage())));
         }

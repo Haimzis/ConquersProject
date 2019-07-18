@@ -196,7 +196,7 @@ function createGameDialogCallback(json) {
     $('.creatorName').text("Game Creator: " + creatorName + ".");
     $('.gameName').text("Game Title: " + gameName);
     $('.boardSize').text("Map size: " + boardSize);
-    $('.moves').text("Round number: " + rounds);
+    $('.moves').text("Rounds number: " + rounds);
     $('.playerNumber').text("Players : " + playerNumber);
     for (i = 0; i < json.registeredPlayers; i++) {
         var playerDiv = $(document.createElement('div'));

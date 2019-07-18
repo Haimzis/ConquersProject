@@ -29,6 +29,7 @@ public class GameDescriptor implements Serializable {
     private List<Player> playersList;
     private int maxPlayers;
 
+
     public int getInitialFunds() {
         return initialFunds;
     }
@@ -363,5 +364,12 @@ public class GameDescriptor implements Serializable {
     }
     public int getMaxPlayers() {
         return maxPlayers;
+    }
+    public int getDefaultThreshold() {
+        return defaultThreshold;
+    }
+
+    public int getDefaultProfit() {
+        return defaultProfit;
     }
 }
