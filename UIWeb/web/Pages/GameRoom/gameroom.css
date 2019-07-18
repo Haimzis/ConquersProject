@@ -108,3 +108,10 @@ body{
     color: burlywood;
     font-style: italic;
 }
+
+div#chatArea {
+    background-color: white;
+    min-height: 300px;
+    margin-left: 2%;
+    margin-right: 2%;
+}
