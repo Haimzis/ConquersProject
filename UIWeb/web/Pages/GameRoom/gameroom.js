@@ -89,3 +89,40 @@ var territoryMapData = data.territoryMap;
 var activePlayers = data.playersList;
 
 }
+
+function createGameBoard(gameBoardData){
+    var board = $('.boardBody');
+    board.contents().remove();
+    var rows = gameBoardData.rows;
+    var columns= gameBoardData.columns;
+
+    for(var i=0; i<rows; i++){
+        var rowTable =$(document.createElement('tr'));
+        rowTable.addClass('row');
+        rowTable.appendTo(board);
+        for(var j=0;j<columns;i++){
+            var territorySquare =$(document.createElement('td'));
+            territorySquare.addClass('Territory');
+            territorySquare.attr('TerritoryID', j); //maybe j should start from 1
+            var territoryData = $(document.createElement('territoryDataDiv'));
+            var territoryID = $(document.createElement('div'));
+            territoryID.addClass('territoryData');
+            territoryID.text("ID");
+            territoryData.appendTo(territoryData);
+
+            var territoryArmyThreshold = $(document.createElement('div'));
+            territoryArmyThreshold.addClass('territoryData');
+            territoryArmyThreshold.text("ArmyThreshold");
+            territoryData.appendTo(territoryData);
+
+            var territoryProfit = $(document.createElement('div'));
+            territoryProfit.addClass('territoryData');
+            territoryProfit.text("ID");
+            territoryProfit.appendTo(territoryData);
+
+            territoryData.appendTo(territorySquare);
+            territorySquare.appendTo(rowTable);
+        }
+    }
+
+}
