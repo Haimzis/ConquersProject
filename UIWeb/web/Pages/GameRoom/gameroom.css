@@ -1,0 +1,26 @@
+body{
+    background: aliceblue;
+    margin: 0;
+    min-width: 750px;
+}
+
+.toolBar{
+    height: 50px;
+    background: gainsboro;
+    margin-bottom: 5%;
+}
+
+.toolbarContent {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.leaveGame {
+    margin-right: 30px;
+}
+
+.leaveGame:hover {
+    color: blueviolet;
+    cursor: pointer;
+}

@@ -5,10 +5,18 @@ var userName;
 var currentTurn = 0;
 var isMyTurn = false;
 var refreshRate = 2000; //milli seconds
+var roundNumber;
+var gameTitle;
+var initialFunds;
+var totalCycles;
+var unitData;
+var territoryMapData;
+var activePlayers;
 
 window.onload = function () {
     //setInterval(gameStatus, refreshRate);
     getGameDetails();
+
 };
 
 function onLeaveGameClick()
@@ -72,22 +80,20 @@ function getGameDetails() {
                 action: 'singleGameDetails'
             },
             type: 'GET',
-            success: updateGameDetails
+            success: setGameDetails
         }
     )
 }
 
-function updateGameDetails(data)  {
-var roundNumber = data.roundNumber;
-var gameTitle = data.gameTitle;
-var initialFunds = data.initialFunds;
-var totalCycles = data.totalCycles;
-var cols = data.columns;
-var rows =  data.rows;
-var unitData = data.unitMap;
-var territoryMapData = data.territoryMap;
-var activePlayers = data.playersList;
-
+function setGameDetails(data)  {
+roundNumber = data.roundNumber;
+gameTitle = data.gameTitle;
+initialFunds = data.initialFunds;
+totalCycles = data.totalCycles;
+unitData = data.unitMap;
+territoryMapData = data.territoryMap;
+activePlayers = data.playersList;
+createGameBoard(data);
 }
 
 function createGameBoard(gameBoardData){
@@ -100,7 +106,7 @@ function createGameBoard(gameBoardData){
         var rowTable =$(document.createElement('tr'));
         rowTable.addClass('row');
         rowTable.appendTo(board);
-        for(var j=0;j<columns;i++){
+        for(var j=0;j<columns;j++){
             var territorySquare =$(document.createElement('td'));
             territorySquare.addClass('Territory');
             territorySquare.attr('TerritoryID', j); //maybe j should start from 1
