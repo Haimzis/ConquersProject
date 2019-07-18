@@ -165,9 +165,9 @@ th {
     font-size: 14px;
     margin-top: 11px;
     position: absolute;
-    bottom: 100px;
-    left: 30px;
-    width: 100px;
+    bottom: 0px;
+    left: 75px;
+    width: 120px;
 }
 
 .dialogButton {

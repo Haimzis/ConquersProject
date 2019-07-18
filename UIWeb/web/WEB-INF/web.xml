@@ -16,6 +16,14 @@
         <servlet-name>CreateGameServlet</servlet-name>
         <servlet-class>Server.Servlets.CreateGameServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GamesServlet</servlet-name>
+        <servlet-class>Server.Servlets.GamesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SingleGameServlet</servlet-name>
+        <servlet-class>Server.Servlets.SingleGameServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -31,6 +39,15 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateGameServlet</servlet-name>
+        <url-pattern>/uploadFile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GamesServlet</servlet-name>
         <url-pattern>/games</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SingleGameServlet</servlet-name>
+        <url-pattern>/singleGame</url-pattern>
+    </servlet-mapping>
+
 </web-app>

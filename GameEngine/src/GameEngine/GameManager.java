@@ -24,6 +24,8 @@ public class GameManager implements Serializable {
     private GameDescriptor gameDescriptor;
     private Player currentPlayerTurn=null;
     private Army   selectedArmyForce=null;
+    private GameStatus status;
+
 
     private transient EventListener eventListener;
     private Queue<Player> playersTurns;
@@ -33,11 +35,12 @@ public class GameManager implements Serializable {
     public GameManager(GameDescriptor gameDes) {
         ID = ++gamesIDCounter;
         gameDescriptor = gameDes;
-        playersTurns = new ArrayBlockingQueue<>(gameDescriptor.getPlayersList().size());
+        playersTurns = new ArrayBlockingQueue<>(gameDescriptor.getMaxPlayers());
         loadPlayersIntoQueueOfTurns();
         roundsHistory = new Stack<>();
         roundsHistory.push(new RoundHistory(gameDescriptor,roundNumber));
         gameTitle = gameDescriptor.getGameTitle();
+        status = GameStatus.WaitingForPlayers;
     }
 
     public void setEventListenerHandler(EventHandler eventHandler) {
@@ -540,5 +543,12 @@ public class GameManager implements Serializable {
 
     private Territory getTerritoryFromSpecificTime(RoundHistory roundHistory,Integer territoryID){
         return roundHistory.getMapHistory().get(territoryID);
+    }
+    public GameStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(GameStatus status) {
+        this.status = status;
     }
 }

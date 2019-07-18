@@ -27,6 +27,7 @@ public class GameDescriptor implements Serializable {
     private Map<Integer,Territory> territoryMap;
     private Map<String , Unit> unitMap;
     private List<Player> playersList;
+    private int maxPlayers;
 
     public int getInitialFunds() {
         return initialFunds;
@@ -213,6 +214,8 @@ public class GameDescriptor implements Serializable {
         }
         if(gameType.equals(DYNAMIC_MULTI_PLAYER)) {
             gameTitle = descriptor.getDynamicPlayers().getGameTitle();
+            this.playersList  = new ArrayList<>();
+            this.maxPlayers = descriptor.getDynamicPlayers().getTotalPlayers().intValue();
         }
     }
     private static Generated.GameDescriptor deserializeFrom(Path path) throws JAXBException {
@@ -353,5 +356,12 @@ public class GameDescriptor implements Serializable {
     }
     public String getLastKnownGoodString() {
         return lastKnownGoodString;
+    }
+
+    public int getCurrentPlayersInGame(){
+        return this.playersList.size();
+    }
+    public int getMaxPlayers() {
+        return maxPlayers;
     }
 }
