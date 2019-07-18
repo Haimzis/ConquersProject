@@ -111,8 +111,10 @@ function createGameBoard(gameBoardData){
             var territorySquare =$(document.createElement('td'));
             territorySquare.addClass('Territory');
             territorySquare.attr('TerritoryID', j); //maybe j should start from 1
-            var territoryData = $(document.createElement('territoryDataDiv'));
+            var territoryData = $(document.createElement('div'));
+            territoryData.addClass('territoryDataDiv');
 
+            //territory data members
             var territoryID = $(document.createElement('div'));
             territoryID.addClass('id_Data');
             territoryID.text(gameBoardData.territoryMap[id_index].ID);
