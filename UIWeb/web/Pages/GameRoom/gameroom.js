@@ -110,7 +110,7 @@ function createGameBoard(gameBoardData){
         for(var j=0;j<columns;j++){
             var territorySquare =$(document.createElement('td'));
             territorySquare.addClass('Territory');
-            territorySquare.attr('TerritoryID', j); //maybe j should start from 1
+            territorySquare.attr('TerritoryID', gameBoardData.territoryMap[id_index].ID); //maybe j should start from 1
             var territoryData = $(document.createElement('div'));
             territoryData.addClass('territoryDataDiv');
 
@@ -133,5 +133,4 @@ function createGameBoard(gameBoardData){
             id_index++;
         }
     }
-
 }
