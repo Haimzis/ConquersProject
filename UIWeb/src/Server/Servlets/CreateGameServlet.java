@@ -3,7 +3,6 @@ package Server.Servlets;
 import Exceptions.invalidInputException;
 import GameEngine.GameDescriptor;
 import GameEngine.GameEngine;
-import GameObjects.Player;
 import Server.Utils.*;
 import com.google.gson.Gson;
 
@@ -30,16 +29,11 @@ public class CreateGameServlet extends HttpServlet {
         try {
             descriptor = engine.loadXML(request.getPart("xml").getInputStream(), request.getPart("xml").getSubmittedFileName());
             out.println(gson.toJson(new LoadGameStatus(true, "")));
-            Player host = engine.createPlayerFromUser(SessionUtils.getUsername(request), ServletUtils.ID++ , descriptor.getInitialFunds());
-            descriptor.insertNewPlayer(host);
-            RoomDescriptor newRoom = new RoomDescriptor(engine.newGame(descriptor));
-            newRoom.activePlayers.add(host);
+            RoomDescriptor newRoom = new RoomDescriptor(engine.newGame(descriptor), SessionUtils.getUsername(request));
             roomsManager.addNewRoom(newRoom);
-            System.out.println("Manager created , host inserted");
 
         } catch (invalidInputException e) {
             out.println(gson.toJson(new LoadGameStatus(false, e.getMessage())));
-            System.out.println("Manager didnt created , host didnt inserted");
         }
     }
 

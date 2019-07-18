@@ -238,8 +238,7 @@ function joinGameClickedCallback(json) {
 
     if (json.isLoaded)
     {
-        //window.location = "GameRoom.html";
-        alert("Yo");
+        window.location = "../GameRoom/gameroom.html";
     }
     else {
         alert(json.errorMessage);

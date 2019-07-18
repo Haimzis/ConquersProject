@@ -59,9 +59,9 @@ public class GamesServlet extends HttpServlet {
             room.checkStatus();
             if(room.status.equals(GameStatus.Running)) {
                 System.out.println("Game " + gameId +" has started!");
-                //Set the Game Manager players list
+                //Set the Game Manager players list and set it to running
                 manager.getGameDescriptor().setPlayersList(room.activePlayers);
-                roomsManager.removeRoom(gameId);
+                manager.setStatus(GameStatus.Running);
             }
         } else { //Game is running
             out.println(gson.toJson(new LoadGameStatus(false , "Game is running")));

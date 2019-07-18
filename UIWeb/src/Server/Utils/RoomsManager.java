@@ -21,4 +21,13 @@ public class RoomsManager {
     public RoomDescriptor getRoom(int id) {
         return activeRooms.get(id-1);
     }
+    public RoomDescriptor getRoomByUserName(String userName) {
+        RoomDescriptor[] result = new RoomDescriptor[1];
+        activeRooms.forEach(roomDescriptor -> {
+            if(roomDescriptor.hasPlayerByName(userName)) {
+                result[0] = roomDescriptor;
+            }
+        });
+        return result[0];
+    }
 }
