@@ -13,11 +13,6 @@ public class RoomsManager {
     public List<RoomDescriptor> getActiveRooms() {
         return activeRooms;
     }
-
-    public void removeRoom(int id) {
-        activeRooms.remove(id-1);
-    }
-
     public RoomDescriptor getRoom(int id) {
         return activeRooms.get(id-1);
     }
