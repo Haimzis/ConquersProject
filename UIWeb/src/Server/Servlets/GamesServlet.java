@@ -3,10 +3,7 @@ package Server.Servlets;
 import GameEngine.GameEngine;
 import GameObjects.GameStatus;
 import GameObjects.Player;
-import Server.Utils.LoadGameStatus;
-import Server.Utils.RoomDescriptor;
-import Server.Utils.RoomsManager;
-import Server.Utils.ServletUtils;
+import Server.Utils.*;
 import com.google.gson.Gson;
 import GameEngine.GameManager;
 
@@ -36,6 +33,9 @@ public class GamesServlet extends HttpServlet {
             case "roomDetails":
                 int roomId= Integer.parseInt(request.getParameter("id"));
                 sendRoomDetails(roomId,response);
+                break;
+            case "roomDetailsByUser":
+                sendRoomDetails(request , response);
                 break;
         }
     }
@@ -73,6 +73,13 @@ public class GamesServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         Gson gson = new Gson();
         out.println(gson.toJson(ServletUtils.getRoomsManager(getServletContext()).getRoom(roomId)));
+    }
+    private void sendRoomDetails(HttpServletRequest request ,HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        String userName = SessionUtils.getUsername(request);
+        out.println(gson.toJson(ServletUtils.getRoomsManager(getServletContext()).getRoomByUserName(userName)));
     }
 
     private void showGamesList(HttpServletResponse response) throws IOException {

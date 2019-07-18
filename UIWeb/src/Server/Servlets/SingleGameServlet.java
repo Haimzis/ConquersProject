@@ -2,10 +2,7 @@ package Server.Servlets;
 
 import GameEngine.GameManager;
 import GameObjects.GameStatus;
-import Server.Utils.GameStatusMessage;
-import Server.Utils.RoomsManager;
-import Server.Utils.ServletUtils;
-import Server.Utils.SessionUtils;
+import Server.Utils.*;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -35,7 +32,20 @@ public class SingleGameServlet extends HttpServlet {
             case "gameStatus":
                 returnStatus(request, response);
                 break;
+            case "singleGameDetails":
+                sendSingleGameDetails(request , response);
+                break;
         }
+    }
+
+    private void sendSingleGameDetails(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        out.println(gson.toJson(new SingleSimplifiedGameManager(ServletUtils
+                .getRoomsManager(request.getServletContext())
+                .getRoomByUserName(SessionUtils.getUsername(request))
+                .getManager())));
     }
 
     private void returnStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {

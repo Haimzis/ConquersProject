@@ -1,13 +1,14 @@
 var CURR_GAME = buildUrlWithContextPath("singleGame");
+var GAMES_LIST = buildUrlWithContextPath("games");
 var status;
 var userName;
 var currentTurn = 0;
 var isMyTurn = false;
-var isFirstStatus = true;
 var refreshRate = 2000; //milli seconds
 
 window.onload = function () {
     //setInterval(gameStatus, refreshRate);
+    getGameDetails();
 };
 
 function onLeaveGameClick()
@@ -61,4 +62,30 @@ function handleStatus(json)
             }
     }
     //$('.gameStatus').text('Game status: ' + status);
+}
+function getGameDetails() {
+    $.ajax
+    (
+        {
+            url: CURR_GAME,
+            data: {
+                action: 'singleGameDetails'
+            },
+            type: 'GET',
+            success: updateGameDetails
+        }
+    )
+}
+
+function updateGameDetails(data)  {
+var roundNumber = data.roundNumber;
+var gameTitle = data.gameTitle;
+var initialFunds = data.initialFunds;
+var totalCycles = data.totalCycles;
+var cols = data.columns;
+var rows =  data.rows;
+var unitData = data.unitMap;
+var territoryMapData = data.territoryMap;
+var activePlayers = data.playersList;
+
 }
