@@ -17,10 +17,66 @@
     </div>
 </div>
 <div class="mainBar">
-    <div class="board">
-        <div class="boardBody">
+    <div class="mainDiv" >
+            <div class = "row">
+                <h2 class="PlayerTurn">Player Turn: </h2>
+                <h2 class="currentPlayerName"></h2>
+            </div>
 
+        <div class="leftDiv">
+            <div class="playerStats">
+                <div class="currentPlayerStats">Your Stats:</div>
+                <div class="otherPlayersStats">Other Players Stats:</div>
+            </div>
+
+            <div class="gameProgressDetails">
+                <div class="turnsLeft">turnsLeft:</div>
+                <div class="playersNumber">
+                    <span>Players: </span>
+                    <span class="registeredPlayers"></span>
+                    <span> / </span>
+                    <span class="requiredPlayers"></span>
+                </div>
+            </div>
+            <div class="actions">
+                <div class="action" onclick="onEndTurnClick()">End Turn</div>
+            </div>
         </div>
+
+        <div class="board">
+            <div class="boardBody">
+
+            </div>
+        </div>
+
+        <div class="chat">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-1">
+                        <div class="sidebar">
+                            <h4>Online</h4>
+                            <div class="clearfix">
+                                <div class="input">
+                                    <ul id="userslist">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="content">
+                            <div id="chatwindow">
+                                <h4>Chat</h4>
+                                <div id="chatarea" class="span6"></div>
+                                <form id="chatform" method="POST" action="sendChat">
+                                    <input type="text" id="userstring" name="userstring"/>
+                                    <input type="submit" value="Send"/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
 </div>
 </body>
