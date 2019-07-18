@@ -102,6 +102,7 @@ function createGameBoard(gameBoardData){
     var rows = gameBoardData.rows;
     var columns= gameBoardData.columns;
 
+    var id_index= 1;
     for(var i=0; i<rows; i++){
         var rowTable =$(document.createElement('tr'));
         rowTable.addClass('row');
@@ -111,23 +112,23 @@ function createGameBoard(gameBoardData){
             territorySquare.addClass('Territory');
             territorySquare.attr('TerritoryID', j); //maybe j should start from 1
             var territoryData = $(document.createElement('territoryDataDiv'));
+
             var territoryID = $(document.createElement('div'));
-            territoryID.addClass('territoryData');
-            territoryID.text("ID");
-            territoryData.appendTo(territoryData);
+            territoryID.addClass('id_Data');
+            territoryID.text(gameBoardData.territoryMap[id_index].ID);
 
             var territoryArmyThreshold = $(document.createElement('div'));
-            territoryArmyThreshold.addClass('territoryData');
-            territoryArmyThreshold.text("ArmyThreshold");
-            territoryData.appendTo(territoryData);
+            territoryArmyThreshold.addClass('armyThreshold_Data');
+            territoryArmyThreshold.text(gameBoardData.territoryMap[id_index].armyThreshold);
 
             var territoryProfit = $(document.createElement('div'));
-            territoryProfit.addClass('territoryData');
-            territoryProfit.text("ID");
-            territoryProfit.appendTo(territoryData);
+            territoryProfit.addClass('profitData');
+            territoryProfit.text(gameBoardData.territoryMap[id_index].profit);
 
+            territoryData.append(territoryID,territoryArmyThreshold,territoryProfit);
             territoryData.appendTo(territorySquare);
             territorySquare.appendTo(rowTable);
+            id_index++;
         }
     }
 
