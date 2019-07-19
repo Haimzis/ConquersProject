@@ -209,9 +209,36 @@ function createGameDialogCallback(json) {
         playerDivs[i].innerHTML = (+i + 1) + '. ' + json.activePlayers[i].playerName + '.';
     }
 
-    //createBoard(json.rows, json.cols);
+    createGameBoard(json.rows, json.cols);
 }
+function createGameBoard(rows,cols){
+    var board = $('.board');
+    board.contents().remove();
 
+    var id_index= 1;
+    for(var i=0; i<rows; i++){
+        var rowTable =$(document.createElement('tr'));
+        rowTable.addClass('row');
+        rowTable.appendTo(board);
+        for(var j=0;j<cols;j++){
+            var territorySquare =$(document.createElement('td'));
+            territorySquare.addClass('Territory');
+
+            var territoryData = $(document.createElement('div'));
+            territoryData.addClass('territoryDataDiv');
+
+            //territory data members
+            var territoryID = $(document.createElement('div'));
+            territoryID.addClass('id_Data');
+            territoryID.text(id_index);
+
+            territoryData.append(territoryID);
+            territoryData.appendTo(territorySquare);
+            territorySquare.appendTo(rowTable);
+            id_index++;
+        }
+    }
+}
 function removeGameDialog() {
     $('.dialogDiv')[0].style.display = "none";
 }

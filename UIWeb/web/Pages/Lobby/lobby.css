@@ -137,6 +137,7 @@ th {
     margin-left: 40px;
 }
 
+
 .details {
     display: inline-block;
     vertical-align:top;
@@ -150,11 +151,11 @@ th {
     cursor: pointer;
 }
 
-.rowDiv{
+tr{
     display: table-row;
 }
 
-.square{
+.Territory{
     display: inline-block;
     border: 1px black solid;
     width: 30px;
@@ -185,45 +186,6 @@ th {
     background: gainsboro;
 }
 
-.rowBlocks {
-    display: inline-block;
-    position: relative;
-    vertical-align: top;
-    top: 15px;
-}
-
-.colBlocks {
-    display: inline-block;
-    margin-bottom: 5px;
-}
-
-.rowBlock {
-    display: block;
-    height: 30px;
-    text-align: center;
-}
-
-.colBlock{
-    display: inline-block;
-    width: 30px;
-    text-align: center;
-    border: 1px solid transparent;
-}
-
-.rowSquares {
-    display: inline-block;
-}
-
-.colHint{
-    font-size: 14px;
-    margin-top: 15px;
-}
-
-.rowHint {
-    font-size: 14px;
-    margin-right: 5px;
-    display: inline-block;
-}
 
 .image {
     height: 50px;
