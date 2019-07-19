@@ -458,6 +458,9 @@ public class GameManager implements Serializable {
     public boolean isTargetTerritoryValid() {
         return isTargetTerritoryOneBlockAway();
     }
+    public boolean isFirstRound(){
+        return roundNumber == 1;
+    }
     //Returns True: if yes. Else False.
     private boolean isSelectedArmyForceBigEnough() {
          return selectedArmyForce.getTotalPower() >= selectedTerritoryByPlayer.getArmyThreshold();

@@ -12,7 +12,7 @@
         <span class="userNameSpan">Hi, Ran</span>
         <span class="gameStatus">Game status: Waiting for players...</span>
         <span class="logoSpan">
-            <img src="nonogramLogo.JPG" class="image"/>
+            <img src="../../Resources/logo.jpg" class="logoImage"/>
         </span>
     </div>
 </div>
@@ -25,8 +25,27 @@
 
         <div class="leftDiv">
             <div class="playerStats">
-                <div class="currentPlayerStats">Your Stats:</div>
-                <div class="otherPlayersStats">Other Players Stats:</div>
+                <span class="currentPlayerStats">Your Stats:</span>
+                <div class="ownPlayerStatsTable">
+                    <table id="ownPlayerTable">
+                        <tbody ><tr>
+                            <th>Username</th>
+                            <th>Turings</th>
+                            <th>Color</th>
+                        </tr>
+                        </tbody></table>
+                </div>
+                <span class="otherPlayersStats">Other Players Stats:</span>
+                <div class="otherPlayersStatsTable">
+                    <table id="otherPlayerTable">
+                        <tbody><tr>
+                            <th>Username</th>
+                            <th>Turings</th>
+                            <th>Color</th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="gameProgressDetails">
