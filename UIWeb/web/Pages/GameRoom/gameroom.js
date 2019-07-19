@@ -1,8 +1,6 @@
 var CURR_GAME = buildUrlWithContextPath("singleGame");
 var GAMES_LIST = buildUrlWithContextPath("games");
 var status;
-var userName;
-var currentTurn = 0;
 var isMyTurn = false;
 var refreshRate = 2000; //milli seconds
 var roundNumber;
@@ -12,11 +10,13 @@ var totalCycles;
 var unitData;
 var territoryMapData;
 var activePlayers;
+var interval;
+var showWinner;
 
 window.onload = function () {
-    //setInterval(gameStatus, refreshRate);
+    setInterval(gameStatus, refreshRate);
     getGameDetails();
-
+    setInterval(updateOnlineUsers, refreshRate);
 };
 
 function onLeaveGameClick()
@@ -52,25 +52,51 @@ function gameStatus()
     )
 }
 
-function handleStatus(json)
-{
-
+function handleStatus(json) {
     var newStatus = json.status;
     var playerTurn = json.currentPlayerTurnName;
-
     switch(newStatus)
     {
         case 'WaitingForPlayers':
             status = newStatus;
+            $('.currentPlayerName')[0].innerHTML = playerTurn;
             break;
         case 'Running':
-            if (status === 'WaitingForPlayers')
-            {
-
+            if (status === 'WaitingForPlayers') {
+                alert("Game started");
+                startGame();
             }
+            status = newStatus;
+            break;
+        case "Finished":
+            isMyTurn = false;
+            if (showWinner) {
+                //showEndGameDialog();
+                showWinner = false;
+            }
+            status = newStatus;
+            break;
     }
-    //$('.gameStatus').text('Game status: ' + status);
+    $('.gameStatus').text('Game status: ' + status);
 }
+
+function startGame() {
+    $.ajax
+    (
+        {
+            url: CURR_GAME,
+            data: {
+                action: 'startGame'
+            },
+            type: 'GET',
+            success: startGameCallBack
+        }
+    )
+}
+function startGameCallBack() {
+    $('.currentPlayerName')[0].innerHTML = activePlayers[0].playerName;
+}
+
 function getGameDetails() {
     $.ajax
     (
@@ -85,15 +111,58 @@ function getGameDetails() {
     )
 }
 
+function updateOnlineUsers() {
+    $.ajax
+    (
+        {
+            url: CURR_GAME,
+            data: {
+                action: 'singleGameOnlinePlayers'
+            },
+            type: 'GET',
+            success: updateOnlineUsersCallBack
+        }
+    )
+}
+
+function updateOnlineUsersCallBack(players) {
+    activePlayers = players;
+    var usersList = $("#usersList");
+    usersList.contents().remove();
+    activePlayers.forEach(function (player) {
+        var playerLi = $(document.createElement('li'));
+        playerLi.attr('PlayerName', player.playerName);
+        playerLi.addClass('onlinePlayer');
+        playerLi.text(player.playerName);
+        playerLi.appendTo(usersList);
+    })
+}
+
 function setGameDetails(data)  {
-roundNumber = data.roundNumber;
-gameTitle = data.gameTitle;
-initialFunds = data.initialFunds;
-totalCycles = data.totalCycles;
-unitData = data.unitMap;
-territoryMapData = data.territoryMap;
-activePlayers = data.playersList;
-createGameBoard(data);
+    roundNumber = data.roundNumber;
+    gameTitle = data.gameTitle;
+    initialFunds = data.initialFunds;
+    totalCycles = data.totalCycles;
+    unitData = data.unitMap;
+    territoryMapData = data.territoryMap;
+    createGameBoard(data);
+    disableBoard();
+    disableButtons();
+}
+
+function disableBoard() {
+    $(".board").prop('disabled',true);
+}
+
+function disableButtons() {
+    $(".actions").prop('disabled',true);
+}
+function enableBoard() {
+    $(".board").prop('disabled',false);
+}
+
+function enableButtons() {
+    $(".actions").prop('disabled',false);
 }
 
 function createGameBoard(gameBoardData){
@@ -131,6 +200,12 @@ function createGameBoard(gameBoardData){
             territoryData.appendTo(territorySquare);
             territorySquare.appendTo(rowTable);
             id_index++;
+            territorySquare.onclick = checkTerritory;
         }
     }
+}
+
+function checkTerritory(territorySquare) {
+    var territory = territorySquare.getAttribute('territoryid');
+
 }

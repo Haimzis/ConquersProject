@@ -3,8 +3,8 @@ package Server.Utils;
 import GameObjects.GameStatus;
 
 public class GameStatusMessage {
-    GameStatus status;
-    String currentPlayerTurnName;
+    private GameStatus status;
+    private String currentPlayerTurnName;
 
     public GameStatusMessage(GameStatus status, String currentPlayerTurnName) {
         this.status = status;

@@ -30,12 +30,46 @@ public class SingleGameServlet extends HttpServlet {
             case "neutralTerritory":
                 break;
             case "gameStatus":
-                returnStatus(request, response);
+                sendStatus(request, response);
                 break;
             case "singleGameDetails":
                 sendSingleGameDetails(request , response);
                 break;
+            case "singleGameOnlinePlayers":
+                sendHowManyPlayersAreOnline(request , response);
+                break;
+            case "endTurnDetails":
+                sendPageDetailsAFterTurn(request, response);
+                break;
+            case "startGame":
+                startTurn(request , response);
+                break;
         }
+    }
+
+    private void startTurn(HttpServletRequest request , HttpServletResponse response) {
+        String userName = SessionUtils.getUsername(request);
+        GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
+        if(manager != null) {
+            manager.nextPlayerInTurn();
+        }
+    }
+
+    private void sendPageDetailsAFterTurn(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        String userName = SessionUtils.getUsername(request);
+        GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
+    }
+
+    private void sendHowManyPlayersAreOnline(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        out.println(gson.toJson(ServletUtils.getRoomsManager(request.getServletContext())
+                .getRoomByUserName(SessionUtils.getUsername(request))
+                .activePlayers));
     }
 
     private void sendSingleGameDetails(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -48,7 +82,7 @@ public class SingleGameServlet extends HttpServlet {
                 .getManager())));
     }
 
-    private void returnStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void sendStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         Gson gson = new Gson();

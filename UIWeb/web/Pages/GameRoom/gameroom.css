@@ -24,6 +24,7 @@ body{
     border: 1px black solid;
     width: 50px;
     transition: background 0.2s ease;
+    text-align: center;
 }
 
 .Territory:hover {
@@ -35,11 +36,86 @@ body{
     color: blueviolet;
     cursor: pointer;
 }
-
-.Territory {
-
+.mainDivBody {
+    margin-bottom: 5px;
+    min-width: 1050px;
+}
+.leftDiv {
+    min-width: 300px;
+    vertical-align: top;
+    display: inline-block;
+    font-size: 24px;
+    margin-left: 1%;
+    border-radius: 14px;
+    background: antiquewhite;
+    box-shadow: -1px 0px 3px 1px;
 }
 
-.boardBody {
+.action{
+    border: 1px solid black;
+    border-radius: 10px;
+    background: cadetblue;
+    text-align: center;
+    box-shadow: 4px 0px 9px 1px;
+    background: cadetblue;
+}
 
+.action:hover {
+    background: aliceblue;
+    cursor: pointer;
+}
+
+.playerStats > div > {
+    margin-bottom: 2px;
+}
+
+.gameProgressDetails {
+    margin-bottom: 10%;
+}
+
+.actions > div {
+    margin-bottom: 6px;
+}
+.board {
+    vertical-align: top;
+    display: inline-block;
+    white-space: nowrap;
+    margin-left: 1%;
+    margin-right: 1%;
+    width: 870px;
+    height: 65vh;
+    min-width: 400px;
+    overflow: auto;
+
+}
+.boardBody {
+    display: table;
+    margin: 0 auto;
+}
+.chat {
+    margin-left: 1%;
+    margin-right: 1%;
+    display: inline-block;
+    height: 500px;
+    width: 245px;
+    float: right;
+    text-align: center;
+    background: rgb(43, 163, 43);
+    opacity: 0.6;
+    border-radius: 15px;
+    box-shadow: 3px 6px 17px 1px;
+    font-size: 20px;
+    color: burlywood;
+    font-style: italic;
+}
+
+div#chatArea {
+    background-color: white;
+    min-height: 300px;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+ul#usersList {
+    text-align: left;
 }
