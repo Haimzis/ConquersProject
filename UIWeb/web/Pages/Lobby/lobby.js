@@ -211,6 +211,8 @@ function createGameDialogCallback(json) {
 
     createGameBoard(json.rows, json.cols);
 }
+//TODO: I need you to send whole information about the board and not just the cols and rows -
+// that was in the gridler and its not enough in this game
 function createGameBoard(rows,cols){
     var board = $('.board');
     board.contents().remove();
