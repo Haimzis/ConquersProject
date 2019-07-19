@@ -2,6 +2,7 @@ package Server.Servlets;
 
 import GameEngine.GameManager;
 import GameObjects.GameStatus;
+import GameObjects.Territory;
 import Server.Utils.*;
 import com.google.gson.Gson;
 
@@ -27,8 +28,6 @@ public class SingleGameServlet extends HttpServlet {
                 break;
             case "retire":
                 break;
-            case "neutralTerritory":
-                break;
             case "gameStatus":
                 sendStatus(request, response);
                 break;
@@ -39,15 +38,57 @@ public class SingleGameServlet extends HttpServlet {
                 sendHowManyPlayersAreOnline(request , response);
                 break;
             case "endTurnDetails":
-                sendPageDetailsAFterTurn(request, response);
+
                 break;
             case "startGame":
-                startTurn(request , response);
+                startGame(request , response);
+                break;
+            case "checkTerritory":
+                checkTerritory(request , response);
+                break;
+            case "selectTerritory":
+                int territoryId = Integer.parseInt(request.getParameter("id"));
+                setSelectedTerritory(territoryId , request);
                 break;
         }
     }
 
-    private void startTurn(HttpServletRequest request , HttpServletResponse response) {
+    private void setSelectedTerritory(int territoryId, HttpServletRequest request) {
+        String userName = SessionUtils.getUsername(request);
+        GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
+        if(manager != null) {
+            manager.setSelectedTerritoryForTurn(manager.getGameDescriptor().getTerritoryMap().get(territoryId));
+        }
+    }
+
+    private void checkTerritory(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName = SessionUtils.getUsername(request);
+        GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        if(manager != null) {
+            Territory selectedTerritory = manager.getSelectedTerritoryByPlayer();
+            if(manager.isTerritoryBelongsCurrentPlayer()) {
+                out.println(gson.toJson(new TerritoryMessage(false , false , true , true , "")));
+            } else {
+                if(manager.isTargetTerritoryValid()) {
+                    if(!manager.isConquered()) {
+                        out.println(gson.toJson(new TerritoryMessage(true , false , false , true , "")));
+                    } else {
+                        out.println(gson.toJson(new TerritoryMessage(false , true , false , true , "")));
+                    }
+                } else {
+                    out.println(gson.toJson(new TerritoryMessage(false
+                            , false
+                            , false
+                            , false
+                            , "Territory " + selectedTerritory.getID() + " Is not valid")));
+                }
+            }
+        }
+    }
+
+    private void startGame(HttpServletRequest request , HttpServletResponse response) {
         String userName = SessionUtils.getUsername(request);
         GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
         if(manager != null) {
@@ -55,13 +96,7 @@ public class SingleGameServlet extends HttpServlet {
         }
     }
 
-    private void sendPageDetailsAFterTurn(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        Gson gson = new Gson();
-        String userName = SessionUtils.getUsername(request);
-        GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
-    }
+
 
     private void sendHowManyPlayersAreOnline(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");

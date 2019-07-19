@@ -1,7 +1,5 @@
 package GameObjects;
 
-import GameEngine.GameEngine;
-
 import java.io.Serializable;
 
 public class Unit implements Serializable {

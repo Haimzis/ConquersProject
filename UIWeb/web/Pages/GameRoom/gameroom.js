@@ -12,6 +12,7 @@ var territoryMapData;
 var activePlayers;
 var interval;
 var showWinner;
+var selectedTerritoryId;
 
 window.onload = function () {
     setInterval(gameStatus, refreshRate);
@@ -95,6 +96,8 @@ function startGame() {
 }
 function startGameCallBack() {
     $('.currentPlayerName')[0].innerHTML = activePlayers[0].playerName;
+    enableButtons();
+    enableBoard();
 }
 
 function getGameDetails() {
@@ -200,12 +203,140 @@ function createGameBoard(gameBoardData){
             territoryData.appendTo(territorySquare);
             territorySquare.appendTo(rowTable);
             id_index++;
-            territorySquare.onclick = checkTerritory;
+        }
+    }
+
+    var tr = $('.boardBody tr td');
+    for (var i = 0; i < tr.length; i++) {
+        tr[i].onclick = setSelectedTerritory;
+    }
+}
+function setSelectedTerritory(territorySquare) {
+    var territoryId = territorySquare.currentTarget.getAttribute('territoryid');
+    selectedTerritoryId = territoryId;
+    console.log("In set selected");
+    $.ajax
+    (
+        {
+            url: CURR_GAME,
+            data: {
+                action: 'selectTerritory',
+                id: territoryId
+            },
+            type: 'GET'
+        }
+    );
+    checkTerritory();
+}
+function checkTerritory() {
+    console.log("In check territory");
+    $.ajax
+    (
+        {
+            url: CURR_GAME,
+            data: {
+                action: 'checkTerritory'
+            },
+            type: 'GET',
+            success: checkTerritoryCallBack
+        }
+    )
+}
+
+function checkTerritoryCallBack(result) {
+    console.log("In check territory callback");
+    if(result.isBelongToCurrentPlayer) {
+        openOwnTerritoryPopup();
+    } else {
+        if(result.isValid) {
+            if(result.isConquered) {
+                openAttackPopup();
+            } else {
+                openNeutralPopup();
+            }
+        } else {
+            alert(result.message);
+        }
+    }
+}
+function openOwnTerritoryPopup() {
+    showPopUp();
+    var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
+    var profit = territoryMapData[selectedTerritoryId].profit;
+    var currentFirePower = territoryMapData[territoryMapData].conquerArmyForce.totalPower;
+    var maxFirePower = territoryMapData[territoryMapData].conquerArmyForce.potentialTotalPower;
+    var mBody = $('.modal-body');
+    var p = $(document.createElement('p'));
+    p.text("Threshold: " + threshHold);
+    p.appendTo(mBody);
+    p.text("Profit: " + profit);
+    p.appendTo(mBody);
+    p.text("Current Firepower on territory: " + currentFirePower);
+    p.appendTo(mBody);
+    p.text("Maximum firepower available: " + maxFirePower);
+    p.appendTo(mBody);
+    mBody = $('.modal-footer');
+    p = $(document.createElement('button'));
+    p.addClass("rehabilitateBtn");
+    p.innerHTML = "Rehabilitate Army";
+    p.appendTo(mBody);
+    p = $(document.createElement('button'));
+    p.addClass("addUnitsBtn");
+    p.innerHTML = "Add units";
+    p.appendTo(mBody);
+}
+
+function openAttackPopup() {
+
+}
+
+function openNeutralPopup() {
+    showPopUp();
+    var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
+    var profit = territoryMapData[selectedTerritoryId].profit;
+    var mBody = $('.modal-body');
+    var p = $(document.createElement('p'));
+    p.text("Threshold: " + threshHold);
+    p.appendTo(mBody);
+    p.text("Profit: " + profit);
+    p.appendTo(mBody);
+
+    var footer = $('.modal-footer');
+    unitData.forEach(function (unit) {
+        var item = $(document.createElement('p'));
+        item.text("Type: " + unit.type);
+        item.appendTo(footer);
+        item.text("Rank: " + unit.rank);
+        item.appendTo(footer);
+        item.text("Cost: " + unit.cost);
+        item.appendTo(footer)
+        item.text("Maximum firepower: " + unit.maxFirePower);
+        item.appendTo(footer);
+        item.text("Competence Reduction: " + unit.competenceReduction);
+        item.appendTo(footer);
+        item = $(document.createElement('h1'));
+        item.innerHTML = "Buy Units:";
+        item.appendTo(footer);
+        item = $(document.createElement('input'));
+        item.setAttribute('type' , 'text');
+        item.addClass("amountOfUnitsToBuy");
+        item.placeholder = "Enter how many units to buy , then click 'Purchase' ";
+        item.appendTo(footer);
+    })
+}
+
+function showPopUp() {
+    var modal = document.getElementById("myModal");
+    var close = $(".close");
+    modal.contents().remove();
+    close.onclick = function() {
+        modal.style.display = "none";
+    };
+    modal.style.display = "block";
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
         }
     }
 }
 
-function checkTerritory(territorySquare) {
-    var territory = territorySquare.getAttribute('territoryid');
-
-}
