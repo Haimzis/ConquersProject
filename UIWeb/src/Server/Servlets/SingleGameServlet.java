@@ -116,7 +116,7 @@ public class SingleGameServlet extends HttpServlet {
             if(manager.isTerritoryBelongsCurrentPlayer()) {
                 out.println(gson.toJson(new TerritoryMessage(false , false , true , true , "")));
             } else {
-                if(manager.isTargetTerritoryValid() || manager.isFirstRound()) {
+                if(manager.isFirstRound() || manager.isTargetTerritoryValid()) {
                     if(!manager.isConquered()) {
                         out.println(gson.toJson(new TerritoryMessage(true , false , false , true , "")));
                     } else {

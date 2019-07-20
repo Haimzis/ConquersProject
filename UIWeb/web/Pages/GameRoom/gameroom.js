@@ -159,7 +159,7 @@ function updateOnlineUsersCallBack(players) {
         playerLi.addClass('onlinePlayer');
         playerLi.text(player.playerName);
         playerLi.appendTo(usersList);
-    })
+    });
     updateRegisteredPlayersSpan();
 }
 //TODO: Enjoy. fix the error - it supposed to use the information that you toke from the getGameDetails.
@@ -256,7 +256,7 @@ function createOwnPlayerStats(){
     })
 }
 //this function gets player object from the servlet
-function createOwnPlayerStatsTable(playerObject){
+function createOwnPlayerStatsTable(PlayerObject){
     var ownPlayerStatsRow = $(document.createElement('tr'));
 
     var userNameCol =$(document.createElement('td'));
@@ -274,7 +274,7 @@ function createOwnPlayerStatsTable(playerObject){
     var colorCol =$(document.createElement('td'));
     var ownColor = $(document.createElement('div'));
     ownColor.addClass('ownColor');
-    ownColor.css("background-color",playerObject.color);
+    ownColor.css("background-color",PlayerObject.color);
     ownColor.appendTo(colorCol);
 
     $('#ownPlayerTable > tbody:last-child').append(ownPlayerStatsRow);
@@ -406,48 +406,67 @@ function openNeutralPopup() {
     showPopUp();
     var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
     var profit = territoryMapData[selectedTerritoryId].profit;
+    var mHeader = $('.modal-header');
+    var mHeaderTitle = $('#headerTitle');
+    var mBodyTitle = $('#mBodyTitle');
     var mBody = $('.modal-body');
-    var p = $(document.createElement('p'));
-    p.text("Threshold: " + threshHold);
-    p.appendTo(mBody);
-    p.text("Profit: " + profit);
-    p.appendTo(mBody);
 
+    /* HEADER */
+    var p = $(document.createElement('p'));
+    mHeaderTitle.text("Neutral Territory");
+    p.text("Threshold: " + threshHold);
+    p.appendTo(mHeader);
+    p = $(document.createElement('p'));
+    p.text("Profit: " + profit);
+    p.appendTo(mHeader);
+
+    /* BODY */
+    mBodyTitle.text("Select units to purchase: ");
+    var select = $('<select />');
+    var bodyItem = $(document.createElement('p'));
+    bodyItem.addClass("type");
+    bodyItem.appendTo(mBody);
+    bodyItem = $(document.createElement('p'));
+    bodyItem.addClass("rank");
+    bodyItem.appendTo(mBody);
+    bodyItem = $(document.createElement('p'));
+    bodyItem.addClass("purchase");
+    bodyItem.appendTo(mBody);
+    bodyItem = $(document.createElement('p'));
+    bodyItem.addClass("maxFirePower");
+    bodyItem.appendTo(mBody);
+    bodyItem = $(document.createElement('p'));
+    bodyItem.addClass("competenceReduction");
+    bodyItem.appendTo(mBody);
+    for(var unit in unitData) {
+        $('<option/>', {value: unit , text: unitData[unit].type}).addClass("dropDownItem").appendTo(select);
+    }
+    
+    select.appendTo(mBody);
+
+    /* FOOTER */
     var footer = $('.modal-footer');
-    unitData.forEach(function (unit) {
-        var item = $(document.createElement('p'));
-        item.text("Type: " + unit.type);
-        item.appendTo(footer);
-        item.text("Rank: " + unit.rank);
-        item.appendTo(footer);
-        item.text("Cost: " + unit.cost);
-        item.appendTo(footer)
-        item.text("Maximum firepower: " + unit.maxFirePower);
-        item.appendTo(footer);
-        item.text("Competence Reduction: " + unit.competenceReduction);
-        item.appendTo(footer);
-        item = $(document.createElement('h1'));
-        item.innerHTML = "Buy Units:";
-        item.appendTo(footer);
-        item = $(document.createElement('input'));
-        item.setAttribute('type' , 'text');
-        item.addClass("amountOfUnitsToBuy");
-        item.placeholder = "Enter how many units to buy , then click 'Purchase' ";
-        item.appendTo(footer);
-    })
+    var item = $(document.createElement('h1'));
+    item.text("Buy Units: ");
+    item.appendTo(footer);
+    item = $(document.createElement('input'));
+    item.attr('type' , 'text');
+    item.addClass("amountOfUnitsToBuy");
+    item.attr('placeholder', "Enter how many units to buy , then click 'Purchase'");
+    item.appendTo(footer);
 }
 
 function showPopUp() {
-    var modal = document.getElementById("myModal");
+    var modal = $("#myModal");
     var close = $(".close");
-    modal.contents().remove();
+    //modal.contents().remove();
     close.onclick = function() {
-        modal.style.display = "none";
+        modal.hide();
     };
-    modal.style.display = "block";
+    modal.show();
     window.onclick = function(event) {
         if (event.target === modal) {
-            modal.style.display = "none";
+            modal.hide();
         }
     }
 }
