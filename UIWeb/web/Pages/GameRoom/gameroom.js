@@ -116,8 +116,9 @@ function startGameCallBack() {
     $('.currentPlayerName')[0].innerHTML = activePlayers[0].playerName;
     enableButtons();
     enableBoard();
+    setInterval(createOwnPlayerStats,refreshRate);
     setInterval(createOtherPlayersStats , refreshRate);
-    setInterval(createOwnPlayerStats , refreshRate);
+
 }
 
 function getGameDetails() {
@@ -217,9 +218,20 @@ function createOtherPlayersStats(){
     })
 }
 function createOtherPlayersStatsTable(data){
-
     var otherPlayersArr = data;
     var sizeOfArray = otherPlayersArr.length;
+    $('#otherPlayerTable').empty();
+
+    var headingRow = $(document.createElement('tr'));
+    var userNameHeadCol=$(document.createElement('th'));
+    userNameHeadCol.text("Username");
+    var fundsHeadCol=$(document.createElement('th'));
+    fundsHeadCol.text("Turings");
+    var colorHeadCol=$(document.createElement('th'));
+    colorHeadCol.text("Color");
+    headingRow.append(userNameHeadCol,fundsHeadCol,colorHeadCol);
+    $('#otherPlayerTable > tbody:last-child').append(headingRow);
+
     for(var i=0 ;i< sizeOfArray;i++) {
         var otherPlayerStatsRow = $(document.createElement('tr'));
         otherPlayerStatsRow.attr('PlayerID', otherPlayersArr[i].ID); //maybe j should start from 1
@@ -277,6 +289,7 @@ function createOwnPlayerStatsTable(PlayerObject){
     ownColor.css("background-color",PlayerObject.color);
     ownColor.appendTo(colorCol);
 
+    ownPlayerStatsRow.append(userNameCol,fundsCol,colorCol);
     $('#ownPlayerTable > tbody:last-child').append(ownPlayerStatsRow);
 }
 
