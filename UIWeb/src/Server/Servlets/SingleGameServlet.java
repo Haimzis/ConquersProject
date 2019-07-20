@@ -4,6 +4,7 @@ import GameEngine.GameManager;
 import GameObjects.GameStatus;
 import GameObjects.Player;
 import GameObjects.Territory;
+import GameObjects.Unit;
 import Server.Utils.*;
 import com.google.gson.Gson;
 
@@ -58,6 +59,29 @@ public class SingleGameServlet extends HttpServlet {
             case "getOwnPlayerStats":
                 getOwnPlayerStats(request , response);
                 break;
+            case "buyUnits":
+                int howMany = Integer.parseInt(request.getParameter("amount"));
+                String unitType = request.getParameter("unit");
+                buyUnits(howMany, unitType ,  request, response);
+                break;
+
+        }
+    }
+
+    private void buyUnits(int howMany, String unitType, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        String userName = SessionUtils.getUsername(request);
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
+        if (manager != null) {
+            Unit unitToBuy = manager.getGameDescriptor().getUnitMap().get(unitType);
+            if(unitToBuy != null) {
+                manager.buyUnits(unitToBuy, howMany);
+                List<Unit> unitsBought = manager.getSelectedArmyForce().getUnits();
+                int fundsAfterPurchase = manager.getCurrentPlayerFunds();
+                out.println(gson.toJson(new BuyUnitsMessage(unitsBought , fundsAfterPurchase, request.getParameter("actionType") , userName)));
+            }
         }
     }
 
@@ -137,6 +161,7 @@ public class SingleGameServlet extends HttpServlet {
         String userName = SessionUtils.getUsername(request);
         GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
         if(manager != null) {
+            manager.loadPlayersIntoQueueOfTurns();
             manager.nextPlayerInTurn();
         }
     }

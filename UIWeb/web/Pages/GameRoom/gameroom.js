@@ -15,6 +15,7 @@ var interval;
 var showWinner;
 var selectedTerritoryId;
 var maxPlayers;
+var selectedUnitName;
 
 window.onload = function () {
     updateWelcomeUsernameDetail();
@@ -421,27 +422,39 @@ function openNeutralPopup() {
     p.appendTo(mHeader);
 
     /* BODY */
+    var unitInfoDiv = $(document.createElement('div'));
+    unitInfoDiv.addClass('unitInfoDiv');
+    unitInfoDiv.appendTo(mBody);
     mBodyTitle.text("Select units to purchase: ");
     var select = $('<select />');
-    var bodyItem = $(document.createElement('p'));
-    bodyItem.addClass("type");
-    bodyItem.appendTo(mBody);
-    bodyItem = $(document.createElement('p'));
-    bodyItem.addClass("rank");
-    bodyItem.appendTo(mBody);
-    bodyItem = $(document.createElement('p'));
-    bodyItem.addClass("purchase");
-    bodyItem.appendTo(mBody);
-    bodyItem = $(document.createElement('p'));
-    bodyItem.addClass("maxFirePower");
-    bodyItem.appendTo(mBody);
-    bodyItem = $(document.createElement('p'));
-    bodyItem.addClass("competenceReduction");
-    bodyItem.appendTo(mBody);
+    select.addClass("unitsSelect");
     for(var unit in unitData) {
-        $('<option/>', {value: unit , text: unitData[unit].type}).addClass("dropDownItem").appendTo(select);
+        $('<option/>', {value: unit , text: unitData[unit].type}).appendTo(select);
     }
-    
+    select.change(function() {
+        $('.unitInfoDiv').contents().remove();
+        selectedUnitName = jQuery(this).val();
+        var bodyItem = $(document.createElement('p'));
+        bodyItem.addClass("type");
+        bodyItem.text("Type: " + unitData[selectedUnitName].type);
+        bodyItem.appendTo(unitInfoDiv);
+        bodyItem = $(document.createElement('p'));
+        bodyItem.addClass("rank");
+        bodyItem.text("Rank: " + unitData[selectedUnitName].rank);
+        bodyItem.appendTo(unitInfoDiv);
+        bodyItem = $(document.createElement('p'));
+        bodyItem.addClass("purchase");
+        bodyItem.text("Cost: " + unitData[selectedUnitName].purchase);
+        bodyItem.appendTo(unitInfoDiv);
+        bodyItem = $(document.createElement('p'));
+        bodyItem.addClass("maxFirePower");
+        bodyItem.text("FirePower: " + unitData[selectedUnitName].maxFirePower);
+        bodyItem.appendTo(unitInfoDiv);
+        bodyItem = $(document.createElement('p'));
+        bodyItem.addClass("competenceReduction");
+        bodyItem.text("Competence Reduction: " + unitData[selectedUnitName].competenceReduction);
+        bodyItem.appendTo(unitInfoDiv);
+    });
     select.appendTo(mBody);
 
     /* FOOTER */
@@ -454,6 +467,45 @@ function openNeutralPopup() {
     item.addClass("amountOfUnitsToBuy");
     item.attr('placeholder', "Enter how many units to buy , then click 'Purchase'");
     item.appendTo(footer);
+    item = $(document.createElement('button'));
+    item.text("Purchase");
+    item.addClass("purchaseBtn");
+    item.appendTo(footer);
+    $('.purchaseBtn').on('click' , handlePurchaseClick);
+}
+
+function isNormalInteger(str) {
+    var n = Math.floor(Number(str));
+    return n !== Infinity && String(n) === str && n >= 0;
+}
+
+function handlePurchaseClick() {
+    var howMany = $('.amountOfUnitsToBuy').val();
+    if(isNormalInteger(howMany)) {
+        buyUnits(howMany, selectedUnitName , "neutral");
+    } else {
+        alert("Please enter a positive integer!");
+    }
+}
+function buyUnits(howMany , whichUnit , actionType) {
+    $.ajax
+    (
+        {
+            url: CURR_GAME,
+            data: {
+                action: 'buyUnits',
+                amount: howMany,
+                unit: whichUnit ,
+                actionType: actionType
+            },
+            type: 'GET',
+            success: buyUnitsCallBack
+        }
+    );
+}
+
+function buyUnitsCallBack(data) {
+    console.log(data.buyerName + " has just bought " + data.unitsBoughtAmount + " units");
 }
 
 function showPopUp() {
@@ -465,7 +517,7 @@ function showPopUp() {
     };
     modal.show();
     window.onclick = function(event) {
-        if (event.target === modal) {
+        if (event.target == modal) {
             modal.hide();
         }
     }

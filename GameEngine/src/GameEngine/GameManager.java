@@ -26,6 +26,9 @@ public class GameManager implements Serializable {
     private Army   selectedArmyForce=null;
     private GameStatus status;
 
+    public Army getSelectedArmyForce() {
+        return selectedArmyForce;
+    }
 
     private transient EventListener eventListener;
     private Queue<Player> playersTurns;
@@ -190,7 +193,7 @@ public class GameManager implements Serializable {
         return mapsHistoryByOrder;
     }
     //retrieve players list into queue of turns
-    private void loadPlayersIntoQueueOfTurns() {
+    public void loadPlayersIntoQueueOfTurns() {
         if(gameDescriptor.getPlayersList() != null) {
             playersTurns.addAll(gameDescriptor.getPlayersList());
         }
