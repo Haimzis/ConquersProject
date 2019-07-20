@@ -190,7 +190,7 @@ function createGameDialogCallback(json) {
     var gameName = json.gameTitle;
     var boardSize = json.rows + " X " + json.cols;
     var rounds = json.moves;
-    var playerNumber = json.registeredPlayers + " / " + json.requiredPlayers
+    var playerNumber = json.registeredPlayers + " / " + json.requiredPlayers;
 
     $('.key').text("Game id: " + key + ".");
     $('.creatorName').text("Game Creator: " + creatorName + ".");

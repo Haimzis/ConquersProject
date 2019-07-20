@@ -15,6 +15,7 @@ public class SingleSimplifiedGameManager {
     private Map<Integer, Territory> territoryMap;
     private Map<String , Unit> unitMap;
     private List<Player> playersList;
+    private int maxPlayers;
 
     public SingleSimplifiedGameManager(GameManager manager) {
         this.roundNumber = manager.getRoundNumber();
@@ -26,5 +27,6 @@ public class SingleSimplifiedGameManager {
         this.territoryMap = manager.getGameDescriptor().getTerritoryMap();
         this.unitMap = manager.getGameDescriptor().getUnitMap();
         this.playersList = manager.getGameDescriptor().getPlayersList();
+        this.maxPlayers = manager.getGameDescriptor().getMaxPlayers();
     }
 }

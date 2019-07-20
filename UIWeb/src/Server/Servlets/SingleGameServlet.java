@@ -2,6 +2,7 @@ package Server.Servlets;
 
 import GameEngine.GameManager;
 import GameObjects.GameStatus;
+import GameObjects.Player;
 import GameObjects.Territory;
 import Server.Utils.*;
 import com.google.gson.Gson;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "SingleGameServlet")
 public class SingleGameServlet extends HttpServlet {
@@ -38,7 +41,6 @@ public class SingleGameServlet extends HttpServlet {
                 sendHowManyPlayersAreOnline(request , response);
                 break;
             case "endTurnDetails":
-
                 break;
             case "startGame":
                 startGame(request , response);
@@ -50,6 +52,48 @@ public class SingleGameServlet extends HttpServlet {
                 int territoryId = Integer.parseInt(request.getParameter("id"));
                 setSelectedTerritory(territoryId , request);
                 break;
+            case "getOtherPlayersStats":
+                getOtherPlayerStats(request , response);
+                break;
+            case "getOwnPlayerStats":
+                getOwnPlayerStats(request , response);
+                break;
+        }
+    }
+
+    private void getOwnPlayerStats(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        String userName = SessionUtils.getUsername(request);
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        String color = ServletUtils.getRoomsManager(request.getServletContext())
+                .getRoomByUserName(userName)
+                .getPlayerByUsername(userName)
+                .getColor();
+        String playerName = ServletUtils.getRoomsManager(request.getServletContext())
+                .getRoomByUserName(userName)
+                .getPlayerByUsername(userName)
+                .getPlayerName();
+        int funds = ServletUtils.getRoomsManager(request.getServletContext())
+                .getRoomByUserName(userName)
+                .getPlayerByUsername(userName)
+                .getFunds();
+
+        out.println(gson.toJson(new SimplifiedPlayer(color, playerName , funds)));
+    }
+
+    private void getOtherPlayerStats(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        String userName = SessionUtils.getUsername(request);
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
+        if(manager != null) {
+            List<Player> otherPlayers = new ArrayList<>(manager.getGameDescriptor().getPlayersList());
+            otherPlayers.remove(ServletUtils.getRoomsManager(request.getServletContext())
+                    .getRoomByUserName(userName)
+                    .getPlayerByUsername(userName));
+            out.println(gson.toJson(otherPlayers));
         }
     }
 
@@ -62,6 +106,7 @@ public class SingleGameServlet extends HttpServlet {
     }
 
     private void checkTerritory(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
         String userName = SessionUtils.getUsername(request);
         GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
         PrintWriter out = response.getWriter();

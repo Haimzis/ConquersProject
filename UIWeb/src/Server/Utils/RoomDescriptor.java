@@ -71,4 +71,13 @@ public class RoomDescriptor {
             registeredPlayers--;
         }
     }
+    public Player getPlayerByUsername(String userName) {
+        List<Player> result = new ArrayList<>();
+        activePlayers.forEach(player -> {
+            if(player.getPlayerName().equals(userName)) {
+                result.add(player);
+            }
+        });
+        return result.get(0);
+    }
 }

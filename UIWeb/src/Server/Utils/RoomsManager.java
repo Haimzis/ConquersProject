@@ -17,12 +17,12 @@ public class RoomsManager {
         return activeRooms.get(id-1);
     }
     public RoomDescriptor getRoomByUserName(String userName) {
-        RoomDescriptor[] result = new RoomDescriptor[1];
+        List<RoomDescriptor> result = new ArrayList<>();
         activeRooms.forEach(roomDescriptor -> {
             if(roomDescriptor.hasPlayerByName(userName)) {
-                result[0] = roomDescriptor;
+                result.add(roomDescriptor);
             }
         });
-        return result[0];
+        return result.get(0);
     }
 }

@@ -14,15 +14,14 @@ var activePlayers;
 var interval;
 var showWinner;
 var selectedTerritoryId;
+var maxPlayers;
 
 window.onload = function () {
     updateWelcomeUsernameDetail();
-    setInterval(gameStatus, refreshRate);
     getGameDetails();
-    updateRequiredPlayersSpan();
     setInterval(updateOnlineUsers, refreshRate);
+    setInterval(gameStatus, refreshRate);
     setInterval(updateRemainRounds,refreshRate);
-    setInterval(updateRegisteredPlayersSpan,refreshRate);
 };
 
 function updateWelcomeUsernameDetail(){
@@ -117,6 +116,8 @@ function startGameCallBack() {
     $('.currentPlayerName')[0].innerHTML = activePlayers[0].playerName;
     enableButtons();
     enableBoard();
+    setInterval(createOtherPlayersStats , refreshRate);
+    setInterval(createOwnPlayerStats , refreshRate);
 }
 
 function getGameDetails() {
@@ -159,6 +160,7 @@ function updateOnlineUsersCallBack(players) {
         playerLi.text(player.playerName);
         playerLi.appendTo(usersList);
     })
+    updateRegisteredPlayersSpan();
 }
 //TODO: Enjoy. fix the error - it supposed to use the information that you toke from the getGameDetails.
 function updateRemainRounds(){
@@ -172,10 +174,11 @@ function updateRegisteredPlayersSpan(){
 }
 //TODO: Enjoy. fix the error - it supposed to use the information that you toke from the getGameDetails.
 function updateRequiredPlayersSpan(){
-    var requiredPlayersAmount = Object.keys(activePlayers).length;
+    var requiredPlayersAmount = maxPlayers;
     $('.requiredPlayers').text(requiredPlayersAmount);
 }
 function setGameDetails(data)  {
+    maxPlayers = data.maxPlayers;
     roundNumber = data.roundNumber;
     gameTitle = data.gameTitle;
     initialFunds = data.initialFunds;
@@ -185,6 +188,7 @@ function setGameDetails(data)  {
     createGameBoard(data);
     disableBoard();
     disableButtons();
+    updateRequiredPlayersSpan();
 }
 
 function disableBoard() {
@@ -204,18 +208,19 @@ function enableButtons() {
 //TODO: Ran create this action too, read the url message that I left for you.
 function createOtherPlayersStats(){
     $.ajax({
-        url: "Ran fill it - the right servlet that returns all the players except the current one that runs the session(not hard to find the others)" +
-            "you should send array that contains the players objects that contains: name,funds and color",
+        url: CURR_GAME,
         data:{
             action: "getOtherPlayersStats"
         },
         type: 'GET',
-        success: createOwnPlayerStatsTable(PlayerObject.playerName,PlayerObject.funds,playerObject.color)
+        success: createOtherPlayersStatsTable
     })
 }
-function createOtherPlayersStatsTable(otherPlayersArr,sizeOfArray){
+function createOtherPlayersStatsTable(data){
 
-    for(var i=1;i<= sizeOfArray;i++) {
+    var otherPlayersArr = data;
+    var sizeOfArray = otherPlayersArr.length;
+    for(var i=0 ;i< sizeOfArray;i++) {
         var otherPlayerStatsRow = $(document.createElement('tr'));
         otherPlayerStatsRow.attr('PlayerID', otherPlayersArr[i].ID); //maybe j should start from 1
         var userNameCol = $(document.createElement('td'));
@@ -242,12 +247,12 @@ function createOtherPlayersStatsTable(otherPlayersArr,sizeOfArray){
 //TODO: Ran make the action in the right servlet and call this function from the onload.
 function createOwnPlayerStats(){
     $.ajax({
-        url: "Ran fill it - the right servlet that returns player: name,funds and color",
+        url: CURR_GAME,
         data:{
             action: "getOwnPlayerStats"
         },
         type: 'GET',
-        success: createOwnPlayerStatsTable(PlayerObject.playerName,PlayerObject.funds,playerObject.color)
+        success: createOwnPlayerStatsTable
     })
 }
 //this function gets player object from the servlet
