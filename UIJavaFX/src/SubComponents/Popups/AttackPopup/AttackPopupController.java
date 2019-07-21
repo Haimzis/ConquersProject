@@ -1,6 +1,5 @@
 package SubComponents.Popups.AttackPopup;
 
-import GameEngine.GameEngine;
 import GameObjects.Unit;
 import MainComponents.AppController;
 import SubComponents.MapTable.MapController;

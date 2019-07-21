@@ -16,6 +16,7 @@ var showWinner;
 var selectedTerritoryId;
 var maxPlayers;
 var selectedUnitName;
+var actionType;
 
 window.onload = function () {
     updateWelcomeUsernameDetail();
@@ -163,17 +164,17 @@ function updateOnlineUsersCallBack(players) {
     });
     updateRegisteredPlayersSpan();
 }
-//TODO: Enjoy. fix the error - it supposed to use the information that you toke from the getGameDetails.
+
 function updateRemainRounds(){
     var remainRounds = totalCycles - roundNumber;
     $('.roundsLeft').text("Rounds Left: "+remainRounds);
 }
-//TODO: Enjoy. fix the error - it supposed to use the information that you toke from the getGameDetails.
+
 function updateRegisteredPlayersSpan(){
     var activePlayersAmount = Object.keys(activePlayers).length;
     $('.registeredPlayers').text(activePlayersAmount);
 }
-//TODO: Enjoy. fix the error - it supposed to use the information that you toke from the getGameDetails.
+
 function updateRequiredPlayersSpan(){
     var requiredPlayersAmount = maxPlayers;
     $('.requiredPlayers').text(requiredPlayersAmount);
@@ -245,7 +246,7 @@ function createOtherPlayersStatsTable(data){
         $('#otherPlayerTable > tbody:last-child').append(otherPlayerStatsRow);
     }
 }
-//TODO: Ran make the action in the right servlet and call this function from the onload.
+
 function createOwnPlayerStats(){
     $.ajax({
         url: CURR_GAME,
@@ -327,7 +328,6 @@ function createGameBoard(gameBoardData){
 function setSelectedTerritory(territorySquare) {
     var territoryId = territorySquare.currentTarget.getAttribute('territoryid');
     selectedTerritoryId = territoryId;
-    console.log("In set selected");
     $.ajax
     (
         {
@@ -376,43 +376,105 @@ function openOwnTerritoryPopup() {
     showPopUp();
     var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
     var profit = territoryMapData[selectedTerritoryId].profit;
-    var currentFirePower = territoryMapData[territoryMapData].conquerArmyForce.totalPower;
-    var maxFirePower = territoryMapData[territoryMapData].conquerArmyForce.potentialTotalPower;
-    var mBody = $('.modal-body');
+    var currentFirePower = territoryMapData[selectedTerritoryId].conquerArmyForce.totalPower;
+    var maxFirePower = territoryMapData[selectedTerritoryId].conquerArmyForce.potentialTotalPower;
+    var mHeader = $('.modal-header');
+    var mHeaderTitle = $(document.createElement('h1'));
+    mHeaderTitle.addClass('mBodyTitle');
+    mHeaderTitle.text("Territory number " + selectedTerritoryId);
+    mHeader.contents().remove();
+
+    /*HEADER*/
+    mHeaderTitle.appendTo(mHeader);
     var p = $(document.createElement('p'));
     p.text("Threshold: " + threshHold);
-    p.appendTo(mBody);
+    p.appendTo(mHeader);
+    p = $(document.createElement('p'));
     p.text("Profit: " + profit);
-    p.appendTo(mBody);
+    p.appendTo(mHeader);
+    p = $(document.createElement('p'));
     p.text("Current Firepower on territory: " + currentFirePower);
-    p.appendTo(mBody);
+    p.appendTo(mHeader);
+    p = $(document.createElement('p'));
     p.text("Maximum firepower available: " + maxFirePower);
-    p.appendTo(mBody);
-    mBody = $('.modal-footer');
+    p.appendTo(mHeader);
     p = $(document.createElement('button'));
     p.addClass("rehabilitateBtn");
-    p.innerHTML = "Rehabilitate Army";
-    p.appendTo(mBody);
+    p.text("Rehabilitate Army");
+    p.appendTo(mHeader);
     p = $(document.createElement('button'));
     p.addClass("addUnitsBtn");
-    p.innerHTML = "Add units";
-    p.appendTo(mBody);
+    p.text("Add units");
+    p.appendTo(mHeader);
+
+    var footer = $('.modal-footer');
+    footer.contents().remove();
+    var mBody = $('.modal-body');
+    mBody.contents().remove();
+
+    $('.rehabilitateBtn').on('click', function() {
+        actionType = "rehabilitate";
+       handleDoneClick();
+    });
+    $('.addUnitsBtn').on('click', function () {
+        actionType = "enforceTerritory";
+        showBuyUnits();
+    });
+
 }
 
 function openAttackPopup() {
+    showPopUp();
+    var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
+    var profit = territoryMapData[selectedTerritoryId].profit;
+    var currentFirePower = territoryMapData[selectedTerritoryId].conquerArmyForce.totalPower;
+    var mHeader = $('.modal-header');
+    var mHeaderTitle = $(document.createElement('h1'));
 
+    mHeaderTitle.addClass('mBodyTitle');
+    mHeaderTitle.text("Enemy territory, ID: " + selectedTerritoryId);
+    mHeader.contents().remove();
+
+    /*HEADER*/
+    mHeaderTitle.appendTo(mHeader);
+    var p = $(document.createElement('p'));
+    p.text("Threshold: " + threshHold);
+    p.appendTo(mHeader);
+    p = $(document.createElement('p'));
+    p.text("Profit: " + profit);
+    p.appendTo(mHeader);
+    p = $(document.createElement('p'));
+    p.text("Current Firepower on territory: " + currentFirePower);
+    p.appendTo(mHeader);
+
+   $(document.createElement('button'))
+       .addClass("wellTimedBtn")
+       .text("Well Timed Attack")
+       .on('click', function () {
+        actionType = "wellTimed";
+        handleDoneClick();
+    }).appendTo(mHeader);
+    $(document.createElement('button'))
+        .addClass("calculatedRiskBtn")
+        .text("Calculated Risk Attack")
+        .on('click', function () {
+        actionType = "calculatedRisk";
+        handleDoneClick();
+    }).appendTo(mHeader);
 }
 
 function openNeutralPopup() {
+    actionType = "neutral";
     showPopUp();
     var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
     var profit = territoryMapData[selectedTerritoryId].profit;
     var mHeader = $('.modal-header');
-    var mHeaderTitle = $('#headerTitle');
-    var mBodyTitle = $('#mBodyTitle');
-    var mBody = $('.modal-body');
+    var mHeaderTitle = $(document.createElement('h1'));
+    mHeaderTitle.addClass('mBodyTitle');
+    mHeader.contents().remove();
 
     /* HEADER */
+    mHeaderTitle.appendTo(mHeader);
     var p = $(document.createElement('p'));
     mHeaderTitle.text("Neutral Territory");
     p.text("Threshold: " + threshHold);
@@ -421,13 +483,23 @@ function openNeutralPopup() {
     p.text("Profit: " + profit);
     p.appendTo(mHeader);
 
-    /* BODY */
+    /*BODY AND FOOTER*/
+    showBuyUnits();
+}
+
+function showBuyUnits() {
+    var mBodyTitle = $(document.createElement('h2'));
+    mBodyTitle.addClass('headerTitle');
+    mBodyTitle.text("Select units to purchase: ");
+    var mBody = $('.modal-body');
+    mBody.contents().remove();
+    mBodyTitle.appendTo(mBody);
     var unitInfoDiv = $(document.createElement('div'));
     unitInfoDiv.addClass('unitInfoDiv');
     unitInfoDiv.appendTo(mBody);
-    mBodyTitle.text("Select units to purchase: ");
     var select = $('<select />');
     select.addClass("unitsSelect");
+    $('<option/>' , {value: "" , text:"Choose here", selected:true , disabled:true , hidden:true}).appendTo(select);
     for(var unit in unitData) {
         $('<option/>', {value: unit , text: unitData[unit].type}).appendTo(select);
     }
@@ -459,6 +531,7 @@ function openNeutralPopup() {
 
     /* FOOTER */
     var footer = $('.modal-footer');
+    footer.contents().remove();
     var item = $(document.createElement('h1'));
     item.text("Buy Units: ");
     item.appendTo(footer);
@@ -472,6 +545,11 @@ function openNeutralPopup() {
     item.addClass("purchaseBtn");
     item.appendTo(footer);
     $('.purchaseBtn').on('click' , handlePurchaseClick);
+    item = $(document.createElement('button'));
+    item.text("Done");
+    item.addClass("doneBtn");
+    item.appendTo(footer);
+    $('.doneBtn').on('click' , handleDoneClick).prop('disable' , true);
 }
 
 function isNormalInteger(str) {
@@ -481,13 +559,43 @@ function isNormalInteger(str) {
 
 function handlePurchaseClick() {
     var howMany = $('.amountOfUnitsToBuy').val();
+    var footer = $('.modal-footer');
+    var whatDidIBuy = $(document.createElement('p'));
     if(isNormalInteger(howMany)) {
-        buyUnits(howMany, selectedUnitName , "neutral");
+        buyUnits(howMany, selectedUnitName);
+        whatDidIBuy.text("You just bought " + howMany + selectedUnitName);
+        whatDidIBuy.appendTo(footer);
     } else {
         alert("Please enter a positive integer!");
     }
 }
-function buyUnits(howMany , whichUnit , actionType) {
+
+function handleDoneClick() {
+    $.ajax
+    (
+        {
+            url: CURR_GAME,
+            data: {
+                action: 'territoryAction',
+                actionType: actionType
+            },
+            type: 'GET',
+            success: territoryActionCallBack
+        }
+    );
+}
+
+
+/*
+    Returned data members:
+    -----------------------
+    List<Unit> unitsBought; - List of units bought so far.
+    int unitsBoughtAmount; - Amount of total units bought.
+    int fundsAfterPurchase; - Funds after selected unit purchased.
+    String buyerName; - Name of buying player.
+    boolean success - Enough funds or not.
+*/
+function buyUnits(howMany , whichUnit) {
     $.ajax
     (
         {
@@ -495,8 +603,7 @@ function buyUnits(howMany , whichUnit , actionType) {
             data: {
                 action: 'buyUnits',
                 amount: howMany,
-                unit: whichUnit ,
-                actionType: actionType
+                unit: whichUnit
             },
             type: 'GET',
             success: buyUnitsCallBack
@@ -505,21 +612,140 @@ function buyUnits(howMany , whichUnit , actionType) {
 }
 
 function buyUnitsCallBack(data) {
-    console.log(data.buyerName + " has just bought " + data.unitsBoughtAmount + " units");
+    if(data.success){
+        $('.doneBtn').prop('disable' , false);
+    } else {
+        alert("Not enough turings!");
+    }
+}
+
+function showBattleResultPopup(actionType, result) {
+    showPopUp();
+    //var footer = $('.modal-footer');
+    var mBody = $('.modal-body');
+    var mHeader = $('.modal-header');
+    var headerTitle = $(document.createElement('h1'));
+    var resultText = $(document.createElement('h3'));
+    resultText.appendTo(mHeader);
+
+    headerTitle.appendTo(mHeader);
+    var unitItem = $(document.createElement('p'));
+    unitItem.text("Defending army had " + result.defendingArmy.units.length + " units.");
+    unitItem.appendTo(mBody);
+    unitItem = $(document.createElement('h1'));
+    unitItem.text("Defending army information: ");
+    unitItem.appendTo(mBody);
+
+    for(var unit in result.defendingArmy.units) {
+        unitItem = $(document.createElement('p'));
+        unitItem.text("Type:" + unit.type);
+        unitItem.appendTo(mBody);
+        unitItem = $(document.createElement('p'));
+        unitItem.text("Rank:" + unit.rank);
+        unitItem.appendTo(mBody);
+        unitItem = $(document.createElement('p'));
+        unitItem.text("FirePower:" + unit.currentFirePower);
+        unitItem.appendTo(mBody);
+    }
+
+    if(actionType === "calculatedRisk") {
+        headerTitle.text("Calculated Risk Attack!");
+    } else if(actionType === "wellTimed") {
+        headerTitle.text("Well Timed Attack!");
+    }
+    if(result.success) {
+        resultText.text("VICTORY!");
+    } else if(result.draw) {
+        resultText.text("DRAW!");
+    } else {
+        resultText.text("DEFEAT!");
+    }
+}
+
+function territoryActionCallBack(result) {
+    $("#myModal").hide();
+    switch(actionType) {
+        case "neutral":
+            if(result.success) {
+                alert("Neutral territory " + result.targetTerritoryId + " has been conquered");
+            } else {
+                alert("You have failed to conquer territory number " + result.targetTerritoryId);
+            }
+            break;
+        case "rehabilitate":
+            if(result.success) {
+                alert("Territory " + result.targetTerritoryId + " has been rehabilitated");
+            } else {
+                alert("Not enough funds to rehabilitate territory number " + result.targetTerritoryId);
+            }
+            break;
+        case "enforceTerritory":
+            if(result.success) {
+                alert("Territory " + result.targetTerritoryId + " has been enforced");
+            }
+            break;
+        default:
+            showBattleResultPopup(actionType, result);
+            break;
+    }
+    updateTerritories();
+}
+
+function updateTerritories() {
+    $.ajax
+    (
+        {
+            url: CURR_GAME,
+            data: {
+                action: 'updateTerritories'
+            },
+            type: 'GET',
+            success: updateTerritoriesCallBack
+        }
+    );
+}
+function updateTerritoriesCallBack(territoriesMap) {
+    territoryMapData = territoriesMap;
+}
+
+
+function onEndTurnClick() {
+    $.ajax
+    (
+        {
+            url: CURR_GAME,
+            data: {
+                action: 'endTurn'
+            },
+            type: 'GET',
+            success: endTurnCallBack
+        }
+    );
+}
+
+function endTurnCallBack(data) { //TODO: Deal with showing winner and changing status
+
 }
 
 function showPopUp() {
     var modal = $("#myModal");
     var close = $(".close");
-    //modal.contents().remove();
-    close.onclick = function() {
-        modal.hide();
-    };
+    close.bind('click' , function () {
+       modal.hide();
+    });
     modal.show();
     window.onclick = function(event) {
-        if (event.target == modal) {
+        if (event.target === modal) {
             modal.hide();
         }
-    }
+    };
+
+    /* CLEAR INFO */
+    var footer = $('.modal-footer');
+    footer.contents().remove();
+    var mBody = $('.modal-body');
+    mBody.contents().remove();
+    var mHeader = $('.modal-header');
+    mHeader.contents().remove();
 }
 
