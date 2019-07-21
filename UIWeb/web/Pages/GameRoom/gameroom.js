@@ -710,17 +710,19 @@ function updateTerritoriesCallBack(territoriesMap) {
 
 
 function onEndTurnClick() {
-    $.ajax
-    (
-        {
-            url: CURR_GAME,
-            data: {
-                action: 'endTurn'
-            },
-            type: 'GET',
-            success: endTurnCallBack
-        }
-    );
+    if(status === "Running") {
+        $.ajax
+        (
+            {
+                url: CURR_GAME,
+                data: {
+                    action: 'endTurn'
+                },
+                type: 'GET',
+                success: endTurnCallBack
+            }
+        );
+    }
 }
 
 function endTurnCallBack(data) { //TODO: Deal with showing winner and changing status

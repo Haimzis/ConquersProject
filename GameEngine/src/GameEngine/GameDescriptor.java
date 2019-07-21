@@ -14,7 +14,6 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class GameDescriptor implements Serializable {
-    //TODO: We need to enter players into the player list when the game is full and has started.
     private static final String NO_DEFAULT_PROFIT = "No default profit detected";
     private static final String NO_DEFAULT_ARMY_THRESHOLD = "No default army threshold detected";
     private static final String RANKS_ARE_NOT_SEQUENTIAL = "Ranks in XML are not sequential";
@@ -28,16 +27,7 @@ public class GameDescriptor implements Serializable {
     private Map<String , Unit> unitMap;
     private List<Player> playersList;
     private int maxPlayers;
-
-
-    public int getInitialFunds() {
-        return initialFunds;
-    }
-
-    public void insertNewPlayer(Player newPlayer) {
-        playersList.add(newPlayer);
-    }
-
+    private  Stack<String> colors = new Stack<>();
     private String error;
     private String gameType;
     private String gameTitle;
@@ -64,7 +54,10 @@ public class GameDescriptor implements Serializable {
         lastKnownGoodString = xmlPath.toString();
     }
 
+    //DYNAMIC CONSTRUCTOR//
     public GameDescriptor(InputStream xmlPath) throws invalidInputException {
+        colors.push("Green");colors.push("Red");
+        colors.push("Blue");colors.push("Yellow");
         Generated.GameDescriptor descriptor = null;
         try {
             descriptor = deserializeFrom(xmlPath);
@@ -73,9 +66,6 @@ public class GameDescriptor implements Serializable {
             throw new Exceptions.invalidInputException("Could not deserialize XML");
         getGameStats(descriptor);
         this.territoryMap = buildTerritoryMap(descriptor);
-        if(!gameType.equals(DYNAMIC_MULTI_PLAYER)) {
-            this.playersList =  loadPlayers(descriptor);
-        }
         this.unitMap = loadUnitsDescription(descriptor);
         if(!(checkRowsAndColumns(descriptor)
                 && validateTerritories(descriptor)
@@ -103,7 +93,7 @@ public class GameDescriptor implements Serializable {
         return unitMap;
     }
     public List<Player> getPlayersList() { return playersList; }
-    public void setTerritoryMap(Map<Integer, Territory> territoryMap) {
+    void setTerritoryMap(Map<Integer, Territory> territoryMap) {
         this.territoryMap = territoryMap;
     }
     public void setPlayersList(List<Player> playersList) {
@@ -112,7 +102,16 @@ public class GameDescriptor implements Serializable {
     public Territory getTerritoryByID(Integer territoryID){
         return territoryMap.get(territoryID);
     }
-    public String getGameTitle() { return gameTitle; }
+    String getGameTitle() { return gameTitle; }
+    public Stack<String> getColors() {
+        return colors;
+    }
+    public int getInitialFunds() {
+        return initialFunds;
+    }
+    public void insertNewPlayer(Player newPlayer) {
+        playersList.add(newPlayer);
+    }
 
     //*********************//
     /*     XML Loaders    */
