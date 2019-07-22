@@ -120,7 +120,7 @@ public class GameManager implements Serializable {
         //clear present
         removeTerritoriesOfPlayerFromCurrentTime();
         gameDescriptor.getPlayersList().remove(currentPlayerTurn);
-        activateEventsHandler();
+        //activateEventsHandler();
     }
 
     //Bonus #2
@@ -233,7 +233,7 @@ public class GameManager implements Serializable {
                     eventListener.addEventObject(new EventTerritoryReleased(territory.getID()));
                         });
                         //Territory::eliminateThisWeakArmy);
-        activateEventsHandler();
+        //activateEventsHandler();
     }
     //pop the last round history from the history stack, and call updates function
     public void roundUndo() {
@@ -245,7 +245,7 @@ public class GameManager implements Serializable {
     public void endOfRoundUpdates() {
         roundsHistory.push(new RoundHistory(gameDescriptor,++roundNumber));
         loadPlayersIntoQueueOfTurns();
-        activateEventsHandler();
+        //activateEventsHandler();
     }
     public void activateEventsHandler(){
         eventListener.activateEventsHandler();

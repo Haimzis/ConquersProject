@@ -71,8 +71,10 @@ public class SingleGameServlet extends HttpServlet {
                 returnUpdatedTerritories(request , response);
                 break;
 
+
         }
     }
+
 
     private void endTurn(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String userName = SessionUtils.getUsername(request);
@@ -81,7 +83,7 @@ public class SingleGameServlet extends HttpServlet {
             if(manager.isCycleOver()) {
                 manager.endOfRoundUpdates();
                 if(manager.isGameOver()) {
-                    checkWinnerIfAny(manager , response);
+                    checkWinnerIfAny(manager , response , request);
                 }
                 manager.startOfRoundUpdates();
             } else {
@@ -90,17 +92,19 @@ public class SingleGameServlet extends HttpServlet {
         }
     }
 
-    private void checkWinnerIfAny(GameManager manager, HttpServletResponse response) throws IOException {
+    private void checkWinnerIfAny(GameManager manager, HttpServletResponse response, HttpServletRequest request) throws IOException {
         if(manager.isGameOver()) {
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
             Gson gson = new Gson();
             Player winner = manager.getWinnerPlayer();
+            manager.setStatus(GameStatus.Finished);
+            ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(SessionUtils.getUsername(request)).status = GameStatus.Finished;
             if(winner == null) { //Show draw message
-                out.println(gson.toJson(new GameOverMessage("", true)));
+                out.println(gson.toJson(new GameOverMessage("", true, GameStatus.Finished)));
             }
             else { //Need to show the winner.
-                out.println(new GameOverMessage(winner.getPlayerName(), false));
+                out.println(new GameOverMessage(winner.getPlayerName(), false , GameStatus.Finished));
             }
         }
     }
@@ -134,6 +138,9 @@ public class SingleGameServlet extends HttpServlet {
                 enforceTerritory(request, response);
                 break;
         }
+        String userName = SessionUtils.getUsername(request);
+        GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
+        manager.setSelectedArmyForce(null);
     }
 
     private void enforceTerritory(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -301,11 +308,12 @@ public class SingleGameServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         Gson gson = new Gson();
         if(manager != null) {
+            boolean doesPlayerHasTerritories = manager.getCurrentPlayerTerritories().isEmpty();
             Territory selectedTerritory = manager.getSelectedTerritoryByPlayer();
             if(manager.isTerritoryBelongsCurrentPlayer()) {
                 out.println(gson.toJson(new TerritoryMessage(false , false , true , true , "")));
             } else {
-                if(manager.isFirstRound() || manager.isTargetTerritoryValid()) {
+                if(manager.isFirstRound() || manager.isTargetTerritoryValid()|| doesPlayerHasTerritories) {
                     if(!manager.isConquered()) {
                         out.println(gson.toJson(new TerritoryMessage(true , false , false , true , "")));
                     } else {

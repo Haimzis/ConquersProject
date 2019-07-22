@@ -17,6 +17,7 @@ var selectedTerritoryId;
 var maxPlayers;
 var selectedUnitName;
 var actionType;
+var playerTurn;
 
 window.onload = function () {
     updateWelcomeUsernameDetail();
@@ -24,6 +25,9 @@ window.onload = function () {
     setInterval(updateOnlineUsers, refreshRate);
     setInterval(gameStatus, refreshRate);
     setInterval(updateRemainRounds,refreshRate);
+    setInterval(createOtherPlayersStats , refreshRate);
+    setInterval(createOwnPlayerStats , refreshRate);
+    setInterval(updateTerritories, refreshRate);
 };
 
 function updateWelcomeUsernameDetail(){
@@ -75,16 +79,14 @@ function gameStatus()
 
 function handleStatus(json) {
     var newStatus = json.status;
-    var playerTurn = json.currentPlayerTurnName;
+    playerTurn = json.currentPlayerTurnName;
     switch(newStatus)
     {
         case 'WaitingForPlayers':
             status = newStatus;
-            $('.currentPlayerName')[0].innerHTML = playerTurn;
             break;
         case 'Running':
             if (status === 'WaitingForPlayers') {
-                alert("Game started");
                 startGame();
             }
             status = newStatus;
@@ -99,6 +101,7 @@ function handleStatus(json) {
             break;
     }
     $('.gameStatus').text('Game status: ' + status);
+    $('.currentPlayerName').text(playerTurn);
 }
 
 function startGame() {
@@ -115,11 +118,13 @@ function startGame() {
     )
 }
 function startGameCallBack() {
-    $('.currentPlayerName')[0].innerHTML = activePlayers[0].playerName;
+    //$('.currentPlayerName')[0].innerHTML = activePlayers[0].playerName;
     enableButtons();
     enableBoard();
-    setInterval(createOtherPlayersStats , refreshRate);
-    setInterval(createOwnPlayerStats , refreshRate);
+}
+
+function setCurrentPlayerInTurn(playerName) {
+    isMyTurn = playerName === playerTurn;
 }
 
 function getGameDetails() {
@@ -207,7 +212,7 @@ function enableBoard() {
 function enableButtons() {
     $(".actions").prop('disabled',false);
 }
-//TODO: Ran create this action too, read the url message that I left for you.
+
 function createOtherPlayersStats(){
     $.ajax({
         url: CURR_GAME,
@@ -259,6 +264,7 @@ function createOwnPlayerStats(){
 }
 //this function gets player object from the servlet
 function createOwnPlayerStatsTable(PlayerObject){
+    setCurrentPlayerInTurn(PlayerObject.playerName);
     var ownPlayerStatsRow = $(document.createElement('tr'));
 
     var userNameCol =$(document.createElement('td'));
@@ -326,20 +332,22 @@ function createGameBoard(gameBoardData){
     }
 }
 function setSelectedTerritory(territorySquare) {
-    var territoryId = territorySquare.currentTarget.getAttribute('territoryid');
-    selectedTerritoryId = territoryId;
-    $.ajax
-    (
-        {
-            url: CURR_GAME,
-            data: {
-                action: 'selectTerritory',
-                id: territoryId
-            },
-            type: 'GET'
-        }
-    );
-    checkTerritory();
+    if(isMyTurn) {
+        var territoryId = territorySquare.currentTarget.getAttribute('territoryid');
+        selectedTerritoryId = territoryId;
+        $.ajax
+        (
+            {
+                url: CURR_GAME,
+                data: {
+                    action: 'selectTerritory',
+                    id: territoryId
+                },
+                type: 'GET'
+            }
+        );
+        checkTerritory();
+    }
 }
 function checkTerritory() {
     console.log("In check territory");
@@ -451,15 +459,15 @@ function openAttackPopup() {
        .addClass("wellTimedBtn")
        .text("Well Timed Attack")
        .on('click', function () {
-        actionType = "wellTimed";
-        handleDoneClick();
+            actionType = "wellTimed";
+            showBuyUnits();
     }).appendTo(mHeader);
     $(document.createElement('button'))
         .addClass("calculatedRiskBtn")
         .text("Calculated Risk Attack")
         .on('click', function () {
-        actionType = "calculatedRisk";
-        handleDoneClick();
+            actionType = "calculatedRisk";
+            showBuyUnits();
     }).appendTo(mHeader);
 }
 
@@ -559,12 +567,8 @@ function isNormalInteger(str) {
 
 function handlePurchaseClick() {
     var howMany = $('.amountOfUnitsToBuy').val();
-    var footer = $('.modal-footer');
-    var whatDidIBuy = $(document.createElement('p'));
     if(isNormalInteger(howMany)) {
         buyUnits(howMany, selectedUnitName);
-        whatDidIBuy.text("You just bought " + howMany + selectedUnitName);
-        whatDidIBuy.appendTo(footer);
     } else {
         alert("Please enter a positive integer!");
     }
@@ -613,7 +617,12 @@ function buyUnits(howMany , whichUnit) {
 
 function buyUnitsCallBack(data) {
     if(data.success){
+        var howMany = $('.amountOfUnitsToBuy').val();
         $('.doneBtn').prop('disable' , false);
+        var footer = $('.modal-footer');
+        var whatDidIBuy = $(document.createElement('p'));
+        whatDidIBuy.text("You just bought " + howMany + " " + selectedUnitName);
+        whatDidIBuy.appendTo(footer);
     } else {
         alert("Not enough turings!");
     }
@@ -688,7 +697,6 @@ function territoryActionCallBack(result) {
             showBattleResultPopup(actionType, result);
             break;
     }
-    updateTerritories();
 }
 
 function updateTerritories() {
@@ -705,12 +713,13 @@ function updateTerritories() {
     );
 }
 function updateTerritoriesCallBack(territoriesMap) {
-    territoryMapData = territoriesMap;
+    var temp = territoriesMap;
+    territoryMapData = temp;
 }
 
 
 function onEndTurnClick() {
-    if(status === "Running") {
+    if(status === "Running" && isMyTurn) {
         $.ajax
         (
             {
@@ -725,8 +734,10 @@ function onEndTurnClick() {
     }
 }
 
-function endTurnCallBack(data) { //TODO: Deal with showing winner and changing status
-
+function endTurnCallBack(data) {
+    if(data.status === "Finished") {
+        status = data.status;
+    }
 }
 
 function showPopUp() {

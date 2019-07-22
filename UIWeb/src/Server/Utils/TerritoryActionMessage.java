@@ -3,12 +3,12 @@ package Server.Utils;
 import GameObjects.Army;
 
 public class TerritoryActionMessage {
-    boolean success;
-    boolean draw;
-    int targetTerritoryId;
-    Army conqueringArmy;
-    Army defendingArmy;
-    String conquerorName;
+    private boolean success;
+    private boolean draw;
+    private int targetTerritoryId;
+    private Army conqueringArmy;
+    private Army defendingArmy;
+    private String conquerorName;
 
     //Neutral
     public TerritoryActionMessage(boolean success, int targetTerritoryId, Army conqueringArmy, String conquerorName) {
