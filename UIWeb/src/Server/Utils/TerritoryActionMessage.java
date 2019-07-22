@@ -10,6 +10,54 @@ public class TerritoryActionMessage {
     private Army defendingArmy;
     private String conquerorName;
 
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public boolean isDraw() {
+        return draw;
+    }
+
+    public void setDraw(boolean draw) {
+        this.draw = draw;
+    }
+
+    public int getTargetTerritoryId() {
+        return targetTerritoryId;
+    }
+
+    public void setTargetTerritoryId(int targetTerritoryId) {
+        this.targetTerritoryId = targetTerritoryId;
+    }
+
+    public Army getConqueringArmy() {
+        return conqueringArmy;
+    }
+
+    public void setConqueringArmy(Army conqueringArmy) {
+        this.conqueringArmy = conqueringArmy;
+    }
+
+    public Army getDefendingArmy() {
+        return defendingArmy;
+    }
+
+    public void setDefendingArmy(Army defendingArmy) {
+        this.defendingArmy = defendingArmy;
+    }
+
+    public String getConquerorName() {
+        return conquerorName;
+    }
+
+    public void setConquerorName(String conquerorName) {
+        this.conquerorName = conquerorName;
+    }
+
     //Neutral
     public TerritoryActionMessage(boolean success, int targetTerritoryId, Army conqueringArmy, String conquerorName) {
         this.success = success;

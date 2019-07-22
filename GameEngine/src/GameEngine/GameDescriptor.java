@@ -225,7 +225,7 @@ public class GameDescriptor implements Serializable {
         return (Generated.GameDescriptor) u.unmarshal(file);
     }
 
-    private static Generated.GameDescriptor deserializeFrom(InputStream path) throws JAXBException { ;
+    private static Generated.GameDescriptor deserializeFrom(InputStream path) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(Generated.GameDescriptor.class);
         Unmarshaller u = jc.createUnmarshaller();
         return (Generated.GameDescriptor) u.unmarshal(path);

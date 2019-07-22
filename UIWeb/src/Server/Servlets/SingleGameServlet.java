@@ -4,6 +4,8 @@ import GameEngine.GameManager;
 import GameObjects.*;
 import Server.Utils.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -70,9 +72,19 @@ public class SingleGameServlet extends HttpServlet {
             case "updateTerritories":
                 returnUpdatedTerritories(request , response);
                 break;
+            case "currentRound":
+                returnCurrentRound(request , response);
+                break;
 
 
         }
+    }
+
+    private void returnCurrentRound(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String userName = SessionUtils.getUsername(request);
+        GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
+        PrintWriter out = response.getWriter();
+        out.print(manager.getRoundNumber());
     }
 
 
@@ -84,8 +96,10 @@ public class SingleGameServlet extends HttpServlet {
                 manager.endOfRoundUpdates();
                 if(manager.isGameOver()) {
                     checkWinnerIfAny(manager , response , request);
+                    return;
                 }
                 manager.startOfRoundUpdates();
+                manager.nextPlayerInTurn();
             } else {
                 manager.nextPlayerInTurn();
             }
@@ -113,7 +127,8 @@ public class SingleGameServlet extends HttpServlet {
         response.setContentType("application/json");
         String userName = SessionUtils.getUsername(request);
         PrintWriter out = response.getWriter();
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
+        Gson gson=gsonBuilder.create();
         GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
         if(manager != null) {
             out.print(gson.toJson(manager.getGameDescriptor().getTerritoryMap()));
@@ -176,7 +191,8 @@ public class SingleGameServlet extends HttpServlet {
         response.setContentType("application/json");
         String userName = SessionUtils.getUsername(request);
         PrintWriter out = response.getWriter();
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
+        Gson gson=gsonBuilder.create();
         GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
         if(manager != null) {
             Army defendingArmy = manager.getSelectedTerritoryByPlayer().getConquerArmyForce();
@@ -199,15 +215,16 @@ public class SingleGameServlet extends HttpServlet {
         response.setContentType("application/json");
         String userName = SessionUtils.getUsername(request);
         PrintWriter out = response.getWriter();
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
+        Gson gson=gsonBuilder.create();
         GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
         if(manager != null) {
-            Army defendingArmy = manager.getSelectedTerritoryByPlayer().getConquerArmyForce();
+            Army defendingArmy = new Army(manager.getSelectedTerritoryByPlayer().getConquerArmyForce());
+            Army attackingArmy = new Army(manager.getSelectedArmyForce());
             int selectedTerritoryId = manager.getSelectedTerritoryByPlayer().getID();
-            Army attackingArmy = manager.getSelectedArmyForce();
             int attackerWon = manager.attackConqueredTerritoryByWellTimedBattle();
             if(attackerWon == 1) { //Win
-                out.println(gson.toJson(new TerritoryActionMessage(true , selectedTerritoryId,attackingArmy, defendingArmy , userName)));
+                out.println(gson.toJson(new TerritoryActionMessage(true, selectedTerritoryId, attackingArmy, defendingArmy, userName)));
             }
             else if(attackerWon == 0) { //Defeat
                 out.println(gson.toJson(new TerritoryActionMessage(false , selectedTerritoryId,attackingArmy, defendingArmy , userName)));

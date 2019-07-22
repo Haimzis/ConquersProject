@@ -17,6 +17,7 @@ var selectedTerritoryId;
 var maxPlayers;
 var selectedUnitName;
 var actionType;
+var actionDone = false;
 var playerTurn;
 
 window.onload = function () {
@@ -118,9 +119,7 @@ function startGame() {
     )
 }
 function startGameCallBack() {
-    //$('.currentPlayerName')[0].innerHTML = activePlayers[0].playerName;
-    enableButtons();
-    enableBoard();
+
 }
 
 function setCurrentPlayerInTurn(playerName) {
@@ -171,8 +170,25 @@ function updateOnlineUsersCallBack(players) {
 }
 
 function updateRemainRounds(){
-    var remainRounds = totalCycles - roundNumber;
-    $('.roundsLeft').text("Rounds Left: "+remainRounds);
+    $.ajax({
+        url: CURR_GAME,
+        data:{
+            action: "currentRound"
+        },
+        type: 'GET',
+        success: setRemainingRounds
+    });
+}
+
+function setRemainingRounds(round) {
+    var remainRounds = totalCycles - round;
+    if(remainRounds === 0) {
+        $('.roundsLeft').text("Final round!");
+    } else if (remainRounds < 0) {
+        $('.roundsLeft').text("Game Over!");
+    } else {
+        $('.roundsLeft').text("Rounds Left: "+ remainRounds);
+    }
 }
 
 function updateRegisteredPlayersSpan(){
@@ -186,7 +202,6 @@ function updateRequiredPlayersSpan(){
 }
 function setGameDetails(data)  {
     maxPlayers = data.maxPlayers;
-    roundNumber = data.roundNumber;
     gameTitle = data.gameTitle;
     initialFunds = data.initialFunds;
     totalCycles = data.totalCycles;
@@ -587,6 +602,7 @@ function handleDoneClick() {
             success: territoryActionCallBack
         }
     );
+    actionDone = true;
 }
 
 
@@ -635,6 +651,7 @@ function showBattleResultPopup(actionType, result) {
     var mHeader = $('.modal-header');
     var headerTitle = $(document.createElement('h1'));
     var resultText = $(document.createElement('h3'));
+    var defendingArmyDiv = $(document.createElement('div')).addClass("defendingArmyDiv");
     resultText.appendTo(mHeader);
 
     headerTitle.appendTo(mHeader);
@@ -644,17 +661,18 @@ function showBattleResultPopup(actionType, result) {
     unitItem = $(document.createElement('h1'));
     unitItem.text("Defending army information: ");
     unitItem.appendTo(mBody);
+    defendingArmyDiv.appendTo(mBody);
 
-    for(var unit in result.defendingArmy.units) {
+    for(var i = 0 ; i < result.defendingArmy.units.length ; i++) {
         unitItem = $(document.createElement('p'));
-        unitItem.text("Type:" + unit.type);
-        unitItem.appendTo(mBody);
+        unitItem.text("Type:" + result.defendingArmy.units[i].type);
+        unitItem.appendTo(defendingArmyDiv);
         unitItem = $(document.createElement('p'));
-        unitItem.text("Rank:" + unit.rank);
-        unitItem.appendTo(mBody);
+        unitItem.text("Rank:" + result.defendingArmy.units[i].rank);
+        unitItem.appendTo(defendingArmyDiv);
         unitItem = $(document.createElement('p'));
-        unitItem.text("FirePower:" + unit.currentFirePower);
-        unitItem.appendTo(mBody);
+        unitItem.text("FirePower:" + result.defendingArmy.units[i].currentFirePower);
+        unitItem.appendTo(defendingArmyDiv);
     }
 
     if(actionType === "calculatedRisk") {
