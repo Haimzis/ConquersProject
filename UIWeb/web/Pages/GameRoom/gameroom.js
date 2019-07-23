@@ -220,13 +220,7 @@ function disableBoard() {
 function disableButtons() {
     $(".actions").prop('disabled',true);
 }
-function enableBoard() {
-    $(".board").prop('disabled',false);
-}
 
-function enableButtons() {
-    $(".actions").prop('disabled',false);
-}
 
 function createOtherPlayersStats(){
     $.ajax({
@@ -347,7 +341,7 @@ function createGameBoard(gameBoardData){
     }
 }
 function setSelectedTerritory(territorySquare) {
-    if(isMyTurn) {
+    if(isMyTurn && !actionDone) {
         var territoryId = territorySquare.currentTarget.getAttribute('territoryid');
         selectedTerritoryId = territoryId;
         $.ajax
@@ -377,6 +371,27 @@ function checkTerritory() {
             success: checkTerritoryCallBack
         }
     )
+}
+
+function onRetirementClick() {
+    if(isMyTurn && status === "Running") {
+        $.ajax
+        (
+            {
+                async: false,
+                url: CURR_GAME,
+                data: {
+                    action: 'retire'
+                },
+                type: 'GET',
+                success: onRetireCallBack
+            }
+        )
+    }
+}
+
+function onRetireCallBack() {
+    window.location = "../GameRoom/lobby.html";
 }
 
 function checkTerritoryCallBack(result) {
@@ -733,8 +748,33 @@ function updateTerritories() {
 function updateTerritoriesCallBack(territoriesMap) {
     var temp = territoriesMap;
     territoryMapData = temp;
+    colorTerritories();
 }
 
+function colorTerritories() {
+    var colors = [];
+    for(var territory in territoryMapData) {
+        var selectedTerritory = territoryMapData[territory];
+        if(selectedTerritory.conquerID !== null) {
+            colors[selectedTerritory.ID] = activePlayers[selectedTerritory.conquerID].color;
+        }else {
+            colors[selectedTerritory.ID] = "";
+        }
+    }
+    $('.Territory').each(function () {
+        for(var player in activePlayers) {
+            var selectedTerritory = territoryMapData[$(this).attr('TerritoryID')];
+            var selectedPlayer = activePlayers[player];
+            if(selectedTerritory.conquerID === selectedPlayer.ID) {
+                $(this).css("background-color:" + colors[selectedTerritory.ID + ";"]);
+            }
+        }
+    })
+}
+
+$.fn.hasAttr = function(name) {
+    return this.attr(name) !== undefined;
+};
 
 function onEndTurnClick() {
     if(status === "Running" && isMyTurn) {
@@ -756,6 +796,7 @@ function endTurnCallBack(data) {
     if(data.status === "Finished") {
         status = data.status;
     }
+    actionDone = false;
 }
 
 function showPopUp() {

@@ -31,6 +31,7 @@ public class SingleGameServlet extends HttpServlet {
                 leaveGame(request , response);
                 break;
             case "retire":
+                retirePlayer(request);
                 break;
             case "gameStatus":
                 sendStatus(request, response);
@@ -77,6 +78,16 @@ public class SingleGameServlet extends HttpServlet {
                 break;
 
 
+        }
+    }
+
+    private void retirePlayer(HttpServletRequest request) {
+        String userName = SessionUtils.getUsername(request);
+        GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
+        RoomsManager roomManager = ServletUtils.getRoomsManager(request.getServletContext());
+        if(manager != null) {
+            manager.selectedPlayerRetirement();
+            roomManager.getRoomByUserName(userName).removePlayerByUserName(userName);
         }
     }
 
