@@ -1,10 +1,8 @@
 var LOGGED_USERS_URL = buildUrlWithContextPath("LoggedUsersStats");
 var CURR_GAME = buildUrlWithContextPath("singleGame");
-var GAMES_LIST = buildUrlWithContextPath("games");
 var status;
 var isMyTurn = false;
 var refreshRate = 2000; //milli seconds
-var roundNumber;
 var gameTitle;
 var initialFunds;
 var totalCycles;
@@ -19,6 +17,9 @@ var selectedUnitName;
 var actionType;
 var actionDone = false;
 var playerTurn;
+var winnerPlayerName;
+var allRetired = false;
+var showedEndGameDialog = false;
 
 window.onload = function () {
     updateWelcomeUsernameDetail();
@@ -95,8 +96,13 @@ function handleStatus(json) {
         case "Finished":
             isMyTurn = false;
             if (showWinner) {
-                //showEndGameDialog();
+                alert(playerTurn + " Has won!");
                 showWinner = false;
+                showedEndGameDialog = true;
+            } else if (allRetired) {
+                alert(winnerPlayerName + " Has won because everyone retired!");
+                allRetired = false;
+                showedEndGameDialog = true;
             }
             status = newStatus;
             break;
@@ -167,6 +173,10 @@ function updateOnlineUsersCallBack(players) {
         playerLi.appendTo(usersList);
     });
     updateRegisteredPlayersSpan();
+    if(activePlayers.length === 1 && !showedEndGameDialog) {
+        allRetired = true;
+        winnerPlayerName = activePlayers[0].playerName;
+    }
 }
 
 function updateRemainRounds(){
@@ -186,6 +196,9 @@ function setRemainingRounds(round) {
         $('.roundsLeft').text("Final round!");
     } else if (remainRounds < 0) {
         $('.roundsLeft').text("Game Over!");
+        if(!showedEndGameDialog) {
+            showWinner = true;
+        }
     } else {
         $('.roundsLeft').text("Rounds Left: "+ remainRounds);
     }
@@ -208,19 +221,8 @@ function setGameDetails(data)  {
     unitData = data.unitMap;
     territoryMapData = data.territoryMap;
     createGameBoard(data);
-    disableBoard();
-    disableButtons();
     updateRequiredPlayersSpan();
 }
-
-function disableBoard() {
-    $(".board").prop('disabled',true);
-}
-
-function disableButtons() {
-    $(".actions").prop('disabled',true);
-}
-
 
 function createOtherPlayersStats(){
     $.ajax({
@@ -391,7 +393,7 @@ function onRetirementClick() {
 }
 
 function onRetireCallBack() {
-    window.location = "../GameRoom/lobby.html";
+    window.location = "../Lobby/lobby.html";
 }
 
 function checkTerritoryCallBack(result) {
@@ -756,20 +758,32 @@ function colorTerritories() {
     for(var territory in territoryMapData) {
         var selectedTerritory = territoryMapData[territory];
         if(selectedTerritory.conquerID !== null) {
-            colors[selectedTerritory.ID] = activePlayers[selectedTerritory.conquerID].color;
-        }else {
-            colors[selectedTerritory.ID] = "";
+            colors[selectedTerritory.ID] = getColor(selectedTerritory)
+        }else { //default color
+            colors[selectedTerritory.ID] = "#f2f2f2";
         }
     }
     $('.Territory').each(function () {
         for(var player in activePlayers) {
             var selectedTerritory = territoryMapData[$(this).attr('TerritoryID')];
             var selectedPlayer = activePlayers[player];
-            if(selectedTerritory.conquerID === selectedPlayer.ID) {
-                $(this).css("background-color:" + colors[selectedTerritory.ID + ";"]);
+            if(selectedTerritory.conquerID !== null) {
+                if(selectedTerritory.conquerID === selectedPlayer.ID) {
+                    $(this).css("background-color" , colors[selectedTerritory.ID]);
+                }
+            } else {
+                $(this).css("background-color" , '#f2f2f2');
             }
         }
     })
+}
+
+function getColor(selectedTerritory) {
+    for(var player in activePlayers) {
+        if(activePlayers[player].ID === selectedTerritory.conquerID) {
+            return activePlayers[player].color;
+        }
+    }
 }
 
 $.fn.hasAttr = function(name) {

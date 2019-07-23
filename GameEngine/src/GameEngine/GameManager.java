@@ -39,7 +39,7 @@ public class GameManager implements Serializable {
         ID = ++gamesIDCounter;
         gameDescriptor = gameDes;
         playersTurns = new ArrayBlockingQueue<>(gameDescriptor.getMaxPlayers());
-        loadPlayersIntoQueueOfTurns();
+        //loadPlayersIntoQueueOfTurns();
         roundsHistory = new Stack<>();
         roundsHistory.push(new RoundHistory(gameDescriptor,roundNumber));
         gameTitle = gameDescriptor.getGameTitle();
@@ -230,7 +230,7 @@ public class GameManager implements Serializable {
                 .filter(Territory::isArmyTotalPowerUnderThreshold)
                 .forEach(territory -> {
                     releaseTerritory(territory);
-                    eventListener.addEventObject(new EventTerritoryReleased(territory.getID()));
+                    //eventListener.addEventObject(new EventTerritoryReleased(territory.getID()));
                         });
                         //Territory::eliminateThisWeakArmy);
         //activateEventsHandler();
