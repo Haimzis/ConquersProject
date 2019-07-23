@@ -269,28 +269,31 @@ function createOwnPlayerStats(){
 }
 //this function gets player object from the servlet
 function createOwnPlayerStatsTable(PlayerObject){
-    var ownPlayerStatsRow = $(document.createElement('tr'));
+    var lastRow = $('#ownPlayerTable > tbody:last-child');
+    if(lastRow === $('#ownPlayerTable > tbody:first-child')) {
+        var ownPlayerStatsRow = $(document.createElement('tr'));
 
-    var userNameCol =$(document.createElement('td'));
-    var ownUserName = $(document.createElement('div'));
-    ownUserName.addClass('ownUserName');
-    ownUserName.text(PlayerObject.playerName);
-    ownUserName.appendTo(userNameCol);
+        var userNameCol = $(document.createElement('td'));
+        var ownUserName = $(document.createElement('div'));
+        ownUserName.addClass('ownUserName');
+        ownUserName.text(PlayerObject.playerName);
+        ownUserName.appendTo(userNameCol);
 
-    var fundsCol =$(document.createElement('td'));
-    var ownFunds = $(document.createElement('div'));
-    ownFunds.addClass('ownFunds');
-    ownUserName.text(PlayerObject.funds);
-    ownFunds.appendTo(fundsCol);
+        var fundsCol = $(document.createElement('td'));
+        var ownFunds = $(document.createElement('div'));
+        ownFunds.addClass('ownFunds');
+        ownUserName.text(PlayerObject.funds);
+        ownFunds.appendTo(fundsCol);
 
-    var colorCol =$(document.createElement('td'));
-    var ownColor = $(document.createElement('div'));
-    ownColor.addClass('ownColor');
-    ownColor.css("background-color",PlayerObject.color);
-    ownColor.appendTo(colorCol);
+        var colorCol = $(document.createElement('td'));
+        var ownColor = $(document.createElement('div'));
+        ownColor.addClass('ownColor');
+        ownColor.css("background-color", PlayerObject.color);
+        ownColor.appendTo(colorCol);
 
-    ownPlayerStatsRow.append(userNameCol,fundsCol,colorCol);
-    $('#ownPlayerTable > tbody:last-child').append(ownPlayerStatsRow);
+        ownPlayerStatsRow.append(userNameCol, fundsCol, colorCol);
+        lastRow.append(ownPlayerStatsRow);
+    }
 }
 
 function createGameBoard(gameBoardData){
