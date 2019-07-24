@@ -1,5 +1,6 @@
 var LOGGED_USERS_URL = buildUrlWithContextPath("LoggedUsersStats");
 var CURR_GAME = buildUrlWithContextPath("singleGame");
+var CHAT_URL = buildUrlWithContextPath("chat");
 var status;
 var isMyTurn = false;
 var refreshRate = 2000; //milli seconds
@@ -21,6 +22,7 @@ var winnerPlayerName;
 var allRetired = false;
 var showedEndGameDialog = false;
 var gameStarted = false;
+var chatVersion = 0;
 
 window.onload = function () {
     updateWelcomeUsernameDetail();
@@ -31,7 +33,32 @@ window.onload = function () {
     setInterval(createOtherPlayersStats , refreshRate);
     setInterval(createOwnPlayerStats , refreshRate);
     setInterval(updateTerritories, refreshRate);
+    setChat();
+    triggerAjaxChatContent();
 };
+
+function setChat() {
+    //add a function to the submit event
+    $("#chatform").submit(function() {
+        $.ajax({
+            data: $(this).serialize(),
+            url: this.action,
+            timeout: 2000,
+            error: function() {
+                console.error("Failed to submit");
+            },
+            success: function(r) {
+                //do not add the user string to the chat area
+                //since it's going to be retrieved from the server
+                //$("#result h1").text(r);
+            }
+        });
+
+        $("#userstring").val("");
+        // by default - we'll always return false so it doesn't redirect the user.
+        return false;
+    });
+}
 
 function updateWelcomeUsernameDetail(){
     $.ajax
@@ -125,7 +152,7 @@ function showEndGameDialog() {
     item.text("Game Over!").append(mHeader);
     item = $(document.createElement('h1'));
     item.text("The winning player is " + winnerPlayerName).appendTo(mBody);
-    $(document.createElement('button')).text("Exit").on('click' , function () {
+    $(document.createElement('button')).text("Exit").css("position" , "absolute").on('click' , function () {
         $.ajax
         (
             {
@@ -857,3 +884,45 @@ function showPopUp() {
     mHeader.contents().remove();
 }
 
+/*----------- CHAT CODE ----------------*/
+function appendToChatArea(entries) {
+    // add the relevant entries
+    $.each(entries || [], appendChatEntry);
+
+    // handle the scroller to auto scroll to the end of the chat area
+    var scroller = $("#chatArea");
+    var height = scroller[0].scrollHeight - $(scroller).height();
+    $(scroller).stop().animate({ scrollTop: height }, "slow");
+}
+
+function appendChatEntry(index, entry){
+    var entryElement = createChatEntry(entry);
+    $("#chatArea").append(entryElement).append("<br>");
+}
+
+function createChatEntry (entry){
+    return $("<span class=\"success\">").append(entry.username + "> " + entry.chatString);
+}
+
+function ajaxChatContent() {
+    $.ajax({
+        url: CHAT_URL,
+        data: "chatversion=" + chatVersion,
+        dataType: 'json',
+        success: function(data) {
+            console.log("Server chat version: " + data.version + ", Current chat version: " + chatVersion);
+            if (data.version !== chatVersion) {
+                chatVersion = data.version;
+                appendToChatArea(data.entries);
+            }
+            triggerAjaxChatContent();
+        },
+        error: function(error) {
+            triggerAjaxChatContent();
+        }
+    });
+}
+
+function triggerAjaxChatContent() {
+    setTimeout(ajaxChatContent, refreshRate);
+}

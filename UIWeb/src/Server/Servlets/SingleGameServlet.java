@@ -390,7 +390,7 @@ public class SingleGameServlet extends HttpServlet {
         }
     }
 
-    private void startGame(HttpServletRequest request , HttpServletResponse response) throws IOException {
+    private synchronized  void startGame(HttpServletRequest request , HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         String userName = SessionUtils.getUsername(request);
         GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
