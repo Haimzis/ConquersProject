@@ -19,6 +19,7 @@ import java.util.function.Supplier;
 
 @WebServlet(name = "SingleGameServlet")
 public class SingleGameServlet extends HttpServlet {
+    private static final Object statusLock = new Object();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -75,8 +76,23 @@ public class SingleGameServlet extends HttpServlet {
             case "currentRound":
                 returnCurrentRound(request , response);
                 break;
+            case "resetGame":
+                resetGame(request);
+                break;
 
 
+        }
+    }
+
+    private  synchronized void resetGame(HttpServletRequest request) {
+        String userName = SessionUtils.getUsername(request);
+        GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
+        RoomsManager roomManager = ServletUtils.getRoomsManager(request.getServletContext());
+        RoomDescriptor room =  roomManager.getRoomByUserName(userName);
+        room.removePlayerByUserName(userName);
+        if(room.registeredPlayers == 0) {
+            manager.resetManager();
+            room.status = GameStatus.WaitingForPlayers;
         }
     }
 
@@ -105,10 +121,12 @@ public class SingleGameServlet extends HttpServlet {
     }
 
     private void returnCurrentRound(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
         String userName = SessionUtils.getUsername(request);
         GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
         PrintWriter out = response.getWriter();
-        out.print(manager.getRoundNumber());
+        Gson gson = new Gson();
+        out.print(gson.toJson(new EndGameMessage(manager.getRoundNumber() , manager.getWinnerName())));
     }
 
 
@@ -125,8 +143,9 @@ public class SingleGameServlet extends HttpServlet {
                 // start round
                 manager.startOfRoundUpdates();
                 manager.nextPlayerInTurn();
+            } else {
+                manager.nextPlayerInTurn();
             }
-            manager.nextPlayerInTurn();
         }
     }
 
@@ -371,7 +390,7 @@ public class SingleGameServlet extends HttpServlet {
         }
     }
 
-    private void startGame(HttpServletRequest request , HttpServletResponse response) {
+    private synchronized void startGame(HttpServletRequest request , HttpServletResponse response) {
         String userName = SessionUtils.getUsername(request);
         GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
         if(manager != null) {
@@ -401,7 +420,8 @@ public class SingleGameServlet extends HttpServlet {
                 .getManager())));
     }
 
-    private void sendStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    private synchronized  void  sendStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         Gson gson = new Gson();

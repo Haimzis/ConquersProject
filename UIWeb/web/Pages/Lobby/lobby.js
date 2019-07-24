@@ -76,6 +76,7 @@ function refreshGamesListCallback(rooms) {
         var tdBoardSize = $(document.createElement('td')).text(manager.rows + " X " + manager.cols);
         var tdPlayerNumber = $(document.createElement('td')).text(manager.registeredPlayers + " / " + manager.requiredPlayers);
         var tdMovesNumber = $(document.createElement('td')).text(manager.moves);
+        var tdGameStatus = $(document.createElement('td')).text(manager.status);
 
         tdGameNumber.appendTo(tr);
         tdGameName.appendTo(tr);
@@ -83,6 +84,7 @@ function refreshGamesListCallback(rooms) {
         tdBoardSize.appendTo(tr);
         tdPlayerNumber.appendTo(tr);
         tdMovesNumber.appendTo(tr);
+        tdGameStatus.appendTo(tr);
 
         tr.appendTo(gamesTable);
         
@@ -209,11 +211,13 @@ function createGameDialogCallback(json) {
         playerDivs[i].innerHTML = (+i + 1) + '. ' + json.activePlayers[i].playerName + '.';
     }
 
-    createGameBoard(json.rows, json.cols);
+    createGameBoard(json);
 }
-//TODO: I need you to send whole information about the board and not just the cols and rows -
-// that was in the gridler and its not enough in this game
-function createGameBoard(rows,cols){
+
+
+function createGameBoard(json){
+    var rows = json.rows;
+    var cols = json.cols;
     var board = $('.board');
     board.contents().remove();
 
@@ -222,19 +226,27 @@ function createGameBoard(rows,cols){
         var rowTable =$(document.createElement('tr'));
         rowTable.addClass('row');
         rowTable.appendTo(board);
-        for(var j=0;j<cols;j++){
+        for(var j=0;j<columns;j++){
             var territorySquare =$(document.createElement('td'));
             territorySquare.addClass('Territory');
-
+            territorySquare.attr('TerritoryID', json.territoryMap[id_index].ID);
             var territoryData = $(document.createElement('div'));
             territoryData.addClass('territoryDataDiv');
 
             //territory data members
             var territoryID = $(document.createElement('div'));
             territoryID.addClass('id_Data');
-            territoryID.text(id_index);
+            territoryID.text("ID: " + json.territoryMap[id_index].ID);
 
-            territoryData.append(territoryID);
+            var territoryArmyThreshold = $(document.createElement('div'));
+            territoryArmyThreshold.addClass('armyThreshold_Data');
+            territoryArmyThreshold.text("Army Threshold: " + json.territoryMap[id_index].armyThreshold);
+
+            var territoryProfit = $(document.createElement('div'));
+            territoryProfit.addClass('profitData');
+            territoryProfit.text("Profit: " + json.territoryMap[id_index].profit);
+
+            territoryData.append(territoryID,territoryArmyThreshold,territoryProfit);
             territoryData.appendTo(territorySquare);
             territorySquare.appendTo(rowTable);
             id_index++;

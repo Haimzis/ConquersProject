@@ -48,18 +48,20 @@ function updateWelcomeUsernameDetail(){
 
 function onLeaveGameClick()
 {
-    $.ajax
-    ({
-        async: false,
-        url: CURR_GAME,
-        data: {
-            action: "leaveGame"
-        },
-        type: 'GET',
-        success: function() {
-            window.location = "../Lobby/lobby.html";
-        }
-    });
+    if(gameStatus === "WaitingForPlayers") {
+        $.ajax
+        ({
+            async: false,
+            url: CURR_GAME,
+            data: {
+                action: "leaveGame"
+            },
+            type: 'GET',
+            success: function() {
+                window.location = "../Lobby/lobby.html";
+            }
+        });
+    }
 }
 
 function gameStatus()
@@ -96,13 +98,16 @@ function handleStatus(json) {
         case "Finished":
             isMyTurn = false;
             if (showWinner) {
-                alert(playerTurn + " Has won!");
+                //alert(playerTurn + " Has won!");
                 showWinner = false;
                 showedEndGameDialog = true;
+                showEndGameDialog();
             } else if (allRetired) {
-                alert(winnerPlayerName + " Has won because everyone retired!");
+                //alert(winnerPlayerName + " Has won because everyone retired!");
+                $('.roundsLeft').text("Game Over!");
                 allRetired = false;
                 showedEndGameDialog = true;
+                showEndGameDialog();
             }
             status = newStatus;
             break;
@@ -110,6 +115,32 @@ function handleStatus(json) {
     $('.gameStatus').text('Game status: ' + status);
     $('.currentPlayerName').text(playerTurn);
 }
+
+function showEndGameDialog() {
+    showPopUp();
+    var mHeader = $('.modal-header');
+    var mBody = $('.modal-body');
+    var item = $(document.createElement('h1'));
+    item.text("Game Over!").append(mHeader);
+    item = $(document.createElement('h1'));
+    item.text("The winning player is " + winnerPlayerName).appendTo(mBody);
+    $(document.createElement('button')).text("Exit").on('click' , function () {
+        $.ajax
+        (
+            {
+                url: CURR_GAME,
+                data: {
+                    action: 'resetGame'
+                },
+                type: 'GET',
+                success: function() {
+                    window.location = "../Lobby/lobby.html";
+                }
+            }
+        )
+    }).appendTo(mBody);
+}
+
 
 function startGame() {
     $.ajax
@@ -119,14 +150,11 @@ function startGame() {
             data: {
                 action: 'startGame'
             },
-            type: 'GET',
-            success: startGameCallBack
+            type: 'GET'
         }
     )
 }
-function startGameCallBack() {
 
-}
 
 function setCurrentPlayerInTurn(playerName) {
     isMyTurn = playerName === playerTurn;
@@ -173,7 +201,7 @@ function updateOnlineUsersCallBack(players) {
         playerLi.appendTo(usersList);
     });
     updateRegisteredPlayersSpan();
-    if(activePlayers.length === 1 && !showedEndGameDialog) {
+    if(activePlayers.length === 1 && !showedEndGameDialog && !showWinner) {
         allRetired = true;
         winnerPlayerName = activePlayers[0].playerName;
     }
@@ -190,14 +218,15 @@ function updateRemainRounds(){
     });
 }
 
-function setRemainingRounds(round) {
-    var remainRounds = totalCycles - round;
+function setRemainingRounds(data) {
+    var remainRounds = totalCycles - data.round;
     if(remainRounds === 0) {
         $('.roundsLeft').text("Final round!");
     } else if (remainRounds < 0) {
         $('.roundsLeft').text("Game Over!");
         if(!showedEndGameDialog) {
             showWinner = true;
+            winnerPlayerName = data.winnerName;
         }
     } else {
         $('.roundsLeft').text("Rounds Left: "+ remainRounds);

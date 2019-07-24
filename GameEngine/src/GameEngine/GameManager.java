@@ -21,10 +21,16 @@ public class GameManager implements Serializable {
     private String gameTitle;
     private static int gamesIDCounter = 0;
     private Stack<RoundHistory> roundsHistory;
+    private GameDescriptor originalGameDescriptor;
     private GameDescriptor gameDescriptor;
     private Player currentPlayerTurn=null;
     private Army   selectedArmyForce=null;
+    private String winnerName = "";
     private GameStatus status;
+
+    public String getWinnerName() {
+        return winnerName;
+    }
 
     public Army getSelectedArmyForce() {
         return selectedArmyForce;
@@ -35,6 +41,15 @@ public class GameManager implements Serializable {
     private Territory selectedTerritoryByPlayer=null;
     private Stack<RoundHistory> replayStack = new Stack<>();  //Bonus #2
 
+    public void resetManager() {
+        this.playersTurns = new ArrayBlockingQueue<>(gameDescriptor.getMaxPlayers());
+        this.roundsHistory = new Stack<>();
+        this.roundsHistory.push(new RoundHistory(gameDescriptor,roundNumber));
+        this.status = GameStatus.WaitingForPlayers;
+        this.gameDescriptor = new GameDescriptor(originalGameDescriptor);
+        this.roundNumber = 1;
+        this.currentPlayerTurn=null;
+    }
     public GameManager(GameDescriptor gameDes) {
         ID = ++gamesIDCounter;
         gameDescriptor = gameDes;
@@ -44,6 +59,7 @@ public class GameManager implements Serializable {
         roundsHistory.push(new RoundHistory(gameDescriptor,roundNumber));
         gameTitle = gameDescriptor.getGameTitle();
         status = GameStatus.WaitingForPlayers;
+        originalGameDescriptor = new GameDescriptor(gameDes);
     }
 
     public void setEventListenerHandler(EventHandler eventHandler) {
@@ -427,6 +443,7 @@ public class GameManager implements Serializable {
                 }
             }
         }
+        winnerName = gameDescriptor.getPlayersList().get(winnerPlayerID).getPlayerName();
         return gameDescriptor.getPlayersList().get(winnerPlayerID);
     }
 

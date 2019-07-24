@@ -1,11 +1,11 @@
 package Server.Servlets;
 
 import GameEngine.GameEngine;
+import GameEngine.GameManager;
 import GameObjects.GameStatus;
 import GameObjects.Player;
 import Server.Utils.*;
 import com.google.gson.Gson;
-import GameEngine.GameManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet(name = "GamesServlet")
 public class GamesServlet extends HttpServlet {
@@ -42,7 +41,7 @@ public class GamesServlet extends HttpServlet {
         }
     }
 
-    private void addUserToRoom(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private synchronized void addUserToRoom(HttpServletRequest request, HttpServletResponse response) throws IOException {
         GameEngine engine = ServletUtils.getGameEngine(getServletContext());
         RoomsManager roomsManager = ServletUtils.getRoomsManager(getServletContext());
         response.setContentType("application/json");
@@ -57,7 +56,6 @@ public class GamesServlet extends HttpServlet {
         if(room.status.equals(GameStatus.WaitingForPlayers)) {
             room.addPlayer(newPlayer);
             System.out.println(newPlayer.getPlayerName() + " Has joined room number " + room.id);
-            out.println(gson.toJson(new LoadGameStatus(true, "")));
             room.checkStatus();
             if(room.status.equals(GameStatus.Running)) {
                 System.out.println("Game " + gameId +" has started!");
@@ -65,6 +63,7 @@ public class GamesServlet extends HttpServlet {
                 manager.getGameDescriptor().setPlayersList(new ArrayList<>(room.activePlayers));
                 manager.setStatus(GameStatus.Running);
             }
+            out.println(gson.toJson(new LoadGameStatus(true, "")));
         } else { //Game is running
             out.println(gson.toJson(new LoadGameStatus(false , "Game is running")));
         }
