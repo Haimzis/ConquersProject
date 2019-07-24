@@ -226,7 +226,7 @@ function createGameBoard(json){
         var rowTable =$(document.createElement('tr'));
         rowTable.addClass('row');
         rowTable.appendTo(board);
-        for(var j=0;j<columns;j++){
+        for(var j=0;j<cols;j++){
             var territorySquare =$(document.createElement('td'));
             territorySquare.addClass('Territory');
             territorySquare.attr('TerritoryID', json.territoryMap[id_index].ID);
