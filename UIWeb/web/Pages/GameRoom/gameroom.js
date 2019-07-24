@@ -48,7 +48,7 @@ function updateWelcomeUsernameDetail(){
 
 function onLeaveGameClick()
 {
-    if(gameStatus === "WaitingForPlayers") {
+    if(status === "WaitingForPlayers") {
         $.ajax
         ({
             async: false,

@@ -229,30 +229,59 @@ function createGameBoard(json){
         for(var j=0;j<cols;j++){
             var territorySquare =$(document.createElement('td'));
             territorySquare.addClass('Territory');
-            territorySquare.attr('TerritoryID', json.territoryMap[id_index].ID);
+
             var territoryData = $(document.createElement('div'));
             territoryData.addClass('territoryDataDiv');
 
             //territory data members
             var territoryID = $(document.createElement('div'));
             territoryID.addClass('id_Data');
-            territoryID.text("ID: " + json.territoryMap[id_index].ID);
 
-            var territoryArmyThreshold = $(document.createElement('div'));
-            territoryArmyThreshold.addClass('armyThreshold_Data');
-            territoryArmyThreshold.text("Army Threshold: " + json.territoryMap[id_index].armyThreshold);
-
-            var territoryProfit = $(document.createElement('div'));
-            territoryProfit.addClass('profitData');
-            territoryProfit.text("Profit: " + json.territoryMap[id_index].profit);
-
-            territoryData.append(territoryID,territoryArmyThreshold,territoryProfit);
+            territoryData.append(territoryID);
             territoryData.appendTo(territorySquare);
             territorySquare.appendTo(rowTable);
             id_index++;
         }
     }
+    createMapData(json.manager.gameDescriptor.territoryMap);
+    createUnitData(json.manager.gameDescriptor.unitMap);
 }
+
+function createUnitData(units) {
+    var unitDiv = $('.unitData');
+    unitDiv.contents().remove();
+    $(document.createElement('h1')).text("Unit Details:").appendTo(unitDiv);
+
+    for(var unit in units) {
+        $(document.createElement('h3')).text(units[unit].type + ":").appendTo(unitDiv);
+        $(document.createElement('p')).text("Rank: " + units[unit].rank).appendTo(unitDiv);
+        $(document.createElement('p')).text("Cost: " + units[unit].purchase).appendTo(unitDiv);
+        $(document.createElement('p')).text("Firepower: " + units[unit].maxFirePower).appendTo(unitDiv);
+        $(document.createElement('p')).text("Competence Reduction: " + units[unit].competenceReduction).appendTo(unitDiv);
+        $(document.createElement('hr')).appendTo(unitDiv);
+    }
+}
+
+function createMapData(map) {
+    var mapDiv = $('.mapData');
+    mapDiv.contents().remove();
+    $(document.createElement('h1')).text("Map Details:").appendTo(mapDiv);
+
+    for(var id_index in map) {
+        $(document.createElement('h3')).text("Territory number " + map[id_index].ID).appendTo(mapDiv);
+        var territoryID = $(document.createElement('p'));
+        territoryID.text("ID: " + map[id_index].ID);
+
+        var territoryArmyThreshold = $(document.createElement('p'));
+        territoryArmyThreshold.text("Army Threshold: " + map[id_index].armyThreshold);
+
+        var territoryProfit = $(document.createElement('p'));
+        territoryProfit.text("Profit: " + map[id_index].profit);
+        mapDiv.append(territoryID , territoryArmyThreshold, territoryProfit);
+        $(document.createElement('hr')).appendTo(mapDiv);
+    }
+}
+
 function removeGameDialog() {
     $('.dialogDiv')[0].style.display = "none";
 }

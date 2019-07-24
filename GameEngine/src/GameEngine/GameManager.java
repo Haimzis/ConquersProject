@@ -54,7 +54,9 @@ public class GameManager implements Serializable {
         ID = ++gamesIDCounter;
         gameDescriptor = gameDes;
         playersTurns = new ArrayBlockingQueue<>(gameDescriptor.getMaxPlayers());
-        //loadPlayersIntoQueueOfTurns();
+        if(!gameDes.getGameType().equals(GameDescriptor.DYNAMIC_MULTI_PLAYER)) {
+            loadPlayersIntoQueueOfTurns();
+        }
         roundsHistory = new Stack<>();
         roundsHistory.push(new RoundHistory(gameDescriptor,roundNumber));
         gameTitle = gameDescriptor.getGameTitle();
