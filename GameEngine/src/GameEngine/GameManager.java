@@ -53,6 +53,7 @@ public class GameManager implements Serializable {
         gameTitle = gameDescriptor.getGameTitle();
         status = GameStatus.WaitingForPlayers;
         originalGameDescriptor = new GameDescriptor(gameDes);
+        eventListener = new EventListener();
     }
 
     public EventListener getEventListener() {

@@ -1,5 +1,6 @@
 var LOGGED_USERS_URL = buildUrlWithContextPath("LoggedUsersStats");
 var CURR_GAME = buildUrlWithContextPath("singleGame");
+var EVENTS_AND_VERSION_MANAGE_URL = buildUrlWithContextPath("singleGameEvents");
 var status;
 var isMyTurn = false;
 var refreshRate = 2000; //milli seconds
@@ -20,6 +21,8 @@ var playerTurn;
 var winnerPlayerName;
 var allRetired = false;
 var showedEndGameDialog = false;
+var gameStarted = false;
+var gameVersion = 0;
 
 window.onload = function () {
     updateWelcomeUsernameDetail();
@@ -35,8 +38,8 @@ window.onload = function () {
 
 function updatePageByEvents(){
     $.ajax({
-        url: CHAT_LIST_URL,
-        data: "chatversion=" + chatVersion,
+        url: EVENTS_AND_VERSION_MANAGE_URL,
+        data: "gameVersion=" + gameVersion,
         dataType: 'json',
         success: function(data) {
             /*
@@ -44,30 +47,59 @@ function updatePageByEvents(){
              {
                 "entries": [
                     {
-                        "chatString":"Hi",
-                        "username":"bbb",
+                        "action":"TerritoryRelease",
+                        "identity":"1",
                         "time":1485548397514
                     },
                     {
-                        "chatString":"Hello",
-                        "username":"bbb",
+                        "action":"UnitsBuying",
+                        "identity":"Ran_is_Gay",
                         "time":1485548397514
                     }
                 ],
                 "version":1
              }
              */
-            console.log("Server chat version: " + data.version + ", Current chat version: " + chatVersion);
-            if (data.version !== chatVersion) {
-                chatVersion = data.version;
-                appendToChatArea(data.entries);
+            console.log("Server game version: " + data.version + ", Current game version: " + gameVersion);
+            if (data.version !== gameVersion) {
+                gameVersion = data.version;
+                triggerUpdatesOfPage(data.gameEvents);
             }
-            triggerAjaxChatContent();
-        },
-        error: function(error) {
-            triggerAjaxChatContent();
         }
     });
+}
+function triggerUpdatesOfPage(events){
+    events.forEach(function(event){
+        var action = event.action;
+        var identityOfAffectedObject= event.identity;
+        var timeOfEvent = event.time;
+
+        switch(action){
+            case "TerritoryRelease":
+            //call function that returns the original color with the identity
+                break;
+            case "UnitsBuying":
+                break;
+            case "ArmyRehabilitation":
+                break;
+            case "Retirement":
+                break;
+            case "StartRoundUpdates":
+                break;
+            case "PlayerTurnArrived":
+                break;
+            case "RoundEnded":
+                break;
+            case "FundsIncrement":
+                break;
+            case "TerritoryConquered":
+                break;
+
+
+        }
+
+    })
+
 }
 function updateWelcomeUsernameDetail(){
     $.ajax
@@ -127,7 +159,7 @@ function handleStatus(json) {
             status = newStatus;
             break;
         case 'Running':
-            if (status === 'WaitingForPlayers') {
+            if (playerTurn === "None") {
                 startGame();
             }
             status = newStatus;
@@ -187,7 +219,12 @@ function startGame() {
             data: {
                 action: 'startGame'
             },
-            type: 'GET'
+            type: 'GET',
+            success: function(result) {
+                if(result !== undefined) {
+                    gameStarted = result.isLoaded;
+                }
+            }
         }
     )
 }
@@ -301,31 +338,23 @@ function createOtherPlayersStats(){
     })
 }
 function createOtherPlayersStatsTable(data){
-
+    var otherPlayersTable = $('#otherPlayerTable');
+    otherPlayersTable.contents().remove();
     var otherPlayersArr = data;
     var sizeOfArray = otherPlayersArr.length;
+    var tBody = $(document.createElement('tbody'));
+    var tr = $(document.createElement('tr'));
+    $(document.createElement('th')).text("Username").appendTo(tr);
+    $(document.createElement('th')).text("Turings").appendTo(tr);
+    $(document.createElement('th')).text("Color").appendTo(tr);
+    tr.appendTo(tBody);
+    tBody.appendTo(otherPlayersTable);
     for(var i=0 ;i< sizeOfArray;i++) {
         var otherPlayerStatsRow = $(document.createElement('tr'));
-        otherPlayerStatsRow.attr('PlayerID', otherPlayersArr[i].ID); //maybe j should start from 1
-        var userNameCol = $(document.createElement('td'));
-        var otherUserName = $(document.createElement('div'));
-        otherUserName.addClass('otherUserName');
-        otherUserName.text(otherPlayersArr[i].playerName);
-        otherUserName.appendTo(userNameCol);
-
-        var fundsCol = $(document.createElement('td'));
-        var otherFunds = $(document.createElement('div'));
-        otherFunds.addClass('otherFunds');
-        otherUserName.text(otherPlayersArr[i].funds);
-        otherFunds.appendTo(fundsCol);
-
-        var colorCol = $(document.createElement('td'));
-        var otherColor = $(document.createElement('div'));
-        otherColor.addClass('otherColor');
-        otherColor.css("background-color", otherPlayersArr[i].color);
-        otherColor.appendTo(colorCol);
-
-        $('#otherPlayerTable > tbody:last-child').append(otherPlayerStatsRow);
+        $(document.createElement('td')).text(otherPlayersArr[i].playerName).appendTo(otherPlayerStatsRow);
+        $(document.createElement('td')).text(otherPlayersArr[i].funds).appendTo(otherPlayerStatsRow);
+        $(document.createElement('td')).text(otherPlayersArr[i].color).css({"background-color":otherPlayersArr[i].color , "color":"black"}).appendTo(otherPlayerStatsRow);
+        otherPlayerStatsRow.appendTo(otherPlayersTable);
     }
 }
 
@@ -342,27 +371,22 @@ function createOwnPlayerStats(){
 //this function gets player object from the servlet
 function createOwnPlayerStatsTable(PlayerObject){
     setCurrentPlayerInTurn(PlayerObject.playerName);
+
     var ownPlayerStatsRow = $(document.createElement('tr'));
+    var ownPlayerTable = $('#ownPlayerTable');
+    ownPlayerTable.contents().remove();
+    var tBody = $(document.createElement('tbody'));
+    var tr = $(document.createElement('tr'));
+    $(document.createElement('th')).text("Username").appendTo(tr);
+    $(document.createElement('th')).text("Turings").appendTo(tr);
+    $(document.createElement('th')).text("Color").appendTo(tr);
+    tr.appendTo(tBody);
+    tBody.appendTo(ownPlayerTable);
 
-    var userNameCol =$(document.createElement('td'));
-    var ownUserName = $(document.createElement('div'));
-    ownUserName.addClass('ownUserName');
-    ownUserName.text(PlayerObject.playerName);
-    ownUserName.appendTo(userNameCol);
-
-    var fundsCol =$(document.createElement('td'));
-    var ownFunds = $(document.createElement('div'));
-    ownFunds.addClass('ownFunds');
-    ownUserName.text(PlayerObject.funds);
-    ownFunds.appendTo(fundsCol);
-
-    var colorCol =$(document.createElement('td'));
-    var ownColor = $(document.createElement('div'));
-    ownColor.addClass('ownColor');
-    ownColor.css("background-color",PlayerObject.color);
-    ownColor.appendTo(colorCol);
-
-    $('#ownPlayerTable > tbody:last-child').append(ownPlayerStatsRow);
+    $(document.createElement('td')).text(PlayerObject.playerName).appendTo(ownPlayerStatsRow);
+    $(document.createElement('td')).text(PlayerObject.funds).appendTo(ownPlayerStatsRow);
+    $(document.createElement('td')).text(PlayerObject.color).css("background-color",PlayerObject.color).appendTo(ownPlayerStatsRow);
+    ownPlayerStatsRow.appendTo(ownPlayerTable);
 }
 
 function createGameBoard(gameBoardData){

@@ -130,7 +130,7 @@ public class WelcomeScreenController {
                     appController.createMap();
                     //Wire the listener again since it's not saved
                     appController.getCurrentGameManager().setEventListenerHandler(eventObject -> {
-                        appController.getMapComponentController().unColorTerritory(eventObject.getIdentity());
+                        appController.getMapComponentController().unColorTerritory((Integer)eventObject.getIdentity());
                         appController.getHeaderComponentController().writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
                     });
                     appController.getHeaderComponentController().getBtnSave().setDisable(false);

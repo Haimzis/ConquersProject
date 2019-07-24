@@ -92,7 +92,7 @@ public class GameDescriptor implements Serializable {
         this.gameType = descriptor.getGameType();
         this.defaultProfit = descriptor.getDefaultProfit();
         this.defaultThreshold = descriptor.getDefaultThreshold();
-        gameTitle = descriptor.getGameTitle();
+        this.gameTitle = descriptor.getGameTitle();
         this.playersList  = new ArrayList<>();
         this.maxPlayers = descriptor.getMaxPlayers();
         lastKnownGoodString = descriptor.getLastKnownGoodString();
