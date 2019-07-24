@@ -30,8 +30,45 @@ window.onload = function () {
     setInterval(createOtherPlayersStats , refreshRate);
     setInterval(createOwnPlayerStats , refreshRate);
     setInterval(updateTerritories, refreshRate);
+    setInterval(updatePageByEvents,refreshRate);
 };
 
+function updatePageByEvents(){
+    $.ajax({
+        url: CHAT_LIST_URL,
+        data: "chatversion=" + chatVersion,
+        dataType: 'json',
+        success: function(data) {
+            /*
+             data will arrive in the next form:
+             {
+                "entries": [
+                    {
+                        "chatString":"Hi",
+                        "username":"bbb",
+                        "time":1485548397514
+                    },
+                    {
+                        "chatString":"Hello",
+                        "username":"bbb",
+                        "time":1485548397514
+                    }
+                ],
+                "version":1
+             }
+             */
+            console.log("Server chat version: " + data.version + ", Current chat version: " + chatVersion);
+            if (data.version !== chatVersion) {
+                chatVersion = data.version;
+                appendToChatArea(data.entries);
+            }
+            triggerAjaxChatContent();
+        },
+        error: function(error) {
+            triggerAjaxChatContent();
+        }
+    });
+}
 function updateWelcomeUsernameDetail(){
     $.ajax
     ({
