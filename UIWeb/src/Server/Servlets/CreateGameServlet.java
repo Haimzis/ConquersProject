@@ -21,7 +21,7 @@ public class CreateGameServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         GameEngine engine = ServletUtils.getGameEngine(getServletContext());
-        RoomsManager roomsManager = ServletUtils.getRoomsManager(getServletContext());
+        RoomsContainer roomsContainer = ServletUtils.getRoomsContainer(getServletContext());
         response.setContentType("application/json");
         GameDescriptor descriptor;
         PrintWriter out = response.getWriter();
@@ -29,8 +29,8 @@ public class CreateGameServlet extends HttpServlet {
         try {
             descriptor = engine.loadXML(request.getPart("xml").getInputStream(), request.getPart("xml").getSubmittedFileName());
             out.println(gson.toJson(new LoadGameStatus(true, "")));
-            RoomDescriptor newRoom = new RoomDescriptor(engine.newGame(descriptor), SessionUtils.getUsername(request));
-            roomsManager.addNewRoom(newRoom);
+            RoomManager newRoom = new RoomManager(engine.newGame(descriptor), SessionUtils.getUsername(request));
+            roomsContainer.addNewRoom(newRoom);
         } catch (invalidInputException e) {
             out.println(gson.toJson(new LoadGameStatus(false, e.getMessage())));
         }

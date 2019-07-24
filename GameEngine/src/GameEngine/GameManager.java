@@ -55,6 +55,9 @@ public class GameManager implements Serializable {
         originalGameDescriptor = new GameDescriptor(gameDes);
     }
 
+    public EventListener getEventListener() {
+        return eventListener;
+    }
 
     public void setEventListenerHandler(EventHandler eventHandler) {
         eventListener = new EventListener();
@@ -111,6 +114,7 @@ public class GameManager implements Serializable {
         getCurrentPlayerTerritories().parallelStream()
             .forEach(Territory::rehabilitateConquerArmy);
     }
+
     //Bonus #2
     public void selectedPlayerRetirement(){
         //clear past
