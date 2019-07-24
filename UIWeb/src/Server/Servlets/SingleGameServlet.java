@@ -390,14 +390,16 @@ public class SingleGameServlet extends HttpServlet {
         }
     }
 
-    private synchronized void startGame(HttpServletRequest request , HttpServletResponse response) {
-        synchronized (statusLock) {
-            String userName = SessionUtils.getUsername(request);
-            GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
-            if(manager != null) {
-                manager.loadPlayersIntoQueueOfTurns();
-                manager.nextPlayerInTurn();
-            }
+    private void startGame(HttpServletRequest request , HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        String userName = SessionUtils.getUsername(request);
+        GameManager manager = ServletUtils.getRoomsManager(request.getServletContext()).getRoomByUserName(userName).getManager();
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        if(manager != null) {
+            manager.loadPlayersIntoQueueOfTurns();
+            manager.nextPlayerInTurn();
+            out.println(gson.toJson(new LoadGameStatus(true , "")));
         }
     }
 
@@ -424,22 +426,20 @@ public class SingleGameServlet extends HttpServlet {
 
 
     private synchronized  void  sendStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        synchronized (statusLock) {
-            response.setContentType("application/json");
-            PrintWriter out = response.getWriter();
-            Gson gson = new Gson();
-            String userName = SessionUtils.getUsername(request);
-            RoomsManager roomsManager = ServletUtils.getRoomsManager(request.getServletContext());
-            GameStatus status;
-            GameManager manager = roomsManager.getRoomByUserName(userName).getManager();
-            if(manager != null) {
-                status = manager.getStatus();
-                String name = "";
-                if(status.equals(GameStatus.Running)) {
-                    name = manager.getCurrentPlayerName(); //Set the player that in turn at the start
-                }
-                out.println(gson.toJson(new GameStatusMessage(status, name)));
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        String userName = SessionUtils.getUsername(request);
+        RoomsManager roomsManager = ServletUtils.getRoomsManager(request.getServletContext());
+        GameStatus status;
+        GameManager manager = roomsManager.getRoomByUserName(userName).getManager();
+        if(manager != null) {
+            status = manager.getStatus();
+            String name = "";
+            if(status.equals(GameStatus.Running)) {
+                name = manager.getCurrentPlayerName(); //Set the player that in turn at the start
             }
+            out.println(gson.toJson(new GameStatusMessage(status, name)));
         }
     }
 

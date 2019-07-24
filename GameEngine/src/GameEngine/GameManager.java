@@ -49,6 +49,7 @@ public class GameManager implements Serializable {
         this.gameDescriptor = new GameDescriptor(originalGameDescriptor);
         this.roundNumber = 1;
         this.currentPlayerTurn=null;
+        currentPlayerName = "None";
     }
     public GameManager(GameDescriptor gameDes) {
         ID = ++gamesIDCounter;
@@ -287,7 +288,7 @@ public class GameManager implements Serializable {
         while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
             releaseTerritory(getTerritoryByID(territoryID));
-            eventListener.addEventObject(new EventTerritoryReleased(territoryID));
+            //eventListener.addEventObject(new EventTerritoryReleased(territoryID));
             mapsToClear.remove(0);
         }
     }
