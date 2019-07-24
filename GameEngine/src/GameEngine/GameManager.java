@@ -26,15 +26,6 @@ public class GameManager implements Serializable {
     private Army   selectedArmyForce=null;
     private String winnerName = "";
     private GameStatus status;
-
-    public String getWinnerName() {
-        return winnerName;
-    }
-
-    public Army getSelectedArmyForce() {
-        return selectedArmyForce;
-    }
-
     private transient EventListener eventListener;
     private Queue<Player> playersTurns;
     private Territory selectedTerritoryByPlayer=null;
@@ -68,17 +59,7 @@ public class GameManager implements Serializable {
         this.eventListener.setEventsHandler(eventHandler);
     }
 
-    public boolean checkIfOnlyOnePlayer() {
-        return gameDescriptor.getPlayersList().size() == 1;
-    }
 
-    public boolean isNextPlayerNull() {
-        return playersTurns.peek() == null;
-    }
-
-    public GameDescriptor getGameDescriptor() {
-        return gameDescriptor;
-    }
 
     //**************************//
     /*  Player Choices Control  */
@@ -257,9 +238,7 @@ public class GameManager implements Serializable {
 
         getTerritories(player).stream()
                 .filter(Territory::isArmyTotalPowerUnderThreshold)
-                .forEach(territory -> {
-                    releaseTerritory(territory);
-                });
+                .forEach(this::releaseTerritory);
                         //Territory::eliminateThisWeakArmy);
         //activateEventsHandler();
     }
@@ -587,5 +566,23 @@ public class GameManager implements Serializable {
 
     public void setStatus(GameStatus status) {
         this.status = status;
+    }
+    public String getWinnerName() {
+        return winnerName;
+    }
+
+    public Army getSelectedArmyForce() {
+        return selectedArmyForce;
+    }
+    public boolean checkIfOnlyOnePlayer() {
+        return gameDescriptor.getPlayersList().size() == 1;
+    }
+
+    public boolean isNextPlayerNull() {
+        return playersTurns.peek() != null;
+    }
+
+    public GameDescriptor getGameDescriptor() {
+        return gameDescriptor;
     }
 }

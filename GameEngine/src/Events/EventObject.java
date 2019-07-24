@@ -9,11 +9,6 @@ public abstract class EventObject {
         this.action = action;
         this.time = System.currentTimeMillis();
     }
-    EventObject(){
-        this.action = "none";
-        this.identity=null;
-        this.time = 0;
-    }
     public Object getIdentity() {
         return identity;
     }

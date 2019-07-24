@@ -272,7 +272,7 @@ public class HeaderController {
             mainController.getInformationComponentController().setFocusOnCurrentPlayer();
             return;
         }
-        if(!mainController.getCurrentGameManager().isNextPlayerNull()) {
+        if(mainController.getCurrentGameManager().isNextPlayerNull()) {
             mainController.nextPlayer();
         }
         else { //More than one player , but the last one retired so a new round begins
