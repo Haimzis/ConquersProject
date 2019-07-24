@@ -76,6 +76,28 @@ public class GameDescriptor implements Serializable {
         lastKnownGoodString = xmlPath.toString();
     }
 
+    public String getGameType() {
+        return gameType;
+    }
+
+    public GameDescriptor(GameDescriptor descriptor) {
+        colors.push("Green");colors.push("Red");
+        colors.push("Blue");colors.push("Yellow");
+        this.territoryMap = new HashMap<>(descriptor.getTerritoryMap());
+        this.unitMap = new HashMap<>(descriptor.getUnitMap());
+        this.initialFunds = descriptor.getInitialFunds();
+        this.totalCycles = descriptor.getTotalCycles();
+        this.columns = descriptor.getColumns();
+        this.rows = descriptor.getRows();
+        this.gameType = descriptor.getGameType();
+        this.defaultProfit = descriptor.getDefaultProfit();
+        this.defaultThreshold = descriptor.getDefaultThreshold();
+        gameTitle = descriptor.getGameTitle();
+        this.playersList  = new ArrayList<>();
+        this.maxPlayers = descriptor.getMaxPlayers();
+        lastKnownGoodString = descriptor.getLastKnownGoodString();
+    }
+
     //*********************//
     /*  Getters & Setters  */
     //*********************//

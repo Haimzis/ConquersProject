@@ -2,7 +2,7 @@ package Events;
 
 public abstract class EventObject {
     protected String action;
-    protected int identity;
+    protected Object identity;
     protected final long time;
 
     EventObject(String action){
@@ -11,10 +11,10 @@ public abstract class EventObject {
     }
     EventObject(){
         this.action = "none";
-        this.identity=0;
+        this.identity=null;
         this.time = 0;
     }
-    public int getIdentity() {
+    public Object getIdentity() {
         return identity;
     }
     public String getAction(){
