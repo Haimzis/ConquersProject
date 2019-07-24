@@ -11,7 +11,6 @@ var totalCycles;
 var unitData;
 var territoryMapData;
 var activePlayers;
-var interval;
 var showWinner;
 var selectedTerritoryId;
 var maxPlayers;
@@ -29,14 +28,15 @@ var chatVersion = 0;
 window.onload = function () {
     updateWelcomeUsernameDetail();
     getGameDetails();
+    createOtherPlayersStats();
+    createOwnPlayerStats();
     setInterval(updateOnlineUsers, refreshRate);
     setInterval(gameStatus, refreshRate);
-    setInterval(updateRemainRounds,refreshRate);
-    setInterval(createOtherPlayersStats , refreshRate);
-    setInterval(createOwnPlayerStats , refreshRate);
+    //setInterval(createOtherPlayersStats , refreshRate); // update the other players stats.
+    //setInterval(createOwnPlayerStats , refreshRate);      // update the own player stats.
     setInterval(updateTerritories, refreshRate);
     setChat();
-    triggerAjaxChatContent();
+    updateChatContent();
     setInterval(updatePageByEvents,refreshRate);
 };
 
@@ -46,7 +46,7 @@ function setChat() {
         $.ajax({
             data: $(this).serialize(),
             url: this.action,
-            timeout: 2000,
+            timeout: refreshRate,
             error: function() {
                 console.error("Failed to submit");
             },
@@ -112,17 +112,17 @@ function triggerUpdatesOfPage(events){
             case "Retirement":
                 break;
             case "StartRoundUpdates":
+                updateRemainRounds();
                 break;
             case "PlayerTurnArrived":
                 break;
             case "RoundEnded":
+                updateRemainRounds();
                 break;
             case "FundsIncrement":
                 break;
             case "TerritoryConquered":
                 break;
-
-
         }
 
     })
@@ -350,6 +350,7 @@ function setGameDetails(data)  {
     totalCycles = data.totalCycles;
     unitData = data.unitMap;
     territoryMapData = data.territoryMap;
+    updateRemainRounds();
     createGameBoard(data);
     updateRequiredPlayersSpan();
 }
@@ -529,6 +530,7 @@ function checkTerritoryCallBack(result) {
         }
     }
 }
+//TODO: need to change erase the territorymapdata variable - should get the information from the servlet. 
 function openOwnTerritoryPopup() {
     showPopUp();
     var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
@@ -579,7 +581,7 @@ function openOwnTerritoryPopup() {
     });
 
 }
-
+//TODO: need to change erase the territorymapdata variable - should get the information from the servlet.
 function openAttackPopup() {
     showPopUp();
     var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
@@ -619,7 +621,7 @@ function openAttackPopup() {
             showBuyUnits();
     }).appendTo(mHeader);
 }
-
+//TODO: need to change erase the territorymapdata variable - should get the information from the servlet. 
 function openNeutralPopup() {
     actionType = "neutral";
     showPopUp();
@@ -643,7 +645,7 @@ function openNeutralPopup() {
     /*BODY AND FOOTER*/
     showBuyUnits();
 }
-
+//TODO: what is it.
 function showBuyUnits() {
     var mBodyTitle = $(document.createElement('h2'));
     mBodyTitle.addClass('headerTitle');
@@ -770,9 +772,9 @@ function buyUnitsCallBack(data) {
         var howMany = $('.amountOfUnitsToBuy').val();
         $('.doneBtn').prop('disable' , false);
         var footer = $('.modal-footer');
-        var whatDidIBuy = $(document.createElement('p'));
-        whatDidIBuy.text("You just bought " + howMany + " " + selectedUnitName);
-        whatDidIBuy.appendTo(footer);
+        var shoppingList = $(document.createElement('p'));
+        shoppingList.text("You just bought " + howMany + " " + selectedUnitName);
+        shoppingList.appendTo(footer);
     } else {
         alert("Not enough turings!");
     }
@@ -983,14 +985,14 @@ function ajaxChatContent() {
                 chatVersion = data.version;
                 appendToChatArea(data.entries);
             }
-            triggerAjaxChatContent();
+            updateChatContent();
         },
         error: function(error) {
-            triggerAjaxChatContent();
+            updateChatContent();
         }
     });
 }
 
-function triggerAjaxChatContent() {
+function updateChatContent() {
     setTimeout(ajaxChatContent, refreshRate);
 }
