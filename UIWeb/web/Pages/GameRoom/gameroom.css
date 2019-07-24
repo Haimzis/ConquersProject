@@ -46,7 +46,7 @@ img.logoImage {
 }
 
 .Territory:hover {
-    background: antiquewhite;
+    opacity: 0.75%;
     cursor: pointer;
 }
 

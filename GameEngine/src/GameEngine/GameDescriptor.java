@@ -19,7 +19,7 @@ public class GameDescriptor implements Serializable {
     private static final String RANKS_ARE_NOT_SEQUENTIAL = "Ranks in XML are not sequential";
     private static final String THE_SAME_RANK_IN_XML = "A unit exists with the same rank in XML";
     private static final String SAME_TYPE_EXISTS_IN_THE_XML = "A Unit with the same type exists in the XML";
-    private static final String DYNAMIC_MULTI_PLAYER = "DynamicMultiPlayer";
+    public static final String DYNAMIC_MULTI_PLAYER = "DynamicMultiPlayer";
     private String lastKnownGoodString;
     private int initialFunds , totalCycles , columns , rows;
     private int defaultThreshold , defaultProfit;

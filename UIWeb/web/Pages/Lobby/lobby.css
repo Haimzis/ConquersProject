@@ -121,7 +121,6 @@ th {
 }
 
 .dialogContent {
-    font-size: 0;
     overflow: auto;
     margin: 25px;
     white-space: nowrap;
@@ -158,8 +157,8 @@ tr{
 .Territory{
     display: inline-block;
     border: 1px black solid;
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
 }
 
 .dialogButtons {
@@ -173,8 +172,7 @@ tr{
 
 .dialogButton {
     display: inline-block;
-    margin-right: 8px;
-    padding: 5px;
+    margin-left: 50%;
     border: grey 1px solid;
     border-radius: 4px;
     background: cornsilk;
