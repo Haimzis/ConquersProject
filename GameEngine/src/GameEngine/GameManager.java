@@ -85,7 +85,6 @@ public class GameManager implements Serializable {
         unitPrice= unit.getPurchase()*amount;
         currentPlayerTurn.decrementFunds(unitPrice);
         eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getID(),EventNamesConstants.UnitsBuying));
-
     }
     //retrieve selectedArmyForce to the selectedTerritory
     public void transformSelectedArmyForceToSelectedTerritory() {
