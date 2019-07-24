@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "GamesServlet")
 public class GamesServlet extends HttpServlet {
@@ -60,7 +62,7 @@ public class GamesServlet extends HttpServlet {
             if(room.status.equals(GameStatus.Running)) {
                 System.out.println("Game " + gameId +" has started!");
                 //Set the Game Manager players list and set it to running
-                manager.getGameDescriptor().setPlayersList(room.activePlayers);
+                manager.getGameDescriptor().setPlayersList(new ArrayList<>(room.activePlayers));
                 manager.setStatus(GameStatus.Running);
             }
         } else { //Game is running

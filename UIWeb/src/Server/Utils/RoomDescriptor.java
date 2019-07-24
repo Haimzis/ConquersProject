@@ -62,6 +62,7 @@ public class RoomDescriptor {
         Player playerToRemove = null;
         for (Player player : this.activePlayers) {
             if (player.getPlayerName().equals(userName)) {
+                manager.getGameDescriptor().getColors().push(player.getColor());
                 playerToRemove = player;
                 break;
             }
