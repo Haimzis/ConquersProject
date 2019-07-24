@@ -141,6 +141,7 @@ table {
 }
 
 div#chatArea {
+    overflow-y: scroll;
     background-color: white;
     min-height: 300px;
     margin-left: 2%;
@@ -241,3 +242,4 @@ ul#usersList {
 .defendingArmyDiv {
     overflow: scroll;
 }
+

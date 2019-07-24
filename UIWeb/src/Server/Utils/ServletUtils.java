@@ -1,5 +1,6 @@
 package Server.Utils;
 import GameEngine.GameEngine;
+import Server.Chat.ChatManager;
 import Server.Users.UserManager;
 
 
@@ -51,6 +52,16 @@ public class ServletUtils {
 		}
 		return (RoomsContainer) servletContext.getAttribute(ROOMS_MANAGER_ATTRIBUTE_NAME);
 	}
+
+	public static ChatManager getChatManager(ServletContext servletContext) {
+		synchronized (chatManagerLock) {
+			if (servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME) == null) {
+				servletContext.setAttribute(CHAT_MANAGER_ATTRIBUTE_NAME, new ChatManager());
+			}
+		}
+		return (ChatManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
+	}
+
 	public static int getVersionIntParameter(HttpServletRequest request, String name) {
 		String value = request.getParameter(name);
 		if (value != null) {

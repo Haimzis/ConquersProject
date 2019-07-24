@@ -390,14 +390,16 @@ public class SingleGameServlet extends HttpServlet {
         }
     }
 
-    private synchronized void startGame(HttpServletRequest request , HttpServletResponse response) {
-        synchronized (statusLock) {
-            String userName = SessionUtils.getUsername(request);
-            GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
-            if(manager != null) {
-                manager.loadPlayersIntoQueueOfTurns();
-                manager.nextPlayerInTurn();
-            }
+    private synchronized  void startGame(HttpServletRequest request , HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        String userName = SessionUtils.getUsername(request);
+        GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        if(manager != null) {
+            manager.loadPlayersIntoQueueOfTurns();
+            manager.nextPlayerInTurn();
+            out.println(gson.toJson(new LoadGameStatus(true , "")));
         }
     }
 

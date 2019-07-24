@@ -25,6 +25,10 @@
         <servlet-class>Server.Servlets.SingleGameServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ChatServlet</servlet-name>
+        <servlet-class>Server.Servlets.ChatServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>SingleGameEventsServlet</servlet-name>
         <servlet-class>Server.Servlets.SingleGameEventsServlet</servlet-class>
     </servlet>
@@ -58,6 +62,10 @@
     <servlet-mapping>
         <servlet-name>SingleGameEventsServlet</servlet-name>
         <url-pattern>/singleGameEvents</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatServlet</servlet-name>
+        <url-pattern>/chat</url-pattern>
     </servlet-mapping>
 
 </web-app>
