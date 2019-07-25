@@ -976,13 +976,10 @@ function endTurnStats(playerName) {
 }
 
 function endTurnStatsCallBack(lastAction) {
-showPopUp();
-    var mHeader = $('.modal-header');
-    var mBody = $('.modal-body');
-    var item = $(document.createElement('h1'));
-    item.text("Summary of turn:").appendTo(mHeader);
-    item = $(document.createElement('h1'));
-    item.text(lastAction).appendTo(mBody);
+    var historyDiv = $('.roundHistoryDiv');
+    historyDiv.contents().remove();
+    var text = $(document.createElement('p')).css({'font-size': '17px' , 'margin-left': '50%', 'margin-right': '50%'}).appendTo(historyDiv);
+    text.text(lastAction);
 }
 
 /*----------- CHAT CODE ----------------*/
