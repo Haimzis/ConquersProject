@@ -95,7 +95,7 @@ function triggerUpdatesOfPage(events){
 
         switch(action){
             case "TerritoryRelease":
-            //call function that returns the original color with the identity
+                unpaintReleasedTerritory(identityOfAffectedObject);
                 break;
             case "UnitsBuying":
                 break;
@@ -116,7 +116,7 @@ function triggerUpdatesOfPage(events){
             case "FundsIncrement":
                 break;
             case "TerritoryConquered":
-
+                paintConqueredTerritory(identityOfAffectedObject);
                 break;
             case "GameFinished":
                 updateGameStatusToFinished();
