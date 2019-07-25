@@ -134,8 +134,24 @@ function triggerUpdatesOfPage(events){
 
     })
 }
-function paintConqueredTerritory(conqueredTerritory){
-
+function paintConqueredTerritory(conqueredTerritoryID){
+    $.ajax({
+        async: false,
+            url: CURR_GAME,
+        data:
+        {
+            territory: conqueredTerritoryID,
+            action: 'getConquerOfTerritory'
+        },
+        type: 'GET',
+            success: function(conquerColor){
+                $('#'+conqueredTerritoryID).css('background-color' , conquerColor);
+            }
+    })
+}
+//TODO: fix it
+function unpaintReleasedTerritory(conqueredTerritoryID){
+    $('#'+conqueredTerritoryID).css('background-color' , );
 }
 function setCurrentPlayer(playerInTurn) {
     if(getUserName() === playerInTurn) {
