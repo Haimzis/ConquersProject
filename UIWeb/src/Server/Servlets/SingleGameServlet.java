@@ -152,7 +152,7 @@ public class SingleGameServlet extends HttpServlet {
         }
     }
 
-    private void returnUpdatedTerritories(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void returnUpdatedTerritories(HttpServletRequest request, HttpServletResponse response) throws IOException { //TODO: Should be gone.
         response.setContentType("application/json");
         String userName = SessionUtils.getUsername(request);
         PrintWriter out = response.getWriter();
