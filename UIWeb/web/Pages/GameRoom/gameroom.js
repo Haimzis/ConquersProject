@@ -18,9 +18,6 @@ var selectedUnitName;
 var actionType;
 var actionDone = false;
 var playerTurn;
-var winnerPlayerName;
-var allRetired = false;
-var showedEndGameDialog = false;
 var gameStarted = false;
 var gameVersion = 0;
 var chatVersion = 0;
@@ -122,11 +119,16 @@ function triggerUpdatesOfPage(events){
             case "GameStarted":
                 break;
             case "PlayerWon":
+                showWinningPlayer(identityOfAffectedObject);
                 break;
 
         }
 
     })
+}
+
+function showWinningPlayer(player) {
+    showEndGameDialog(player);
 }
 
 function setCurrentPlayer(playerInTurn) {
@@ -206,43 +208,7 @@ function gameStatus()
     )
 }
 
-/*function handleStatus(json) {
-    var newStatus = json.status;
-    playerTurn = json.currentPlayerTurnName;
-    switch(newStatus)
-    {
-        case 'WaitingForPlayers':
-            status = newStatus;
-            break;
-        case 'Running':
-            if (playerTurn === "None") {
-                //startGame();
-            }
-            status = newStatus;
-            break;
-        case "Finished":
-            isMyTurn = false;
-            if (showWinner) {
-                //alert(playerTurn + " Has won!");
-                showWinner = false;
-                showedEndGameDialog = true;
-                showEndGameDialog();
-            } else if (allRetired) {
-                //alert(winnerPlayerName + " Has won because everyone retired!");
-                $('.roundsLeft').text("Game Over!");
-                allRetired = false;
-                showedEndGameDialog = true;
-                showEndGameDialog();
-            }
-            status = newStatus;
-            break;
-    }
-    $('.gameStatus').text('Game status: ' + status);
-    $('.currentPlayerName').text(playerTurn);
-}
-*/
-
-function showEndGameDialog() {
+function showEndGameDialog(winnerPlayerName) {
     showPopUp();
     var mHeader = $('.modal-header');
     var mBody = $('.modal-body');
@@ -250,7 +216,7 @@ function showEndGameDialog() {
     item.text("Game Over!").append(mHeader);
     item = $(document.createElement('h1'));
     item.text("The winning player is " + winnerPlayerName).appendTo(mBody);
-    $(document.createElement('button')).text("Exit").css("position" , "absolute").on('click' , function () {
+    $(document.createElement('button')).text("Exit").on('click' , function () {
         $.ajax
         (
             {
@@ -265,30 +231,7 @@ function showEndGameDialog() {
             }
         )
     }).appendTo(mBody);
-}
-
-
-/*function startGame() {
-    $.ajax
-    (
-        {
-            url: CURR_GAME,
-            data: {
-                action: 'startGame'
-            },
-            type: 'GET',
-            success: function(result) {
-                if(result !== undefined) {
-                    gameStarted = result.isLoaded;
-                }
-            }
-        }
-    )
-}*/
-
-
-function setCurrentPlayerInTurn(playerName) {
-    isMyTurn = playerName === playerTurn;
+    $('.close').off('click');
 }
 
 function getGameDetails() {
@@ -332,10 +275,6 @@ function updateOnlineUsersCallBack(players) {
         playerLi.appendTo(usersList);
     });
     updateRegisteredPlayersSpan();
-    if(activePlayers.length === 1 && !showedEndGameDialog && !showWinner) {
-        allRetired = true;
-        winnerPlayerName = activePlayers[0].playerName;
-    }
 }
 
 function updateRemainRounds(){
@@ -355,10 +294,6 @@ function setRemainingRounds(data) {
         $('.roundsLeft').text("Final round!");
     } else if (remainRounds < 0) {
         $('.roundsLeft').text("Game Over!");
-        if(!showedEndGameDialog) {
-            showWinner = true;
-            winnerPlayerName = data.winnerName;
-        }
     } else {
         $('.roundsLeft').text("Rounds Left: "+ remainRounds);
     }
@@ -428,8 +363,6 @@ function createOwnPlayerStats(){
 }
 //this function gets player object from the servlet
 function createOwnPlayerStatsTable(PlayerObject){
-    setCurrentPlayerInTurn(PlayerObject.playerName);
-
     var ownPlayerStatsRow = $(document.createElement('tr'));
     var ownPlayerTable = $('#ownPlayerTable');
     ownPlayerTable.contents().remove();
@@ -675,7 +608,7 @@ function openNeutralPopup() {
     /*BODY AND FOOTER*/
     showBuyUnits();
 }
-//TODO: what is it.
+
 function showBuyUnits() {
     var mBodyTitle = $(document.createElement('h2'));
     mBodyTitle.addClass('headerTitle');
@@ -973,12 +906,6 @@ function showPopUp() {
        modal.hide();
     });
     modal.show();
-    window.onclick = function(event) {
-        if (event.target === modal) {
-            modal.hide();
-        }
-    };
-
     /* CLEAR INFO */
     var footer = $('.modal-footer');
     footer.contents().remove();
