@@ -980,7 +980,7 @@ showPopUp();
     var mHeader = $('.modal-header');
     var mBody = $('.modal-body');
     var item = $(document.createElement('h1'));
-    item.text("Summary of turn:").append(mHeader);
+    item.text("Summary of turn:").appendTo(mHeader);
     item = $(document.createElement('h1'));
     item.text(lastAction).appendTo(mBody);
 }
