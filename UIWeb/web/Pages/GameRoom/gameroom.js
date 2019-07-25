@@ -117,6 +117,7 @@ function triggerUpdatesOfPage(events){
             case "GameFinished":
                 break;
             case "GameStarted":
+                updateGameStatusToRunning();
                 break;
             case "PlayerWon":
                 showWinningPlayer(identityOfAffectedObject);
@@ -191,7 +192,11 @@ function onLeaveGameClick()
     }
 }
 
-function gameStatus()
+function updateGameStatusToRunning(){
+    status = 'Running';
+    $('.gameStatus').text('Game status: ' + status);
+}
+/*function gameStatus()
 {
     $.ajax
     (
