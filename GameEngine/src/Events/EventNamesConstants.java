@@ -15,4 +15,5 @@ public class EventNamesConstants {
     public static final String PlayerWon = "PlayerWon";
     public static final String GameReset = "GameReset";
     public static final String PlayerHasJoined = "PlayerHasJoined";
+    public static final String EndTurn = "EndTurn";
 }

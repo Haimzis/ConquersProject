@@ -1,5 +1,7 @@
 package Server.Servlets;
 
+import Events.EventNamesConstants;
+import Events.PlayerEvent;
 import GameEngine.GameManager;
 import GameObjects.*;
 import Server.Utils.*;
@@ -90,7 +92,20 @@ public class SingleGameServlet extends HttpServlet {
                 GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(SessionUtils.getUsername(request)).getGameManager();
                 manager.getEventListener().resetEventListener();
                 break;
+            case "lastActionInTurn":
+                getLastAction(request , response);
+                break;
+            case "resetLastAction":
+                GameManager gameManager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(SessionUtils.getUsername(request)).getGameManager();
+                gameManager.setLastActionOfPlayer(gameManager.getCurrentPlayerName() + " did nothing this turn");
+                break;
         }
+    }
+
+    private void getLastAction(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(SessionUtils.getUsername(request)).getGameManager();
+        PrintWriter out = response.getWriter();
+        out.println(manager.getLastActionOfPlayer());
     }
 
     private void getTerritory(int id, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -178,9 +193,11 @@ public class SingleGameServlet extends HttpServlet {
                     return;
                 }
                 // start round
+                manager.getEventListener().addEventObject(new PlayerEvent(manager.getCurrentPlayerName() , EventNamesConstants.EndTurn));
                 manager.startOfRoundUpdates();
                 manager.nextPlayerInTurn();
             } else {
+                manager.getEventListener().addEventObject(new PlayerEvent(manager.getCurrentPlayerName() , EventNamesConstants.EndTurn));
                 manager.nextPlayerInTurn();
             }
         }
@@ -236,6 +253,7 @@ public class SingleGameServlet extends HttpServlet {
         Gson gson = new Gson();
         GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
         if(manager != null) {
+            manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " has enforced a territory");
             manager.transformSelectedArmyForceToSelectedTerritory();
             out.print(gson.toJson(new TerritoryActionMessage(true, manager.getSelectedTerritoryByPlayer().getID())));
         }
@@ -250,9 +268,11 @@ public class SingleGameServlet extends HttpServlet {
         if(manager != null) {
             Supplier<Integer> enoughMoney = () -> manager.getRehabilitationArmyPriceInTerritory(manager.getSelectedTerritoryByPlayer());
             if(manager.isSelectedPlayerHasEnoughMoney(enoughMoney)) {
+                manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " has rehabilitated a territory");
                 manager.rehabilitateSelectedTerritoryArmy();
                 out.print(gson.toJson(new TerritoryActionMessage(true , manager.getSelectedTerritoryByPlayer().getID())));
             } else {
+                manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " has FAILED rehabilitated a territory");
                 out.print(gson.toJson(new TerritoryActionMessage(false , manager.getSelectedTerritoryByPlayer().getID())));
             }
         }
@@ -272,15 +292,19 @@ public class SingleGameServlet extends HttpServlet {
             int attackerWon = manager.attackConqueredTerritoryByCalculatedRiskBattle();
             if(attackerWon == 1) { //Win
                 if(manager.getSelectedTerritoryByPlayer().getConquerArmyForce() == null) {
+                    manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " has conquered a neutral territory but could not hold it");
                     out.println(gson.toJson(new TerritoryActionMessage(false , selectedTerritoryId,attackingArmy, defendingArmy , userName , true)));
                 } else {
+                    manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " has conquered a territory");
                     out.println(gson.toJson(new TerritoryActionMessage(true , selectedTerritoryId,attackingArmy, defendingArmy , userName , false)));
                 }
             }
             else if(attackerWon == 0) { //Defeat
+                manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " has failed to conquer a territory");
                 out.println(gson.toJson(new TerritoryActionMessage(false , selectedTerritoryId,attackingArmy, defendingArmy , userName , false)));
             }
             else { // Draw
+                manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " has failed to conquer a territory , there was a draw");
                 out.print(gson.toJson(new TerritoryActionMessage(true , selectedTerritoryId , attackingArmy , defendingArmy)));
             }
         }
@@ -300,15 +324,19 @@ public class SingleGameServlet extends HttpServlet {
             int attackerWon = manager.attackConqueredTerritoryByWellTimedBattle();
             if(attackerWon == 1) { //Win
                 if(manager.getSelectedTerritoryByPlayer().getConquerArmyForce() == null) {
+                    manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " has conquered a neutral territory but could not hold it");
                     out.println(gson.toJson(new TerritoryActionMessage(false , selectedTerritoryId,attackingArmy, defendingArmy , userName , true)));
                 } else {
+                    manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " has conquered a territory");
                     out.println(gson.toJson(new TerritoryActionMessage(true , selectedTerritoryId,attackingArmy, defendingArmy , userName , false)));
                 }
             }
             else if(attackerWon == 0) { //Defeat
+                manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " has failed to conquer a territory");
                 out.println(gson.toJson(new TerritoryActionMessage(false , selectedTerritoryId,attackingArmy, defendingArmy , userName , false)));
             }
             else { // Draw
+                manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " has failed to conquer a territory , there was a draw");
                 out.print(gson.toJson(new TerritoryActionMessage(true , selectedTerritoryId , attackingArmy , defendingArmy)));
             }
         }
@@ -323,8 +351,10 @@ public class SingleGameServlet extends HttpServlet {
         if(manager != null) {
             Army attackingArmy = manager.getSelectedArmyForce();
             if(manager.conquerNeutralTerritory()) {
+                manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " has conquered a neutral territory");
                 out.println(gson.toJson(new TerritoryActionMessage(true , manager.getSelectedTerritoryByPlayer().getID() , attackingArmy , userName)));
             } else {
+                manager.setLastActionOfPlayer(manager.getCurrentPlayerName() + " tried to conquered a neutral territory");
                 out.println(gson.toJson(new TerritoryActionMessage(false , manager.getSelectedTerritoryByPlayer().getID()  , attackingArmy , userName)));
             }
         }

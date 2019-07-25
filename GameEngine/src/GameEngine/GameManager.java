@@ -30,6 +30,7 @@ public class GameManager implements Serializable {
     private Queue<Player> playersTurns;
     private Territory selectedTerritoryByPlayer=null;
     private Stack<RoundHistory> replayStack = new Stack<>();  //Bonus #2
+    private String lastActionOfPlayer;
 
     public void resetManager() {
         this.playersTurns = new ArrayBlockingQueue<>(gameDescriptor.getMaxPlayers());
@@ -40,6 +41,7 @@ public class GameManager implements Serializable {
         this.roundNumber = 1;
         this.currentPlayerTurn=null;
         eventListener.addEventObject(new RoundEvent(EventNamesConstants.GameReset));
+        this.lastActionOfPlayer ="";
     }
 
     public GameManager(GameDescriptor gameDes) {
@@ -69,6 +71,14 @@ public class GameManager implements Serializable {
     //**************************//
     /*  Player Choices Control  */
     //**************************//
+
+    public void setLastActionOfPlayer(String lastActionOfPlayer) {
+        this.lastActionOfPlayer = lastActionOfPlayer;
+    }
+
+    public String getLastActionOfPlayer() {
+        return lastActionOfPlayer;
+    }
 
     //retrieve player object from UI, and put it as current player turn for all functions.
     public void setSelectedTerritoryForTurn(Territory selectedTerritory) {

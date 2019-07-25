@@ -123,6 +123,10 @@ function triggerUpdatesOfPage(events){
             case "PlayerHasJoined":
                 createOtherPlayersStats();
                 break;
+            case "EndTurn":
+                endTurnStats(identityOfAffectedObject);
+                break;
+
         }
         updateOnlineUsers();
     });
@@ -903,6 +907,18 @@ $.fn.hasAttr = function(name) {
 };
 
 function onEndTurnClick() {
+    if(actionDone === false) {
+        $.ajax
+        (
+            {
+                url: CURR_GAME,
+                data: {
+                    action: 'resetLastAction'
+                },
+                type: 'GET'
+            }
+        );
+    }
     if(status === "Running" && isMyTurn) {
         $.ajax
         (
@@ -941,7 +957,31 @@ function showPopUp() {
     mHeader.contents().remove();
 }
 
+function endTurnStats(playerName) {
+    if(getUserName() !== playerName) {
+        $.ajax
+        (
+            {
+                url: CURR_GAME,
+                data: {
+                    action: 'lastActionInTurn'
+                },
+                type: 'GET',
+                success: endTurnStatsCallBack
+            }
+        );
+    }
+}
 
+function endTurnStatsCallBack(lastAction) {
+showPopUp();
+    var mHeader = $('.modal-header');
+    var mBody = $('.modal-body');
+    var item = $(document.createElement('h1'));
+    item.text("Summary of turn:").append(mHeader);
+    item = $(document.createElement('h1'));
+    item.text(lastAction).appendTo(mBody);
+}
 
 /*----------- CHAT CODE ----------------*/
 function appendToChatArea(entries) {
