@@ -119,7 +119,7 @@ public class GameEngine {
             return true;
         }
     }
-    public Player createPlayerFromUser(String userName , int id , int funds) {
-        return new Player(id , userName , funds , lastGameDescriptor.getColors().pop());
+    public Player createPlayerFromUser(String userName , int id , int funds,int gameManagerId) {
+        return new Player(id , userName , funds , gameManagers.get(gameManagerId).getGameDescriptor().getColors().pop());
     }
 }

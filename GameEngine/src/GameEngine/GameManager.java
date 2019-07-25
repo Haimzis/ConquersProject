@@ -114,9 +114,9 @@ public class GameManager implements Serializable {
     }
     //Rehabilitation of selected territory army
     public void rehabilitateSelectedTerritoryArmy(){
-        selectedTerritoryByPlayer.rehabilitateConquerArmy();
         int rehabilitationPrice =getRehabilitationArmyPriceInTerritory(selectedTerritoryByPlayer);
         currentPlayerTurn.decrementFunds(rehabilitationPrice);
+        selectedTerritoryByPlayer.rehabilitateConquerArmy();
         eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(),EventNamesConstants.ArmyRehabilitation));
     }
     //Rehabilitation of all army - not necessary
