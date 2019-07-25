@@ -88,7 +88,7 @@ function triggerUpdatesOfPage(events){
 
         switch(action){
             case "TerritoryRelease":
-                unpaintReleasedTerritory(identityOfAffectedObject);
+                unPaintReleasedTerritory(identityOfAffectedObject);
                 break;
             case "UnitsBuying":
                 updatePlayerFunds(identityOfAffectedObject);
@@ -145,9 +145,11 @@ function paintConqueredTerritory(conqueredTerritoryID){
             }
     })
 }
-//TODO: fix it
-function unpaintReleasedTerritory(conqueredTerritoryID){
-    $('#'+conqueredTerritoryID).css('background-color' , );
+
+function unPaintReleasedTerritory(conqueredTerritoryID){
+    var targetTerritory = $('#'+conqueredTerritoryID);
+    var color = targetTerritory.attr('originalColor');
+    targetTerritory.css('background-color' , color);
 }
 
 function updatePlayerFunds(playerName) {
@@ -431,7 +433,9 @@ function createGameBoard(gameBoardData){
         for(var j=0;j<columns;j++){
             var territorySquare =$(document.createElement('td'));
             territorySquare.addClass('Territory');
-            territorySquare.add('id', gameBoardData.territoryMap[id_index].ID);
+            var originalColor = territorySquare.css('background-color');
+            territorySquare.attr({'id': gameBoardData.territoryMap[id_index].ID, 'originalColor': originalColor});
+
             var territoryData = $(document.createElement('div'));
             territoryData.addClass('territoryDataDiv');
 
