@@ -25,11 +25,9 @@ window.onload = function () {
     getGameDetails();
     createOtherPlayersStats();
     createOwnPlayerStats();
-    //setInterval(createOtherPlayersStats , refreshRate); // update the other players stats.
-    //setInterval(createOwnPlayerStats , refreshRate);      // update the own player stats.
+    setInterval(updatePageByEvents,refreshRate);
     setChat();
     updateChatContent();
-    setInterval(updatePageByEvents,refreshRate);
 };
 
 function setChat() {
@@ -97,6 +95,7 @@ function triggerUpdatesOfPage(events){
                 break;
             case "Retirement":
                 updateOnlineUsers();
+                createOtherPlayersStats();
                 break;
             case "StartRoundUpdates":
                 updateRemainRounds();
@@ -288,7 +287,7 @@ function getGameDetails() {
                 action: 'singleGameDetails'
             },
             type: 'GET',
-            success: setGameDetails
+            success: getGameDetailsCallBack
         }
     )
 }
@@ -329,11 +328,11 @@ function updateRemainRounds(){
             action: "currentRound"
         },
         type: 'GET',
-        success: setRemainingRounds
+        success: updateRemainRoundsCallBack
     });
 }
 
-function setRemainingRounds(data) {
+function updateRemainRoundsCallBack(data) {
     var remainRounds = totalCycles - data.round;
     if(remainRounds === 0) {
         $('.roundsLeft').text("Final round!");
@@ -353,7 +352,7 @@ function updateRequiredPlayersSpan(){
     var requiredPlayersAmount = maxPlayers;
     $('.requiredPlayers').text(requiredPlayersAmount);
 }
-function setGameDetails(data)  {
+function getGameDetailsCallBack(data)  {
     maxPlayers = data.maxPlayers;
     gameTitle = data.gameTitle;
     initialFunds = data.initialFunds;
