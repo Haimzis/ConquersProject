@@ -431,6 +431,7 @@ public class GameManager implements Serializable {
         }
 
         if(maxScore == 0) {
+            eventListener.addEventObject(new PlayerEvent("none" , EventNamesConstants.PlayerWon));
             return null;
         }
 
@@ -446,6 +447,7 @@ public class GameManager implements Serializable {
         if(duplicates.size() != 0) {
             for(Integer score : duplicates) {
                 if(score == maxScore) {
+                    eventListener.addEventObject(new PlayerEvent("none" , EventNamesConstants.PlayerWon));
                     return null;
                 }
             }

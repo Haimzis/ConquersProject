@@ -43,7 +43,7 @@ public class SingleGameServlet extends HttpServlet {
                 sendHowManyPlayersAreOnline(request , response);
                 break;
             case "endTurn":
-                endTurn(request , response);
+                endTurn(request);
                 break;
             case "checkTerritory":
                 checkTerritory(request , response);
@@ -109,7 +109,7 @@ public class SingleGameServlet extends HttpServlet {
             } else { // Last player in round retired.
                 manager.endOfRoundUpdates();
                 if(manager.isGameOver()) {
-                    checkWinnerIfAny(manager , response , request);
+                    checkWinnerIfAny(manager , request);
                     return;
                 }
                 manager.startOfRoundUpdates();
@@ -118,23 +118,21 @@ public class SingleGameServlet extends HttpServlet {
     }
 
     private void returnCurrentRound(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
         String userName = SessionUtils.getUsername(request);
         GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
         PrintWriter out = response.getWriter();
-        Gson gson = new Gson();
-        out.print(gson.toJson(new EndGameMessage(manager.getRoundNumber() , manager.getWinnerName())));
+        out.print(manager.getRoundNumber());
     }
 
 
-    private void endTurn(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void endTurn(HttpServletRequest request) {
         String userName = SessionUtils.getUsername(request);
         GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
         if(manager != null) {
             if(manager.isCycleOver()) {
                 manager.endOfRoundUpdates();
                 if(manager.isGameOver()) {
-                    checkWinnerIfAny(manager , response , request);
+                    checkWinnerIfAny(manager , request);
                     return;
                 }
                 // start round
@@ -146,20 +144,11 @@ public class SingleGameServlet extends HttpServlet {
         }
     }
 
-    private void checkWinnerIfAny(GameManager manager, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    private void checkWinnerIfAny(GameManager manager,HttpServletRequest request) {
         if(manager.isGameOver()) {
-            response.setContentType("application/json");
-            PrintWriter out = response.getWriter();
-            Gson gson = new Gson();
-            Player winner = manager.getWinnerPlayer();
+            manager.getWinnerPlayer();
             manager.setStatus(GameStatus.Finished);
             ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(SessionUtils.getUsername(request)).status = GameStatus.Finished;
-            if(winner == null) { //Show draw message
-                out.println(gson.toJson(new GameOverMessage("", true, GameStatus.Finished)));
-            }
-            else { //Need to show the winner.
-                out.println(new GameOverMessage(winner.getPlayerName(), false , GameStatus.Finished));
-            }
         }
     }
 
@@ -240,10 +229,14 @@ public class SingleGameServlet extends HttpServlet {
             Army attackingArmy = new Army(manager.getSelectedArmyForce());
             int attackerWon = manager.attackConqueredTerritoryByCalculatedRiskBattle();
             if(attackerWon == 1) { //Win
-                out.println(gson.toJson(new TerritoryActionMessage(true , selectedTerritoryId,attackingArmy, defendingArmy , userName)));
+                if(manager.getSelectedTerritoryByPlayer().getConquerArmyForce() == null) {
+                    out.println(gson.toJson(new TerritoryActionMessage(false , selectedTerritoryId,attackingArmy, defendingArmy , userName , true)));
+                } else {
+                    out.println(gson.toJson(new TerritoryActionMessage(true , selectedTerritoryId,attackingArmy, defendingArmy , userName , false)));
+                }
             }
             else if(attackerWon == 0) { //Defeat
-                out.println(gson.toJson(new TerritoryActionMessage(false , selectedTerritoryId,attackingArmy, defendingArmy , userName)));
+                out.println(gson.toJson(new TerritoryActionMessage(false , selectedTerritoryId,attackingArmy, defendingArmy , userName , false)));
             }
             else { // Draw
                 out.print(gson.toJson(new TerritoryActionMessage(true , selectedTerritoryId , attackingArmy , defendingArmy)));
@@ -264,10 +257,14 @@ public class SingleGameServlet extends HttpServlet {
             int selectedTerritoryId = manager.getSelectedTerritoryByPlayer().getID();
             int attackerWon = manager.attackConqueredTerritoryByWellTimedBattle();
             if(attackerWon == 1) { //Win
-                out.println(gson.toJson(new TerritoryActionMessage(true, selectedTerritoryId, attackingArmy, defendingArmy, userName)));
+                if(manager.getSelectedTerritoryByPlayer().getConquerArmyForce() == null) {
+                    out.println(gson.toJson(new TerritoryActionMessage(false , selectedTerritoryId,attackingArmy, defendingArmy , userName , true)));
+                } else {
+                    out.println(gson.toJson(new TerritoryActionMessage(true , selectedTerritoryId,attackingArmy, defendingArmy , userName , false)));
+                }
             }
             else if(attackerWon == 0) { //Defeat
-                out.println(gson.toJson(new TerritoryActionMessage(false , selectedTerritoryId,attackingArmy, defendingArmy , userName)));
+                out.println(gson.toJson(new TerritoryActionMessage(false , selectedTerritoryId,attackingArmy, defendingArmy , userName , false)));
             }
             else { // Draw
                 out.print(gson.toJson(new TerritoryActionMessage(true , selectedTerritoryId , attackingArmy , defendingArmy)));

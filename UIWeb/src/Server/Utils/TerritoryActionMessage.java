@@ -5,6 +5,7 @@ import GameObjects.Army;
 public class TerritoryActionMessage {
     private boolean success;
     private boolean draw;
+    private boolean couldNotHold;
     private int targetTerritoryId;
     private Army conqueringArmy;
     private Army defendingArmy;
@@ -67,12 +68,13 @@ public class TerritoryActionMessage {
     }
 
     //Enemy
-    public TerritoryActionMessage(boolean success, int targetTerritoryId, Army conqueringArmy, Army defendingArmy, String conquerorName) {
+    public TerritoryActionMessage(boolean success, int targetTerritoryId, Army conqueringArmy, Army defendingArmy, String conquerorName , boolean couldNotHold) {
         this.success = success;
         this.targetTerritoryId = targetTerritoryId;
         this.conqueringArmy = conqueringArmy;
         this.defendingArmy = defendingArmy;
         this.conquerorName = conquerorName;
+        this.couldNotHold = couldNotHold;
     }
 
     //Rehabilitate || Enforce
