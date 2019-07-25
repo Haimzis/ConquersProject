@@ -119,6 +119,7 @@ function triggerUpdatesOfPage(events){
             case "GameFinished":
                 break;
             case "GameStarted":
+                updateGameStatusToRunning();
                 break;
             case "PlayerWon":
                 break;
@@ -160,7 +161,11 @@ function onLeaveGameClick()
     }
 }
 
-function gameStatus()
+function updateGameStatusToRunning(){
+    status = 'Running';
+    $('.gameStatus').text('Game status: ' + status);
+}
+/*function gameStatus()
 {
     $.ajax
     (
@@ -211,6 +216,7 @@ function handleStatus(json) {
     $('.gameStatus').text('Game status: ' + status);
     $('.currentPlayerName').text(playerTurn);
 }
+*/
 
 function showEndGameDialog() {
     showPopUp();
