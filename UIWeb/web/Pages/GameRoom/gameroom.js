@@ -108,6 +108,7 @@ function triggerUpdatesOfPage(events){
                 updateRemainRounds();
                 break;
             case "PlayerTurnArrived":
+                setCurrentPlayer(identityOfAffectedObject);
                 break;
             case "RoundEnded":
                 updateRemainRounds();
@@ -126,8 +127,19 @@ function triggerUpdatesOfPage(events){
         }
 
     })
-
 }
+
+function setCurrentPlayer(playerInTurn) {
+    if(getUserName() === playerInTurn) {
+        isMyTurn = true;
+    } else {
+        isMyTurn = false;
+    }
+    $('.currentPlayerName').text(playerTurn);
+}
+
+
+
 function updateWelcomeUsernameDetail(){
     $.ajax
     ({
@@ -140,6 +152,23 @@ function updateWelcomeUsernameDetail(){
             $('.userNameSpan').text('Hello, '+ userName + " enjoy playing.");
         }
     })
+}
+
+function getUserName(){
+    var result="";
+    $.ajax
+    ({
+        async: false,
+        url:LOGGED_USERS_URL,
+        data: {
+            action: "getLoggedUsername"
+        },
+        type: 'GET',
+        success: function (userName) {
+            result = userName;
+        }
+    });
+    return result;
 }
 
 function onLeaveGameClick()
@@ -177,7 +206,7 @@ function gameStatus()
     )
 }
 
-function handleStatus(json) {
+/*function handleStatus(json) {
     var newStatus = json.status;
     playerTurn = json.currentPlayerTurnName;
     switch(newStatus)
@@ -211,6 +240,7 @@ function handleStatus(json) {
     $('.gameStatus').text('Game status: ' + status);
     $('.currentPlayerName').text(playerTurn);
 }
+*/
 
 function showEndGameDialog() {
     showPopUp();
