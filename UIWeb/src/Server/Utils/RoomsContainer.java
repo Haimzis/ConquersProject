@@ -23,6 +23,9 @@ public class RoomsContainer {
                 result.add(roomManager);
             }
         });
-        return result.get(0);
+        if(!result.isEmpty()) {
+            return result.get(0);
+        }
+        return null;
     }
 }

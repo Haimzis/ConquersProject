@@ -144,6 +144,7 @@ public class SingleGameServlet extends HttpServlet {
             if(manager.checkIfOnlyOnePlayer()) { //Game end
                 manager.getForcedWinner();
                 manager.setStatus(GameStatus.Finished);
+                return;
             }
             if(manager.isNextPlayerNull()) { // Not everyone retired and not last player in round
                 manager.nextPlayerInTurn();

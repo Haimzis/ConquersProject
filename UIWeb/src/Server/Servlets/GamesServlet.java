@@ -52,7 +52,7 @@ public class GamesServlet extends HttpServlet {
         String userName = request.getParameter("user");
         int gameId = Integer.parseInt(request.getParameter("roomId"));
         GameManager manager =  GameEngine.getGameManagers().get(gameId);
-        Player newPlayer = engine.createPlayerFromUser(userName, ServletUtils.ID++, manager.getGameDescriptor().getInitialFunds());
+        Player newPlayer = engine.createPlayerFromUser(userName, ServletUtils.ID++, manager.getGameDescriptor().getInitialFunds(), gameId);
         RoomManager room = roomsContainer.getRoom(gameId);
 
         if(room.status.equals(GameStatus.WaitingForPlayers)) {

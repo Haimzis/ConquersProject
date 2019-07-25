@@ -2,7 +2,7 @@ var LOGGED_USERS_URL = buildUrlWithContextPath("LoggedUsersStats");
 var CURR_GAME = buildUrlWithContextPath("singleGame");
 var EVENTS_AND_VERSION_MANAGE_URL = buildUrlWithContextPath("singleGameEvents");
 var CHAT_URL = buildUrlWithContextPath("chat");
-var status;
+var status = 'WaitingForPlayers';
 var isMyTurn = false;
 var refreshRate = 2000; //milli seconds
 var gameTitle;
@@ -91,6 +91,7 @@ function triggerUpdatesOfPage(events){
                 updatePlayerFunds(identityOfAffectedObject);
                 break;
             case "ArmyRehabilitation":
+                updatePlayerFunds(identityOfAffectedObject);
                 break;
             case "Retirement":
                 updateOnlineUsers();
@@ -249,7 +250,6 @@ function updateGameStatusToWaitingForPlayers(){
 function resetEventListenerAndChat() {
     $.ajax
     ({
-        async: false,
         url: CURR_GAME,
         data: {
             action: "resetEventListener"
@@ -258,7 +258,6 @@ function resetEventListenerAndChat() {
     });
     $.ajax
     ({
-        async: false,
         url: CHAT_URL,
         data: {
             action: "resetChat"
@@ -535,6 +534,7 @@ function onRetirementClick() {
 
 function onRetireCallBack() {
     window.location = "../Lobby/lobby.html";
+    gameVersion = 0;
 }
 
 function checkTerritoryCallBack(result) {
