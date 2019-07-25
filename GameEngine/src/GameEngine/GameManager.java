@@ -208,6 +208,7 @@ public class GameManager implements Serializable {
     }
     //retrieve players list into queue of turns
     public void loadPlayersIntoQueueOfTurns() {
+        if(roundNumber == 1) eventListener.addEventObject(new RoundEvent(EventNamesConstants.GameStarted));
         if(gameDescriptor.getPlayersList() != null) {
             playersTurns.addAll(gameDescriptor.getPlayersList());
         }
