@@ -76,9 +76,18 @@ public class SingleGameServlet extends HttpServlet {
             case "resetGame":
                 resetGame(request);
                 break;
+            case "getFunds":
+                getFunds(request, response);
+                break;
 
 
         }
+    }
+
+    private void getFunds(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        String playerName = request.getParameter("playerName");
+        out.println(ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(playerName).getPlayerByUsername(playerName).getFunds());
     }
 
     private  synchronized void resetGame(HttpServletRequest request) {

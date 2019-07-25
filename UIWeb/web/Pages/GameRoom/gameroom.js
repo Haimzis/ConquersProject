@@ -28,10 +28,8 @@ window.onload = function () {
     createOtherPlayersStats();
     createOwnPlayerStats();
     setInterval(updateOnlineUsers, refreshRate);
-    setInterval(gameStatus, refreshRate);
     //setInterval(createOtherPlayersStats , refreshRate); // update the other players stats.
     //setInterval(createOwnPlayerStats , refreshRate);      // update the own player stats.
-    setInterval(updateTerritories, refreshRate);
     setChat();
     updateChatContent();
     setInterval(updatePageByEvents,refreshRate);
@@ -59,24 +57,6 @@ function updatePageByEvents(){
         data: "gameVersion=" + gameVersion,
         dataType: 'json',
         success: function(data) {
-            /*
-             data will arrive in the next form:
-             {
-                "entries": [
-                    {
-                        "action":"TerritoryRelease",
-                        "identity":"1",
-                        "time":1485548397514
-                    },
-                    {
-                        "action":"UnitsBuying",
-                        "identity":"Ran_is_Gay",
-                        "time":1485548397514
-                    }
-                ],
-                "version":1
-             }
-             */
             console.log("Server game version: " + data.version + ", Current game version: " + gameVersion);
             if (data.version !== gameVersion) {
                 gameVersion = data.version;
@@ -96,6 +76,7 @@ function triggerUpdatesOfPage(events){
             //call function that returns the original color with the identity
                 break;
             case "UnitsBuying":
+                updatePlayerFunds(identityOfAffectedObject);
                 break;
             case "ArmyRehabilitation":
                 break;
@@ -111,6 +92,7 @@ function triggerUpdatesOfPage(events){
                 updateRemainRounds();
                 break;
             case "FundsIncrement":
+                updatePlayerFunds(identityOfAffectedObject);
                 break;
             case "TerritoryConquered":
                 break;
@@ -124,8 +106,29 @@ function triggerUpdatesOfPage(events){
                 break;
 
         }
-
     })
+}
+
+function updatePlayerFunds(playerName) {
+    $.ajax
+    ({
+        async: false,
+        url: CURR_GAME,
+        data: {
+            playerName: playerName,
+            action: "getFunds"
+        },
+        type: 'GET',
+        success: updatePlayerFundsCallback
+    });
+}
+
+function updatePlayerFundsCallback(playerWhichFundsHasBeenUpdated) {
+    if(getUserName() === playerWhichFundsHasBeenUpdated) {
+        createOwnPlayerStats();
+    } else {
+        createOtherPlayersStats();
+    }
 }
 
 function showWinningPlayer(player) {
@@ -195,22 +198,6 @@ function onLeaveGameClick()
 function updateGameStatusToRunning(){
     status = 'Running';
     $('.gameStatus').text('Game status: ' + status);
-}
-/*function gameStatus()
-{
-    $.ajax
-    (
-        {
-            async: false,
-            url: CURR_GAME,
-            data:
-                {
-                    action: 'gameStatus'
-                },
-            type: 'GET',
-            success: handleStatus
-        }
-    )
 }
 
 function showEndGameDialog(winnerPlayerName) {
@@ -399,7 +386,7 @@ function createGameBoard(gameBoardData){
         for(var j=0;j<columns;j++){
             var territorySquare =$(document.createElement('td'));
             territorySquare.addClass('Territory');
-            territorySquare.attr('TerritoryID', gameBoardData.territoryMap[id_index].ID); //maybe j should start from 1
+            territorySquare.add('id', gameBoardData.territoryMap[id_index].ID);
             var territoryData = $(document.createElement('div'));
             territoryData.addClass('territoryDataDiv');
 
@@ -825,57 +812,6 @@ function territoryActionCallBack(result) {
     }
 }
 
-function updateTerritories() {
-    $.ajax
-    (
-        {
-            url: CURR_GAME,
-            data: {
-                action: 'updateTerritories'
-            },
-            type: 'GET',
-            success: updateTerritoriesCallBack
-        }
-    );
-}
-function updateTerritoriesCallBack(territoriesMap) {
-    var temp = territoriesMap;
-    territoryMapData = temp;
-    colorTerritories();
-}
-
-function colorTerritories() {
-    var colors = [];
-    for(var territory in territoryMapData) {
-        var selectedTerritory = territoryMapData[territory];
-        if(selectedTerritory.conquerID !== null) {
-            colors[selectedTerritory.ID] = getColor(selectedTerritory)
-        }else { //default color
-            colors[selectedTerritory.ID] = "#f2f2f2";
-        }
-    }
-    $('.Territory').each(function () {
-        for(var player in activePlayers) {
-            var selectedTerritory = territoryMapData[$(this).attr('TerritoryID')];
-            var selectedPlayer = activePlayers[player];
-            if(selectedTerritory.conquerID !== null) {
-                if(selectedTerritory.conquerID === selectedPlayer.ID) {
-                    $(this).css("background-color" , colors[selectedTerritory.ID]);
-                }
-            } else {
-                $(this).css("background-color" , '#f2f2f2');
-            }
-        }
-    })
-}
-
-function getColor(selectedTerritory) {
-    for(var player in activePlayers) {
-        if(activePlayers[player].ID === selectedTerritory.conquerID) {
-            return activePlayers[player].color;
-        }
-    }
-}
 
 $.fn.hasAttr = function(name) {
     return this.attr(name) !== undefined;
