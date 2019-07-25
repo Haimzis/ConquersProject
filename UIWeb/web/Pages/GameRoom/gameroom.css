@@ -4,7 +4,13 @@ body{
     min-width: 750px;
     font-family: Arial, Helvetica, sans-serif;
 }
-
+h2.currentPlayerName {
+    display: contents;
+    margin-left: 1%;
+}
+span.playerTurn {
+    margin-left: 1%;
+}
 .toolBar{
     height: 50px;
     background: gainsboro;
@@ -151,6 +157,11 @@ div#chatArea {
 ul#usersList {
     text-align: left;
 }
+.defendingArmyDiv {
+    overflow: scroll;
+}
+
+/* Ran's popup START */
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -239,7 +250,6 @@ ul#usersList {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-.defendingArmyDiv {
-    overflow: scroll;
-}
+/* Ran's popup END */
+
 

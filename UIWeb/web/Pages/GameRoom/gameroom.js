@@ -124,7 +124,6 @@ function triggerUpdatesOfPage(events){
             case "PlayerHasJoined":
                 createOtherPlayersStats();
                 break;
-
         }
         updateOnlineUsers();
     });
@@ -941,6 +940,8 @@ function showPopUp() {
     var mHeader = $('.modal-header');
     mHeader.contents().remove();
 }
+
+
 
 /*----------- CHAT CODE ----------------*/
 function appendToChatArea(entries) {
