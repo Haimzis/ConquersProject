@@ -116,6 +116,13 @@ function triggerUpdatesOfPage(events){
                 break;
             case "TerritoryConquered":
                 break;
+            case "GameFinished":
+                break;
+            case "GameStarted":
+                break;
+            case "PlayerWon":
+                break;
+
         }
 
     })
