@@ -9,7 +9,6 @@ var gameTitle;
 var initialFunds;
 var totalCycles;
 var unitData;
-var territoryMapData;
 var activePlayers;
 var selectedTerritoryId;
 var maxPlayers;
@@ -174,9 +173,6 @@ function updatePlayerFunds(playerName) {
     });
 }
 
-function updatePlayerFundsCallback(funds) {
-
-}
 
 function showWinningPlayer(player) {
     showEndGameDialog(player);
@@ -253,6 +249,28 @@ function updateGameStatusToFinished(){
 function updateGameStatusToWaitingForPlayers(){
     status = 'WaitingForPlayers';
     $('.gameStatus').text('Game status: Waiting For Players...');
+    resetEventListenerAndChat();
+}
+
+function resetEventListenerAndChat() {
+    $.ajax
+    ({
+        async: false,
+        url: CURR_GAME,
+        data: {
+            action: "resetEventListener"
+        },
+        type: 'GET'
+    });
+    $.ajax
+    ({
+        async: false,
+        url: CHAT_URL,
+        data: {
+            action: "resetChat"
+        },
+        type: 'GET'
+    });
 }
 
 function showEndGameDialog(winnerPlayerName) {
@@ -336,7 +354,7 @@ function updateRemainRounds(){
 }
 
 function updateRemainRoundsCallBack(data) {
-    var remainRounds = totalCycles - data.round;
+    var remainRounds = totalCycles - data;
     if(remainRounds === 0) {
         $('.roundsLeft').text("Final round!");
     } else if (remainRounds < 0) {
@@ -361,7 +379,6 @@ function getGameDetailsCallBack(data)  {
     initialFunds = data.initialFunds;
     totalCycles = data.totalCycles;
     unitData = data.unitMap;
-    territoryMapData = data.territoryMap;
     updateRemainRounds();
     createGameBoard(data);
     updateRequiredPlayersSpan();
@@ -527,28 +544,46 @@ function onRetireCallBack() {
 }
 
 function checkTerritoryCallBack(result) {
-    console.log("In check territory callback");
-    if(result.isBelongToCurrentPlayer) {
-        openOwnTerritoryPopup();
-    } else {
-        if(result.isValid) {
-            if(result.isConquered) {
-                openAttackPopup();
-            } else {
-                openNeutralPopup();
-            }
-        } else {
-            alert(result.message);
-        }
-    }
+   openTheRightTerritoryPopup(result);
 }
 
-function openOwnTerritoryPopup() {
+function openTheRightTerritoryPopup(result) {
+    $.ajax
+    (
+        {
+            async: false,
+            url: CURR_GAME,
+            data: {
+                territoryId : selectedTerritoryId,
+                action: 'getTerritory'
+            },
+            type: 'GET',
+            success: function (territory) {
+                if(result.isBelongToCurrentPlayer) {
+                    openOwnTerritoryPopup(territory);
+                } else {
+                    if(result.isValid) {
+                        if(result.isConquered) {
+                            openAttackPopup(territory);
+                        } else {
+                            openNeutralPopup(territory);
+                        }
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            }
+        }
+    )
+}
+
+
+function openOwnTerritoryPopup(territory) {
     showPopUp();
-    var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
-    var profit = territoryMapData[selectedTerritoryId].profit;
-    var currentFirePower = territoryMapData[selectedTerritoryId].conquerArmyForce.totalPower;
-    var maxFirePower = territoryMapData[selectedTerritoryId].conquerArmyForce.potentialTotalPower;
+    var threshHold = territory.armyThreshold;
+    var profit = territory.profit;
+    var currentFirePower = territory.conquerArmyForce.totalPower;
+    var maxFirePower = territory.conquerArmyForce.potentialTotalPower;
     var mHeader = $('.modal-header');
     var mHeaderTitle = $(document.createElement('h1'));
     mHeaderTitle.addClass('mBodyTitle');
@@ -594,11 +629,11 @@ function openOwnTerritoryPopup() {
 
 }
 
-function openAttackPopup() {
+function openAttackPopup(territory) {
     showPopUp();
-    var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
-    var profit = territoryMapData[selectedTerritoryId].profit;
-    var currentFirePower = territoryMapData[selectedTerritoryId].conquerArmyForce.totalPower;
+    var threshHold = territory.armyThreshold;
+    var profit = territory.profit;
+    var currentFirePower = territory.conquerArmyForce.totalPower;
     var mHeader = $('.modal-header');
     var mHeaderTitle = $(document.createElement('h1'));
 
@@ -634,11 +669,11 @@ function openAttackPopup() {
     }).appendTo(mHeader);
 }
 
-function openNeutralPopup() {
+function openNeutralPopup(territory) {
     actionType = "neutral";
     showPopUp();
-    var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
-    var profit = territoryMapData[selectedTerritoryId].profit;
+    var threshHold = territory.armyThreshold;
+    var profit = territory.profit;
     var mHeader = $('.modal-header');
     var mHeaderTitle = $(document.createElement('h1'));
     mHeaderTitle.addClass('mBodyTitle');

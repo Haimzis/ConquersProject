@@ -37,4 +37,7 @@ public class EventListener {
     public synchronized void setEventsHandler(EventHandler eventsHandler){
         this.eventsHandler = eventsHandler;
     }
+    public synchronized void resetEventListener() {
+        eventObjectsList = new ArrayList<>();
+    }
 }
