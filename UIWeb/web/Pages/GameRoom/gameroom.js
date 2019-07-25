@@ -124,6 +124,10 @@ function triggerUpdatesOfPage(events){
             case "GameReset":
                 updateGameStatusToWaitingForPlayers();
                 break;
+            case "PlayerHasJoined":
+                createOtherPlayersStats();
+                break;
+
         }
 
         //Intervals
