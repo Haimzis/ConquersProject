@@ -162,6 +162,7 @@ public class SingleGameServlet extends HttpServlet {
         String userName = SessionUtils.getUsername(request);
         GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
         PrintWriter out = response.getWriter();
+
         out.print(manager.getRoundNumber());
     }
 

@@ -6,7 +6,6 @@ public class EventNamesConstants {
     public static final String UnitsBuying = "UnitsBuying";
     public static final String ArmyRehabilitation="ArmyRehabilitation";
     public static final String Retirement = "Retirement";
-    public static final String StartRoundUpdates = "StartRoundUpdates";
     public static final String PlayerTurnArrived = "PlayerTurnArrived";
     public static final String RoundEnded = "RoundEnded";
     public static final String FundsIncrement="FundsIncrement";
