@@ -30,7 +30,6 @@ window.onload = function () {
     getGameDetails();
     createOtherPlayersStats();
     createOwnPlayerStats();
-    setInterval(updateOnlineUsers, refreshRate);
     setInterval(gameStatus, refreshRate);
     //setInterval(createOtherPlayersStats , refreshRate); // update the other players stats.
     //setInterval(createOwnPlayerStats , refreshRate);      // update the own player stats.
@@ -103,6 +102,7 @@ function triggerUpdatesOfPage(events){
             case "ArmyRehabilitation":
                 break;
             case "Retirement":
+                updateOnlineUsers();
                 break;
             case "StartRoundUpdates":
                 updateRemainRounds();
@@ -116,8 +116,10 @@ function triggerUpdatesOfPage(events){
             case "FundsIncrement":
                 break;
             case "TerritoryConquered":
+
                 break;
             case "GameFinished":
+                updateGameStatusToFinished();
                 break;
             case "GameStarted":
                 updateGameStatusToRunning();
@@ -127,9 +129,14 @@ function triggerUpdatesOfPage(events){
 
         }
 
+        //Intervals
+        updateOnlineUsers();
+
     })
 }
+function paintConqueredTerritory(conqueredTerritory){
 
+}
 function setCurrentPlayer(playerInTurn) {
     if(getUserName() === playerInTurn) {
         isMyTurn = true;
@@ -192,6 +199,10 @@ function onLeaveGameClick()
 
 function updateGameStatusToRunning(){
     status = 'Running';
+    $('.gameStatus').text('Game status: ' + status);
+}
+function updateGameStatusToFinished(){
+    status = 'Finished';
     $('.gameStatus').text('Game status: ' + status);
 }
 /*function gameStatus()
