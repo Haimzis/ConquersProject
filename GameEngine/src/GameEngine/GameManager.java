@@ -505,7 +505,11 @@ public class GameManager implements Serializable {
     }
     //Returns True if next player exist in this round
     public boolean isCycleOver(){
-        return playersTurns.isEmpty();
+        if(playersTurns.isEmpty()) {
+            eventListener.addEventObject(new RoundEvent(EventNamesConstants.RoundEnded));
+            return true;
+        }
+        return false;
     }
     //Returns True if Game Over - final Round is over
     public boolean isGameOver() {

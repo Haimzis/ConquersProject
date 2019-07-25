@@ -96,9 +96,6 @@ function triggerUpdatesOfPage(events){
                 updateOnlineUsers();
                 createOtherPlayersStats();
                 break;
-            case "StartRoundUpdates":
-                updateRemainRounds();
-                break;
             case "PlayerTurnArrived":
                 setCurrentPlayer(identityOfAffectedObject);
                 break;
@@ -127,11 +124,8 @@ function triggerUpdatesOfPage(events){
                 createOtherPlayersStats();
                 break;
         }
-
-        //Intervals
         updateOnlineUsers();
-
-    })
+    });
 }
 function paintConqueredTerritory(conqueredTerritoryID){
     $.ajax({
