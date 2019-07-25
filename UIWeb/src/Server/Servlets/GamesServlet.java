@@ -1,5 +1,7 @@
 package Server.Servlets;
 
+import Events.EventNamesConstants;
+import Events.RoundEvent;
 import GameEngine.GameEngine;
 import GameEngine.GameManager;
 import GameObjects.GameStatus;
@@ -64,6 +66,8 @@ public class GamesServlet extends HttpServlet {
                 manager.setStatus(GameStatus.Running);
                 manager.startGame();
             }
+            //make event
+            manager.getEventListener().addEventObject(new RoundEvent(EventNamesConstants.PlayerHasJoined));
             out.println(gson.toJson(new LoadGameStatus(true, "")));
         } else { //Game is running
             out.println(gson.toJson(new LoadGameStatus(false , "Game is running")));
