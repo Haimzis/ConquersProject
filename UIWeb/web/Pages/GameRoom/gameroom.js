@@ -941,6 +941,8 @@ function showPopUp() {
     mHeader.contents().remove();
 }
 
+
+
 /*----------- CHAT CODE ----------------*/
 function appendToChatArea(entries) {
     // add the relevant entries
