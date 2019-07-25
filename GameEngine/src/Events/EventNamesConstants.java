@@ -11,4 +11,6 @@ public class EventNamesConstants {
     public static final String RoundEnded = "RoundEnded";
     public static final String FundsIncrement="FundsIncrement";
     public static final String TerritoryConquered="TerritoryConquered";
+    public static final String GameFinished = "GameFinished";
+    public static final String PlayerWon = "PlayerWon";
 }
