@@ -229,7 +229,6 @@ public class GameManager implements Serializable {
         }
         else {
             currentPlayerName = "None";
-            eventListener.addEventObject(new RoundEvent(EventNamesConstants.RoundEnded));
         }
     }
     //returns potential production of the current player turn

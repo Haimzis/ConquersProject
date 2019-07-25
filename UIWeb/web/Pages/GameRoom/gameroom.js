@@ -970,7 +970,7 @@ function createChatEntry (entry){
 function ajaxChatContent() {
     $.ajax({
         url: CHAT_URL,
-        data: "chatversion=" + chatVersion,
+        data: "chatVersion=" + chatVersion,
         dataType: 'json',
         success: function(data) {
             console.log("Server chat version: " + data.version + ", Current chat version: " + chatVersion);
