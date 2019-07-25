@@ -117,9 +117,11 @@ function triggerUpdatesOfPage(events){
                 break;
             case "PlayerWon":
                 showWinningPlayer(identityOfAffectedObject);
+                resetEventListenerAndChat();
                 break;
             case "GameReset":
                 updateGameStatusToWaitingForPlayers();
+                resetEventListenerAndChat();
                 break;
             case "PlayerHasJoined":
                 createOtherPlayersStats();
@@ -243,10 +245,10 @@ function updateGameStatusToFinished(){
 function updateGameStatusToWaitingForPlayers(){
     status = 'WaitingForPlayers';
     $('.gameStatus').text('Game status: Waiting For Players...');
-    resetEventListenerAndChat();
 }
 
 function resetEventListenerAndChat() {
+    gameVersion=0;
     $.ajax
     ({
         url: CURR_GAME,
