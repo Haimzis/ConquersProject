@@ -24,9 +24,9 @@ window.onload = function () {
     createOtherPlayersStats();
     createOwnPlayerStats();
     setInterval(updatePageByEvents,refreshRate);
+    updateRemainRounds();
     setChat();
     updateChatContent();
-    updateRemainRounds();
 };
 
 function setChat() {
