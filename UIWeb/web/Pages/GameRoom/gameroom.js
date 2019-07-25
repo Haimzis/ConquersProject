@@ -11,14 +11,12 @@ var totalCycles;
 var unitData;
 var territoryMapData;
 var activePlayers;
-var showWinner;
 var selectedTerritoryId;
 var maxPlayers;
 var selectedUnitName;
 var actionType;
 var actionDone = false;
 var playerTurn;
-var gameStarted = false;
 var gameVersion = 0;
 var chatVersion = 0;
 
@@ -27,7 +25,6 @@ window.onload = function () {
     getGameDetails();
     createOtherPlayersStats();
     createOwnPlayerStats();
-    setInterval(updateOnlineUsers, refreshRate);
     //setInterval(createOtherPlayersStats , refreshRate); // update the other players stats.
     //setInterval(createOwnPlayerStats , refreshRate);      // update the own player stats.
     setChat();
@@ -57,6 +54,24 @@ function updatePageByEvents(){
         data: "gameVersion=" + gameVersion,
         dataType: 'json',
         success: function(data) {
+            /*
+             data will arrive in the next form:
+             {
+                "entries": [
+                    {
+                        "action":"TerritoryRelease",
+                        "identity":"1",
+                        "time":1485548397514
+                    },
+                    {
+                        "action":"UnitsBuying",
+                        "identity":"Ran_is_Gay",
+                        "time":1485548397514
+                    }
+                ],
+                "version":1
+             }
+             */
             console.log("Server game version: " + data.version + ", Current game version: " + gameVersion);
             if (data.version !== gameVersion) {
                 gameVersion = data.version;
@@ -73,7 +88,7 @@ function triggerUpdatesOfPage(events){
 
         switch(action){
             case "TerritoryRelease":
-            //call function that returns the original color with the identity
+                unpaintReleasedTerritory(identityOfAffectedObject);
                 break;
             case "UnitsBuying":
                 updatePlayerFunds(identityOfAffectedObject);
@@ -81,6 +96,7 @@ function triggerUpdatesOfPage(events){
             case "ArmyRehabilitation":
                 break;
             case "Retirement":
+                updateOnlineUsers();
                 break;
             case "StartRoundUpdates":
                 updateRemainRounds();
@@ -95,8 +111,10 @@ function triggerUpdatesOfPage(events){
                 updatePlayerFunds(identityOfAffectedObject);
                 break;
             case "TerritoryConquered":
+                paintConqueredTerritory(identityOfAffectedObject);
                 break;
             case "GameFinished":
+                updateGameStatusToFinished();
                 break;
             case "GameStarted":
                 updateGameStatusToRunning();
@@ -106,7 +124,30 @@ function triggerUpdatesOfPage(events){
                 break;
 
         }
+
+        //Intervals
+        updateOnlineUsers();
+
     })
+}
+function paintConqueredTerritory(conqueredTerritoryID){
+    $.ajax({
+        async: false,
+            url: CURR_GAME,
+        data:
+        {
+            territory: conqueredTerritoryID,
+            action: 'getConquerOfTerritory'
+        },
+        type: 'GET',
+            success: function(conquerColor){
+                $('#'+conqueredTerritoryID).css('background-color' , conquerColor);
+            }
+    })
+}
+//TODO: fix it
+function unpaintReleasedTerritory(conqueredTerritoryID){
+    $('#'+conqueredTerritoryID).css('background-color' , );
 }
 
 function updatePlayerFunds(playerName) {
@@ -197,6 +238,10 @@ function onLeaveGameClick()
 
 function updateGameStatusToRunning(){
     status = 'Running';
+    $('.gameStatus').text('Game status: ' + status);
+}
+function updateGameStatusToFinished(){
+    status = 'Finished';
     $('.gameStatus').text('Game status: ' + status);
 }
 

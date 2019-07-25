@@ -42,6 +42,9 @@ public class SingleGameServlet extends HttpServlet {
             case "singleGameOnlinePlayers":
                 sendHowManyPlayersAreOnline(request , response);
                 break;
+            case "getConquerOfTerritory":
+                getConquerOfTerritory(request,response);
+                break;
             case "endTurn":
                 endTurn(request);
                 break;
@@ -88,6 +91,18 @@ public class SingleGameServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         String playerName = request.getParameter("playerName");
         out.println(ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(playerName).getPlayerByUsername(playerName).getFunds());
+    }
+
+    private void getConquerOfTerritory(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String territoryID = request.getParameter("territory");
+        int territoryIDAsInt = Integer.parseInt(territoryID);
+        String userName = SessionUtils.getUsername(request);
+        GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
+        Territory territory = manager.getTerritoryByID(territoryIDAsInt);
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        Player conquer =manager.getPlayerByID(territory.getConquerID());
+        out.println(gson.toJson(conquer.getColor()));
     }
 
     private  synchronized void resetGame(HttpServletRequest request) {
