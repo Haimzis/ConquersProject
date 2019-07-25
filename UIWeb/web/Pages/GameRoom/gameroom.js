@@ -122,7 +122,9 @@ function triggerUpdatesOfPage(events){
             case "PlayerWon":
                 showWinningPlayer(identityOfAffectedObject);
                 break;
-
+            case "GameReset":
+                updateGameStatusToWaitingForPlayers();
+                break;
         }
 
         //Intervals
@@ -245,6 +247,10 @@ function updateGameStatusToRunning(){
 function updateGameStatusToFinished(){
     status = 'Finished';
     $('.gameStatus').text('Game status: ' + status);
+}
+function updateGameStatusToWaitingForPlayers(){
+    status = 'WaitingForPlayers';
+    $('.gameStatus').text('Game status: Waiting For Players...');
 }
 
 function showEndGameDialog(winnerPlayerName) {

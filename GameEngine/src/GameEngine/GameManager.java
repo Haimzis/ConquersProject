@@ -39,6 +39,7 @@ public class GameManager implements Serializable {
         this.gameDescriptor = new GameDescriptor(originalGameDescriptor);
         this.roundNumber = 1;
         this.currentPlayerTurn=null;
+        eventListener.addEventObject(new RoundEvent(EventNamesConstants.GameReset));
     }
 
     public GameManager(GameDescriptor gameDes) {
@@ -64,8 +65,6 @@ public class GameManager implements Serializable {
         eventListener = new EventListener();
         this.eventListener.setEventsHandler(eventHandler);
     }
-
-
 
     //**************************//
     /*  Player Choices Control  */
