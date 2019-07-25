@@ -16,7 +16,6 @@ var maxPlayers;
 var selectedUnitName;
 var actionType;
 var actionDone = false;
-var playerTurn;
 var gameVersion = 0;
 var chatVersion = 0;
 
@@ -28,6 +27,7 @@ window.onload = function () {
     setInterval(updatePageByEvents,refreshRate);
     setChat();
     updateChatContent();
+    updateRemainRounds();
 };
 
 function setChat() {
@@ -163,16 +163,15 @@ function updatePlayerFunds(playerName) {
             action: "getFunds"
         },
         type: 'GET',
-        success: updatePlayerFundsCallback
+        success: function (funds) {
+            var turingsField = $('#ownTableTurnings' + playerName);
+            turingsField.text(funds);
+        }
     });
 }
 
-function updatePlayerFundsCallback(playerWhichFundsHasBeenUpdated) {
-    if(getUserName() === playerWhichFundsHasBeenUpdated) {
-        createOwnPlayerStats();
-    } else {
-        createOtherPlayersStats();
-    }
+function updatePlayerFundsCallback(funds) {
+
 }
 
 function showWinningPlayer(player) {
@@ -185,7 +184,7 @@ function setCurrentPlayer(playerInTurn) {
     } else {
         isMyTurn = false;
     }
-    $('.currentPlayerName').text(playerTurn);
+    $('.currentPlayerName').text(playerInTurn);
 }
 
 
@@ -389,7 +388,7 @@ function createOtherPlayersStatsTable(data){
     for(var i=0 ;i< sizeOfArray;i++) {
         var otherPlayerStatsRow = $(document.createElement('tr'));
         $(document.createElement('td')).text(otherPlayersArr[i].playerName).appendTo(otherPlayerStatsRow);
-        $(document.createElement('td')).text(otherPlayersArr[i].funds).appendTo(otherPlayerStatsRow);
+        $(document.createElement('td')).text(otherPlayersArr[i].funds).attr('id', 'ownTableTurnings' + otherPlayersArr[i].playerName).appendTo(otherPlayerStatsRow);
         $(document.createElement('td')).text(otherPlayersArr[i].color).css({"background-color":otherPlayersArr[i].color , "color":"black"}).appendTo(otherPlayerStatsRow);
         otherPlayerStatsRow.appendTo(otherPlayersTable);
     }
@@ -419,7 +418,7 @@ function createOwnPlayerStatsTable(PlayerObject){
     tBody.appendTo(ownPlayerTable);
 
     $(document.createElement('td')).text(PlayerObject.playerName).appendTo(ownPlayerStatsRow);
-    $(document.createElement('td')).text(PlayerObject.funds).appendTo(ownPlayerStatsRow);
+    $(document.createElement('td')).text(PlayerObject.funds).attr('id' , "ownTableTurnings" + PlayerObject.playerName).appendTo(ownPlayerStatsRow);
     $(document.createElement('td')).text(PlayerObject.color).css("background-color",PlayerObject.color).appendTo(ownPlayerStatsRow);
     ownPlayerStatsRow.appendTo(ownPlayerTable);
 }
@@ -439,7 +438,7 @@ function createGameBoard(gameBoardData){
             var territorySquare =$(document.createElement('td'));
             territorySquare.addClass('Territory');
             var originalColor = territorySquare.css('background-color');
-            territorySquare.attr({'id': gameBoardData.territoryMap[id_index].ID, 'originalColor': originalColor});
+            territorySquare.attr({'id': gameBoardData.territoryMap[id_index].ID, 'originalColor': originalColor , 'territoryid':gameBoardData.territoryMap[id_index].ID });
 
             var territoryData = $(document.createElement('div'));
             territoryData.addClass('territoryDataDiv');
