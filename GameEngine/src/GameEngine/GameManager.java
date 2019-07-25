@@ -214,6 +214,7 @@ public class GameManager implements Serializable {
     }
     //retrieve players list into queue of turns
     public void loadPlayersIntoQueueOfTurns() {
+        if(roundNumber == 1) eventListener.addEventObject(new RoundEvent(EventNamesConstants.GameStarted));
         if(gameDescriptor.getPlayersList() != null) {
             playersTurns.addAll(gameDescriptor.getPlayersList());
         }
@@ -450,6 +451,7 @@ public class GameManager implements Serializable {
             }
         }
         winnerName = gameDescriptor.getPlayersList().get(winnerPlayerID).getPlayerName();
+        eventListener.addEventObject(new PlayerEvent(winnerName,EventNamesConstants.PlayerWon));
         return gameDescriptor.getPlayersList().get(winnerPlayerID);
     }
 
@@ -507,7 +509,11 @@ public class GameManager implements Serializable {
     }
     //Returns True if Game Over - final Round is over
     public boolean isGameOver() {
-        return gameDescriptor.getTotalCycles() < roundNumber;
+        if(gameDescriptor.getTotalCycles() < roundNumber){
+            eventListener.addEventObject(new RoundEvent(EventNamesConstants.GameFinished));
+            return true;
+        }
+        return false;
     }
     //Returns currentPlayer funds amount
     public int getCurrentPlayerFunds(){return currentPlayerTurn.getFunds();}
@@ -554,6 +560,7 @@ public class GameManager implements Serializable {
             loadPlayersIntoQueueOfTurns();
             nextPlayerInTurn();
         }
+        eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(),EventNamesConstants.PlayerWon));
         return currentPlayerTurn;
     }
 
