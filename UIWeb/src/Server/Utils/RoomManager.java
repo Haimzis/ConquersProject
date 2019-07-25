@@ -60,7 +60,7 @@ public class RoomManager {
         });
         return result[0];
     }
-    public void removePlayerByUserName(String userName) {
+    public synchronized void removePlayerByUserName(String userName) {
         Player playerToRemove = null;
         for (Player player : this.activePlayers) {
             if (player.getPlayerName().equals(userName)) {
