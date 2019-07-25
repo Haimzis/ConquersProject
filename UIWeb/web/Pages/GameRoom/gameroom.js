@@ -1,5 +1,6 @@
 var LOGGED_USERS_URL = buildUrlWithContextPath("LoggedUsersStats");
 var CURR_GAME = buildUrlWithContextPath("singleGame");
+var EVENTS_AND_VERSION_MANAGE_URL = buildUrlWithContextPath("singleGameEvents");
 var CHAT_URL = buildUrlWithContextPath("chat");
 var status;
 var isMyTurn = false;
@@ -10,7 +11,6 @@ var totalCycles;
 var unitData;
 var territoryMapData;
 var activePlayers;
-var interval;
 var showWinner;
 var selectedTerritoryId;
 var maxPlayers;
@@ -22,19 +22,22 @@ var winnerPlayerName;
 var allRetired = false;
 var showedEndGameDialog = false;
 var gameStarted = false;
+var gameVersion = 0;
 var chatVersion = 0;
 
 window.onload = function () {
     updateWelcomeUsernameDetail();
     getGameDetails();
+    createOtherPlayersStats();
+    createOwnPlayerStats();
     setInterval(updateOnlineUsers, refreshRate);
     setInterval(gameStatus, refreshRate);
-    setInterval(updateRemainRounds,refreshRate);
-    setInterval(createOtherPlayersStats , refreshRate);
-    setInterval(createOwnPlayerStats , refreshRate);
+    //setInterval(createOtherPlayersStats , refreshRate); // update the other players stats.
+    //setInterval(createOwnPlayerStats , refreshRate);      // update the own player stats.
     setInterval(updateTerritories, refreshRate);
     setChat();
-    triggerAjaxChatContent();
+    updateChatContent();
+    setInterval(updatePageByEvents,refreshRate);
 };
 
 function setChat() {
@@ -43,7 +46,7 @@ function setChat() {
         $.ajax({
             data: $(this).serialize(),
             url: this.action,
-            timeout: 2000,
+            timeout: refreshRate,
             error: function() {
                 console.error("Failed to submit");
             }
@@ -53,6 +56,71 @@ function setChat() {
     });
 }
 
+function updatePageByEvents(){
+    $.ajax({
+        url: EVENTS_AND_VERSION_MANAGE_URL,
+        data: "gameVersion=" + gameVersion,
+        dataType: 'json',
+        success: function(data) {
+            /*
+             data will arrive in the next form:
+             {
+                "entries": [
+                    {
+                        "action":"TerritoryRelease",
+                        "identity":"1",
+                        "time":1485548397514
+                    },
+                    {
+                        "action":"UnitsBuying",
+                        "identity":"Ran_is_Gay",
+                        "time":1485548397514
+                    }
+                ],
+                "version":1
+             }
+             */
+            console.log("Server game version: " + data.version + ", Current game version: " + gameVersion);
+            if (data.version !== gameVersion) {
+                gameVersion = data.version;
+                triggerUpdatesOfPage(data.gameEvents);
+            }
+        }
+    });
+}
+function triggerUpdatesOfPage(events){
+    events.forEach(function(event){
+        var action = event.action;
+        var identityOfAffectedObject= event.identity;
+        var timeOfEvent = event.time;
+
+        switch(action){
+            case "TerritoryRelease":
+            //call function that returns the original color with the identity
+                break;
+            case "UnitsBuying":
+                break;
+            case "ArmyRehabilitation":
+                break;
+            case "Retirement":
+                break;
+            case "StartRoundUpdates":
+                updateRemainRounds();
+                break;
+            case "PlayerTurnArrived":
+                break;
+            case "RoundEnded":
+                updateRemainRounds();
+                break;
+            case "FundsIncrement":
+                break;
+            case "TerritoryConquered":
+                break;
+        }
+
+    })
+
+}
 function updateWelcomeUsernameDetail(){
     $.ajax
     ({
@@ -275,6 +343,7 @@ function setGameDetails(data)  {
     totalCycles = data.totalCycles;
     unitData = data.unitMap;
     territoryMapData = data.territoryMap;
+    updateRemainRounds();
     createGameBoard(data);
     updateRequiredPlayersSpan();
 }
@@ -454,6 +523,7 @@ function checkTerritoryCallBack(result) {
         }
     }
 }
+//TODO: need to change erase the territorymapdata variable - should get the information from the servlet. 
 function openOwnTerritoryPopup() {
     showPopUp();
     var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
@@ -504,7 +574,7 @@ function openOwnTerritoryPopup() {
     });
 
 }
-
+//TODO: need to change erase the territorymapdata variable - should get the information from the servlet.
 function openAttackPopup() {
     showPopUp();
     var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
@@ -544,7 +614,7 @@ function openAttackPopup() {
             showBuyUnits();
     }).appendTo(mHeader);
 }
-
+//TODO: need to change erase the territorymapdata variable - should get the information from the servlet. 
 function openNeutralPopup() {
     actionType = "neutral";
     showPopUp();
@@ -568,7 +638,7 @@ function openNeutralPopup() {
     /*BODY AND FOOTER*/
     showBuyUnits();
 }
-
+//TODO: what is it.
 function showBuyUnits() {
     var mBodyTitle = $(document.createElement('h2'));
     mBodyTitle.addClass('headerTitle');
@@ -695,9 +765,9 @@ function buyUnitsCallBack(data) {
         var howMany = $('.amountOfUnitsToBuy').val();
         $('.doneBtn').prop('disable' , false);
         var footer = $('.modal-footer');
-        var whatDidIBuy = $(document.createElement('p'));
-        whatDidIBuy.text("You just bought " + howMany + " " + selectedUnitName);
-        whatDidIBuy.appendTo(footer);
+        var shoppingList = $(document.createElement('p'));
+        shoppingList.text("You just bought " + howMany + " " + selectedUnitName);
+        shoppingList.appendTo(footer);
     } else {
         alert("Not enough turings!");
     }
@@ -908,14 +978,14 @@ function ajaxChatContent() {
                 chatVersion = data.version;
                 appendToChatArea(data.entries);
             }
-            triggerAjaxChatContent();
+            updateChatContent();
         },
         error: function(error) {
-            triggerAjaxChatContent();
+            updateChatContent();
         }
     });
 }
 
-function triggerAjaxChatContent() {
+function updateChatContent() {
     setTimeout(ajaxChatContent, refreshRate);
 }

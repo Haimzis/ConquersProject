@@ -44,13 +44,13 @@ public class ServletUtils {
 		return (GameEngine) servletContext.getAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME);
 	}
 
-	public static RoomsManager getRoomsManager(ServletContext servletContext) {
+	public static RoomsContainer getRoomsContainer(ServletContext servletContext) {
 		synchronized (roomsManagerLock) {
 			if (servletContext.getAttribute(ROOMS_MANAGER_ATTRIBUTE_NAME) == null) {
-				servletContext.setAttribute(ROOMS_MANAGER_ATTRIBUTE_NAME, new RoomsManager());
+				servletContext.setAttribute(ROOMS_MANAGER_ATTRIBUTE_NAME, new RoomsContainer());
 			}
 		}
-		return (RoomsManager) servletContext.getAttribute(ROOMS_MANAGER_ATTRIBUTE_NAME);
+		return (RoomsContainer) servletContext.getAttribute(ROOMS_MANAGER_ATTRIBUTE_NAME);
 	}
 
 	public static ChatManager getChatManager(ServletContext servletContext) {
@@ -62,7 +62,7 @@ public class ServletUtils {
 		return (ChatManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
 	}
 
-	public static int getIntParameter(HttpServletRequest request, String name) {
+	public static int getVersionIntParameter(HttpServletRequest request, String name) {
 		String value = request.getParameter(name);
 		if (value != null) {
 			try {

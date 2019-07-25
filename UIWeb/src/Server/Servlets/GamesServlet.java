@@ -43,7 +43,7 @@ public class GamesServlet extends HttpServlet {
 
     private synchronized void addUserToRoom(HttpServletRequest request, HttpServletResponse response) throws IOException {
         GameEngine engine = ServletUtils.getGameEngine(getServletContext());
-        RoomsManager roomsManager = ServletUtils.getRoomsManager(getServletContext());
+        RoomsContainer roomsContainer = ServletUtils.getRoomsContainer(getServletContext());
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         Gson gson = new Gson();
@@ -51,7 +51,7 @@ public class GamesServlet extends HttpServlet {
         int gameId = Integer.parseInt(request.getParameter("roomId"));
         GameManager manager =  GameEngine.getGameManagers().get(gameId);
         Player newPlayer = engine.createPlayerFromUser(userName, ServletUtils.ID++, manager.getGameDescriptor().getInitialFunds());
-        RoomDescriptor room = roomsManager.getRoom(gameId);
+        RoomManager room = roomsContainer.getRoom(gameId);
 
         if(room.status.equals(GameStatus.WaitingForPlayers)) {
             room.addPlayer(newPlayer);
@@ -73,20 +73,20 @@ public class GamesServlet extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         Gson gson = new Gson();
-        out.println(gson.toJson(ServletUtils.getRoomsManager(getServletContext()).getRoom(roomId)));
+        out.println(gson.toJson(ServletUtils.getRoomsContainer(getServletContext()).getRoom(roomId)));
     }
     private void sendRoomDetails(HttpServletRequest request ,HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         Gson gson = new Gson();
         String userName = SessionUtils.getUsername(request);
-        out.println(gson.toJson(ServletUtils.getRoomsManager(getServletContext()).getRoomByUserName(userName)));
+        out.println(gson.toJson(ServletUtils.getRoomsContainer(getServletContext()).getRoomByUserName(userName)));
     }
 
     private void showGamesList(HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         Gson gson = new Gson();
-        out.println(gson.toJson(ServletUtils.getRoomsManager(getServletContext()).getActiveRooms()));
+        out.println(gson.toJson(ServletUtils.getRoomsContainer(getServletContext()).getActiveRooms()));
     }
 }

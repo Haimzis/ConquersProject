@@ -28,7 +28,7 @@ public class ChatServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/index.html");
         }
 
-        int chatVersion = ServletUtils.getIntParameter(request, Constants.CHAT_VERSION_PARAMETER);
+        int chatVersion = ServletUtils.getVersionIntParameter(request, Constants.CHAT_VERSION_PARAMETER);
         if (chatVersion == Constants.INT_PARAMETER_ERROR) {
             return;
         }

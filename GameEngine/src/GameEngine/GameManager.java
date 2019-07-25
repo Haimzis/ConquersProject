@@ -1,12 +1,13 @@
 package GameEngine;
-import Events.EventHandler;
+import Events.*;
 import Events.EventListener;
-import Events.EventTerritoryReleased;
 import GameObjects.*;
 import History.*;
 import com.sun.istack.internal.Nullable;
+
 import java.io.Serializable;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -16,8 +17,6 @@ public class GameManager implements Serializable {
     private String currentPlayerName = "None";
     private int ID;
     private int roundNumber=1;
-
-
     private String gameTitle;
     private static int gamesIDCounter = 0;
     private Stack<RoundHistory> roundsHistory;
@@ -27,15 +26,6 @@ public class GameManager implements Serializable {
     private Army   selectedArmyForce=null;
     private String winnerName = "";
     private GameStatus status;
-
-    public String getWinnerName() {
-        return winnerName;
-    }
-
-    public Army getSelectedArmyForce() {
-        return selectedArmyForce;
-    }
-
     private transient EventListener eventListener;
     private Queue<Player> playersTurns;
     private Territory selectedTerritoryByPlayer=null;
@@ -49,8 +39,8 @@ public class GameManager implements Serializable {
         this.gameDescriptor = new GameDescriptor(originalGameDescriptor);
         this.roundNumber = 1;
         this.currentPlayerTurn=null;
-        currentPlayerName = "None";
     }
+
     public GameManager(GameDescriptor gameDes) {
         ID = ++gamesIDCounter;
         gameDescriptor = gameDes;
@@ -63,6 +53,11 @@ public class GameManager implements Serializable {
         gameTitle = gameDescriptor.getGameTitle();
         status = GameStatus.WaitingForPlayers;
         originalGameDescriptor = new GameDescriptor(gameDes);
+        eventListener = new EventListener();
+    }
+
+    public EventListener getEventListener() {
+        return eventListener;
     }
 
     public void setEventListenerHandler(EventHandler eventHandler) {
@@ -70,17 +65,7 @@ public class GameManager implements Serializable {
         this.eventListener.setEventsHandler(eventHandler);
     }
 
-    public boolean checkIfOnlyOnePlayer() {
-        return gameDescriptor.getPlayersList().size() == 1;
-    }
 
-    public boolean isNextPlayerNull() {
-        return playersTurns.peek() == null;
-    }
-
-    public GameDescriptor getGameDescriptor() {
-        return gameDescriptor;
-    }
 
     //**************************//
     /*  Player Choices Control  */
@@ -107,6 +92,7 @@ public class GameManager implements Serializable {
         }
         unitPrice= unit.getPurchase()*amount;
         currentPlayerTurn.decrementFunds(unitPrice);
+        eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(),EventNamesConstants.UnitsBuying));
     }
     //retrieve selectedArmyForce to the selectedTerritory
     public void transformSelectedArmyForceToSelectedTerritory() {
@@ -115,16 +101,21 @@ public class GameManager implements Serializable {
     //retrieve selectedArmyForce Collection to the selectedTerritory
     public void buyUnitsCollection(Collection<Unit> unitList) {
         selectedArmyForce.getUnits().addAll(unitList);
+        eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(),EventNamesConstants.UnitsBuying));
     }
     //Rehabilitation of selected territory army
     public void rehabilitateSelectedTerritoryArmy(){
         selectedTerritoryByPlayer.rehabilitateConquerArmy();
+        int rehabilitationPrice =getRehabilitationArmyPriceInTerritory(selectedTerritoryByPlayer);
+        currentPlayerTurn.decrementFunds(rehabilitationPrice);
+        eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(),EventNamesConstants.ArmyRehabilitation));
     }
-    //Rehabilitation of all army
+    //Rehabilitation of all army - not necessary
     public void rehabilitateAllArmy() {
         getCurrentPlayerTerritories().parallelStream()
             .forEach(Territory::rehabilitateConquerArmy);
     }
+
     //Bonus #2
     public void selectedPlayerRetirement(){
         //clear past
@@ -138,6 +129,7 @@ public class GameManager implements Serializable {
         });
         //clear present
         removeTerritoriesOfPlayerFromCurrentTime();
+        eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(), EventNamesConstants.Retirement));
         gameDescriptor.getPlayersList().remove(currentPlayerTurn);
         //activateEventsHandler();
     }
@@ -185,6 +177,9 @@ public class GameManager implements Serializable {
     public void startOfRoundUpdates() {
         updateAllPlayersProductionStartOfRound();
         updateAllPlayerTerritoriesHold();
+        //i think i dont need it->
+        //eventListener.addEventObject(new RoundEvent(EventNamesConstants.StartRoundUpdates));
+
     }
     private void updateAllPlayerTerritoriesHold() {
         gameDescriptor.getPlayersList().forEach(this::updateTerritoriesHold);
@@ -223,16 +218,19 @@ public class GameManager implements Serializable {
     public void nextPlayerInTurn() {
         currentPlayerTurn= playersTurns.poll();
         if (currentPlayerTurn != null) {
+            eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(),EventNamesConstants.PlayerTurnArrived));
             currentPlayerName = currentPlayerTurn.getPlayerName();
         }
         else {
             currentPlayerName = "None";
+            eventListener.addEventObject(new RoundEvent(EventNamesConstants.RoundEnded));
         }
     }
     //returns potential production of the current player turn
     //gives current player his funds, for his territories profits
     private void harvestProduction(Player player) {
         player.incrementFunds(calculatePotentialProduction(player));
+        eventListener.addEventObject(new PlayerEvent(player.getPlayerName(),EventNamesConstants.FundsIncrement));
     }
     private int calculatePotentialProduction(Player player) {
         return Optional.ofNullable(getTerritories(player))
@@ -247,10 +245,7 @@ public class GameManager implements Serializable {
 
         getTerritories(player).stream()
                 .filter(Territory::isArmyTotalPowerUnderThreshold)
-                .forEach(territory -> {
-                    releaseTerritory(territory);
-                    //eventListener.addEventObject(new EventTerritoryReleased(territory.getID()));
-                        });
+                .forEach(this::releaseTerritory);
                         //Territory::eliminateThisWeakArmy);
         //activateEventsHandler();
     }
@@ -288,7 +283,6 @@ public class GameManager implements Serializable {
         while(!mapsToClear.isEmpty()){
             Integer territoryID = mapsToClear.get(0);
             releaseTerritory(getTerritoryByID(territoryID));
-            //eventListener.addEventObject(new EventTerritoryReleased(territoryID));
             mapsToClear.remove(0);
         }
     }
@@ -298,6 +292,7 @@ public class GameManager implements Serializable {
             playerSelected.removeTerritory(territory.getID());
         }
         territory.eliminateThisWeakArmy();
+        eventListener.addEventObject(new TerritoryEvent(territory.getID(), EventNamesConstants.TerritoryRelease));
     }
     //Returns 0 = AttackerLoss : 1 = AttackerWins : 2 = DRAW
     public int attackConqueredTerritoryByWellTimedBattle(){
@@ -324,17 +319,17 @@ public class GameManager implements Serializable {
         if(result == 1) { // AttackerWins
             selectedTerritoryByPlayer.setConquerID(currentPlayerTurn.getID());
             currentPlayerTurn.addTerritory(selectedTerritoryByPlayer);
+            eventListener.addEventObject(new TerritoryEvent(selectedTerritoryByPlayer.getID(),EventNamesConstants.TerritoryConquered));
         }
         else if(result == 0){ // AttackerLoss
             selectedArmyForce = null;
         }
         else{ // DRAW
-            eventListener.addEventObject(new EventTerritoryReleased(selectedTerritoryByPlayer.getID()));
+            eventListener.addEventObject(new TerritoryEvent(selectedTerritoryByPlayer.getID(), EventNamesConstants.TerritoryRelease));
             return result;
         }
         if(battle.isWinnerArmyNotStrongEnoughToHoldTerritory()){
             xChangeFundsForUnitsAndHold(selectedTerritoryByPlayer);
-            eventListener.addEventObject(new EventTerritoryReleased(selectedTerritoryByPlayer.getID()));
         }
         return result;
     }
@@ -345,6 +340,7 @@ public class GameManager implements Serializable {
             selectedTerritoryByPlayer.setConquerArmyForce(selectedArmyForce);
             selectedTerritoryByPlayer.setConquerID(currentPlayerTurn.getID());
         }
+        eventListener.addEventObject(new TerritoryEvent(selectedTerritoryByPlayer.getID(),EventNamesConstants.TerritoryConquered));
         return isSelectedArmyForceBigEnough();
     }
     private void xChangeFundsForUnitsAndHold(Territory territory){
@@ -352,6 +348,7 @@ public class GameManager implements Serializable {
         Player conquer = getPlayerByID(territory.getConquerID());
         conquer.incrementFunds(valueOfArmyForce);
         territory.eliminateThisWeakArmy();
+        eventListener.addEventObject(new TerritoryEvent(territory.getID(), EventNamesConstants.TerritoryRelease));
     }
     //**************************//
     /*   Get InformationTable   */
@@ -576,5 +573,23 @@ public class GameManager implements Serializable {
 
     public void setStatus(GameStatus status) {
         this.status = status;
+    }
+    public String getWinnerName() {
+        return winnerName;
+    }
+
+    public Army getSelectedArmyForce() {
+        return selectedArmyForce;
+    }
+    public boolean checkIfOnlyOnePlayer() {
+        return gameDescriptor.getPlayersList().size() == 1;
+    }
+
+    public boolean isNextPlayerNull() {
+        return playersTurns.peek() != null;
+    }
+
+    public GameDescriptor getGameDescriptor() {
+        return gameDescriptor;
     }
 }
