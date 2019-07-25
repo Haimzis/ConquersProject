@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatManager {
-    private final List<SingleChatEntry> chatDataList;
+    private List<SingleChatEntry> chatDataList;
 
     public ChatManager() {
         chatDataList = new ArrayList<>();
@@ -23,5 +23,9 @@ public class ChatManager {
 
     public int getVersion() {
         return chatDataList.size();
+    }
+
+    public void resetChat() {
+        chatDataList = new ArrayList<>();
     }
 }

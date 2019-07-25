@@ -82,8 +82,26 @@ public class SingleGameServlet extends HttpServlet {
             case "getFunds":
                 getFunds(request, response);
                 break;
+            case "getTerritory":
+                int id = Integer.parseInt(request.getParameter("territoryId"));
+                getTerritory(id , request , response);
+                break;
+            case "resetEventListener":
+                GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(SessionUtils.getUsername(request)).getGameManager();
+                manager.getEventListener().resetEventListener();
+                break;
+        }
+    }
 
-
+    private void getTerritory(int id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        String userName = SessionUtils.getUsername(request);
+        PrintWriter out = response.getWriter();
+        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
+        Gson gson=gsonBuilder.create();
+        GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
+        if(manager != null) {
+            out.println(gson.toJson(manager.getTerritoryByID(id)));
         }
     }
 
@@ -100,9 +118,8 @@ public class SingleGameServlet extends HttpServlet {
         GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
         Territory territory = manager.getTerritoryByID(territoryIDAsInt);
         PrintWriter out = response.getWriter();
-        Gson gson = new Gson();
         Player conquer =manager.getPlayerByID(territory.getConquerID());
-        out.println(gson.toJson(conquer.getColor()));
+        out.println(conquer.getColor());
     }
 
     private  synchronized void resetGame(HttpServletRequest request) {

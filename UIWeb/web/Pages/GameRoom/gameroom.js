@@ -9,14 +9,12 @@ var gameTitle;
 var initialFunds;
 var totalCycles;
 var unitData;
-var territoryMapData;
 var activePlayers;
 var selectedTerritoryId;
 var maxPlayers;
 var selectedUnitName;
 var actionType;
 var actionDone = false;
-var playerTurn;
 var gameVersion = 0;
 var chatVersion = 0;
 
@@ -26,6 +24,7 @@ window.onload = function () {
     createOtherPlayersStats();
     createOwnPlayerStats();
     setInterval(updatePageByEvents,refreshRate);
+    updateRemainRounds();
     setChat();
     updateChatContent();
 };
@@ -166,17 +165,13 @@ function updatePlayerFunds(playerName) {
             action: "getFunds"
         },
         type: 'GET',
-        success: updatePlayerFundsCallback
+        success: function (funds) {
+            var turingsField = $('#ownTableTurnings' + playerName);
+            turingsField.text(funds);
+        }
     });
 }
 
-function updatePlayerFundsCallback(playerWhichFundsHasBeenUpdated) {
-    if(getUserName() === playerWhichFundsHasBeenUpdated) {
-        createOwnPlayerStats();
-    } else {
-        createOtherPlayersStats();
-    }
-}
 
 function showWinningPlayer(player) {
     showEndGameDialog(player);
@@ -188,7 +183,7 @@ function setCurrentPlayer(playerInTurn) {
     } else {
         isMyTurn = false;
     }
-    $('.currentPlayerName').text(playerTurn);
+    $('.currentPlayerName').text(playerInTurn);
 }
 
 
@@ -253,6 +248,28 @@ function updateGameStatusToFinished(){
 function updateGameStatusToWaitingForPlayers(){
     status = 'WaitingForPlayers';
     $('.gameStatus').text('Game status: Waiting For Players...');
+    resetEventListenerAndChat();
+}
+
+function resetEventListenerAndChat() {
+    $.ajax
+    ({
+        async: false,
+        url: CURR_GAME,
+        data: {
+            action: "resetEventListener"
+        },
+        type: 'GET'
+    });
+    $.ajax
+    ({
+        async: false,
+        url: CHAT_URL,
+        data: {
+            action: "resetChat"
+        },
+        type: 'GET'
+    });
 }
 
 function showEndGameDialog(winnerPlayerName) {
@@ -336,7 +353,7 @@ function updateRemainRounds(){
 }
 
 function updateRemainRoundsCallBack(data) {
-    var remainRounds = totalCycles - data.round;
+    var remainRounds = totalCycles - data;
     if(remainRounds === 0) {
         $('.roundsLeft').text("Final round!");
     } else if (remainRounds < 0) {
@@ -361,7 +378,6 @@ function getGameDetailsCallBack(data)  {
     initialFunds = data.initialFunds;
     totalCycles = data.totalCycles;
     unitData = data.unitMap;
-    territoryMapData = data.territoryMap;
     updateRemainRounds();
     createGameBoard(data);
     updateRequiredPlayersSpan();
@@ -392,7 +408,7 @@ function createOtherPlayersStatsTable(data){
     for(var i=0 ;i< sizeOfArray;i++) {
         var otherPlayerStatsRow = $(document.createElement('tr'));
         $(document.createElement('td')).text(otherPlayersArr[i].playerName).appendTo(otherPlayerStatsRow);
-        $(document.createElement('td')).text(otherPlayersArr[i].funds).appendTo(otherPlayerStatsRow);
+        $(document.createElement('td')).text(otherPlayersArr[i].funds).attr('id', 'ownTableTurnings' + otherPlayersArr[i].playerName).appendTo(otherPlayerStatsRow);
         $(document.createElement('td')).text(otherPlayersArr[i].color).css({"background-color":otherPlayersArr[i].color , "color":"black"}).appendTo(otherPlayerStatsRow);
         otherPlayerStatsRow.appendTo(otherPlayersTable);
     }
@@ -422,7 +438,7 @@ function createOwnPlayerStatsTable(PlayerObject){
     tBody.appendTo(ownPlayerTable);
 
     $(document.createElement('td')).text(PlayerObject.playerName).appendTo(ownPlayerStatsRow);
-    $(document.createElement('td')).text(PlayerObject.funds).appendTo(ownPlayerStatsRow);
+    $(document.createElement('td')).text(PlayerObject.funds).attr('id' , "ownTableTurnings" + PlayerObject.playerName).appendTo(ownPlayerStatsRow);
     $(document.createElement('td')).text(PlayerObject.color).css("background-color",PlayerObject.color).appendTo(ownPlayerStatsRow);
     ownPlayerStatsRow.appendTo(ownPlayerTable);
 }
@@ -442,7 +458,7 @@ function createGameBoard(gameBoardData){
             var territorySquare =$(document.createElement('td'));
             territorySquare.addClass('Territory');
             var originalColor = territorySquare.css('background-color');
-            territorySquare.attr({'id': gameBoardData.territoryMap[id_index].ID, 'originalColor': originalColor});
+            territorySquare.attr({'id': gameBoardData.territoryMap[id_index].ID, 'originalColor': originalColor , 'territoryid':gameBoardData.territoryMap[id_index].ID });
 
             var territoryData = $(document.createElement('div'));
             territoryData.addClass('territoryDataDiv');
@@ -527,28 +543,46 @@ function onRetireCallBack() {
 }
 
 function checkTerritoryCallBack(result) {
-    console.log("In check territory callback");
-    if(result.isBelongToCurrentPlayer) {
-        openOwnTerritoryPopup();
-    } else {
-        if(result.isValid) {
-            if(result.isConquered) {
-                openAttackPopup();
-            } else {
-                openNeutralPopup();
-            }
-        } else {
-            alert(result.message);
-        }
-    }
+   openTheRightTerritoryPopup(result);
 }
 
-function openOwnTerritoryPopup() {
+function openTheRightTerritoryPopup(result) {
+    $.ajax
+    (
+        {
+            async: false,
+            url: CURR_GAME,
+            data: {
+                territoryId : selectedTerritoryId,
+                action: 'getTerritory'
+            },
+            type: 'GET',
+            success: function (territory) {
+                if(result.isBelongToCurrentPlayer) {
+                    openOwnTerritoryPopup(territory);
+                } else {
+                    if(result.isValid) {
+                        if(result.isConquered) {
+                            openAttackPopup(territory);
+                        } else {
+                            openNeutralPopup(territory);
+                        }
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            }
+        }
+    )
+}
+
+
+function openOwnTerritoryPopup(territory) {
     showPopUp();
-    var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
-    var profit = territoryMapData[selectedTerritoryId].profit;
-    var currentFirePower = territoryMapData[selectedTerritoryId].conquerArmyForce.totalPower;
-    var maxFirePower = territoryMapData[selectedTerritoryId].conquerArmyForce.potentialTotalPower;
+    var threshHold = territory.armyThreshold;
+    var profit = territory.profit;
+    var currentFirePower = territory.conquerArmyForce.totalPower;
+    var maxFirePower = territory.conquerArmyForce.potentialTotalPower;
     var mHeader = $('.modal-header');
     var mHeaderTitle = $(document.createElement('h1'));
     mHeaderTitle.addClass('mBodyTitle');
@@ -594,11 +628,11 @@ function openOwnTerritoryPopup() {
 
 }
 
-function openAttackPopup() {
+function openAttackPopup(territory) {
     showPopUp();
-    var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
-    var profit = territoryMapData[selectedTerritoryId].profit;
-    var currentFirePower = territoryMapData[selectedTerritoryId].conquerArmyForce.totalPower;
+    var threshHold = territory.armyThreshold;
+    var profit = territory.profit;
+    var currentFirePower = territory.conquerArmyForce.totalPower;
     var mHeader = $('.modal-header');
     var mHeaderTitle = $(document.createElement('h1'));
 
@@ -634,11 +668,11 @@ function openAttackPopup() {
     }).appendTo(mHeader);
 }
 
-function openNeutralPopup() {
+function openNeutralPopup(territory) {
     actionType = "neutral";
     showPopUp();
-    var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
-    var profit = territoryMapData[selectedTerritoryId].profit;
+    var threshHold = territory.armyThreshold;
+    var profit = territory.profit;
     var mHeader = $('.modal-header');
     var mHeaderTitle = $(document.createElement('h1'));
     mHeaderTitle.addClass('mBodyTitle');
