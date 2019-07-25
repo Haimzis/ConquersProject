@@ -127,7 +127,6 @@ function triggerUpdatesOfPage(events){
             case "PlayerHasJoined":
                 createOtherPlayersStats();
                 break;
-
         }
 
         //Intervals
