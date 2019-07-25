@@ -25,8 +25,6 @@ window.onload = function () {
     getGameDetails();
     createOtherPlayersStats();
     createOwnPlayerStats();
-    //setInterval(createOtherPlayersStats , refreshRate); // update the other players stats.
-    //setInterval(createOwnPlayerStats , refreshRate);      // update the own player stats.
     setChat();
     updateChatContent();
     setInterval(updatePageByEvents,refreshRate);

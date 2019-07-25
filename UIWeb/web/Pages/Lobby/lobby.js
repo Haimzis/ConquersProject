@@ -243,8 +243,8 @@ function createGameBoard(json){
             id_index++;
         }
     }
-    createMapData(json.manager.gameDescriptor.territoryMap);
-    createUnitData(json.manager.gameDescriptor.unitMap);
+    createMapData(json.gameManager.gameDescriptor.territoryMap);
+    createUnitData(json.gameManager.gameDescriptor.unitMap);
 }
 
 function createUnitData(units) {
