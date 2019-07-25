@@ -62,6 +62,7 @@ public class GamesServlet extends HttpServlet {
                 //Set the Game Manager players list and set it to running
                 manager.getGameDescriptor().setPlayersList(new ArrayList<>(room.activePlayers));
                 manager.setStatus(GameStatus.Running);
+                manager.startGame();
             }
             out.println(gson.toJson(new LoadGameStatus(true, "")));
         } else { //Game is running

@@ -174,6 +174,12 @@ public class GameManager implements Serializable {
     //**************************//
     /*     Rounds Management    */
     //**************************//
+
+    public void startGame() {
+        loadPlayersIntoQueueOfTurns();
+        nextPlayerInTurn();
+        eventListener.addEventObject(new RoundEvent(EventNamesConstants.GameStarted));
+    }
     public void startOfRoundUpdates() {
         updateAllPlayersProductionStartOfRound();
         updateAllPlayerTerritoriesHold();

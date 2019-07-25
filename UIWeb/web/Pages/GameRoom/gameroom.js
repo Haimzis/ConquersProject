@@ -180,7 +180,7 @@ function handleStatus(json) {
             break;
         case 'Running':
             if (playerTurn === "None") {
-                startGame();
+                //startGame();
             }
             status = newStatus;
             break;
@@ -231,7 +231,7 @@ function showEndGameDialog() {
 }
 
 
-function startGame() {
+/*function startGame() {
     $.ajax
     (
         {
@@ -247,7 +247,7 @@ function startGame() {
             }
         }
     )
-}
+}*/
 
 
 function setCurrentPlayerInTurn(playerName) {
