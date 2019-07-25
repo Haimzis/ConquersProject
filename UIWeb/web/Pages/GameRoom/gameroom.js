@@ -530,7 +530,7 @@ function checkTerritoryCallBack(result) {
         }
     }
 }
-//TODO: need to change erase the territorymapdata variable - should get the information from the servlet. 
+
 function openOwnTerritoryPopup() {
     showPopUp();
     var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
@@ -581,7 +581,7 @@ function openOwnTerritoryPopup() {
     });
 
 }
-//TODO: need to change erase the territorymapdata variable - should get the information from the servlet.
+
 function openAttackPopup() {
     showPopUp();
     var threshHold = territoryMapData[selectedTerritoryId].armyThreshold;
@@ -621,7 +621,7 @@ function openAttackPopup() {
             showBuyUnits();
     }).appendTo(mHeader);
 }
-//TODO: need to change erase the territorymapdata variable - should get the information from the servlet. 
+
 function openNeutralPopup() {
     actionType = "neutral";
     showPopUp();
@@ -817,7 +817,11 @@ function showBattleResultPopup(actionType, result) {
         headerTitle.text("Well Timed Attack!");
     }
     if(result.success) {
-        resultText.text("VICTORY!");
+        if(result.couldNotHold) {
+            resultText.text("You won but you could not hold this territory!");
+        } else {
+            resultText.text("VICTORY!");
+        }
     } else if(result.draw) {
         resultText.text("DRAW!");
     } else {
