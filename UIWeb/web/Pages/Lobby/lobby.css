@@ -1,7 +1,10 @@
 body{
-    background: aliceblue;
+    height: 100%;
+    background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
     margin: 0;
     min-width: 400px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .mainDiv{
@@ -10,8 +13,10 @@ body{
 }
 
 .toolBar{
+    color:white;
     height: 50px;
-    background: gainsboro;
+    background: linear-gradient(180deg, rgba(99,99,99,1) 3%, rgba(0,0,0,1) 7%, rgba(36,36,36,1) 7%, rgba(5,5,5,1) 100%);
+    box-shadow: 0px 0px 2px 0px;
 }
 
 .toolbarContent {
@@ -40,12 +45,14 @@ body{
 .usersTable{
     border: black 1px solid;
     border-radius: 6px;
+    box-shadow: 0px 0px 2px 0px;
     width: 100%;
 }
 
 .gamesTable {
     border: 1px black solid;
     border-radius: 6px;
+    box-shadow: 0px 0px 2px 0px;
     width: 100%;
 }
 
@@ -60,17 +67,18 @@ body{
 
 th {
     padding: 0% 5% 2% 1%;
-    background: lightskyblue;
+    color:white;
+    background: linear-gradient(180deg, rgba(99,99,99,1) 3%, rgba(0,0,0,1) 7%, rgba(36,36,36,1) 7%, rgba(5,5,5,1) 100%);
 }
 
 .gamesDiv tr {
-    background: lightsteelblue;
-    color: navy;
+    background: linear-gradient(180deg, rgba(217,217,217,1) 0%, rgba(206,206,206,1) 0%, rgba(255,255,255,1) 1%, rgba(229,229,229,1) 93%, rgba(206,206,206,1) 100%, rgba(217,217,217,1) 100%);
+    color: black;
 }
 
 .usersDiv tr{
-    background: lightsteelblue;
-    color: navy;
+    background: linear-gradient(180deg, rgba(217,217,217,1) 0%, rgba(206,206,206,1) 0%, rgba(255,255,255,1) 1%, rgba(229,229,229,1) 93%, rgba(206,206,206,1) 100%, rgba(217,217,217,1) 100%);
+    color: black;
 }
 
 .gamesDiv td {
@@ -82,16 +90,16 @@ th {
 }
 
 .logoutSpan:hover {
-    color: blueviolet;
+    color: #fffa63;
     cursor: pointer;
 }
 
 .gamesDiv tr:hover {
-    background: blanchedalmond;
+    background: #fffa63;
 }
 
 .usersDiv tr:hover {
-    background: blanchedalmond;
+    background: #fffa63;
 }
 
 .dialogDiv {
@@ -105,12 +113,12 @@ th {
     max-height: 800px;
     z-index: 1000;
     display: none;
-    background: burlywood;
+    background: #fffdfb;
     opacity: 0.85;
 
     -webkit-box-shadow: 10px 10px 30px -8px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 30px -8px rgba(0,0,0,0.75);
-    box-shadow: 10px 10px 30px -8px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 3px 1px rgba(0,0,0,0.75);
 
     animation: fadein 1s;
 }
@@ -176,7 +184,7 @@ tr{
     margin-left: 50%;
     border: grey 1px solid;
     border-radius: 4px;
-    background: cornsilk;
+    background: linear-gradient(180deg, rgba(217,217,217,1) 0%, rgba(206,206,206,1) 0%, rgba(255,255,255,1) 1%, rgba(229,229,229,1) 93%, rgba(206,206,206,1) 100%, rgba(217,217,217,1) 100%);
     box-shadow: 3px 3px 9px -2px rgba(0,0,0,0.75);
 }
 

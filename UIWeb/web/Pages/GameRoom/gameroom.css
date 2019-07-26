@@ -1,8 +1,11 @@
 body{
-    background: aliceblue;
     margin: 0;
+    height: 100%;
     min-width: 750px;
+    background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
     font-family: Arial, Helvetica, sans-serif;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 h2.currentPlayerName {
     display: contents;
@@ -12,9 +15,10 @@ span.playerTurn {
     margin-left: 1%;
 }
 .toolBar{
+    color:white;
     height: 50px;
-    background: gainsboro;
-    margin-bottom: 5%;
+    background: linear-gradient(180deg, rgba(99,99,99,1) 3%, rgba(0,0,0,1) 7%, rgba(36,36,36,1) 7%, rgba(5,5,5,1) 100%);
+    box-shadow: 0px 0px 2px 0px;
 }
 
 .toolbarContent {
@@ -71,7 +75,7 @@ img.logoImage {
     font-size: 24px;
     margin-left: 1%;
     border-radius: 14px;
-    background: antiquewhite;
+    background: #ffbf00;
     box-shadow: -1px 0px 3px 1px;
 }
 .playerStats {
@@ -80,12 +84,16 @@ img.logoImage {
 tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+tr:nth-child(odd) {
+    background-color: #ffcf3d;
+}
 th, td {
     text-align: left;
     padding: 8px;
 }
 table {
     border-collapse: collapse;
+    box-shadow: 0px 0px 1px 0px black;
     width: 100%;
 }
 .action{
@@ -93,12 +101,14 @@ table {
     border-radius: 10px;
     background: cadetblue;
     text-align: center;
+    color:white;
     box-shadow: 4px 0px 9px 1px;
-    background: cadetblue;
+    background: linear-gradient(180deg, rgba(99,99,99,1) 3%, rgba(0,0,0,1) 7%, rgba(36,36,36,1) 7%, rgba(5,5,5,1) 100%);
 }
 
 .action:hover {
     background: aliceblue;
+    color:black;
     cursor: pointer;
 }
 
@@ -137,23 +147,34 @@ table {
     width: 245px;
     float: right;
     text-align: center;
-    background: rgb(43, 163, 43);
-    opacity: 0.6;
+    background: linear-gradient(180deg, rgba(99,99,99,1) 0.2%, rgba(0,0,0,1) 1%, rgba(36,36,36,1) 1%, rgba(5,5,5,1) 93%);
     border-radius: 15px;
-    box-shadow: 3px 6px 17px 1px;
+    box-shadow: 0 0 4px 0px black;
     font-size: 20px;
-    color: burlywood;
+    color: white;
     font-style: italic;
 }
-
+.chatOnlinePlayers{
+    margin-block-end: 0;
+    margin-block-start: 4px;
+}
+.col-xs-1 {
+    max-height: 70px;
+    overflow-y: scroll;
+}
 div#chatArea {
+    color:black;
     overflow-y: scroll;
     background-color: white;
     min-height: 300px;
     margin-left: 2%;
     margin-right: 2%;
 }
-
+.lastAction{
+    font-size: 17px;
+    margin-left: 50%;
+    margin-right: 50%;
+}
 ul#usersList {
     text-align: left;
 }

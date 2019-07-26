@@ -976,9 +976,9 @@ function endTurnStats(playerName) {
 }
 
 function endTurnStatsCallBack(lastAction) {
-    var historyDiv = $('.roundHistoryDiv');
+    var historyDiv = $('.lastAction');
     historyDiv.contents().remove();
-    var text = $(document.createElement('p')).css({'font-size': '17px' , 'margin-left': '50%', 'margin-right': '50%'}).appendTo(historyDiv);
+    var text = $(document.createElement('h1')).css({'font-size': '17px' , 'margin-left': '50%', 'margin-right': '50%'}).appendTo(historyDiv);
     text.text(lastAction);
 }
 
