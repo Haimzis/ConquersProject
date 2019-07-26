@@ -145,15 +145,27 @@ function paintConqueredTerritory(conqueredTerritoryID){
         },
         type: 'GET',
             success: function(conquerColor){
-                $('#'+conqueredTerritoryID).css('background-color' , conquerColor);
-            }
+            //animation
+    $('#'+conqueredTerritoryID).animate({
+        backgroundColor: conquerColor,
+        color: "#fff"}, 2000);
+    //if animation doesn't work
+    setTimeout(function(){$('#'+conqueredTerritoryID).css('background-color' , conquerColor); }, 2000);
+        }
     })
 }
 
 function unPaintReleasedTerritory(conqueredTerritoryID){
     var targetTerritory = $('#'+conqueredTerritoryID);
     var color = targetTerritory.attr('originalColor');
-    targetTerritory.css('background-color' , color);
+
+    //animation
+    targetTerritory.animate({
+        backgroundColor: color,
+        color: "#fff"}, 2000);
+    //if animation doesn't work
+    setTimeout(function(){targetTerritory.css('background-color' , color); }, 2000);
+
 }
 
 function updatePlayerFunds(playerName) {
