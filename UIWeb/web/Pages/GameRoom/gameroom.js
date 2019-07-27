@@ -411,9 +411,15 @@ function createOtherPlayersStatsTable(data){
     var sizeOfArray = otherPlayersArr.length;
     var tBody = $(document.createElement('tbody'));
     var tr = $(document.createElement('tr'));
-    $(document.createElement('th')).text("Username").appendTo(tr);
-    $(document.createElement('th')).text("Turings").appendTo(tr);
-    $(document.createElement('th')).text("Color").appendTo(tr);
+    var usernameTH= $(document.createElement('th')).text("Username");
+    var turingsTH= $(document.createElement('th')).text("Turings");
+    var colorTH= $(document.createElement('th')).text("Color");
+    usernameTH.addClass('userNameTH');
+    turingsTH.addClass('turingsTH');
+    colorTH.addClass('colorTH');
+    usernameTH.appendTo(tr);
+    turingsTH.appendTo(tr);
+    colorTH.appendTo(tr);
     tr.appendTo(tBody);
     tBody.appendTo(otherPlayersTable);
     for(var i=0 ;i< sizeOfArray;i++) {
@@ -442,9 +448,15 @@ function createOwnPlayerStatsTable(PlayerObject){
     ownPlayerTable.contents().remove();
     var tBody = $(document.createElement('tbody'));
     var tr = $(document.createElement('tr'));
-    $(document.createElement('th')).text("Username").appendTo(tr);
-    $(document.createElement('th')).text("Turings").appendTo(tr);
-    $(document.createElement('th')).text("Color").appendTo(tr);
+    var usernameTH= $(document.createElement('th')).text("Username");
+    var turingsTH= $(document.createElement('th')).text("Turings");
+    var colorTH= $(document.createElement('th')).text("Color");
+    usernameTH.addClass('userNameTH');
+    turingsTH.addClass('turingsTH');
+    colorTH.addClass('colorTH');
+    usernameTH.appendTo(tr);
+    turingsTH.appendTo(tr);
+    colorTH.appendTo(tr);
     tr.appendTo(tBody);
     tBody.appendTo(ownPlayerTable);
 
