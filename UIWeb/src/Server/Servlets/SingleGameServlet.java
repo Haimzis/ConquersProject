@@ -72,9 +72,6 @@ public class SingleGameServlet extends HttpServlet {
                 String actionType = request.getParameter("actionType");
                 territoryAction(actionType , request , response);
                 break;
-            case "updateTerritories":
-                returnUpdatedTerritories(request , response);
-                break;
             case "currentRound":
                 returnCurrentRound(request , response);
                 break;
@@ -212,17 +209,6 @@ public class SingleGameServlet extends HttpServlet {
         }
     }
 
-    private void returnUpdatedTerritories(HttpServletRequest request, HttpServletResponse response) throws IOException { //TODO: Should be gone.
-        response.setContentType("application/json");
-        String userName = SessionUtils.getUsername(request);
-        PrintWriter out = response.getWriter();
-        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
-        Gson gson=gsonBuilder.create();
-        GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
-        if(manager != null) {
-            out.print(gson.toJson(manager.getGameDescriptor().getTerritoryMap()));
-        }
-    }
 
     private void territoryAction(String actionType , HttpServletRequest request , HttpServletResponse response) throws IOException {
         switch(actionType) {

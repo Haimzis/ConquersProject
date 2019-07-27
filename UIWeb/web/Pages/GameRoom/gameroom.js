@@ -116,7 +116,7 @@ function triggerUpdatesOfPage(events){
                 break;
             case "PlayerWon":
                 showWinningPlayer(identityOfAffectedObject);
-                resetEventListenerAndChat();
+                //resetEventListenerAndChat();
                 break;
             case "GameReset":
                 updateGameStatusToWaitingForPlayers();

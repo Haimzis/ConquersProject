@@ -4,11 +4,8 @@ import GameEngine.GameManager;
 import GameObjects.GameStatus;
 import GameObjects.Player;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-
-import static Server.Constants.Constants.INT_PARAMETER_ERROR;
 
 public class RoomManager {
     public int id;
