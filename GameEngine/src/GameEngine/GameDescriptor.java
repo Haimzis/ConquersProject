@@ -83,6 +83,8 @@ public class GameDescriptor implements Serializable {
     public GameDescriptor(GameDescriptor descriptor) {
         colors.push("Green");colors.push("Red");
         colors.push("Blue");colors.push("Yellow");
+        //TODO:  i dont think its reset the map.
+        //       i think we should build the descriptor again after finish game.
         this.territoryMap = new HashMap<>(descriptor.getTerritoryMap());
         this.unitMap = new HashMap<>(descriptor.getUnitMap());
         this.initialFunds = descriptor.getInitialFunds();
