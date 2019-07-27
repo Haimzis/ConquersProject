@@ -147,9 +147,9 @@ function paintConqueredTerritory(conqueredTerritoryID){
             //animation
     $('#'+conqueredTerritoryID).animate({
         backgroundColor: conquerColor,
-        color: "#fff"}, 2000);
+        color: "#fff"}, 1000);
     //if animation doesn't work
-    setTimeout(function(){$('#'+conqueredTerritoryID).css('background-color' , conquerColor); }, 2000);
+    setTimeout(function(){$('#'+conqueredTerritoryID).css('background-color' , conquerColor); }, 1000);
         }
     })
 }
