@@ -290,6 +290,7 @@ function showEndGameDialog(winnerPlayerName) {
         $.ajax
         (
             {
+                async:false,
                 url: CURR_GAME,
                 data: {
                     action: 'resetGame'

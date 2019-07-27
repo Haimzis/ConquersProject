@@ -20,7 +20,6 @@ public class GameManager implements Serializable {
     private String gameTitle;
     private static int gamesIDCounter = 0;
     private Stack<RoundHistory> roundsHistory;
-    private GameDescriptor originalGameDescriptor;
     private GameDescriptor gameDescriptor;
     private Player currentPlayerTurn=null;
     private Army   selectedArmyForce=null;
@@ -33,15 +32,19 @@ public class GameManager implements Serializable {
     private String lastActionOfPlayer;
 
     public void resetManager() {
+        this.gameDescriptor.getTerritoryMap().forEach((integer, territory) -> {
+            if(territory.getConquerArmyForce() != null) {
+                territory.eliminateThisWeakArmy();
+            }
+        });
+        this.roundNumber = 1;
         this.playersTurns = new ArrayBlockingQueue<>(gameDescriptor.getMaxPlayers());
         this.roundsHistory = new Stack<>();
         this.roundsHistory.push(new RoundHistory(gameDescriptor,roundNumber));
         this.status = GameStatus.WaitingForPlayers;
-        this.gameDescriptor = new GameDescriptor(originalGameDescriptor);
-        this.roundNumber = 1;
         this.currentPlayerTurn=null;
-        eventListener.addEventObject(new RoundEvent(EventNamesConstants.GameReset));
         this.lastActionOfPlayer ="";
+        this.eventListener.addEventObject(new RoundEvent(EventNamesConstants.GameReset));
     }
 
     public GameManager(GameDescriptor gameDes) {
@@ -55,7 +58,6 @@ public class GameManager implements Serializable {
         roundsHistory.push(new RoundHistory(gameDescriptor,roundNumber));
         gameTitle = gameDescriptor.getGameTitle();
         status = GameStatus.WaitingForPlayers;
-        originalGameDescriptor = new GameDescriptor(gameDes);
         eventListener = new EventListener();
     }
 
@@ -429,7 +431,7 @@ public class GameManager implements Serializable {
         }
 
         if(maxScore == 0) {
-            eventListener.addEventObject(new PlayerEvent("none" , EventNamesConstants.PlayerWon));
+            eventListener.addEventObject(new PlayerEvent("No one" , EventNamesConstants.PlayerWon));
             return null;
         }
 
@@ -445,7 +447,7 @@ public class GameManager implements Serializable {
         if(duplicates.size() != 0) {
             for(Integer score : duplicates) {
                 if(score == maxScore) {
-                    eventListener.addEventObject(new PlayerEvent("none" , EventNamesConstants.PlayerWon));
+                    eventListener.addEventObject(new PlayerEvent("No one" , EventNamesConstants.PlayerWon));
                     return null;
                 }
             }
