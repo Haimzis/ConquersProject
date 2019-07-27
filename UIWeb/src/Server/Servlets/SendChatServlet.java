@@ -16,7 +16,7 @@ import java.io.IOException;
 public class SendChatServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ChatManager chatManager = ServletUtils.getChatManager(getServletContext());
+        ChatManager chatManager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(SessionUtils.getUsername(request)).getChatManager();
         String username = SessionUtils.getUsername(request);
         if (username == null) {
             response.sendRedirect(request.getContextPath() + "/index.html");

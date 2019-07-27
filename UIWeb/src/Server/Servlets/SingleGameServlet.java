@@ -139,7 +139,7 @@ public class SingleGameServlet extends HttpServlet {
         room.removePlayerByUserName(userName);
         if(room.registeredPlayers == 0) {
             manager.resetManager();
-            ServletUtils.getChatManager(getServletContext()).resetChat();
+            room.resetChat();
             manager.getEventListener().resetEventListener();
             room.status = GameStatus.WaitingForPlayers;
         }
