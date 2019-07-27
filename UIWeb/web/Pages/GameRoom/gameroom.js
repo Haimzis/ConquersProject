@@ -54,7 +54,7 @@ function updatePageByEvents(){
             /*
              data will arrive in the next form:
              {
-                "entries": [
+                "gameEvents": [
                     {
                         "action":"TerritoryRelease",
                         "identity":"1",
@@ -116,6 +116,9 @@ function triggerUpdatesOfPage(events){
                 break;
             case "PlayerWon":
                 showWinningPlayer(identityOfAffectedObject);
+                break;
+            case "PlayerWonByRetirement":
+                showWinningPlayer(identityOfAffectedObject);
                 resetEventListenerAndChat();
                 break;
             case "GameReset":
@@ -128,6 +131,7 @@ function triggerUpdatesOfPage(events){
             case "EndTurn":
                 endTurnStats(identityOfAffectedObject);
                 break;
+
 
         }
         updateOnlineUsers();

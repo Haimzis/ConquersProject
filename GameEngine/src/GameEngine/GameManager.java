@@ -37,6 +37,7 @@ public class GameManager implements Serializable {
                 territory.eliminateThisWeakArmy();
             }
         });
+        this.gameDescriptor.getPlayersList().clear();
         this.roundNumber = 1;
         this.playersTurns = new ArrayBlockingQueue<>(gameDescriptor.getMaxPlayers());
         this.roundsHistory = new Stack<>();
@@ -562,7 +563,7 @@ public class GameManager implements Serializable {
             loadPlayersIntoQueueOfTurns();
             nextPlayerInTurn();
         }
-        eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(),EventNamesConstants.PlayerWon));
+        eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(),EventNamesConstants.PlayerWonByRetirement));
         return currentPlayerTurn;
     }
 
