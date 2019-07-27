@@ -2,14 +2,12 @@ package Server.Servlets;
 
 import Events.EventNamesConstants;
 import Events.PlayerEvent;
-import Events.RoundEvent;
 import GameEngine.GameManager;
 import GameObjects.*;
 import Server.Utils.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,18 +21,18 @@ import java.util.function.Supplier;
 @WebServlet(name = "SingleGameServlet")
 public class SingleGameServlet extends HttpServlet {
     private static final Object statusLock = new Object();
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String action = request.getParameter("action");
         switch (action) {
             case "leaveGame": // This is NOT RETIRE
                 leaveGame(request , response);
                 break;
             case "retire":
-                retirePlayer(request , response);
+                retirePlayer(request);
                 break;
             case "gameStatus":
                 sendStatus(request, response);
@@ -145,7 +143,7 @@ public class SingleGameServlet extends HttpServlet {
         }
     }
 
-    private void retirePlayer(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void retirePlayer(HttpServletRequest request) {
         String userName = SessionUtils.getUsername(request);
         GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
         RoomsContainer roomManager = ServletUtils.getRoomsContainer(request.getServletContext());
