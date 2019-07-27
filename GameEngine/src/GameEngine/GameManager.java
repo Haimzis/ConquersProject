@@ -107,22 +107,12 @@ public class GameManager implements Serializable {
     public void transformSelectedArmyForceToSelectedTerritory() {
         selectedTerritoryByPlayer.getConquerArmyForce().uniteArmies(selectedArmyForce);
     }
-    //retrieve selectedArmyForce Collection to the selectedTerritory
-    public void buyUnitsCollection(Collection<Unit> unitList) {
-        selectedArmyForce.getUnits().addAll(unitList);
-        eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(),EventNamesConstants.UnitsBuying));
-    }
     //Rehabilitation of selected territory army
     public void rehabilitateSelectedTerritoryArmy(){
         int rehabilitationPrice =getRehabilitationArmyPriceInTerritory(selectedTerritoryByPlayer);
         currentPlayerTurn.decrementFunds(rehabilitationPrice);
         selectedTerritoryByPlayer.rehabilitateConquerArmy();
         eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(),EventNamesConstants.ArmyRehabilitation));
-    }
-    //Rehabilitation of all army - not necessary
-    public void rehabilitateAllArmy() {
-        getCurrentPlayerTerritories().parallelStream()
-            .forEach(Territory::rehabilitateConquerArmy);
     }
 
     //Bonus #2
@@ -222,7 +212,7 @@ public class GameManager implements Serializable {
         return mapsHistoryByOrder;
     }
     //retrieve players list into queue of turns
-    public void loadPlayersIntoQueueOfTurns() {
+    private void loadPlayersIntoQueueOfTurns() {
         if(roundNumber == 1) eventListener.addEventObject(new RoundEvent(EventNamesConstants.GameStarted));
         if(gameDescriptor.getPlayersList() != null) {
             playersTurns.addAll(gameDescriptor.getPlayersList());
@@ -553,10 +543,6 @@ public class GameManager implements Serializable {
     }
 
     public String getGameTitle() { return gameTitle; }
-
-    public void setRoundNumber(int roundNumber) {
-        this.roundNumber = roundNumber;
-    }
 
     public Player getPlayerByID(Integer playerID) {
         for(Player player: getGameDescriptor().getPlayersList()){

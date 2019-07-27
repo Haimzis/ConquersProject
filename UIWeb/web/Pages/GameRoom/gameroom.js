@@ -81,7 +81,6 @@ function triggerUpdatesOfPage(events){
     events.forEach(function(event){
         var action = event.action;
         var identityOfAffectedObject= event.identity;
-        var timeOfEvent = event.time;
 
         switch(action){
             case "TerritoryRelease":
@@ -191,11 +190,7 @@ function showWinningPlayer(player) {
 }
 
 function setCurrentPlayer(playerInTurn) {
-    if(getUserName() === playerInTurn) {
-        isMyTurn = true;
-    } else {
-        isMyTurn = false;
-    }
+    isMyTurn = getUserName() === playerInTurn;
     $('.currentPlayerName').text(playerInTurn);
 }
 
@@ -380,7 +375,8 @@ function updateRegisteredPlayersSpan(){
 }
 
 function updateRequiredPlayersSpan(){
-    var requiredPlayersAmount = maxPlayers;
+    var requiredPlayersAmount;
+    requiredPlayersAmount = maxPlayers;
     $('.requiredPlayers').text(requiredPlayersAmount);
 }
 function getGameDetailsCallBack(data)  {
