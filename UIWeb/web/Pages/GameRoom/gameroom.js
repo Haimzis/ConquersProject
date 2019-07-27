@@ -116,7 +116,7 @@ function triggerUpdatesOfPage(events){
                 break;
             case "PlayerWon":
                 showWinningPlayer(identityOfAffectedObject);
-                break;
+                //resetEventListenerAndChat();
             case "PlayerWonByRetirement":
                 showWinningPlayer(identityOfAffectedObject);
                 resetEventListenerAndChat();
