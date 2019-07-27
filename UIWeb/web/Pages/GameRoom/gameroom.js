@@ -54,7 +54,7 @@ function updatePageByEvents(){
             /*
              data will arrive in the next form:
              {
-                "entries": [
+                "gameEvents": [
                     {
                         "action":"TerritoryRelease",
                         "identity":"1",
@@ -116,11 +116,6 @@ function triggerUpdatesOfPage(events){
                 break;
             case "PlayerWon":
                 showWinningPlayer(identityOfAffectedObject);
-                //resetEventListenerAndChat();
-                break;
-            case "GameReset":
-                updateGameStatusToWaitingForPlayers();
-                resetEventListenerAndChat();
                 break;
             case "PlayerHasJoined":
                 createOtherPlayersStats();
@@ -128,6 +123,7 @@ function triggerUpdatesOfPage(events){
             case "EndTurn":
                 endTurnStats(identityOfAffectedObject);
                 break;
+
 
         }
         updateOnlineUsers();
@@ -147,9 +143,9 @@ function paintConqueredTerritory(conqueredTerritoryID){
             //animation
     $('#'+conqueredTerritoryID).animate({
         backgroundColor: conquerColor,
-        color: "#fff"}, 2000);
+        color: "#fff"}, 1000);
     //if animation doesn't work
-    setTimeout(function(){$('#'+conqueredTerritoryID).css('background-color' , conquerColor); }, 2000);
+    setTimeout(function(){$('#'+conqueredTerritoryID).css('background-color' , conquerColor); }, 1000);
         }
     })
 }
@@ -258,26 +254,6 @@ function updateGameStatusToWaitingForPlayers(){
     $('.gameStatus').text('Game status: Waiting For Players...');
 }
 
-function resetEventListenerAndChat() {
-    gameVersion=0;
-    $.ajax
-    ({
-        url: CURR_GAME,
-        data: {
-            action: "resetEventListener"
-        },
-        type: 'GET'
-    });
-    $.ajax
-    ({
-        url: CHAT_URL,
-        data: {
-            action: "resetChat"
-        },
-        type: 'GET'
-    });
-}
-
 function showEndGameDialog(winnerPlayerName) {
     showPopUp();
     var mHeader = $('.modal-header');
@@ -297,6 +273,7 @@ function showEndGameDialog(winnerPlayerName) {
                 },
                 type: 'GET',
                 success: function() {
+                    updateGameStatusToWaitingForPlayers();
                     window.location = "../Lobby/lobby.html";
                 }
             }

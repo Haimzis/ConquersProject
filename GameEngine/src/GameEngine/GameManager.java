@@ -45,7 +45,6 @@ public class GameManager implements Serializable {
         this.status = GameStatus.WaitingForPlayers;
         this.currentPlayerTurn=null;
         this.lastActionOfPlayer ="";
-        this.eventListener.addEventObject(new RoundEvent(EventNamesConstants.GameReset));
     }
 
     public GameManager(GameDescriptor gameDes) {

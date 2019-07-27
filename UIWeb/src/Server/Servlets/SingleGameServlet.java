@@ -2,6 +2,7 @@ package Server.Servlets;
 
 import Events.EventNamesConstants;
 import Events.PlayerEvent;
+import Events.RoundEvent;
 import GameEngine.GameManager;
 import GameObjects.*;
 import Server.Utils.*;
@@ -85,10 +86,6 @@ public class SingleGameServlet extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("territoryId"));
                 getTerritory(id , request , response);
                 break;
-            case "resetEventListener":
-                GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(SessionUtils.getUsername(request)).getGameManager();
-                manager.getEventListener().resetEventListener();
-                break;
             case "lastActionInTurn":
                 getLastAction(request , response);
                 break;
@@ -142,6 +139,8 @@ public class SingleGameServlet extends HttpServlet {
         room.removePlayerByUserName(userName);
         if(room.registeredPlayers == 0) {
             manager.resetManager();
+            ServletUtils.getChatManager(getServletContext()).resetChat();
+            manager.getEventListener().resetEventListener();
             room.status = GameStatus.WaitingForPlayers;
         }
     }
