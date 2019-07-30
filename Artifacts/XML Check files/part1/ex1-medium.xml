@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GameDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Conquers.xsd">
+	<GameType>Basic</GameType>
+	<Game totalCycles="15">
+		<Board rows="4" columns="5"/>
+		<InitialFunds>3000</InitialFunds>
+		<Army>
+			<Unit type="Soldier" rank="1">
+				<Purchase>80</Purchase>
+				<MaxFirePower>100</MaxFirePower>
+				<CompetenceReduction>20</CompetenceReduction>				
+			</Unit>			
+		</Army>
+		<Territories default-profit="0" default-army-threshold="10">
+			<Teritory id="1">
+				<Profit>100</Profit>
+				<ArmyThreshold>200</ArmyThreshold>
+			</Teritory>
+			<Teritory id="3">
+				<Profit>300</Profit>
+				<ArmyThreshold>150</ArmyThreshold>
+			</Teritory>
+			<Teritory id="5">
+				<Profit>250</Profit>
+				<ArmyThreshold>120</ArmyThreshold>
+			</Teritory>			
+			<Teritory id="11">
+				<Profit>2000</Profit>
+				<ArmyThreshold>800</ArmyThreshold>
+			</Teritory>			
+			<Teritory id="13">
+				<Profit>10</Profit>
+				<ArmyThreshold>100</ArmyThreshold>
+			</Teritory>			
+			<Teritory id="15">
+				<Profit>100</Profit>
+				<ArmyThreshold>10</ArmyThreshold>
+			</Teritory>			
+			<Teritory id="16">
+				<Profit>10</Profit>
+				<ArmyThreshold>100</ArmyThreshold>
+			</Teritory>			
+			<Teritory id="18">
+				<Profit>20</Profit>
+				<ArmyThreshold>20</ArmyThreshold>
+			</Teritory>			
+			<Teritory id="19">
+				<Profit>2000</Profit>
+				<ArmyThreshold>800</ArmyThreshold>
+			</Teritory>			
+			<Teritory id="20">
+				<Profit>200</Profit>
+				<ArmyThreshold>150</ArmyThreshold>
+			</Teritory>			
+		</Territories>
+	</Game>
+</GameDescriptor>
