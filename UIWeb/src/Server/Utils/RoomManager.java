@@ -3,12 +3,9 @@ package Server.Utils;
 import GameEngine.GameManager;
 import GameObjects.GameStatus;
 import GameObjects.Player;
-
-import javax.servlet.http.HttpServletRequest;
+import Server.Chat.ChatManager;
 import java.util.ArrayList;
 import java.util.List;
-
-import static Server.Constants.Constants.INT_PARAMETER_ERROR;
 
 public class RoomManager {
     public int id;
@@ -22,9 +19,10 @@ public class RoomManager {
     public List<Player> activePlayers;
     public GameStatus status;
     private GameManager gameManager;
+    private ChatManager chatManager;
 
 
-    public RoomManager(GameManager gameManager, String creator) {
+    public RoomManager(GameManager gameManager, String creator, ChatManager chatManager) {
         this.gameManager = gameManager;
         this.id = gameManager.getGameManagerID();
         this.rows = gameManager.getGameDescriptor().getRows();
@@ -36,6 +34,7 @@ public class RoomManager {
         this.creatorName = creator;
         this.activePlayers = new ArrayList<>();
         this.status = GameStatus.WaitingForPlayers;
+        this.chatManager = chatManager;
     }
 
     public GameManager getGameManager() {
@@ -82,5 +81,13 @@ public class RoomManager {
             }
         });
         return result.get(0);
+    }
+
+    public void resetChat() {
+        this.chatManager.resetChat();
+    }
+
+    public ChatManager getChatManager() {
+        return chatManager;
     }
 }

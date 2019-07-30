@@ -12,7 +12,6 @@ import static Server.Constants.Constants.INT_PARAMETER_ERROR;
 public class ServletUtils {
 
 	private static final String USER_MANAGER_ATTRIBUTE_NAME = "userManager";
-	private static final String CHAT_MANAGER_ATTRIBUTE_NAME = "chatManager";
 	private static final String ENGINE_MANAGER_ATTRIBUTE_NAME = "engineManager";
 	private static final String ROOMS_MANAGER_ATTRIBUTE_NAME = "roomManager";
 	public static int ID = 1;
@@ -22,7 +21,6 @@ public class ServletUtils {
 	the actual fetch of them is remained unchronicled for performance POV
 	/*/
 	private static final Object userManagerLock = new Object();
-	private static final Object chatManagerLock = new Object();
 	private static final Object engineManagerLock = new Object();
 	private static final Object roomsManagerLock = new Object();
 
@@ -53,14 +51,6 @@ public class ServletUtils {
 		return (RoomsContainer) servletContext.getAttribute(ROOMS_MANAGER_ATTRIBUTE_NAME);
 	}
 
-	public static ChatManager getChatManager(ServletContext servletContext) {
-		synchronized (chatManagerLock) {
-			if (servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME) == null) {
-				servletContext.setAttribute(CHAT_MANAGER_ATTRIBUTE_NAME, new ChatManager());
-			}
-		}
-		return (ChatManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
-	}
 
 	public static int getVersionIntParameter(HttpServletRequest request, String name) {
 		String value = request.getParameter(name);

@@ -22,7 +22,7 @@ public class ChatServlet extends HttpServlet {
             throws ServletException, IOException {
 
         response.setContentType("application/json");
-        ChatManager chatManager = ServletUtils.getChatManager(getServletContext());
+        ChatManager chatManager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(SessionUtils.getUsername(request)).getChatManager();
         String username = SessionUtils.getUsername(request);
         String action = request.getParameter("action");
         if(action != null) {

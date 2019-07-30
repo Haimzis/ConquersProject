@@ -3,6 +3,7 @@ package Server.Servlets;
 import Exceptions.invalidInputException;
 import GameEngine.GameDescriptor;
 import GameEngine.GameEngine;
+import Server.Chat.ChatManager;
 import Server.Utils.*;
 import com.google.gson.Gson;
 
@@ -29,7 +30,7 @@ public class CreateGameServlet extends HttpServlet {
         try {
             descriptor = engine.loadXML(request.getPart("xml").getInputStream(), request.getPart("xml").getSubmittedFileName());
             out.println(gson.toJson(new LoadGameStatus(true, "")));
-            RoomManager newRoom = new RoomManager(engine.newGame(descriptor), SessionUtils.getUsername(request));
+            RoomManager newRoom = new RoomManager(engine.newGame(descriptor), SessionUtils.getUsername(request) , new ChatManager());
             roomsContainer.addNewRoom(newRoom);
         } catch (invalidInputException e) {
             out.println(gson.toJson(new LoadGameStatus(false, e.getMessage())));

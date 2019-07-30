@@ -116,14 +116,6 @@ function triggerUpdatesOfPage(events){
                 break;
             case "PlayerWon":
                 showWinningPlayer(identityOfAffectedObject);
-                //resetEventListenerAndChat();
-            case "PlayerWonByRetirement":
-                showWinningPlayer(identityOfAffectedObject);
-                resetEventListenerAndChat();
-                break;
-            case "GameReset":
-                updateGameStatusToWaitingForPlayers();
-                resetEventListenerAndChat();
                 break;
             case "PlayerHasJoined":
                 createOtherPlayersStats();
@@ -262,26 +254,6 @@ function updateGameStatusToWaitingForPlayers(){
     $('.gameStatus').text('Game status: Waiting For Players...');
 }
 
-function resetEventListenerAndChat() {
-    gameVersion=0;
-    $.ajax
-    ({
-        url: CURR_GAME,
-        data: {
-            action: "resetEventListener"
-        },
-        type: 'GET'
-    });
-    $.ajax
-    ({
-        url: CHAT_URL,
-        data: {
-            action: "resetChat"
-        },
-        type: 'GET'
-    });
-}
-
 function showEndGameDialog(winnerPlayerName) {
     showPopUp();
     var mHeader = $('.modal-header');
@@ -301,6 +273,7 @@ function showEndGameDialog(winnerPlayerName) {
                 },
                 type: 'GET',
                 success: function() {
+                    updateGameStatusToWaitingForPlayers();
                     window.location = "../Lobby/lobby.html";
                 }
             }

@@ -4,7 +4,6 @@ import Events.EventListener;
 import GameObjects.*;
 import History.*;
 import com.sun.istack.internal.Nullable;
-
 import java.io.Serializable;
 import java.util.*;
 import java.util.List;
@@ -45,7 +44,6 @@ public class GameManager implements Serializable {
         this.status = GameStatus.WaitingForPlayers;
         this.currentPlayerTurn=null;
         this.lastActionOfPlayer ="";
-        this.eventListener.addEventObject(new RoundEvent(EventNamesConstants.GameReset));
     }
 
     public GameManager(GameDescriptor gameDes) {
@@ -563,7 +561,7 @@ public class GameManager implements Serializable {
             loadPlayersIntoQueueOfTurns();
             nextPlayerInTurn();
         }
-        eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(),EventNamesConstants.PlayerWonByRetirement));
+        eventListener.addEventObject(new PlayerEvent(currentPlayerTurn.getPlayerName(),EventNamesConstants.PlayerWon));
         return currentPlayerTurn;
     }
 

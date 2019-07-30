@@ -8,7 +8,6 @@ import Server.Utils.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,18 +21,18 @@ import java.util.function.Supplier;
 @WebServlet(name = "SingleGameServlet")
 public class SingleGameServlet extends HttpServlet {
     private static final Object statusLock = new Object();
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String action = request.getParameter("action");
         switch (action) {
             case "leaveGame": // This is NOT RETIRE
                 leaveGame(request , response);
                 break;
             case "retire":
-                retirePlayer(request , response);
+                retirePlayer(request);
                 break;
             case "gameStatus":
                 sendStatus(request, response);
@@ -72,9 +71,6 @@ public class SingleGameServlet extends HttpServlet {
                 String actionType = request.getParameter("actionType");
                 territoryAction(actionType , request , response);
                 break;
-            case "updateTerritories":
-                returnUpdatedTerritories(request , response);
-                break;
             case "currentRound":
                 returnCurrentRound(request , response);
                 break;
@@ -87,10 +83,6 @@ public class SingleGameServlet extends HttpServlet {
             case "getTerritory":
                 int id = Integer.parseInt(request.getParameter("territoryId"));
                 getTerritory(id , request , response);
-                break;
-            case "resetEventListener":
-                GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(SessionUtils.getUsername(request)).getGameManager();
-                manager.getEventListener().resetEventListener();
                 break;
             case "lastActionInTurn":
                 getLastAction(request , response);
@@ -145,11 +137,13 @@ public class SingleGameServlet extends HttpServlet {
         room.removePlayerByUserName(userName);
         if(room.registeredPlayers == 0) {
             manager.resetManager();
+            room.resetChat();
+            manager.getEventListener().resetEventListener();
             room.status = GameStatus.WaitingForPlayers;
         }
     }
 
-    private void retirePlayer(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void retirePlayer(HttpServletRequest request) {
         String userName = SessionUtils.getUsername(request);
         GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
         RoomsContainer roomManager = ServletUtils.getRoomsContainer(request.getServletContext());
@@ -212,17 +206,6 @@ public class SingleGameServlet extends HttpServlet {
         }
     }
 
-    private void returnUpdatedTerritories(HttpServletRequest request, HttpServletResponse response) throws IOException { //TODO: Should be gone.
-        response.setContentType("application/json");
-        String userName = SessionUtils.getUsername(request);
-        PrintWriter out = response.getWriter();
-        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
-        Gson gson=gsonBuilder.create();
-        GameManager manager = ServletUtils.getRoomsContainer(request.getServletContext()).getRoomByUserName(userName).getGameManager();
-        if(manager != null) {
-            out.print(gson.toJson(manager.getGameDescriptor().getTerritoryMap()));
-        }
-    }
 
     private void territoryAction(String actionType , HttpServletRequest request , HttpServletResponse response) throws IOException {
         switch(actionType) {
