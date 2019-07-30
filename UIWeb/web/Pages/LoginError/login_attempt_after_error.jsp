@@ -8,8 +8,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <%@page import="Utils.*" %>
-    <%@ page import="Utils.Constants" %>
+    <%@ page import="Server.Constants.Constants" %>
+    <%@ page import="Server.Utils.SessionUtils" %>
+    <%@ page import="Server.Constants.Constants" %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Online Chat</title>
@@ -22,17 +23,17 @@
     </head>
     <body>
         <div class="container">
-            <% String usernameFromSession = SessionUtils.getPlayerName(request);%>
-            <% String usernameFromParameter = request.getParameter(Constants.PLAYER_NAME) != null ? request.getParameter(Constants.PLAYER_NAME) : "";%>
+            <% String usernameFromSession = SessionUtils.getUsername(request);%>
+            <% String usernameFromParameter = request.getParameter(Constants.USERNAME) != null ? request.getParameter(Constants.USERNAME) : "";%>
             <% if (usernameFromSession == null) {%>
             <h1>Welcome to conquers , Please sign up to play</h1>
             <br/>
             <h2>Please enter a unique user name:</h2>
             <form method="GET" action="login">
-                <input type="text" name="<%=Constants.PLAYER_NAME%>" value="<%=usernameFromParameter%>"/>
+                <input type="text" name="<%=Constants.USERNAME%>" value="<%=usernameFromParameter%>"/>
                 <input type="submit" value="Login"/>
             </form>
-            <% Object errorMessage = request.getAttribute(Constants.PLAYER_NAME_ERROR);%>
+            <% Object errorMessage = request.getAttribute(Constants.USER_NAME_ERROR);%>
             <% if (errorMessage != null) {%>
             <span class="bg-danger" style="color:red;"><%=errorMessage%></span>
             <% } %>

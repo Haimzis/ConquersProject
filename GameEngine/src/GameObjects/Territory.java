@@ -1,7 +1,9 @@
 package GameObjects;
 
+import Events.EventNamesConstants;
 import Events.EventObject;
-import Events.EventTerritoryReleased;
+import Events.TerritoryEvent;
+
 import java.io.Serializable;
 
 public class Territory implements Serializable {
@@ -84,7 +86,7 @@ public class Territory implements Serializable {
         conquerArmyForce.destroyArmy();
         conquerArmyForce=null;
         conquerID =null;
-        return new EventTerritoryReleased(this.ID);
+        return new TerritoryEvent(this.ID, EventNamesConstants.TerritoryRelease);
     }
 
     //update GameObjects.Army competence of territory

@@ -8,24 +8,26 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.*;
 
 public class GameDescriptor implements Serializable {
-    //TODO: We need to enter players into the player list when the game is full and has started.
     private static final String NO_DEFAULT_PROFIT = "No default profit detected";
     private static final String NO_DEFAULT_ARMY_THRESHOLD = "No default army threshold detected";
     private static final String RANKS_ARE_NOT_SEQUENTIAL = "Ranks in XML are not sequential";
     private static final String THE_SAME_RANK_IN_XML = "A unit exists with the same rank in XML";
     private static final String SAME_TYPE_EXISTS_IN_THE_XML = "A Unit with the same type exists in the XML";
-    private static final String DYNAMIC_MULTI_PLAYER = "DynamicMultiPlayer";
+    public static final String DYNAMIC_MULTI_PLAYER = "DynamicMultiPlayer";
     private String lastKnownGoodString;
     private int initialFunds , totalCycles , columns , rows;
     private int defaultThreshold , defaultProfit;
     private Map<Integer,Territory> territoryMap;
     private Map<String , Unit> unitMap;
     private List<Player> playersList;
+    private int maxPlayers;
+    private  Stack<String> colors = new Stack<>();
     private String error;
     private String gameType;
     private String gameTitle;
@@ -52,6 +54,33 @@ public class GameDescriptor implements Serializable {
         lastKnownGoodString = xmlPath.toString();
     }
 
+    //DYNAMIC CONSTRUCTOR//
+    public GameDescriptor(InputStream xmlPath) throws invalidInputException {
+        colors.push("Green");colors.push("Red");
+        colors.push("Blue");colors.push("Yellow");
+        Generated.GameDescriptor descriptor = null;
+        try {
+            descriptor = deserializeFrom(xmlPath);
+        } catch (JAXBException ignored) { }
+        if(descriptor == null) // GD was not created
+            throw new Exceptions.invalidInputException("Could not deserialize XML");
+        getGameStats(descriptor);
+        this.territoryMap = buildTerritoryMap(descriptor);
+        this.unitMap = loadUnitsDescription(descriptor);
+        if(!(checkRowsAndColumns(descriptor)
+                && validateTerritories(descriptor)
+                && validateDynamicMultiPlayer(descriptor)
+                && validatePlayers(descriptor)
+                && validateUnitsFromXml(descriptor))) //Checking the XML
+            throw new Exceptions.invalidInputException(error);
+        lastKnownGoodString = xmlPath.toString();
+    }
+
+    public String getGameType() {
+        return gameType;
+    }
+
+
     //*********************//
     /*  Getters & Setters  */
     //*********************//
@@ -69,7 +98,7 @@ public class GameDescriptor implements Serializable {
         return unitMap;
     }
     public List<Player> getPlayersList() { return playersList; }
-    public void setTerritoryMap(Map<Integer, Territory> territoryMap) {
+    void setTerritoryMap(Map<Integer, Territory> territoryMap) {
         this.territoryMap = territoryMap;
     }
     public void setPlayersList(List<Player> playersList) {
@@ -78,7 +107,16 @@ public class GameDescriptor implements Serializable {
     public Territory getTerritoryByID(Integer territoryID){
         return territoryMap.get(territoryID);
     }
-    public String getGameTitle() { return gameTitle; }
+    String getGameTitle() { return gameTitle; }
+    public Stack<String> getColors() {
+        return colors;
+    }
+    public int getInitialFunds() {
+        return initialFunds;
+    }
+    public void insertNewPlayer(Player newPlayer) {
+        playersList.add(newPlayer);
+    }
 
     //*********************//
     /*     XML Loaders    */
@@ -181,6 +219,8 @@ public class GameDescriptor implements Serializable {
         }
         if(gameType.equals(DYNAMIC_MULTI_PLAYER)) {
             gameTitle = descriptor.getDynamicPlayers().getGameTitle();
+            this.playersList  = new ArrayList<>();
+            this.maxPlayers = descriptor.getDynamicPlayers().getTotalPlayers().intValue();
         }
     }
     private static Generated.GameDescriptor deserializeFrom(Path path) throws JAXBException {
@@ -188,6 +228,12 @@ public class GameDescriptor implements Serializable {
         JAXBContext jc = JAXBContext.newInstance(Generated.GameDescriptor.class);
         Unmarshaller u = jc.createUnmarshaller();
         return (Generated.GameDescriptor) u.unmarshal(file);
+    }
+
+    private static Generated.GameDescriptor deserializeFrom(InputStream path) throws JAXBException {
+        JAXBContext jc = JAXBContext.newInstance(Generated.GameDescriptor.class);
+        Unmarshaller u = jc.createUnmarshaller();
+        return (Generated.GameDescriptor) u.unmarshal(path);
     }
 
 
@@ -315,5 +361,19 @@ public class GameDescriptor implements Serializable {
     }
     public String getLastKnownGoodString() {
         return lastKnownGoodString;
+    }
+
+    public int getCurrentPlayersInGame(){
+        return this.playersList.size();
+    }
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+    public int getDefaultThreshold() {
+        return defaultThreshold;
+    }
+
+    public int getDefaultProfit() {
+        return defaultProfit;
     }
 }

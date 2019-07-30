@@ -4,8 +4,68 @@
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>Server.Servlets.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>Server.Servlets.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoggedUserStatsServlet</servlet-name>
+        <servlet-class>Server.Servlets.LoggedUsersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateGameServlet</servlet-name>
+        <servlet-class>Server.Servlets.CreateGameServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GamesServlet</servlet-name>
+        <servlet-class>Server.Servlets.GamesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SingleGameServlet</servlet-name>
+        <servlet-class>Server.Servlets.SingleGameServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChatServlet</servlet-name>
+        <servlet-class>Server.Servlets.ChatServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SingleGameEventsServlet</servlet-name>
+        <servlet-class>Server.Servlets.SingleGameEventsServlet</servlet-class>
+    </servlet>
+
+
+
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Pages/SignUp/login</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoggedUserStatsServlet</servlet-name>
+        <url-pattern>/LoggedUsersStats</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateGameServlet</servlet-name>
+        <url-pattern>/uploadFile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GamesServlet</servlet-name>
+        <url-pattern>/games</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SingleGameServlet</servlet-name>
+        <url-pattern>/singleGame</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SingleGameEventsServlet</servlet-name>
+        <url-pattern>/singleGameEvents</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatServlet</servlet-name>
+        <url-pattern>/chat</url-pattern>
+    </servlet-mapping>
+
 </web-app>

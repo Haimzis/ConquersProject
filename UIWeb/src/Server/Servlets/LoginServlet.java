@@ -25,6 +25,8 @@ public class LoginServlet extends HttpServlet {
      */
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ServletUtils.getGameEngine(getServletContext()); //Set the first game engine.
+        ServletUtils.getRoomsContainer(getServletContext()); //set the rooms manager
         response.setContentType("text/html;charset=UTF-8");
         String userFromSession = SessionUtils.getUsername(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());

@@ -333,7 +333,7 @@ public class AppController {
     public void startGame(GameDescriptor gameDescriptor) {
         currentGameManager = gameEngine.newGame(gameDescriptor);
         currentGameManager.setEventListenerHandler(eventObject -> {
-            MapComponentController.unColorTerritory(eventObject.getIdentity());
+            MapComponentController.unColorTerritory((Integer)eventObject.getIdentity());
             HeaderComponentController.writeIntoTextArea("Territory " + eventObject.getIdentity() + " is fair play!" + "\n");
         });
     }

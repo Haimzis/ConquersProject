@@ -1,6 +1,8 @@
 package GameEngine;
 
 import Exceptions.invalidInputException;
+import GameObjects.Player;
+
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,6 +21,20 @@ public class GameEngine {
 
     public static Map<Integer, GameManager> getGameManagers() {
         return gameManagers;
+    }
+
+    public GameDescriptor loadXML(InputStream XMLPath, String fileName) throws invalidInputException {
+        GameDescriptor gameDescriptor = null;
+        ERROR validate = validateXML(fileName);
+        switch (validate) {
+            case PASS:
+                gameDescriptor = createDescriptor(XMLPath);
+                break;
+            case XML_ERROR:
+                flag = 0;
+                throw  new Exceptions.invalidInputException("File is not .XML!");
+        }
+        return gameDescriptor;
     }
 
     public GameDescriptor loadXML(String XMLPath) throws invalidInputException {
@@ -45,6 +61,7 @@ public class GameEngine {
         gameManagers.put(newGame.getGameManagerID(), newGame);
         return newGame;
     }
+
     public GameManager getConsoleGameManager(){
         return gameManagers.get(0);
     }
@@ -59,6 +76,11 @@ public class GameEngine {
     private GameDescriptor createDescriptor(Path xmlPath) throws invalidInputException {
             lastGameDescriptor = new GameDescriptor(xmlPath);
             return lastGameDescriptor;
+    }
+
+    private GameDescriptor createDescriptor(InputStream xmlPath) throws invalidInputException {
+        lastGameDescriptor = new GameDescriptor(xmlPath);
+        return lastGameDescriptor;
     }
 
     private ERROR validateXML(String xmlPath) {
@@ -96,5 +118,8 @@ public class GameEngine {
             flag = 1;
             return true;
         }
+    }
+    public Player createPlayerFromUser(String userName , int id , int funds,int gameManagerId) {
+        return new Player(id , userName , funds , gameManagers.get(gameManagerId).getGameDescriptor().getColors().pop());
     }
 }

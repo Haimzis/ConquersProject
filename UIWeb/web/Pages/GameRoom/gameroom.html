@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GameRoom</title>
+    <link rel="stylesheet" type="text/css" href="gameroom.css">
+</head>
+<body>
+<div class="toolBar">
+    <div class="toolbarContent">
+        <span class="leaveGame" onclick="onLeaveGameClick()">Leave Game</span>
+        <span class="userNameSpan">Hi, Ran</span>
+        <span class="gameStatus">Game status: Waiting for players...</span>
+        <span class="logoSpan">
+            <img src="../../Resources/logo.jpg" class="logoImage"/>
+        </span>
+    </div>
+</div>
+<div class="mainBar">
+    <div class="mainDiv" >
+        <div class = "row">
+            <span class="playerTurn">Player Turn:</span>
+            <h2 class="currentPlayerName"></h2>
+        </div>
+
+        <div class="leftDiv">
+            <div class="playerStats">
+                <span class="currentPlayerStats">Your Stats:</span>
+                <div class="ownPlayerStatsTable">
+                    <table id="ownPlayerTable">
+
+                    </table>
+                </div>
+                <span class="otherPlayersStats">Other Players Stats:</span>
+                <div class="otherPlayersStatsTable">
+                    <table id="otherPlayerTable">
+
+                    </table>
+                </div>
+            </div>
+
+            <div class="gameProgressDetails">
+                <div class="roundsLeft">Rounds Left:</div>
+                <div class="playersNumber">
+                    <span>Players: </span>
+                    <span class="registeredPlayers"></span>
+                    <span> / </span>
+                    <span class="requiredPlayers"></span>
+                </div>
+            </div>
+            <div class="actions">
+                <div class="action" onclick="onEndTurnClick()">End Turn</div>
+                <div class="action" onclick="onRetirementClick()">Retire</div>
+            </div>
+        </div>
+
+        <div class="board">
+            <div class="boardBody">
+
+            </div>
+        </div>
+
+        <div class="chat">
+            <div class="container-fluid">
+                <h4 class="chatOnlinePlayers">Online Players:</h4>
+                <div class="row">
+                    <div class="col-xs-1">
+                        <div class="sidebar">
+                            <div class="clearFix">
+                                <div class="input">
+                                    <ul id="usersList">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="content">
+                            <div id="chatwindow">
+                                <h4>Chat</h4>
+                                <div id="chatArea" class="span6"></div>
+                                <form id="chatform" method="POST" action="sendChat">
+                                    <input type="text" id="userstring" name="userstring"/>
+                                    <input type="submit" value="Send"/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="roundHistoryDiv">
+            <table>
+                <thead>
+                <th>Last Turn Action:</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="lastAction"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-header">
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+
+
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../Common/jquery-2.0.3.min.js"></script>
+<script src="../../Common/context-path-helper.js"></script>
+<script src="gameroom.js"></script>
+</html>

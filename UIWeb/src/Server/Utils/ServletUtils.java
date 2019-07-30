@@ -1,4 +1,5 @@
 package Server.Utils;
+import GameEngine.GameEngine;
 import Server.Chat.ChatManager;
 import Server.Users.UserManager;
 
@@ -13,6 +14,8 @@ public class ServletUtils {
 	private static final String USER_MANAGER_ATTRIBUTE_NAME = "userManager";
 	private static final String CHAT_MANAGER_ATTRIBUTE_NAME = "chatManager";
 	private static final String ENGINE_MANAGER_ATTRIBUTE_NAME = "engineManager";
+	private static final String ROOMS_MANAGER_ATTRIBUTE_NAME = "roomManager";
+	public static int ID = 1;
 
 	/*/
 	Note how the synchronization is done only on the question and\or creation of the relevant managers and once they exists -
@@ -21,6 +24,7 @@ public class ServletUtils {
 	private static final Object userManagerLock = new Object();
 	private static final Object chatManagerLock = new Object();
 	private static final Object engineManagerLock = new Object();
+	private static final Object roomsManagerLock = new Object();
 
 	public static UserManager getUserManager(ServletContext servletContext) {
 		synchronized (userManagerLock) {
@@ -29,6 +33,24 @@ public class ServletUtils {
 			}
 		}
 		return (UserManager) servletContext.getAttribute(USER_MANAGER_ATTRIBUTE_NAME);
+	}
+
+	public static GameEngine getGameEngine(ServletContext servletContext) {
+		synchronized (engineManagerLock) {
+			if (servletContext.getAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME) == null) {
+				servletContext.setAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME, new GameEngine());
+			}
+		}
+		return (GameEngine) servletContext.getAttribute(ENGINE_MANAGER_ATTRIBUTE_NAME);
+	}
+
+	public static RoomsContainer getRoomsContainer(ServletContext servletContext) {
+		synchronized (roomsManagerLock) {
+			if (servletContext.getAttribute(ROOMS_MANAGER_ATTRIBUTE_NAME) == null) {
+				servletContext.setAttribute(ROOMS_MANAGER_ATTRIBUTE_NAME, new RoomsContainer());
+			}
+		}
+		return (RoomsContainer) servletContext.getAttribute(ROOMS_MANAGER_ATTRIBUTE_NAME);
 	}
 
 	public static ChatManager getChatManager(ServletContext servletContext) {
@@ -40,7 +62,7 @@ public class ServletUtils {
 		return (ChatManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
 	}
 
-	public static int getIntParameter(HttpServletRequest request, String name) {
+	public static int getVersionIntParameter(HttpServletRequest request, String name) {
 		String value = request.getParameter(name);
 		if (value != null) {
 			try {
