@@ -14,4 +14,5 @@ public class TerritoryMessage {
         this.isValid = isValid;
         this.message = message;
     }
+
 }

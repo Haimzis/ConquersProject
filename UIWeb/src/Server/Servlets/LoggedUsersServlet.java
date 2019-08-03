@@ -56,6 +56,7 @@ public class LoggedUsersServlet extends HttpServlet {
         out.println(gson.toJson(CurrentUsername));
         out.println();
     }
+
 }
 
 

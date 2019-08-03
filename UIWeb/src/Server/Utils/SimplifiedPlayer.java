@@ -10,4 +10,5 @@ public class SimplifiedPlayer {
         this.playerName = playerName;
         this.funds = funds;
     }
+
 }

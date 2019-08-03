@@ -26,4 +26,5 @@ public class GameStatusMessage {
     public void setCurrentPlayerTurnName(String currentPlayerTurnName) {
         this.currentPlayerTurnName = currentPlayerTurnName;
     }
+
 }

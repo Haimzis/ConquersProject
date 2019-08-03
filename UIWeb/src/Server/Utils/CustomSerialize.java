@@ -19,4 +19,5 @@ public class CustomSerialize implements JsonSerializer<TerritoryActionMessage> {
         object.addProperty("conquerorName", territoryActionMessage.getConquerorName());
         return object;
     }
+
 }

@@ -12,4 +12,5 @@ public class GameOverMessage {
         this.draw = draw;
         this.status = status;
     }
+
 }

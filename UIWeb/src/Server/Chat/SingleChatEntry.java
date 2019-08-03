@@ -27,4 +27,5 @@ public class SingleChatEntry {
     public String toString() {
         return (username != null ? username + ": " : "") + chatString;
     }
+
 }

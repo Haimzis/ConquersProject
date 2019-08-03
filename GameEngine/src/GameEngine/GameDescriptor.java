@@ -54,6 +54,7 @@ public class GameDescriptor implements Serializable {
         lastKnownGoodString = xmlPath.toString();
     }
 
+
     //DYNAMIC CONSTRUCTOR//
     public GameDescriptor(InputStream xmlPath) throws invalidInputException {
         colors.push("Green");colors.push("Red");

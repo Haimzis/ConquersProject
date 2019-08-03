@@ -29,4 +29,5 @@ public class SingleSimplifiedGameManager {
         this.playersList = manager.getGameDescriptor().getPlayersList();
         this.maxPlayers = manager.getGameDescriptor().getMaxPlayers();
     }
+
 }

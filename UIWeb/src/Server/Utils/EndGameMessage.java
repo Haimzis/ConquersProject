@@ -8,4 +8,5 @@ public class EndGameMessage {
         this.round = round;
         this.winnerName = winnerName;
     }
+
 }

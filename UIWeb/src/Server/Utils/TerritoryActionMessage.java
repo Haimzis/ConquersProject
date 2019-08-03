@@ -67,6 +67,7 @@ public class TerritoryActionMessage {
         this.conquerorName = conquerorName;
     }
 
+
     //Enemy
     public TerritoryActionMessage(boolean success, int targetTerritoryId, Army conqueringArmy, Army defendingArmy, String conquerorName , boolean couldNotHold) {
         this.success = success;

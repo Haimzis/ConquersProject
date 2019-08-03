@@ -606,4 +606,5 @@ public class GameManager implements Serializable {
     public GameDescriptor getGameDescriptor() {
         return gameDescriptor;
     }
+
 }

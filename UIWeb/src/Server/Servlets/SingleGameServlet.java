@@ -198,6 +198,7 @@ public class SingleGameServlet extends HttpServlet {
         }
     }
 
+
     private void checkWinnerIfAny(GameManager manager,HttpServletRequest request) {
         if(manager.isGameOver()) {
             manager.getWinnerPlayer();
