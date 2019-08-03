@@ -20,4 +20,4 @@ we created sharp and clean design with a mild animations.
 the frontend framework was apache tomcat and chrome.
 and the backend framework was IntelliJ Ultimate.
 
-I hope you will enjoy from it.
+I hope you will enjoy it.
