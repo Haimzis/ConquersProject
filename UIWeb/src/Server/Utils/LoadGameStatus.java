@@ -24,4 +24,5 @@ public class LoadGameStatus {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
+
 }

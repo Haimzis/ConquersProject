@@ -20,6 +20,7 @@ public class BuyUnitsMessage {
         this.success = success;
     }
 
+
     public BuyUnitsMessage(boolean success) {
         this.success = success;
     }

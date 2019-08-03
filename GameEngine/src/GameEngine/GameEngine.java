@@ -122,4 +122,5 @@ public class GameEngine {
     public Player createPlayerFromUser(String userName , int id , int funds,int gameManagerId) {
         return new Player(id , userName , funds , gameManagers.get(gameManagerId).getGameDescriptor().getColors().pop());
     }
+
 }

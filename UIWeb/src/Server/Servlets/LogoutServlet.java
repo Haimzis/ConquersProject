@@ -14,7 +14,7 @@ import java.io.IOException;
 @WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
 public class LogoutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         String usernameFromSession = SessionUtils.getUsername(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
 

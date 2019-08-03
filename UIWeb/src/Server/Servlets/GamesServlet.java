@@ -94,4 +94,5 @@ public class GamesServlet extends HttpServlet {
         Gson gson = new Gson();
         out.println(gson.toJson(ServletUtils.getRoomsContainer(getServletContext()).getActiveRooms()));
     }
+
 }

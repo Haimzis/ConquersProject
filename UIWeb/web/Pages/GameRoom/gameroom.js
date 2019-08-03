@@ -128,6 +128,7 @@ function triggerUpdatesOfPage(events){
         }
         updateOnlineUsers();
     });
+
 }
 function paintConqueredTerritory(conqueredTerritoryID){
     $.ajax({

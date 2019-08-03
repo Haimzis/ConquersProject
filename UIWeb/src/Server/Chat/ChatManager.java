@@ -28,4 +28,5 @@ public class ChatManager {
     public void resetChat() {
         chatDataList = new ArrayList<>();
     }
+
 }
