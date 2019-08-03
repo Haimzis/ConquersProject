@@ -1,4 +1,4 @@
-# ConquersProject
+# Conquers Project
 Conquerors web game, similar to the known "Katan" tabletop game. Huge Project that involves Web,Desktop and Console user interfaces.
 After few weeks of hard work, I'm proud to release my java course project. thanks to my partner, Ran that supported me and toke a part in the project.
 
