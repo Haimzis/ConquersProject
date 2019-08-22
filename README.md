@@ -21,3 +21,5 @@ the frontend framework was apache tomcat and chrome.
 and the backend framework was IntelliJ Ultimate.
 
 I hope you will enjoy it.
+
+Each part contains Demo. (=
