@@ -3,19 +3,19 @@ Conquerors web game, similar to the known "Katan" tabletop game. Huge Project th
 After few weeks of hard work, I'm proud to release my java course project. thanks to my partner, Ran that supported me and toke a part in the project.
 
 Review: <br />
-![alt text](http://www.up2me.co.il/images/53979920.png)
+![Screenshot](https://github.com/Haimzis/ConquersProject/blob/master/Images/Console-image.png)
 part 1: we built module of Engine and ConsoleUI, 
 the Engine it's the root of the project and all the continued parts of the UI are rely and dependent on it. 
 the Console was the first UI menu. very basic
 
 Review:<br />
-![alt text](http://www.up2me.co.il/images/60616811.png)
+![Screenshot](https://github.com/Haimzis/ConquersProject/blob/master/Images/JFX-image.png)
 part 2: we updated the engine and built a new JavaFX desktop program with different Components that each one has it own FXML,css and logic.
 it's important to say that we worked with Model-View-Controller (MVC) method.
 and every one toke his own component to work on. 
 
 Review:<br />
-![alt text](http://www.up2me.co.il/images/61515845.png)
+![Screenshot](https://github.com/Haimzis/ConquersProject/blob/master/Images/Web-image.png)
 part 3: we updated the engine, 
 1. now the engine holds few different gameManagers (games) simultaneously.
 2. Events listener from type EventObject.(using for smart Ajax calls for html update)
