@@ -24,9 +24,7 @@ part 3: we updated the engine,
 2. Events listener from type EventObject.(using for smart Ajax calls for html update)
 3. Fix of bugs in the algorithm of the game.
 
-we created client side with html,css,js(Jquery) and server side based on Servlets.
+we created client side with html,css,js(Jquery) and server side based on Java Servlets.
 we created sharp and clean design with a mild animations.
-the frontend framework was apache tomcat and chrome.
-and the backend framework was IntelliJ Ultimate.
 
 I hope you will enjoy it.
